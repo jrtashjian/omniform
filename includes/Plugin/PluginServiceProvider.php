@@ -2,12 +2,12 @@
 /**
  * The PluginServiceProvider class.
  *
- * @package PluginWP
+ * @package InquiryWP
  */
 
-namespace PluginWP\Plugin;
+namespace InquiryWP\Plugin;
 
-use PluginWP\ServiceProvider;
+use InquiryWP\ServiceProvider;
 
 /**
  * The PluginServiceProvider class.
@@ -24,19 +24,19 @@ class PluginServiceProvider extends ServiceProvider {
 			'admin_menu',
 			function () {
 				add_menu_page(
-					esc_html__( 'PluginWP', 'pluginwp' ),
-					esc_html__( 'PluginWP', 'pluginwp' ),
+					esc_html__( 'InquiryWP', 'inquirywp' ),
+					esc_html__( 'InquiryWP', 'inquirywp' ),
 					'manage_options',
-					'pluginwp',
+					'inquirywp',
 					function () {
 						?>
-						<div id="pluginwp" class="hide-if-no-js"></div>
+						<div id="inquirywp" class="hide-if-no-js"></div>
 
 						<?php // JavaScript is disabled. ?>
 						<div class="wrap hide-if-js">
-							<h1 class="wp-heading-inline">PluginWP</h1>
+							<h1 class="wp-heading-inline">InquiryWP</h1>
 							<div class="notice notice-error notice-alt">
-								<p><?php esc_html_e( 'PluginWP requires JavaScript. Please enable JavaScript in your browser settings.', 'pluginwp' ); ?></p>
+								<p><?php esc_html_e( 'InquiryWP requires JavaScript. Please enable JavaScript in your browser settings.', 'inquirywp' ); ?></p>
 							</div>
 						</div>
 						<?php
@@ -54,7 +54,7 @@ class PluginServiceProvider extends ServiceProvider {
 	public function registerScripts() {
 		$current_screen = get_current_screen();
 
-		if ( 'toplevel_page_pluginwp' !== $current_screen->base ) {
+		if ( 'toplevel_page_inquirywp' !== $current_screen->base ) {
 			return;
 		}
 
@@ -77,9 +77,9 @@ class PluginServiceProvider extends ServiceProvider {
 
 		$init_script = <<<JS
 		( function() {
-			window._loadPluginWP = new Promise( function( resolve ) {
+			window._loadInquiryWP = new Promise( function( resolve ) {
 				wp.domReady( function() {
-					resolve( pluginwp.plugin.initialize( 'pluginwp', %s ) );
+					resolve( inquirywp.plugin.initialize( 'inquirywp', %s ) );
 				} );
 			} );
 		} )();

@@ -8,7 +8,7 @@ const { camelCaseDash } = require( '@wordpress/dependency-extraction-webpack-plu
  * Internal dependencies.
  */
 const { dependencies } = require( './package' );
-const PLUGIN_NAMESPACE = '@pluginwp/';
+const PLUGIN_NAMESPACE = '@inquirywp/';
 
 const pluginPackages = Object.keys( dependencies )
 	.filter( ( packageName ) => packageName.startsWith( PLUGIN_NAMESPACE ) )
@@ -23,7 +23,7 @@ module.exports = {
 			[ packageName ]: {
 				import: `./packages/${ packageName }`,
 				library: {
-					name: [ 'pluginwp', camelCaseDash( packageName ) ],
+					name: [ 'inquirywp', camelCaseDash( packageName ) ],
 					type: 'window',
 				},
 			},

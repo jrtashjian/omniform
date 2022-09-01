@@ -10,12 +10,12 @@
 		"postpackages-update": "npm run build",
 		"prelint-php": "wp-env run composer \"install --no-interaction\"",
 		"pretest:php": "wp-env start",
-		"test:php": "wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/pluginwp/phpunit.xml.dist --verbose'",
+		"test:php": "wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/inquirywp/phpunit.xml.dist --verbose'",
 		"wp-env": "wp-env"
 	},
 	"dependencies": {
-		"@pluginwp/plugin": "file:packages/plugin",
-		"@pluginwp/block-library": "file:packages/block-library",
+		"@inquirywp/plugin": "file:packages/plugin",
+		"@inquirywp/block-library": "file:packages/block-library",
 		"@wordpress/base-styles": "^4.3.1",
 		"@wordpress/block-editor": "^9.8.0",
 		"@wordpress/blocks": "^11.15.0",

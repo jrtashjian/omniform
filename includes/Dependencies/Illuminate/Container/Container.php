@@ -1,13 +1,13 @@
 <?php
 
-namespace PluginWP\Dependencies\Illuminate\Container;
+namespace InquiryWP\Dependencies\Illuminate\Container;
 
 use ArrayAccess;
 use Closure;
 use Exception;
-use PluginWP\Dependencies\Illuminate\Contracts\Container\BindingResolutionException;
-use PluginWP\Dependencies\Illuminate\Contracts\Container\CircularDependencyException;
-use PluginWP\Dependencies\Illuminate\Contracts\Container\Container as ContainerContract;
+use InquiryWP\Dependencies\Illuminate\Contracts\Container\BindingResolutionException;
+use InquiryWP\Dependencies\Illuminate\Contracts\Container\CircularDependencyException;
+use InquiryWP\Dependencies\Illuminate\Contracts\Container\Container as ContainerContract;
 use LogicException;
 use ReflectionClass;
 use ReflectionException;
@@ -160,7 +160,7 @@ class Container implements ArrayAccess, ContainerContract
      * Define a contextual binding.
      *
      * @param  array|string  $concrete
-     * @return \PluginWP\Dependencies\Illuminate\Contracts\Container\ContextualBindingBuilder
+     * @return \InquiryWP\Dependencies\Illuminate\Contracts\Container\ContextualBindingBuilder
      */
     public function when($concrete)
     {
@@ -673,7 +673,7 @@ class Container implements ArrayAccess, ContainerContract
      * @param  array  $parameters
      * @return mixed
      *
-     * @throws \PluginWP\Dependencies\Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \InquiryWP\Dependencies\Illuminate\Contracts\Container\BindingResolutionException
      */
     public function makeWith($abstract, array $parameters = [])
     {
@@ -687,7 +687,7 @@ class Container implements ArrayAccess, ContainerContract
      * @param  array  $parameters
      * @return mixed
      *
-     * @throws \PluginWP\Dependencies\Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \InquiryWP\Dependencies\Illuminate\Contracts\Container\BindingResolutionException
      */
     public function make($abstract, array $parameters = [])
     {
@@ -720,8 +720,8 @@ class Container implements ArrayAccess, ContainerContract
      * @param  bool  $raiseEvents
      * @return mixed
      *
-     * @throws \PluginWP\Dependencies\Illuminate\Contracts\Container\BindingResolutionException
-     * @throws \PluginWP\Dependencies\Illuminate\Contracts\Container\CircularDependencyException
+     * @throws \InquiryWP\Dependencies\Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \InquiryWP\Dependencies\Illuminate\Contracts\Container\CircularDependencyException
      */
     protected function resolve($abstract, $parameters = [], $raiseEvents = true)
     {
@@ -861,8 +861,8 @@ class Container implements ArrayAccess, ContainerContract
      * @param  \Closure|string  $concrete
      * @return mixed
      *
-     * @throws \PluginWP\Dependencies\Illuminate\Contracts\Container\BindingResolutionException
-     * @throws \PluginWP\Dependencies\Illuminate\Contracts\Container\CircularDependencyException
+     * @throws \InquiryWP\Dependencies\Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \InquiryWP\Dependencies\Illuminate\Contracts\Container\CircularDependencyException
      */
     public function build($concrete)
     {
@@ -923,7 +923,7 @@ class Container implements ArrayAccess, ContainerContract
      * @param  \ReflectionParameter[]  $dependencies
      * @return array
      *
-     * @throws \PluginWP\Dependencies\Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \InquiryWP\Dependencies\Illuminate\Contracts\Container\BindingResolutionException
      */
     protected function resolveDependencies(array $dependencies)
     {
@@ -996,7 +996,7 @@ class Container implements ArrayAccess, ContainerContract
      * @param  \ReflectionParameter  $parameter
      * @return mixed
      *
-     * @throws \PluginWP\Dependencies\Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \InquiryWP\Dependencies\Illuminate\Contracts\Container\BindingResolutionException
      */
     protected function resolvePrimitive(ReflectionParameter $parameter)
     {
@@ -1017,7 +1017,7 @@ class Container implements ArrayAccess, ContainerContract
      * @param  \ReflectionParameter  $parameter
      * @return mixed
      *
-     * @throws \PluginWP\Dependencies\Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \InquiryWP\Dependencies\Illuminate\Contracts\Container\BindingResolutionException
      */
     protected function resolveClass(ReflectionParameter $parameter)
     {
@@ -1074,7 +1074,7 @@ class Container implements ArrayAccess, ContainerContract
      * @param  string  $concrete
      * @return void
      *
-     * @throws \PluginWP\Dependencies\Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \InquiryWP\Dependencies\Illuminate\Contracts\Container\BindingResolutionException
      */
     protected function notInstantiable($concrete)
     {
@@ -1095,7 +1095,7 @@ class Container implements ArrayAccess, ContainerContract
      * @param  \ReflectionParameter  $parameter
      * @return void
      *
-     * @throws \PluginWP\Dependencies\Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \InquiryWP\Dependencies\Illuminate\Contracts\Container\BindingResolutionException
      */
     protected function unresolvablePrimitive(ReflectionParameter $parameter)
     {
@@ -1387,8 +1387,8 @@ class Container implements ArrayAccess, ContainerContract
     /**
      * Set the shared instance of the container.
      *
-     * @param  \PluginWP\Dependencies\Illuminate\Contracts\Container\Container|null  $container
-     * @return \PluginWP\Dependencies\Illuminate\Contracts\Container\Container|static
+     * @param  \InquiryWP\Dependencies\Illuminate\Contracts\Container\Container|null  $container
+     * @return \InquiryWP\Dependencies\Illuminate\Contracts\Container\Container|static
      */
     public static function setInstance(ContainerContract $container = null)
     {

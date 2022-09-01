@@ -1,9 +1,9 @@
 <?php
 
-namespace PluginWP\Dependencies\Illuminate\Container;
+namespace InquiryWP\Dependencies\Illuminate\Container;
 
 use Exception;
-use PluginWP\Dependencies\Psr\Container\NotFoundExceptionInterface;
+use InquiryWP\Dependencies\Psr\Container\NotFoundExceptionInterface;
 
 class EntryNotFoundException extends Exception implements NotFoundExceptionInterface
 {

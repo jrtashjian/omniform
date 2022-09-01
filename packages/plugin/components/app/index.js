@@ -24,10 +24,10 @@ export default function App( { settings } ) {
 			<InterfaceSkeleton
 				content={ (
 					<div style={ { padding: '1rem' } }>
-						<h1>{ __( 'PluginWP', 'pluginwp' ) }</h1>
+						<h1>{ __( 'InquiryWP', 'inquirywp' ) }</h1>
 
 						<pre style={ { margin: '0' } }>
-							{ __( 'Initial Settings', 'pluginwp' ) }:<br />
+							{ __( 'Initial Settings', 'inquirywp' ) }:<br />
 							{ JSON.stringify( settings, null, 2 ) }
 						</pre>
 
@@ -37,7 +37,7 @@ export default function App( { settings } ) {
 					</div>
 				) }
 			/>
-			<PluginArea scope="pluginwp" />
+			<PluginArea scope="inquirywp" />
 			<Popover.Slot />
 		</SlotFillProvider>
 	);

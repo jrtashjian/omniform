@@ -1,17 +1,17 @@
 <?php
 /**
- * Plugin Name: PluginWP
- * Plugin URI: https://pluginwp.com
- * Description: PluginWP Plugin Description.
+ * Plugin Name: InquiryWP
+ * Plugin URI: https://inquirywp.com
+ * Description: InquiryWP Plugin Description.
  * Version: 1.0.0
  * Requires at least: 6.0
  * Requires PHP: 7.4
- * Author: PluginWP Author
- * Author URI: https://pluginwp.com
- * Text Domain: pluginwp
+ * Author: InquiryWP
+ * Author URI: https://inquirywp.com
+ * Text Domain: inquirywp
  * Domain Path: /languages
  *
- * Copyright 2019-2022 PluginWP Author
+ * Copyright 2019-2022 InquiryWP
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,13 +26,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  *
- * @package PluginWP
+ * @package InquiryWP
  */
 
 defined( 'ABSPATH' ) || exit;
 
 // Guard the plugin from initializing more than once.
-if ( class_exists( \PluginWP\Application::class ) ) {
+if ( class_exists( \InquiryWP\Application::class ) ) {
 	return;
 }
 
@@ -43,20 +43,20 @@ require_once dirname( __FILE__ ) . '/vendor/autoload.php';
  *
  * @return Application The application container.
  */
-function pluginwp() {
-	return \PluginWP\Application::getInstance();
+function inquirywp() {
+	return \InquiryWP\Application::getInstance();
 }
 
-pluginwp()->setBasePath( __FILE__ );
+inquirywp()->setBasePath( __FILE__ );
 
 /**
  * Service Providers.
  */
-pluginwp()->register( \PluginWP\Plugin\PluginServiceProvider::class );
-pluginwp()->register( \PluginWP\BlockLibrary\BlockLibraryServiceProvider::class );
+inquirywp()->register( \InquiryWP\Plugin\PluginServiceProvider::class );
+inquirywp()->register( \InquiryWP\BlockLibrary\BlockLibraryServiceProvider::class );
 
-register_deactivation_hook( __FILE__, array( pluginwp(), 'deactivation' ) );
+register_deactivation_hook( __FILE__, array( inquirywp(), 'deactivation' ) );
 
 // Boot the plugin.
-add_action( 'plugins_loaded', array( pluginwp(), 'boot' ) );
-add_action( 'plugins_loaded', array( pluginwp(), 'loadTextDomain' ) );
+add_action( 'plugins_loaded', array( inquirywp(), 'boot' ) );
+add_action( 'plugins_loaded', array( inquirywp(), 'loadTextDomain' ) );

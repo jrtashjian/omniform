@@ -2,12 +2,12 @@
 /**
  * Tests the plugin bootstrap file.
  *
- * @package PluginWP
+ * @package InquiryWP
  */
 
-namespace PluginWP\Tests;
+namespace InquiryWP\Tests;
 
-use PluginWP\Application;
+use InquiryWP\Application;
 
 /**
  * Tests the plugin bootstrap file.
@@ -22,10 +22,10 @@ class Bootstrap_Test extends \WP_UnitTestCase {
 	}
 
 	/**
-	 * Test that the pluginwp() helper function returns an instance of the Container.
+	 * Test that the inquirywp() helper function returns an instance of the Container.
 	 */
 	public function test_curatewp_helper_returns_container_instance() {
-		$container_instance = pluginwp();
+		$container_instance = inquirywp();
 		$this->assertTrue( $container_instance instanceof Application );
 	}
 }

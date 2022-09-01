@@ -2,10 +2,10 @@
 /**
  * The Asset class.
  *
- * @package PluginWP
+ * @package InquiryWP
  */
 
-namespace PluginWP\Plugin;
+namespace InquiryWP\Plugin;
 
 /**
  * The Asset class.
@@ -56,7 +56,7 @@ class Asset {
 	protected function loadAssetFile( $filepath ) {
 		$default_asset_file = array(
 			'dependencies' => array(),
-			'version'      => pluginwp()->version(),
+			'version'      => inquirywp()->version(),
 		);
 
 		return file_exists( $filepath ) ? include $filepath : $default_asset_file;
@@ -70,7 +70,7 @@ class Asset {
 	 * @return string
 	 */
 	protected function getAssetFilePath( $filename ) {
-		return pluginwp()->basePath( 'build/' . $filename . '.asset.php' );
+		return inquirywp()->basePath( 'build/' . $filename . '.asset.php' );
 	}
 
 	/**
@@ -81,7 +81,7 @@ class Asset {
 	 * @return string
 	 */
 	protected function getAssetUrl( $filename ) {
-		return pluginwp()->baseUrl( 'build/' . $filename );
+		return inquirywp()->baseUrl( 'build/' . $filename );
 	}
 
 	/**

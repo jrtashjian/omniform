@@ -2,12 +2,12 @@
 /**
  * The BlockLibraryServiceProvider class.
  *
- * @package PluginWP
+ * @package InquiryWP
  */
 
-namespace PluginWP\BlockLibrary;
+namespace InquiryWP\BlockLibrary;
 
-use PluginWP\ServiceProvider;
+use InquiryWP\ServiceProvider;
 
 /**
  * The BlockLibraryServiceProvider class.

@@ -1,9 +1,9 @@
 <?php
 
-namespace PluginWP\Dependencies\Illuminate\Contracts\Container;
+namespace InquiryWP\Dependencies\Illuminate\Contracts\Container;
 
 use Closure;
-use PluginWP\Dependencies\Psr\Container\ContainerInterface;
+use InquiryWP\Dependencies\Psr\Container\ContainerInterface;
 
 interface Container extends ContainerInterface
 {
@@ -115,7 +115,7 @@ interface Container extends ContainerInterface
      * Define a contextual binding.
      *
      * @param  string|array  $concrete
-     * @return \PluginWP\Dependencies\Illuminate\Contracts\Container\ContextualBindingBuilder
+     * @return \InquiryWP\Dependencies\Illuminate\Contracts\Container\ContextualBindingBuilder
      */
     public function when($concrete);
 
@@ -141,7 +141,7 @@ interface Container extends ContainerInterface
      * @param  array  $parameters
      * @return mixed
      *
-     * @throws \PluginWP\Dependencies\Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \InquiryWP\Dependencies\Illuminate\Contracts\Container\BindingResolutionException
      */
     public function make($abstract, array $parameters = []);
 

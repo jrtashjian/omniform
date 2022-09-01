@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PluginWP\Dependencies\Psr\Container;
+namespace InquiryWP\Dependencies\Psr\Container;
 
 /**
  * Describes the interface of a container that exposes methods to read its entries.

@@ -12,7 +12,7 @@ import './style.scss';
 import './test-plugin';
 
 /**
- * Initializes and returns and instance of PluginWP.
+ * Initializes and returns and instance of InquiryWP.
  *
  * @param {string}  id       Unique identifier for the editor instance.
  * @param {?Object} settings Settings object.

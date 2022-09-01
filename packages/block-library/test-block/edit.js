@@ -8,7 +8,7 @@ const Edit = () => {
 	const blockProps = useBlockProps();
 	return (
 		<div { ...blockProps }>
-			{ __( 'Hello, World! (from the editor)', 'pluginwp' ) }
+			{ __( 'Hello, World! (from the editor)', 'inquirywp' ) }
 		</div>
 	);
 };

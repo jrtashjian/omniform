@@ -1,16 +1,16 @@
 {
-    "name": "pluginwp/pluginwp",
+    "name": "inquirywp/inquirywp",
     "description": "",
     "license": "GPL-2.0-only",
     "authors": [
         {
-            "name": "Plugin Author",
-            "homepage": "https://pluginwp.com"
+            "name": "InquiryWP",
+            "homepage": "https://inquirywp.com"
         }
     ],
     "autoload": {
         "psr-4": {
-            "PluginWP\\": "includes"
+            "InquiryWP\\": "includes"
         }
     },
     "require": {
@@ -37,17 +37,17 @@
     },
     "extra": {
         "mozart": {
-            "dep_namespace": "PluginWP\\Dependencies\\",
+            "dep_namespace": "InquiryWP\\Dependencies\\",
             "dep_directory": "/includes/Dependencies/",
             "classmap_directory": "/includes/classes/dependencies/",
-            "classmap_prefix": "PluginWP_"
+            "classmap_prefix": "InquiryWP_"
         }
     },
     "scripts": {
         "lint": "phpcs --standard=phpcs.xml.dist",
         "format": "phpcbf --standard=phpcs.xml.dist --report-summary --report-source",
         "test": "phpunit",
-        "makepot": "wp i18n make-pot . --exclude=\"node_modules,vendor\" --headers='{\"Last-Translator\":\"info@pluginwp.com\",\"Language-Team\":\"info@pluginwp.com\",\"Report-Msgid-Bugs-To\":\"https://pluginwp.com/contact\"}'",
+        "makepot": "wp i18n make-pot . --exclude=\"node_modules,vendor\" --headers='{\"Last-Translator\":\"info@inquirywp.com\",\"Language-Team\":\"info@inquirywp.com\",\"Report-Msgid-Bugs-To\":\"https://inquirywp.com/contact\"}'",
         "mozart-compose": [
             "\"vendor/bin/mozart\" compose",
             "composer dump-autoload",

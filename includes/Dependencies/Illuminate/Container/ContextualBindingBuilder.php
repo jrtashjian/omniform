@@ -1,16 +1,16 @@
 <?php
 
-namespace PluginWP\Dependencies\Illuminate\Container;
+namespace InquiryWP\Dependencies\Illuminate\Container;
 
-use PluginWP\Dependencies\Illuminate\Contracts\Container\Container;
-use PluginWP\Dependencies\Illuminate\Contracts\Container\ContextualBindingBuilder as ContextualBindingBuilderContract;
+use InquiryWP\Dependencies\Illuminate\Contracts\Container\Container;
+use InquiryWP\Dependencies\Illuminate\Contracts\Container\ContextualBindingBuilder as ContextualBindingBuilderContract;
 
 class ContextualBindingBuilder implements ContextualBindingBuilderContract
 {
     /**
      * The underlying container instance.
      *
-     * @var \PluginWP\Dependencies\Illuminate\Contracts\Container\Container
+     * @var \InquiryWP\Dependencies\Illuminate\Contracts\Container\Container
      */
     protected $container;
 
@@ -31,7 +31,7 @@ class ContextualBindingBuilder implements ContextualBindingBuilderContract
     /**
      * Create a new contextual binding builder.
      *
-     * @param  \PluginWP\Dependencies\Illuminate\Contracts\Container\Container  $container
+     * @param  \InquiryWP\Dependencies\Illuminate\Contracts\Container\Container  $container
      * @param  string|array  $concrete
      * @return void
      */

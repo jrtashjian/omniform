@@ -8,7 +8,7 @@ const Save = () => {
 	const blockProps = useBlockProps.save();
 	return (
 		<div { ...blockProps }>
-			{ __( 'Hello, World! (from the frontend)', 'pluginwp' ) }
+			{ __( 'Hello, World! (from the frontend)', 'inquirywp' ) }
 		</div>
 	);
 };

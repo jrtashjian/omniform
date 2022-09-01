@@ -1,6 +1,6 @@
-# PluginWP Foundation
+# InquiryWP Foundation
 
-🚧 [**UNDER DEVELOPMENT**](https://github.com/jrtashjian/pluginwp/issues/1) 🚧
+🚧 [**UNDER DEVELOPMENT**](https://github.com/jrtashjian/inquirywp/issues/1) 🚧
 
 This code serves as a starting point for building WordPress plugin using React and the [block editor components](https://github.com/WordPress/gutenberg/tree/trunk/packages). I also wanted to build WordPress plugins in a more modern PHP way by introducing a portion of the [Service Container](https://laravel.com/docs/8.x/container) and [Service Providers](https://laravel.com/docs/8.x/providers) that are used in the [Laravel framework](https://laravel.com/).
 
@@ -13,21 +13,21 @@ This code serves as a starting point for building WordPress plugin using React a
 
 ### Quick Start
 
-Clone this repository and do a case-sensitive search & replace on the codebase to replace references of "PluginWP" to your own.
+Clone this repository and do a case-sensitive search & replace on the codebase to replace references of "InquiryWP" to your own.
 
 ```
-git clone https://github.com/jrtashjian/pluginwp.git yourpluginslug
+git clone https://github.com/jrtashjian/inquirywp.git yourpluginslug
 ```
 
-Replace the following strings within the `includes/`, `packages/`, and `phpunit/` directories as well as the `composer.json`, `package.json`, `phpcs.xml`, `phpunit.xml.dist`, `webpack.config.js`, and `pluginwp.php` file.
+Replace the following strings within the `includes/`, `packages/`, and `phpunit/` directories as well as the `composer.json`, `package.json`, `phpcs.xml`, `phpunit.xml.dist`, `webpack.config.js`, and `inquirywp.php` file.
 
 | Search for        | Replace with         |
 | ----------------- | -------------------- |
-| `PluginWP Author` | `Actual Author Name` |
-| `PluginWP`        | `YourPluginSlug`     |
-| `pluginwp`        | `yourpluginslug`     |
+| `InquiryWP` | `Actual Author Name` |
+| `InquiryWP`        | `YourPluginSlug`     |
+| `inquirywp`        | `yourpluginslug`     |
 
-You should also rename the main plugin file `pluginwp.php` to `yourpluginslug.php`.
+You should also rename the main plugin file `inquirywp.php` to `yourpluginslug.php`.
 
 ### Setup
 
