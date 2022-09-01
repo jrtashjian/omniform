@@ -1,0 +1,88 @@
+name: Build and Test
+
+on: push
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Restore npm dependency cache
+        uses: ./.github/actions/restore-npm-cache
+
+      - name: Restore composer dependency cache
+        uses: ./.github/actions/restore-composer-cache
+
+      - name: Install node dependencies
+        run: npm install
+
+      - name: Install composer dependencies
+        run: composer install
+
+      - name: Build the plugin
+        run: npm run build
+
+      - name: Save compiled assets
+        uses: actions/upload-artifact@v2
+        with:
+          name: plugin-build-dir
+          path: ./build
+
+  lint_php:
+    runs-on: ubuntu-latest
+    needs: [build]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Restore composer dependency cache
+        uses: ./.github/actions/restore-composer-cache
+
+      - name: Linting code
+        run: composer run lint
+
+  lint_js:
+    runs-on: ubuntu-latest
+    needs: [build]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Restore npm dependency cache
+        uses: ./.github/actions/restore-npm-cache
+
+      - name: Linting code
+        run: npm run lint-js
+
+  lint_css:
+    runs-on: ubuntu-latest
+    needs: [build]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Restore npm dependency cache
+        uses: ./.github/actions/restore-npm-cache
+
+      - name: Linting code
+        run: npm run lint-css
+
+  test_unit_php:
+    runs-on: ubuntu-latest
+    needs: [lint_php]
+
+    strategy:
+      matrix:
+        php: [7.4, 8.0, 8.1]
+        multisite: [0, 1]
+
+    steps:
+      - name: Placeholder
+        run: echo "Placeholder ${{ matrix.php }}"
