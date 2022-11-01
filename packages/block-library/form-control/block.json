@@ -1,0 +1,10 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "inquirywp/form-control",
+	"title": "FormControl",
+	"textdomain": "inquirywp",
+	"editorScript": "file:../../../build/block-library/form-control.js",
+	"editorStyle": "file:../../../build/block-library/form-control.css",
+	"style": "file:../../../build/block-library/style-form-control.css"
+}

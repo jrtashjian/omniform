@@ -28,5 +28,7 @@ module.exports = {
 				},
 			},
 		};
-	}, {} ),
+	}, {
+		'block-library/form-control': './packages/block-library/form-control',
+	} ),
 };

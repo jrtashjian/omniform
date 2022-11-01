@@ -8,7 +8,9 @@ const Edit = () => {
 	const blockProps = useBlockProps();
 	return (
 		<div { ...blockProps }>
-			{ __( 'Hello, World! (from the editor)', 'inquirywp' ) }
+			<label htmlFor="textInput" className="form-label">textInput</label>
+			<input type="text" className="form-control" id="textInput" aria-describedby="textInputHelp" />
+			<div id="textInputHelp" className="form-text">textInputHelp</div>
 		</div>
 	);
 };
