@@ -1,4 +1,13 @@
 .wp-block-inquirywp-form-control {
 	border: 2px solid #f00;
 	padding: 20px;
+
+	.form-label {
+		display: inline-block;
+	}
+
+	.form-control {
+		display: block;
+		width: 100%;
+	}
 }
