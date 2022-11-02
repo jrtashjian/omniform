@@ -24,6 +24,7 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 	 * Register the blocks.
 	 */
 	public function registerBlocks() {
+		register_block_type( $this->app->basePath( '/packages/block-library/form' ) );
 		register_block_type( $this->app->basePath( '/packages/block-library/field-input' ) );
 	}
 
