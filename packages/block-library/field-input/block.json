@@ -1,0 +1,25 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "inquirywp/field-input",
+	"title": "Input Field",
+	"textdomain": "inquirywp",
+	"attributes": {
+		"type": {
+			"type": "string",
+			"default": "text"
+		},
+		"label": {
+			"type": "string"
+		},
+		"text": {
+			"type": "string"
+		}
+	},
+	"supports": {
+		"html": false
+	},
+	"editorScript": "file:../../../build/block-library/field-input.js",
+	"editorStyle": "file:../../../build/block-library/field-input.css",
+	"style": "file:../../../build/block-library/style-field-input.css"
+}

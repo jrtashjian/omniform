@@ -29,6 +29,6 @@ module.exports = {
 			},
 		};
 	}, {
-		'block-library/form-control': './packages/block-library/form-control',
+		'block-library/field-input': './packages/block-library/field-input',
 	} ),
 };

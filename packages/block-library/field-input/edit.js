@@ -21,7 +21,7 @@ const Edit = ( {
 	return (
 		<div { ...blockProps }>
 			<RichText
-				className="form-label"
+				className="field-label"
 				aria-label={ __( 'Label text', 'inquirywp' ) }
 				placeholder={ __( 'Add label…', 'inquirywp' ) }
 				withoutInteractiveFormatting
@@ -29,11 +29,13 @@ const Edit = ( {
 				onChange={ ( html ) => setAttributes( { label: html } ) }
 			/>
 
-			<input type="text" className="form-control" id="textInput" aria-describedby="textInputHelp" />
+			<pre>{ JSON.stringify( attributes, '', 2 ) }</pre>
+
+			<input type="text" className="field-control" id="textInput" aria-describedby="textInputHelp" />
 
 			{ isSelected && ! helpText && (
 				<RichText
-					className="form-text"
+					className="field-text"
 					aria-label={ __( 'Help text', 'inquirywp' ) }
 					placeholder={ __( 'Add help text…', 'inquirywp' ) }
 					withoutInteractiveFormatting
