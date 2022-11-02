@@ -1,8 +1,6 @@
-# InquiryWP Foundation
+# InquiryWP
 
-🚧 [**UNDER DEVELOPMENT**](https://github.com/jrtashjian/inquirywp/issues/1) 🚧
-
-This code serves as a starting point for building WordPress plugin using React and the [block editor components](https://github.com/WordPress/gutenberg/tree/trunk/packages). I also wanted to build WordPress plugins in a more modern PHP way by introducing a portion of the [Service Container](https://laravel.com/docs/8.x/container) and [Service Providers](https://laravel.com/docs/8.x/providers) that are used in the [Laravel framework](https://laravel.com/).
+The Form Builder for the Block Editor
 
 ## Installation
 
@@ -13,23 +11,11 @@ This code serves as a starting point for building WordPress plugin using React a
 
 ### Quick Start
 
-Clone this repository and do a case-sensitive search & replace on the codebase to replace references of "InquiryWP" to your own.
+Clone this repository:
 
 ```
-git clone https://github.com/jrtashjian/inquirywp.git yourpluginslug
+git clone https://github.com/jrtashjian/inquirywp.git
 ```
-
-Replace the following strings within the `includes/`, `packages/`, and `phpunit/` directories as well as the `composer.json`, `package.json`, `phpcs.xml`, `phpunit.xml.dist`, `webpack.config.js`, and `inquirywp.php` file.
-
-| Search for        | Replace with         |
-| ----------------- | -------------------- |
-| `InquiryWP` | `Actual Author Name` |
-| `InquiryWP`        | `YourPluginSlug`     |
-| `inquirywp`        | `yourpluginslug`     |
-
-You should also rename the main plugin file `inquirywp.php` to `yourpluginslug.php`.
-
-### Setup
 
 Install the necessary Node.js and Composer dependencies:
 
@@ -45,5 +31,3 @@ $ npm install
 - `npm run wp-env` : exposes all commands available in [`@wordpress/env`](https://github.com/WordPress/gutenberg/tree/wp/6.0/packages/env)
 - `npm run build` : compiles all scripts and styles distribution.
 - `npm run dev` : compiles all scripts and styles for development.
-
-Now go build something!
