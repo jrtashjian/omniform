@@ -9,10 +9,13 @@
 			"type": "string",
 			"default": "text"
 		},
+		"placeholder": {
+			"type": "string"
+		},
 		"label": {
 			"type": "string"
 		},
-		"text": {
+		"help": {
 			"type": "string"
 		}
 	},

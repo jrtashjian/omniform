@@ -10,11 +10,12 @@ import {
 const Edit = ( {
 	attributes,
 	setAttributes,
-	isSelected,
 } ) => {
 	const {
+		type,
 		label,
-		helpText,
+		help,
+		placeholder,
 	} = attributes;
 
 	const blockProps = useBlockProps();
@@ -23,26 +24,36 @@ const Edit = ( {
 			<RichText
 				className="field-label"
 				aria-label={ __( 'Label text', 'inquirywp' ) }
-				placeholder={ __( 'Add label…', 'inquirywp' ) }
+				placeholder={ __( 'Enter a label to the field…', 'inquirywp' ) }
 				withoutInteractiveFormatting
 				value={ label }
 				onChange={ ( html ) => setAttributes( { label: html } ) }
 			/>
 
-			<pre>{ JSON.stringify( attributes, '', 2 ) }</pre>
+			<input
+				type={ type }
+				className="field-control"
+				id="textInput"
+				aria-describedby="textInputHelp"
+				aria-label={ __( 'Optional placeholder text', 'inquirywp' ) }
+				placeholder={
+					placeholder ? undefined : __( 'Enter a label to the field…', 'inquirywp' )
+				}
+				value={ placeholder }
+				onChange={ ( event ) =>
+					setAttributes( { placeholder: event.target.value } )
+				}
+				autoComplete="off"
+			/>
 
-			<input type="text" className="field-control" id="textInput" aria-describedby="textInputHelp" />
-
-			{ isSelected && ! helpText && (
-				<RichText
-					className="field-text"
-					aria-label={ __( 'Help text', 'inquirywp' ) }
-					placeholder={ __( 'Add help text…', 'inquirywp' ) }
-					withoutInteractiveFormatting
-					value={ helpText }
-					onChange={ ( html ) => setAttributes( { helpText: html } ) }
-				/>
-			) }
+			<RichText
+				className="field-text"
+				aria-label={ __( 'Help text', 'inquirywp' ) }
+				placeholder={ __( 'Write a help text…', 'inquirywp' ) }
+				withoutInteractiveFormatting
+				value={ help }
+				onChange={ ( html ) => setAttributes( { help: html } ) }
+			/>
 		</div>
 	);
 };
