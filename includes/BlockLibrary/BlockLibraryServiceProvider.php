@@ -68,7 +68,7 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 			'Submit'
 		);
 
-		$nonce   = wp_nonce_field( 'inquirywp_form_submission_' . $attributes['ref'] );
+		$nonce   = wp_nonce_field( 'inquirywp_form_submission_' . $attributes['ref'], '_wpnonce', true, false );
 		$content = do_blocks( $form_block->post_content );
 
 		return sprintf(
