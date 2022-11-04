@@ -44,11 +44,12 @@ const Edit = ( { attributes: { ref } } ) => {
 		ref
 	);
 
-	const blockProps = useBlockProps( {
-		className: 'block-library-block__reusable-block-container',
-	} );
+	const blockProps = useBlockProps();
 
-	const innerBlockProps = useInnerBlocksProps( blockProps, {
+	const innerBlockProps = useInnerBlocksProps( {
+		ref: blockProps.ref,
+		className: 'block-library-block__reusable-block-container',
+	}, {
 		value: blocks,
 		onInput,
 		onChange,
@@ -98,7 +99,10 @@ const Edit = ( { attributes: { ref } } ) => {
 					/>
 				</PanelBody>
 			</InspectorControls>
-			<div { ...innerBlockProps } />
+			<div { ...blockProps }>
+				<div { ...innerBlockProps } />
+				<button type="submit" className="wp-block-button wp-element-button">Submit</button>
+			</div>
 		</RecursionProvider>
 	);
 };
