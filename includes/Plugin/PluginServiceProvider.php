@@ -48,6 +48,7 @@ class PluginServiceProvider extends ServiceProvider {
 		);
 
 		add_action( 'init', array( $this, 'registerPostType' ) );
+		add_action( 'current_screen', array( $this, 'prepareEditors' ) );
 	}
 
 	/**
@@ -147,5 +148,21 @@ class PluginServiceProvider extends ServiceProvider {
 				),
 			)
 		);
+	}
+
+	/**
+	 * Prepare the block edit screens.
+	 */
+	public function prepareEditors() {
+		if ( ! is_admin() ) {
+			return;
+		}
+
+		$screen = get_current_screen();
+
+		if ( 'inquirywp_form' === $screen->post_type ) {
+			remove_action( 'enqueue_block_editor_assets', 'wp_enqueue_editor_block_directory_assets' );
+			add_filter( 'should_load_remote_block_patterns', '__return_false' );
+		}
 	}
 }
