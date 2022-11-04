@@ -62,18 +62,19 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 			'wp-block-button',
 			wp_theme_get_element_class_name( 'button' ),
 		);
-		$button_markup = sprintf(
+		$button_markup  = sprintf(
 			'<button type="submit" class="%s">%s</button>',
 			esc_attr( implode( ' ', $button_classes ) ),
 			'Submit'
 		);
 
+		$nonce   = wp_nonce_field( 'inquirywp_form_submission_' . $attributes['ref'] );
 		$content = do_blocks( $form_block->post_content );
 
 		return sprintf(
 			'<form method="post" action="%s">%s</form>',
 			esc_url( home_url( '/' ) ),
-			$content . $button_markup
+			$nonce . $content . $button_markup
 		);
 	}
 }
