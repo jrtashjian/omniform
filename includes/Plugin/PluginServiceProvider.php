@@ -46,6 +46,8 @@ class PluginServiceProvider extends ServiceProvider {
 				);
 			}
 		);
+
+		add_action( 'init', array( $this, 'registerPostType' ) );
 	}
 
 	/**
@@ -90,5 +92,60 @@ class PluginServiceProvider extends ServiceProvider {
 			wp_json_encode( array() )
 		);
 		wp_add_inline_script( $asset_loader->getHandle(), $script );
+	}
+
+	/**
+	 * Register post type
+	 */
+	public function registerPostType() {
+		register_post_type(
+			'inquirywp_form',
+			array(
+				'labels'                => array(
+					'name'                     => _x( 'InquiryWP forms', 'post type general name', 'inquirywp' ),
+					'singular_name'            => _x( 'InquiryWP form', 'post type singular name', 'inquirywp' ),
+					'add_new'                  => _x( 'Add New', 'InquiryWP form', 'inquirywp' ),
+					'add_new_item'             => __( 'Add new InquiryWP form', 'inquirywp' ),
+					'new_item'                 => __( 'New InquiryWP form', 'inquirywp' ),
+					'edit_item'                => __( 'Edit InquiryWP form', 'inquirywp' ),
+					'view_item'                => __( 'View InquiryWP form', 'inquirywp' ),
+					'all_items'                => __( 'All InquiryWP forms', 'inquirywp' ),
+					'search_items'             => __( 'Search InquiryWP forms', 'inquirywp' ),
+					'not_found'                => __( 'No InquiryWP forms found.', 'inquirywp' ),
+					'not_found_in_trash'       => __( 'No InquiryWP forms found in Trash.', 'inquirywp' ),
+					'filter_items_list'        => __( 'Filter InquiryWP forms list', 'inquirywp' ),
+					'items_list_navigation'    => __( 'InquiryWP forms list navigation', 'inquirywp' ),
+					'items_list'               => __( 'InquiryWP forms list', 'inquirywp' ),
+					'item_published'           => __( 'InquiryWP form published.', 'inquirywp' ),
+					'item_published_privately' => __( 'InquiryWP form published privately.', 'inquirywp' ),
+					'item_reverted_to_draft'   => __( 'InquiryWP form reverted to draft.', 'inquirywp' ),
+					'item_scheduled'           => __( 'InquiryWP form scheduled.', 'inquirywp' ),
+					'item_updated'             => __( 'InquiryWP form updated.', 'inquirywp' ),
+				),
+				'public'                => false,
+				'show_ui'               => true,
+				'show_in_menu'          => false,
+				'rewrite'               => false,
+				'show_in_rest'          => true,
+				'rest_base'             => 'inquirywp_form',
+				'rest_controller_class' => 'WP_REST_Blocks_Controller',
+				'capability_type'       => 'block',
+				'capabilities'          => array(
+					'read'                   => 'edit_posts',
+					'create_posts'           => 'publish_posts',
+					'edit_posts'             => 'edit_posts',
+					'edit_published_posts'   => 'edit_published_posts',
+					'delete_published_posts' => 'delete_published_posts',
+					'edit_others_posts'      => 'edit_others_posts',
+					'delete_others_posts'    => 'delete_others_posts',
+				),
+				'map_meta_cap'          => true,
+				'supports'              => array(
+					'title',
+					'editor',
+					'revisions',
+				),
+			)
+		);
 	}
 }
