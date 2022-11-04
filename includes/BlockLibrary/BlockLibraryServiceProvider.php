@@ -65,7 +65,7 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 		$button_markup  = sprintf(
 			'<button type="submit" class="%s">%s</button>',
 			esc_attr( implode( ' ', $button_classes ) ),
-			'Submit'
+			wp_kses_post( $attributes['btnSubmit'] )
 		);
 
 		$nonce   = wp_nonce_field( 'inquirywp_form_submission_' . $attributes['ref'], '_wpnonce', true, false );

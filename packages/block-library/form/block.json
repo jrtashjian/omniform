@@ -7,6 +7,10 @@
 	"attributes": {
 		"ref": {
 			"type": "number"
+		},
+		"btnSubmit": {
+			"type": "string",
+			"default": "Submit"
 		}
 	},
 	"supports": {

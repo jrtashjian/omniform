@@ -15,6 +15,7 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 	Warning,
+	RichText,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
@@ -23,7 +24,15 @@ import {
 	TextControl,
 } from '@wordpress/components';
 
-const Edit = ( { attributes: { ref } } ) => {
+const Edit = ( {
+	attributes,
+	setAttributes,
+} ) => {
+	const {
+		btnSubmit,
+		ref,
+	} = attributes;
+
 	const hasAlreadyRendered = useHasRecursion( ref );
 	const { record, hasResolved } = useEntityRecord(
 		'postType',
@@ -101,7 +110,16 @@ const Edit = ( { attributes: { ref } } ) => {
 			</InspectorControls>
 			<div { ...blockProps }>
 				<div { ...innerBlockProps } />
-				<button type="submit" className="wp-block-button wp-element-button">Submit</button>
+				<RichText
+					className="wp-block-button wp-element-button"
+					tagName="button"
+					type="submit"
+					aria-label={ __( 'Submit button text', 'inquirywp' ) }
+					placeholder={ __( 'Add text…', 'inquirywp' ) }
+					withoutInteractiveFormatting
+					value={ btnSubmit }
+					onChange={ ( html ) => setAttributes( { btnSubmit: html } ) }
+				/>
 			</div>
 		</RecursionProvider>
 	);
