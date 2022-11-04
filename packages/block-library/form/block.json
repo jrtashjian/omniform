@@ -1,9 +1,19 @@
 {
-	"$schema": "https://json.schemastore.org/block.json",
+	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 2,
 	"name": "inquirywp/form",
 	"title": "InquiryWP",
 	"textdomain": "inquirywp",
+	"attributes": {
+		"ref": {
+			"type": "number"
+		}
+	},
+	"supports": {
+		"customClassName": false,
+		"html": false,
+		"reusable": false
+	},
 	"editorScript": "file:../../../build/block-library/form.js",
 	"editorStyle": "file:../../../build/block-library/form.css",
 	"style": "file:../../../build/block-library/style-form.css"
