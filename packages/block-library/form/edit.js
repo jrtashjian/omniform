@@ -110,16 +110,20 @@ const Edit = ( {
 			</InspectorControls>
 			<div { ...blockProps }>
 				<div { ...innerBlockProps } />
-				<RichText
-					className="wp-block-button wp-element-button"
-					tagName="button"
-					type="submit"
-					aria-label={ __( 'Submit button text', 'inquirywp' ) }
-					placeholder={ __( 'Add text…', 'inquirywp' ) }
-					withoutInteractiveFormatting
-					value={ btnSubmit }
-					onChange={ ( html ) => setAttributes( { btnSubmit: html } ) }
-				/>
+				<div className="wp-block-buttons">
+					<div className="wp-block-button">
+						<RichText
+							className="wp-block-button wp-block-button__link wp-element-button"
+							tagName="button"
+							type="submit"
+							aria-label={ __( 'Submit button text', 'inquirywp' ) }
+							placeholder={ __( 'Add text…', 'inquirywp' ) }
+							withoutInteractiveFormatting
+							value={ btnSubmit }
+							onChange={ ( html ) => setAttributes( { btnSubmit: html } ) }
+						/>
+					</div>
+				</div>
 			</div>
 		</RecursionProvider>
 	);
