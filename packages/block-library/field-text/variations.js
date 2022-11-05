@@ -5,11 +5,6 @@ import { __ } from '@wordpress/i18n';
 
 const variations = [
 	{
-		name: 'field-text',
-		title: 'field-text',
-		attributes: { type: 'text' },
-	},
-	{
 		name: 'field-email',
 		title: 'field-email',
 		attributes: { type: 'email' },

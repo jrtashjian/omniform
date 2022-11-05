@@ -26,6 +26,7 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 	public function registerBlocks() {
 		$blocks = array(
 			Blocks\Form::class,
+			Blocks\FieldText::class,
 		);
 
 		foreach ( $blocks as $block ) {
@@ -36,8 +37,6 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 				array( 'render_callback' => array( $block_object, 'renderBlock' ) )
 			);
 		}
-
-		register_block_type( $this->app->basePath( '/packages/block-library/field-input' ) );
 	}
 
 	/**
