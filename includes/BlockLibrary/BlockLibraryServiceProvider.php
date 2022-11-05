@@ -24,12 +24,19 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 	 * Register the blocks.
 	 */
 	public function registerBlocks() {
-		register_block_type(
-			$this->app->basePath( '/packages/block-library/form' ),
-			array(
-				'render_callback' => array( $this, 'renderBlockForm' ),
-			)
+		$blocks = array(
+			Blocks\Form::class,
 		);
+
+		foreach ( $blocks as $block ) {
+			$block_object = $this->app->make( $block );
+
+			register_block_type(
+				$block_object->blockTypeMetadata(),
+				array( 'render_callback' => array( $block_object, 'renderBlock' ) )
+			);
+		}
+
 		register_block_type( $this->app->basePath( '/packages/block-library/field-input' ) );
 	}
 
@@ -37,45 +44,4 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 	 * Enqueue required scripts and styles.
 	 */
 	public function register() {}
-
-	/**
-	 * Render the form block.
-	 *
-	 * @param array $attributes The block attributes.
-	 * @return string Rendered HTML of the referenced block.
-	 */
-	public function renderBlockForm( $attributes ) {
-		if ( empty( $attributes['ref'] ) ) {
-			return '';
-		}
-
-		$form_block = get_post( $attributes['ref'] );
-		if ( ! $form_block || 'inquirywp_form' !== $form_block->post_type ) {
-			return '';
-		}
-
-		if ( 'publish' !== $form_block->post_status || ! empty( $form_block->post_password ) ) {
-			return '';
-		}
-
-		$button_classes = array(
-			'wp-block-button',
-			'wp-block-button__link',
-			wp_theme_get_element_class_name( 'button' ),
-		);
-		$button_markup  = sprintf(
-			'<div class="wp-block-buttons"><div class="wp-block-button"><button type="submit" class="%s">%s</button></div></div>',
-			esc_attr( implode( ' ', $button_classes ) ),
-			wp_kses_post( $attributes['btnSubmit'] )
-		);
-
-		$nonce   = wp_nonce_field( 'inquirywp_form_submission_' . $attributes['ref'], '_wpnonce', true, false );
-		$content = do_blocks( $form_block->post_content );
-
-		return sprintf(
-			'<form method="post" action="%s" class="wp-block-inquirywp-form">%s</form>',
-			esc_url( home_url( '/' ) ),
-			$nonce . $content . $button_markup
-		);
-	}
 }
