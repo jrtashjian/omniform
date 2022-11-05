@@ -128,7 +128,8 @@ class PluginServiceProvider extends ServiceProvider {
 				'show_in_menu'          => false,
 				'rewrite'               => false,
 				'show_in_rest'          => true,
-				'rest_base'             => 'inquirywp_form',
+				'rest_namespace'        => 'inquirywp/v1',
+				'rest_base'             => 'forms',
 				'rest_controller_class' => 'WP_REST_Blocks_Controller',
 				'capability_type'       => 'block',
 				'capabilities'          => array(
