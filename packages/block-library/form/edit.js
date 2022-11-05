@@ -59,6 +59,8 @@ const Edit = ( {
 		ref: blockProps.ref,
 		className: 'block-library-block__reusable-block-container',
 	}, {
+		allowedBlocks: [ 'inquirywp/field-text' ],
+		__experimentalCaptureToolbars: true,
 		value: blocks,
 		onInput,
 		onChange,
