@@ -30,6 +30,7 @@ module.exports = {
 		};
 	}, {
 		'block-library/form': './packages/block-library/form',
+		'block-library/view-form': './packages/block-library/form/view.js',
 		'block-library/field-text': './packages/block-library/field-text',
 	} ),
 };
