@@ -10,7 +10,7 @@ namespace InquiryWP\BlockLibrary\Blocks;
 /**
  * The Form block class.
  */
-class Form {
+class Form implements FormBlockInterface {
 	/**
 	 * The path to the JSON file with metadata definition for the block.
 	 *
