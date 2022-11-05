@@ -6,58 +6,28 @@ import { __ } from '@wordpress/i18n';
 const variations = [
 	{
 		name: 'field-email',
-		title: 'field-email',
+		title: __( 'field-email', 'inquirywp' ),
 		attributes: { type: 'email' },
 	},
 	{
 		name: 'field-url',
-		title: 'field-url',
+		title: __( 'field-url', 'inquirywp' ),
 		attributes: { type: 'url' },
 	},
 	{
 		name: 'field-password',
-		title: 'field-password',
+		title: __( 'field-password', 'inquirywp' ),
 		attributes: { type: 'password' },
 	},
 	{
 		name: 'field-number',
-		title: 'field-number',
+		title: __( 'field-number', 'inquirywp' ),
 		attributes: { type: 'number' },
 	},
 	{
-		name: 'field-date',
-		title: 'field-date',
-		attributes: { type: 'date' },
-	},
-	{
-		name: 'field-datetime-local',
-		title: 'field-datetime-local',
-		attributes: { type: 'datetime-local' },
-	},
-	{
-		name: 'field-month',
-		title: 'field-month',
-		attributes: { type: 'month' },
-	},
-	{
 		name: 'field-search',
-		title: 'field-search',
+		title: __( 'field-search', 'inquirywp' ),
 		attributes: { type: 'search' },
-	},
-	{
-		name: 'field-tel',
-		title: 'field-tel',
-		attributes: { type: 'tel' },
-	},
-	{
-		name: 'field-time',
-		title: 'field-time',
-		attributes: { type: 'time' },
-	},
-	{
-		name: 'field-week',
-		title: 'field-week',
-		attributes: { type: 'week' },
 	},
 ];
 
