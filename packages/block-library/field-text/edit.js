@@ -10,6 +10,7 @@ import {
 const Edit = ( {
 	attributes,
 	setAttributes,
+	isSelected,
 } ) => {
 	const {
 		type,
@@ -46,14 +47,16 @@ const Edit = ( {
 				autoComplete="off"
 			/>
 
-			<RichText
-				className="field-text"
-				aria-label={ __( 'Help text', 'inquirywp' ) }
-				placeholder={ __( 'Write a help text…', 'inquirywp' ) }
-				withoutInteractiveFormatting
-				value={ help }
-				onChange={ ( html ) => setAttributes( { help: html } ) }
-			/>
+			{ ( isSelected || !! help ) && (
+				<RichText
+					className="field-text"
+					aria-label={ __( 'Help text', 'inquirywp' ) }
+					placeholder={ __( 'Write a help text…', 'inquirywp' ) }
+					withoutInteractiveFormatting
+					value={ help }
+					onChange={ ( html ) => setAttributes( { help: html } ) }
+				/>
+			) }
 		</div>
 	);
 };
