@@ -20,5 +20,6 @@
 	},
 	"editorScript": "file:../../../build/block-library/form.js",
 	"editorStyle": "file:../../../build/block-library/form.css",
-	"style": "file:../../../build/block-library/style-form.css"
+	"style": "file:../../../build/block-library/style-form.css",
+	"viewScript": "file:../../../build/block-library/view-form.js"
 }
