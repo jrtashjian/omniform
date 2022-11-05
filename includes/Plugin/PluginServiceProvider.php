@@ -168,7 +168,7 @@ class PluginServiceProvider extends ServiceProvider {
 				'allowed_block_types_all',
 				function() {
 					return array(
-						'inquirywp/field-input',
+						'inquirywp/field-text',
 						'core/paragraph',
 						'core/heading',
 						'core/image',
