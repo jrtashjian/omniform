@@ -19,11 +19,11 @@
     "require-dev": {
         "coenjacobs/mozart": "^0.7.1",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
-        "johnpbloch/wordpress-core": "^6.0",
+        "johnpbloch/wordpress-core": "^6.1",
         "phpcompatibility/phpcompatibility-wp": "^2.1",
         "wp-cli/wp-cli-bundle": "^2.6",
         "wp-coding-standards/wpcs": "^2.3",
-        "wp-phpunit/wp-phpunit": "^6.0",
+        "wp-phpunit/wp-phpunit": "^6.1",
         "yoast/phpunit-polyfills": "^1.0"
     },
     "config": {
