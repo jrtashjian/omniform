@@ -49,7 +49,8 @@ const Edit = ( {
 
 			{ ( isSelected || !! help ) && (
 				<RichText
-					className="field-text"
+					className="field-support"
+					tagName="p"
 					aria-label={ __( 'Help text', 'inquirywp' ) }
 					placeholder={ __( 'Write a help text…', 'inquirywp' ) }
 					withoutInteractiveFormatting
