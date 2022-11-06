@@ -50,12 +50,12 @@ class FieldText implements FormBlockInterface {
 		);
 
 		$field_help = empty( $attributes['help'] ) ? '' : sprintf(
-			'<p class="field-help">%s</p>',
+			'<p class="field-support">%s</p>',
 			wp_kses_post( $attributes['help'] )
 		);
 
 		return sprintf(
-			'<div class="field-control">%s</div>',
+			'<div class="wp-block-inquirywp-field-text">%s</div>',
 			$field_label . $field_control . $field_help
 		);
 	}
