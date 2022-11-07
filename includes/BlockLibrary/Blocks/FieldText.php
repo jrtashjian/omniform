@@ -7,6 +7,8 @@
 
 namespace InquiryWP\BlockLibrary\Blocks;
 
+use InquiryWP\Plugin\FormIngestionEngine;
+
 /**
  * The FieldText block class.
  */
@@ -33,7 +35,8 @@ class FieldText implements FormBlockInterface {
 			return '';
 		}
 
-		$field_name = sanitize_title( $attributes['label'] );
+		$field_name     = sanitize_title( $attributes['label'] );
+		$form_ingestion = inquirywp()->get( FormIngestionEngine::class );
 
 		$field_label = sprintf(
 			'<label class="field-label" for="%s">%s</label>',
@@ -42,11 +45,12 @@ class FieldText implements FormBlockInterface {
 		);
 
 		$field_control = sprintf(
-			'<input class="field-control" type="%s" placeholder="%s" id="%s" name="%s" />',
+			'<input class="field-control" type="%s" placeholder="%s" id="%s" name="%s" value="%s" />',
 			esc_attr( $attributes['type'] ),
 			empty( $attributes['placeholder'] ) ? '' : esc_attr( $attributes['placeholder'] ),
 			esc_attr( $field_name ),
-			esc_attr( $field_name )
+			esc_attr( $field_name ),
+			esc_attr( $form_ingestion->formValue( $field_name ) )
 		);
 
 		$field_help = empty( $attributes['help'] ) ? '' : sprintf(
@@ -56,7 +60,7 @@ class FieldText implements FormBlockInterface {
 
 		return sprintf(
 			'<div class="wp-block-inquirywp-field-text">%s</div>',
-			$field_label . $field_control . $field_help
+			$field_label . $field_control . $field_help . $content
 		);
 	}
 }
