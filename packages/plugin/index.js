@@ -9,7 +9,6 @@ import { render } from '@wordpress/element';
  */
 import App from './components/app';
 import './style.scss';
-import './test-plugin';
 
 /**
  * Initializes and returns and instance of InquiryWP.

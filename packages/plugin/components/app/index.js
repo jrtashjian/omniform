@@ -12,11 +12,6 @@ import {
 	InterfaceSkeleton,
 } from '@wordpress/interface';
 
-/**
- * Internal dependencies
- */
-import ExampleSlotFill from '../example-slot-fill';
-
 export default function App( { settings } ) {
 	return (
 		<SlotFillProvider>
@@ -30,10 +25,6 @@ export default function App( { settings } ) {
 							{ __( 'Initial Settings', 'inquirywp' ) }:<br />
 							{ JSON.stringify( settings, null, 2 ) }
 						</pre>
-
-						<pre><strong>&lt;ExampleSlotFill.Slot&gt;</strong> --------------------</pre>
-						<ExampleSlotFill.Slot />
-						<pre><strong>&lt;/ExampleSlotFill.Slot&gt;</strong> --------------------</pre>
 					</div>
 				) }
 			/>
