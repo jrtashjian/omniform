@@ -1,0 +1,32 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "inquirywp/button-submit",
+	"title": "button-submit",
+	"textdomain": "inquirywp",
+	"attributes": {
+		"text": {
+			"type": "string",
+			"default": "Submit"
+		},
+		"backgroundColor": {
+			"type": "string"
+		},
+		"textColor": {
+			"type": "string"
+		}
+	},
+	"supports": {
+		"html": false,
+		"align": true,
+		"color": {
+			"__experimentalDefaultControls": {
+				"background": true,
+				"text": true
+			}
+		}
+	},
+	"editorScript": "file:../../../build/block-library/button-submit.js",
+	"editorStyle": "file:../../../build/block-library/button-submit.css",
+	"style": "file:../../../build/block-library/style-button-submit.css"
+}
