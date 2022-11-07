@@ -17,7 +17,7 @@
 			// 	.catch( ( error ) => console.debug( error ) );
 		};
 
-		document.querySelectorAll( 'form.wp-block-inquirywp-form' )
-			.forEach( ( form ) => form.addEventListener( 'submit', formSubmissionHandler ) );
+		// document.querySelectorAll( 'form.wp-block-inquirywp-form' )
+		// 	.forEach( ( form ) => form.addEventListener( 'submit', formSubmissionHandler ) );
 	} );
 }() );
