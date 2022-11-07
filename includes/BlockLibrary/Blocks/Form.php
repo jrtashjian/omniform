@@ -62,23 +62,12 @@ class Form implements FormBlockInterface {
 			);
 		}
 
-		$button_classes = array(
-			'wp-block-button',
-			'wp-block-button__link',
-			wp_theme_get_element_class_name( 'button' ),
-		);
-		$button_markup  = sprintf(
-			'<div class="wp-block-buttons"><div class="wp-block-button"><button type="submit" class="%s">%s</button></div></div>',
-			esc_attr( implode( ' ', $button_classes ) ),
-			wp_kses_post( $attributes['btnSubmit'] )
-		);
-
 		$content = do_blocks( $form_block->post_content );
 
 		return sprintf(
 			'<form method="post" action="%s" class="wp-block-inquirywp-form">%s</form>',
 			esc_url( get_the_permalink() ),
-			$form_ingestion->getNonceField() . $content . $button_markup
+			$form_ingestion->getNonceField() . $content
 		);
 	}
 }
