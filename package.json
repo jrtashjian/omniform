@@ -24,7 +24,8 @@
 		"@wordpress/element": "^4.15.1",
 		"@wordpress/i18n": "^4.17.1",
 		"@wordpress/interface": "^4.16.6",
-		"@wordpress/plugins": "^4.15.2"
+		"@wordpress/plugins": "^4.15.2",
+		"classnames": "^2.3.2"
 	},
 	"devDependencies": {
 		"@wordpress/env": "^5.2.2",
