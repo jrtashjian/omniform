@@ -17,7 +17,7 @@ class ButtonSubmit implements FormBlockInterface {
 	 * @return string path to the JSON file with metadata definition for the block.
 	 */
 	public function blockTypeMetadata() {
-		return inquirywp()->basePath( '/packages/block-library/button-submit' );
+		return inquirywp()->basePath( '/build/block-library/button-submit' );
 	}
 
 	/**

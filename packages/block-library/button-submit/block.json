@@ -26,7 +26,7 @@
 			}
 		}
 	},
-	"editorScript": "file:../../../build/block-library/button-submit.js",
-	"editorStyle": "file:../../../build/block-library/button-submit.css",
-	"style": "file:../../../build/block-library/style-button-submit.css"
+	"editorScript": "file:index.js",
+	"editorStyle": "file:index.scss",
+	"style": "file:style.scss"
 }

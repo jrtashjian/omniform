@@ -19,7 +19,7 @@ class Form implements FormBlockInterface {
 	 * @return string path to the JSON file with metadata definition for the block.
 	 */
 	public function blockTypeMetadata() {
-		return inquirywp()->basePath( '/packages/block-library/form' );
+		return inquirywp()->basePath( '/build/block-library/form' );
 	}
 
 	/**

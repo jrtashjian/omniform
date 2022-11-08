@@ -18,8 +18,8 @@
 		"html": false,
 		"reusable": false
 	},
-	"editorScript": "file:../../../build/block-library/form.js",
-	"editorStyle": "file:../../../build/block-library/form.css",
-	"style": "file:../../../build/block-library/style-form.css",
-	"viewScript": "file:../../../build/block-library/view-form.js"
+	"editorScript": "file:index.js",
+	"editorStyle": "file:index.scss",
+	"style": "file:style.scss",
+	"viewScript": "file:view.js"
 }
