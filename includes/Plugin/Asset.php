@@ -26,6 +26,13 @@ class Asset {
 	protected $slug;
 
 	/**
+	 * The asset package.
+	 *
+	 * @var string
+	 */
+	protected $package;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param string $handle The asset handle.
@@ -43,6 +50,10 @@ class Asset {
 	 */
 	public function getHandle() {
 		return $this->handle;
+	}
+
+	public function setPackageName( $package_name ) {
+		return $this->package = $package_name;
 	}
 
 	/**
@@ -70,7 +81,7 @@ class Asset {
 	 * @return string
 	 */
 	protected function getAssetFilePath( $filename ) {
-		return inquirywp()->basePath( 'build/' . $filename . '.asset.php' );
+		return inquirywp()->basePath( 'build/' . $this->package . '/' . $filename . '.asset.php' );
 	}
 
 	/**
@@ -81,7 +92,7 @@ class Asset {
 	 * @return string
 	 */
 	protected function getAssetUrl( $filename ) {
-		return inquirywp()->baseUrl( 'build/' . $filename );
+		return inquirywp()->baseUrl( 'build/' . $this->package . '/' . $filename );
 	}
 
 	/**

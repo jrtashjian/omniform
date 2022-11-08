@@ -76,12 +76,10 @@ class PluginServiceProvider extends ServiceProvider {
 
 		$asset_loader = $this->app->makeWith(
 			Asset::class,
-			array(
-				'handle' => strtolower( str_replace( '\\', '-', __NAMESPACE__ ) ),
-				'slug'   => strtolower( basename( __DIR__ ) ),
-			)
+			array( 'handle' => strtolower( str_replace( '\\', '-', __NAMESPACE__ ) ) )
 		);
 
+		$asset_loader->setPackageName( strtolower( basename( __DIR__ ) ) );
 		$asset_loader->enqueueScript();
 		$asset_loader->enqueueStyle();
 
