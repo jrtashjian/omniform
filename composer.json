@@ -48,6 +48,12 @@
         "format": "phpcbf --standard=phpcs.xml.dist --report-summary --report-source",
         "test": "phpunit",
         "makepot": "wp i18n make-pot . --exclude=\"node_modules,vendor\" --headers='{\"Last-Translator\":\"info@inquirywp.com\",\"Language-Team\":\"info@inquirywp.com\",\"Report-Msgid-Bugs-To\":\"https://inquirywp.com/contact\"}'",
+        "pre-build-release": [
+            "rm -r ./vendor",
+            "@composer dump-autoload"
+        ],
+        "build-release": "wp dist-archive ./",
+        "post-build-release": "@composer install",
         "mozart-compose": [
             "\"vendor/bin/mozart\" compose",
             "composer dump-autoload",
