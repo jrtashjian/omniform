@@ -27,6 +27,7 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 		$blocks = array(
 			Blocks\Form::class,
 			Blocks\FieldText::class,
+			Blocks\FieldTextarea::class,
 			Blocks\ButtonSubmit::class,
 		);
 
