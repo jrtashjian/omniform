@@ -1,8 +1,8 @@
 .wp-block-inquirywp-field-textarea {
-	margin-top: var(--wp--style--block-gap);
-	margin-bottom: var(--wp--style--block-gap);
-
 	font-size: var(--wp--preset--font-size--normal);
+	margin-bottom: var(--wp--style--block-gap);
+	margin-top: var(--wp--style--block-gap);
+	width: 100%;
 
 	.field-label {
 		display: inline-block;

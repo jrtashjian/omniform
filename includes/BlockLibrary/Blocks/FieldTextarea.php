@@ -45,7 +45,7 @@ class FieldTextarea implements FormBlockInterface {
 		);
 
 		$field_control = sprintf(
-			'<textarea class="field-control" type="%s" placeholder="%s" id="%s" name="%s" value="%s"></textarea>',
+			'<textarea class="field-control" type="%s" placeholder="%s" id="%s" name="%s" value="%s" rows="10"></textarea>',
 			esc_attr( $attributes['type'] ),
 			empty( $attributes['placeholder'] ) ? '' : esc_attr( $attributes['placeholder'] ),
 			esc_attr( $field_name ),

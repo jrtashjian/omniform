@@ -45,6 +45,7 @@ const Edit = ( {
 					setAttributes( { placeholder: event.target.value } )
 				}
 				autoComplete="off"
+				rows="10"
 			/>
 
 			{ ( isSelected || !! help ) && (
