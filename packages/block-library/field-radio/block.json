@@ -1,0 +1,28 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "inquirywp/field-radio",
+	"title": "field-radio",
+	"textdomain": "inquirywp",
+	"attributes": {
+		"type": {
+			"type": "string",
+			"default": "text"
+		},
+		"placeholder": {
+			"type": "string"
+		},
+		"label": {
+			"type": "string"
+		},
+		"help": {
+			"type": "string"
+		}
+	},
+	"supports": {
+		"html": false
+	},
+	"editorScript": "file:index.js",
+	"editorStyle": "file:index.css",
+	"style": "file:style-index.css"
+}

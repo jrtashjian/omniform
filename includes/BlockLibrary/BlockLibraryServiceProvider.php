@@ -30,6 +30,7 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 			Blocks\FieldTextarea::class,
 			Blocks\FieldSelect::class,
 			Blocks\FieldCheck::class,
+			Blocks\FieldRadio::class,
 			Blocks\ButtonSubmit::class,
 		);
 
