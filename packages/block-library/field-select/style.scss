@@ -1,0 +1,31 @@
+.wp-block-inquirywp-field-select {
+	font-size: var(--wp--preset--font-size--normal);
+	margin-bottom: var(--wp--style--block-gap);
+	margin-top: var(--wp--style--block-gap);
+	width: 100%;
+
+	.field-label {
+		display: inline-block;
+		margin: 0 0 0.75em;
+		font-weight: 700;
+	}
+
+	.field-control {
+		display: block;
+		box-sizing: border-box;
+		width: 100%;
+		max-width: none;
+		line-height: revert;
+		min-height: revert;
+
+		border-width: 1px;
+		font-size: inherit;
+		padding: var(--wp--preset--font-size--small);
+	}
+
+	.field-support {
+		margin: 0.25em 0 0;
+		font-size: var(--wp--preset--font-size--small);
+		opacity: 0.5;
+	}
+}

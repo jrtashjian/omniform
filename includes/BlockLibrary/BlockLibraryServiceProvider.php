@@ -28,6 +28,7 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 			Blocks\Form::class,
 			Blocks\FieldText::class,
 			Blocks\FieldTextarea::class,
+			Blocks\FieldSelect::class,
 			Blocks\ButtonSubmit::class,
 		);
 
