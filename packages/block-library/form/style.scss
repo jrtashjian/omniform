@@ -9,9 +9,9 @@
 	font-size: var(--wp--preset--font-size--normal);
 	line-height: 1.5;
 
-	*,
-	::before,
-	::after {
+	[class*="inquirywp"] *,
+	[class*="inquirywp"]::before,
+	[class*="inquirywp"]::after {
 		box-sizing: border-box;
 		border-width: 0;
 		border-style: solid;
