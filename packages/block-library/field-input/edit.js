@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import classNames from 'classnames';
+
+/**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
@@ -20,22 +25,41 @@ const Edit = ( {
 	} = attributes;
 
 	const blockProps = useBlockProps();
+
 	return (
-		<div { ...blockProps }>
+		<div
+			{ ...blockProps }
+			className={ classNames( blockProps.className, `inquirywp-field-${ type }` ) }
+		>
 			<RichText
-				className="field-label"
+				className="inquirywp-field-label"
 				aria-label={ __( 'Label text', 'inquirywp' ) }
 				placeholder={ __( 'Enter a label to the field…', 'inquirywp' ) }
 				withoutInteractiveFormatting
+				multiple={ false }
 				value={ label }
 				onChange={ ( html ) => setAttributes( { label: html } ) }
 			/>
 
-			<input className="field-control" type="checkbox" />
+			<input
+				type={ type }
+				className="inquirywp-field-control"
+				id="textInput"
+				aria-describedby="textInputHelp"
+				aria-label={ __( 'Optional placeholder text', 'inquirywp' ) }
+				placeholder={
+					placeholder ? undefined : __( 'Enter a label to the field…', 'inquirywp' )
+				}
+				value={ placeholder }
+				onChange={ ( event ) =>
+					setAttributes( { placeholder: event.target.value } )
+				}
+				autoComplete="off"
+			/>
 
 			{ ( isSelected || !! help ) && (
 				<RichText
-					className="field-support"
+					className="inquirywp-field-support"
 					tagName="p"
 					aria-label={ __( 'Help text', 'inquirywp' ) }
 					placeholder={ __( 'Write a help text…', 'inquirywp' ) }

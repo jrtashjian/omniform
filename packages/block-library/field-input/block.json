@@ -1,8 +1,8 @@
 {
 	"$schema": "https://json.schemastore.org/block.json",
 	"apiVersion": 2,
-	"name": "inquirywp/field-check",
-	"title": "field-check",
+	"name": "inquirywp/field-input",
+	"title": "field-input",
 	"textdomain": "inquirywp",
 	"attributes": {
 		"type": {

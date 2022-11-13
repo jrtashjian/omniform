@@ -1,4 +1,102 @@
-.wp-block-inquirywp-form {
+.wp-block-inquirywp-form,
+.post-type-inquirywp_form .wp-block-post-content {
 	margin-top: var(--wp--style--block-gap);
 	margin-bottom: var(--wp--style--block-gap);
+	font-size: var(--wp--preset--font-size--normal);
+	line-height: 1.5;
+
+	*,
+	::before,
+	::after {
+		box-sizing: border-box;
+		border-width: 0;
+		border-style: solid;
+		border-color: currentcolor;
+		border-radius: 0;
+	}
+
+	.inquirywp-field-label {
+		display: inline-block;
+		margin: 0 0 0.5em;
+		font-size: var(--wp--preset--font-size--normal);
+	}
+
+	.inquirywp-field-support {
+		margin: 0.25em 0 0;
+		font-size: 0.875em;
+		color: var(--wp--preset--color--black);
+		opacity: 0.5;
+	}
+
+	.inquirywp-field-control {
+		display: block;
+		width: 100%;
+		max-width: none;
+		padding: 0.5em 0.75em;
+		font-size: var(--wp--preset--font-size--normal);
+		line-height: 1.5;
+		border: 1px solid var(--wp--preset--color--cyan-bluish-gray);
+		background-color: var(--wp--preset--color--white);
+		box-sizing: border-box;
+		appearance: none;
+		border-radius: 0.25em;
+	}
+
+	.wp-block-inquirywp-field-input,
+	.wp-block-inquirywp-field-select,
+	.wp-block-inquirywp-field-textarea {
+		margin-bottom: var(--wp--style--block-gap);
+		margin-top: var(--wp--style--block-gap);
+		width: 100%;
+	}
+
+	// Checkbox and Radio
+	.inquirywp-field-checkbox,
+	.inquirywp-field-radio {
+		padding-left: 1.5em;
+
+		.inquirywp-field-label {
+			margin-bottom: 0;
+		}
+
+		.inquirywp-field-control {
+			float: left;
+			width: 1em;
+			height: 1em;
+			padding: 0;
+			margin: 0.25em 0 0 -1.5em;
+
+			&[type="radio"] {
+				border-radius: 100%;
+			}
+
+			&:checked {
+				background-repeat: no-repeat;
+				background-position: center;
+				background-size: contain;
+				background-color: var(--wp--preset--color--contrast);
+				border-color: transparent;
+
+				&::before,
+				&::after {
+					content: none;
+				}
+			}
+
+			&[type="checkbox"]:checked {
+				background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+			}
+
+			&[type="radio"]:checked {
+				background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e");
+			}
+		}
+	}
+
+	.inquirywp-field-select .inquirywp-field-control {
+		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%238b96a0' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+		background-repeat: no-repeat;
+		background-position: right 0.9em center;
+		background-size: 14px 10px;
+	}
 }

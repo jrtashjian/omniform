@@ -29,12 +29,22 @@ const variations = [
 		title: __( 'field-search', 'inquirywp' ),
 		attributes: { type: 'search' },
 	},
+	{
+		name: 'field-checkbox',
+		title: __( 'field-checkbox', 'inquirywp' ),
+		attributes: { type: 'checkbox' },
+	},
+	{
+		name: 'field-radio',
+		title: __( 'field-radio', 'inquirywp' ),
+		attributes: { type: 'radio' },
+	},
 ];
 
 variations.forEach( ( variation ) => {
 	variation.isActive = ( blockAttributes, variationAttributes ) =>
 		blockAttributes.type ===
-		variationAttributes.type;
+	variationAttributes.type;
 } );
 
 export default variations;
