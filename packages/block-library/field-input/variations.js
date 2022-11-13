@@ -15,19 +15,9 @@ const variations = [
 		attributes: { type: 'url' },
 	},
 	{
-		name: 'field-password',
-		title: __( 'field-password', 'inquirywp' ),
-		attributes: { type: 'password' },
-	},
-	{
 		name: 'field-number',
 		title: __( 'field-number', 'inquirywp' ),
 		attributes: { type: 'number' },
-	},
-	{
-		name: 'field-search',
-		title: __( 'field-search', 'inquirywp' ),
-		attributes: { type: 'search' },
 	},
 	{
 		name: 'field-checkbox',
