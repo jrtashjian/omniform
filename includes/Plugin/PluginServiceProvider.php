@@ -170,23 +170,22 @@ class PluginServiceProvider extends ServiceProvider {
 			remove_action( 'enqueue_block_editor_assets', 'wp_enqueue_editor_block_directory_assets' );
 			add_filter( 'should_load_remote_block_patterns', '__return_false' );
 
-			// add_filter(
-			// 	'allowed_block_types_all',
-			// 	function() {
-			// 		return array(
-			// 			'inquirywp/field-text',
-			// 			'inquirywp/form-submit',
-			// 			'core/paragraph',
-			// 			'core/heading',
-			// 			'core/image',
-			// 			'core/columns',
-			// 			'core/column',
-			// 			'core/group',
-			// 			'core/separator',
-			// 			'core/spacer',
-			// 		);
-			// 	}
-			// );
+			add_filter(
+				'allowed_block_types_all',
+				function() {
+					return array(
+						'inquirywp/button-submit',
+						'inquirywp/field-input',
+						'inquirywp/field-select',
+						'inquirywp/field-textarea',
+						'core/paragraph',
+						'core/heading',
+						'core/image',
+						'core/group',
+						'core/spacer',
+					);
+				}
+			);
 		}
 	}
 }
