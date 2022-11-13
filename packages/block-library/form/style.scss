@@ -1,7 +1,11 @@
+.wp-block-inquirywp-form {
+	display: flex;
+	flex-direction: column;
+	gap: var(--wp--style--block-gap);
+}
+
 .wp-block-inquirywp-form,
 .post-type-inquirywp_form .wp-block-post-content {
-	margin-top: var(--wp--style--block-gap);
-	margin-bottom: var(--wp--style--block-gap);
 	font-size: var(--wp--preset--font-size--normal);
 	line-height: 1.5;
 
@@ -45,8 +49,6 @@
 	.wp-block-inquirywp-field-input,
 	.wp-block-inquirywp-field-select,
 	.wp-block-inquirywp-field-textarea {
-		margin-bottom: var(--wp--style--block-gap);
-		margin-top: var(--wp--style--block-gap);
 		width: 100%;
 	}
 
