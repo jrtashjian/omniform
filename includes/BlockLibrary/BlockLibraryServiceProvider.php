@@ -25,13 +25,11 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 	 */
 	public function registerBlocks() {
 		$blocks = array(
-			Blocks\Form::class,
-			Blocks\FieldText::class,
-			Blocks\FieldTextarea::class,
-			Blocks\FieldSelect::class,
-			Blocks\FieldCheck::class,
-			Blocks\FieldRadio::class,
 			Blocks\ButtonSubmit::class,
+			Blocks\FieldInput::class,
+			Blocks\FieldSelect::class,
+			Blocks\FieldTextarea::class,
+			Blocks\Form::class,
 		);
 
 		foreach ( $blocks as $block ) {
