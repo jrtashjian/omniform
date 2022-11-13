@@ -23,7 +23,7 @@ const Edit = ( {
 	return (
 		<div { ...blockProps }>
 			<RichText
-				className="field-label"
+				className="inquirywp-field-label"
 				aria-label={ __( 'Label text', 'inquirywp' ) }
 				placeholder={ __( 'Enter a label to the field…', 'inquirywp' ) }
 				withoutInteractiveFormatting
@@ -33,7 +33,7 @@ const Edit = ( {
 
 			<textarea
 				type={ type }
-				className="field-control"
+				className="inquirywp-field-control"
 				id="textInput"
 				aria-describedby="textInputHelp"
 				aria-label={ __( 'Optional placeholder text', 'inquirywp' ) }
@@ -50,7 +50,7 @@ const Edit = ( {
 
 			{ ( isSelected || !! help ) && (
 				<RichText
-					className="field-support"
+					className="inquirywp-field-support"
 					tagName="p"
 					aria-label={ __( 'Help text', 'inquirywp' ) }
 					placeholder={ __( 'Write a help text…', 'inquirywp' ) }
