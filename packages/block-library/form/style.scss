@@ -24,6 +24,7 @@
 		font-size: 0.875em;
 		color: var(--wp--preset--color--black);
 		opacity: 0.5;
+		width: 100%;
 	}
 
 	.inquirywp-field-control {
@@ -49,18 +50,26 @@
 	// Checkbox and Radio
 	.inquirywp-field-checkbox,
 	.inquirywp-field-radio {
-		padding-left: 1.5em;
+		display: flex;
+		flex-wrap: wrap;
 
 		.inquirywp-field-label {
+			order: 1;
 			margin-bottom: 0;
+			width: calc(100% - 1.5em);
+		}
+
+		.inquirywp-field-support {
+			order: 2;
+			margin-left: calc(1.5em + 2px);
 		}
 
 		.inquirywp-field-control {
-			float: left;
+			order: 0;
 			width: 1em;
 			height: 1em;
 			padding: 0;
-			margin: 0.25em 0 0 -1.5em;
+			margin: 0.25em 0.5em 0 0;
 
 			&[type="radio"] {
 				border-radius: 100%;
