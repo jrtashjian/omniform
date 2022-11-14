@@ -65,7 +65,7 @@ class Form implements FormBlockInterface {
 		$content = do_blocks( $form_block->post_content );
 
 		return sprintf(
-			'<form method="post" action="%s" class="wp-block-inquirywp-form">%s</form>',
+			'<form method="post" action="%s" class="wp-block-inquirywp-form is-layout-flow">%s</form>',
 			esc_url( get_the_permalink() ),
 			$form_ingestion->getNonceField() . $content
 		);
