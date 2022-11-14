@@ -45,7 +45,7 @@ const Edit = ( { attributes: { ref } } ) => {
 	);
 
 	const blockProps = useBlockProps( {
-		className: 'block-library-block__reusable-block-container',
+		className: 'block-library-block__reusable-block-container  is-layout-flow',
 	} );
 
 	const innerBlockProps = useInnerBlocksProps( blockProps, {
