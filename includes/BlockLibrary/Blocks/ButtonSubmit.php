@@ -30,13 +30,13 @@ class ButtonSubmit implements FormBlockInterface {
 	 */
 	public function renderBlock( $attributes, $content ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
 		$button_classes = array(
+			'wp-block-inquirywp-button-submit',
 			'wp-block-button',
-			'wp-block-button__link',
 			wp_theme_get_element_class_name( 'button' ),
 		);
 
 		return sprintf(
-			'<div class="wp-block-buttons"><div class="wp-block-button"><button type="submit" class="%s">%s</button></div></div>',
+			'<button type="submit" class="%s">%s</button>',
 			esc_attr( implode( ' ', $button_classes ) ),
 			wp_kses_post( $attributes['text'] )
 		);
