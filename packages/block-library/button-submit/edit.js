@@ -7,6 +7,7 @@ import classnames from 'classnames';
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { createBlock, getDefaultBlockName } from '@wordpress/blocks';
 import {
 	RichText,
 	useBlockProps,
@@ -17,6 +18,9 @@ import {
 const Edit = ( {
 	attributes,
 	setAttributes,
+	onReplace,
+	mergeBlocks,
+	clientId,
 } ) => {
 	const {
 		className,
@@ -31,7 +35,6 @@ const Edit = ( {
 			<RichText
 				className={ classnames(
 					className,
-					'wp-block-button__link',
 					colorProps.className,
 					__experimentalGetElementClassName( 'button' ),
 				) }
@@ -39,12 +42,34 @@ const Edit = ( {
 					...colorProps.style,
 				} }
 				tagName="button"
-				type="submit"
 				aria-label={ __( 'Button text', 'inquirywp' ) }
 				placeholder={ __( 'Add text…', 'inquirywp' ) }
-				withoutInteractiveFormatting
 				value={ text }
-				onChange={ ( html ) => setAttributes( { text: html } ) }
+				withoutInteractiveFormatting
+				onChange={ ( value ) => setAttributes( { text: value } ) }
+				onSplit={ ( value, isOriginal ) => {
+					let block;
+
+					if ( isOriginal || value ) {
+						block = createBlock( 'inquirywp/button-submit', {
+							...attributes,
+							text: value,
+						} );
+					} else {
+						block = createBlock(
+							getDefaultBlockName() ?? 'inquirywp/button-submit'
+						);
+					}
+
+					if ( isOriginal ) {
+						block.clientId = clientId;
+					}
+
+					return block;
+				} }
+				onReplace={ onReplace }
+				onRemove={ () => onReplace( [] ) }
+				onMerge={ mergeBlocks }
 			/>
 		</div>
 	);

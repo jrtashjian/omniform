@@ -16,4 +16,11 @@ const { name } = json;
 
 registerBlockType( name, {
 	edit: Edit,
+	merge( attributes, attributesToMerge ) {
+		return {
+			text:
+				( attributes.text || '' ) +
+				( attributesToMerge.text || '' ),
+		};
+	},
 } );
