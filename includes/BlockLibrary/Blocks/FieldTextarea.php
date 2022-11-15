@@ -12,16 +12,7 @@ use InquiryWP\Plugin\FormIngestionEngine;
 /**
  * The FieldTextarea block class.
  */
-class FieldTextarea implements FormBlockInterface {
-	/**
-	 * The path to the JSON file with metadata definition for the block.
-	 *
-	 * @return string path to the JSON file with metadata definition for the block.
-	 */
-	public function blockTypeMetadata() {
-		return inquirywp()->basePath( '/build/block-library/field-textarea' );
-	}
-
+class FieldTextarea extends BaseFieldBlock {
 	/**
 	 * Renders the block on the server.
 	 *
@@ -31,22 +22,17 @@ class FieldTextarea implements FormBlockInterface {
 	 * @return string Returns the block content.
 	 */
 	public function renderBlock( $attributes, $content ) {
-		if ( empty( $attributes['label'] ) ) {
+		parent::renderBlock( $attributes, $content );
+
+		if ( empty( $this->renderFieldLabel() ) ) {
 			return '';
 		}
 
-		$field_name     = sanitize_title( $attributes['label'] );
 		$form_ingestion = inquirywp()->get( FormIngestionEngine::class );
 
-		$field_label = sprintf(
-			'<label class="inquirywp-field-label" for="%s">%s</label>',
-			esc_attr( $field_name ),
-			wp_kses_post( $attributes['label'] )
-		);
-
 		$field_attributes = array(
-			'id'          => esc_attr( $field_name ),
-			'name'        => esc_attr( $field_name ),
+			'id'          => esc_attr( $this->field_name ),
+			'name'        => esc_attr( $this->field_name ),
 			'placeholder' => empty( $attributes['placeholder'] ) ? '' : esc_attr( $attributes['placeholder'] ),
 		);
 
@@ -57,17 +43,13 @@ class FieldTextarea implements FormBlockInterface {
 				array( '="', '" ' ),
 				http_build_query( $field_attributes )
 			) . '"',
-			esc_textarea( $form_ingestion->formValue( $field_name ) )
-		);
-
-		$field_help = empty( $attributes['help'] ) ? '' : sprintf(
-			'<p class="inquirywp-field-support">%s</p>',
-			wp_kses_post( $attributes['help'] )
+			esc_textarea( $form_ingestion->formValue( $this->field_name ) )
 		);
 
 		return sprintf(
-			'<div class="wp-block-inquirywp-field-textarea inquirywp-field-textarea">%s</div>',
-			$field_label . $field_control . $field_help . $content
+			'<div class="wp-block-inquirywp-%1$s inquirywp-%1$s">%2$s</div>',
+			esc_attr( $this->blockTypeName() ),
+			$this->renderFieldLabel() . $field_control . $this->renderFieldHelpText() . $content
 		);
 	}
 }

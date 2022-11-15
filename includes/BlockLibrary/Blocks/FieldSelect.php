@@ -7,21 +7,10 @@
 
 namespace InquiryWP\BlockLibrary\Blocks;
 
-use InquiryWP\Plugin\FormIngestionEngine;
-
 /**
  * The FieldSelect block class.
  */
-class FieldSelect implements FormBlockInterface {
-	/**
-	 * The path to the JSON file with metadata definition for the block.
-	 *
-	 * @return string path to the JSON file with metadata definition for the block.
-	 */
-	public function blockTypeMetadata() {
-		return inquirywp()->basePath( '/build/block-library/field-select' );
-	}
-
+class FieldSelect extends BaseFieldBlock {
 	/**
 	 * Renders the block on the server.
 	 *
@@ -31,34 +20,41 @@ class FieldSelect implements FormBlockInterface {
 	 * @return string Returns the block content.
 	 */
 	public function renderBlock( $attributes, $content ) {
-		if ( empty( $attributes['label'] ) ) {
+		parent::renderBlock( $attributes, $content );
+
+		if ( empty( $this->renderFieldLabel() ) ) {
 			return '';
 		}
 
-		$field_name = sanitize_title( $attributes['label'] );
-		// phpcs:ignore
-		// $form_ingestion = inquirywp()->get( FormIngestionEngine::class );
+		$field_attributes = array(
+			'id'   => esc_attr( $this->field_name ),
+			'name' => esc_attr( $this->field_name ),
+		);
 
-		$field_label = sprintf(
-			'<label class="inquirywp-field-label" for="%s">%s</label>',
-			esc_attr( $field_name ),
-			wp_kses_post( $attributes['label'] )
+		if ( ! empty( $attributes['multiple'] ) ) {
+			$field_attributes['multiple'] = 'multiple';
+			$field_attributes['name']     = $field_attributes['name'] . '[]';
+		}
+
+		$field_attributes = array_filter(
+			array_map(
+				function( $attr, $value ) {
+					return $attr . '="' . $value . '"';
+				},
+				array_keys( $field_attributes ),
+				$field_attributes
+			)
 		);
 
 		$field_control = sprintf(
-			'<select class="inquirywp-field-control" id="%s" name="%s"><option value="1">One</option><option value="2">Two</option><option value="3">Three</option></select>',
-			esc_attr( $field_name ),
-			esc_attr( $field_name )
-		);
-
-		$field_help = empty( $attributes['help'] ) ? '' : sprintf(
-			'<p class="inquirywp-field-support">%s</p>',
-			wp_kses_post( $attributes['help'] )
+			'<select class="inquirywp-field-control" %s><option value="One">One</option><option value="Two">Two</option><option value="Three">Three</option></select>',
+			implode( ' ', $field_attributes )
 		);
 
 		return sprintf(
-			'<div class="wp-block-inquirywp-field-select inquirywp-field-select">%s</div>',
-			$field_label . $field_control . $field_help . $content
+			'<div class="wp-block-inquirywp-%1$s inquirywp-%1$s">%2$s</div>',
+			esc_attr( $this->blockTypeName() ),
+			$this->renderFieldLabel() . $field_control . $this->renderFieldHelpText() . $content
 		);
 	}
 }

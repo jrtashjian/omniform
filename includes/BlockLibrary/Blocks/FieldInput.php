@@ -12,16 +12,7 @@ use InquiryWP\Plugin\FormIngestionEngine;
 /**
  * The FieldInput block class.
  */
-class FieldInput implements FormBlockInterface {
-	/**
-	 * The path to the JSON file with metadata definition for the block.
-	 *
-	 * @return string path to the JSON file with metadata definition for the block.
-	 */
-	public function blockTypeMetadata() {
-		return inquirywp()->basePath( '/build/block-library/field-input' );
-	}
-
+class FieldInput extends BaseFieldBlock {
 	/**
 	 * Renders the block on the server.
 	 *
@@ -31,31 +22,26 @@ class FieldInput implements FormBlockInterface {
 	 * @return string Returns the block content.
 	 */
 	public function renderBlock( $attributes, $content ) {
-		if ( empty( $attributes['label'] ) ) {
+		parent::renderBlock( $attributes, $content );
+
+		if ( empty( $this->renderFieldLabel() ) ) {
 			return '';
 		}
 
-		$field_name     = sanitize_title( $attributes['label'] );
 		$form_ingestion = inquirywp()->get( FormIngestionEngine::class );
 
-		$field_label = sprintf(
-			'<label class="inquirywp-field-label" for="%s">%s</label>',
-			esc_attr( $field_name ),
-			wp_kses_post( $attributes['label'] )
-		);
-
 		$field_attributes = array(
-			'id'          => esc_attr( $field_name ),
-			'name'        => esc_attr( $field_name ),
+			'id'          => esc_attr( $this->field_name ),
+			'name'        => esc_attr( $this->field_name ),
 			'placeholder' => empty( $attributes['placeholder'] ) ? '' : esc_attr( $attributes['placeholder'] ),
-			'value'       => esc_attr( $form_ingestion->formValue( $field_name ) ),
+			'value'       => esc_attr( $form_ingestion->formValue( $this->field_name ) ),
 		);
 
 		if ( in_array( $attributes['type'], array( 'checkbox', 'radio' ) ) ) {
 			unset( $field_attributes['placeholder'] );
-			$field_attributes['value'] = esc_attr( $field_name );
+			$field_attributes['value'] = esc_attr( true );
 
-			if ( ! empty( $form_ingestion->formValue( $field_name ) ) ) {
+			if ( ! empty( $form_ingestion->formValue( $this->field_name ) ) ) {
 				$field_attributes['checked'] = 'checked';
 			}
 		}
@@ -70,15 +56,11 @@ class FieldInput implements FormBlockInterface {
 			) . '"'
 		);
 
-		$field_help = empty( $attributes['help'] ) ? '' : sprintf(
-			'<p class="inquirywp-field-support">%s</p>',
-			wp_kses_post( $attributes['help'] )
-		);
-
 		return sprintf(
-			'<div class="wp-block-inquirywp-field-input inquirywp-field-%s">%s</div>',
+			'<div class="wp-block-inquirywp-%1$s inquirywp-field-%2$s">%3$s</div>',
+			esc_attr( $this->blockTypeName() ),
 			esc_attr( $attributes['type'] ),
-			$field_label . $field_control . $field_help . $content
+			$this->renderFieldLabel() . $field_control . $this->renderFieldHelpText() . $content
 		);
 	}
 }
