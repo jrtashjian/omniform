@@ -45,11 +45,6 @@ const variations = [
 		attributes: { type: 'datetime-local' },
 	},
 	{
-		name: 'field-email',
-		title: __( 'field-email', 'inquirywp' ),
-		attributes: { type: 'email' },
-	},
-	{
 		name: 'field-file',
 		title: __( 'field-file', 'inquirywp' ),
 		attributes: { type: 'file' },
@@ -83,11 +78,6 @@ const variations = [
 		name: 'field-time',
 		title: __( 'field-time', 'inquirywp' ),
 		attributes: { type: 'time' },
-	},
-	{
-		name: 'field-url',
-		title: __( 'field-url', 'inquirywp' ),
-		attributes: { type: 'url' },
 	},
 	{
 		name: 'field-week',
