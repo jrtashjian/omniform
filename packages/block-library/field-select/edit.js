@@ -18,6 +18,7 @@ const Edit = ( {
 	isSelected,
 } ) => {
 	const {
+		multiple,
 		label,
 		help,
 	} = attributes;
@@ -38,7 +39,7 @@ const Edit = ( {
 				onChange={ ( html ) => setAttributes( { label: html } ) }
 			/>
 
-			<select className="inquirywp-field-control">
+			<select className="inquirywp-field-control" multiple={ multiple }>
 				<option value="1">One</option>
 				<option value="2">Two</option>
 				<option value="3">Three</option>

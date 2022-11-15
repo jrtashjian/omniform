@@ -5,9 +5,9 @@
 	"title": "field-select",
 	"textdomain": "inquirywp",
 	"attributes": {
-		"type": {
-			"type": "string",
-			"default": "text"
+		"multiple": {
+			"type": "boolean",
+			"default": false
 		},
 		"placeholder": {
 			"type": "string"

@@ -8,6 +8,7 @@ import { registerBlockType } from '@wordpress/blocks';
  */
 import json from './block.json';
 import Edit from './edit';
+import variations from './variations';
 
 import './style.scss';
 import './index.scss';
@@ -16,4 +17,6 @@ const { name } = json;
 
 registerBlockType( name, {
 	edit: Edit,
+	example: {},
+	variations,
 } );
