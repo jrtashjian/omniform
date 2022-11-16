@@ -30,6 +30,7 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 			Blocks\FieldSelect::class,
 			Blocks\FieldTextarea::class,
 			Blocks\Form::class,
+			Blocks\Fieldset::class,
 		);
 
 		foreach ( $blocks as $block ) {
