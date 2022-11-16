@@ -178,6 +178,7 @@ class PluginServiceProvider extends ServiceProvider {
 						'inquirywp/field-input',
 						'inquirywp/field-select',
 						'inquirywp/field-textarea',
+						'inquirywp/fieldset',
 						'core/paragraph',
 						'core/heading',
 						'core/image',
