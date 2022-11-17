@@ -46,14 +46,24 @@ class FieldInput extends BaseFieldBlock {
 			}
 		}
 
+		// Nest form data within a fieldset.
+		if ( ! empty( $attributes['group'] ) ) {
+			$field_attributes['name'] = $attributes['group'] . '[' . sanitize_title( $field_attributes['name'] ) . ']';
+		}
+
+		// Stitch together the input's attributes.
+		$field_attributes = array_map(
+			function( $attr, $val ) {
+				return sprintf( '%1$s="%2$s"', esc_attr( $attr ), esc_attr( $val ) );
+			},
+			array_keys( $field_attributes ),
+			$field_attributes
+		);
+
 		$field_control = sprintf(
 			'<input class="inquirywp-field-control" type="%s" %s />',
 			esc_attr( $attributes['type'] ),
-			str_replace(
-				array( '=', '&' ),
-				array( '="', '" ' ),
-				http_build_query( $field_attributes )
-			) . '"'
+			implode( ' ', $field_attributes )
 		);
 
 		return sprintf(
