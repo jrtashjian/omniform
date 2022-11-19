@@ -1,1 +1,8 @@
-// .wp-block-inquirywp-form {}
+.wp-block-inquirywp-form {
+
+	&.block-editor-block-list__block > .block-list-appender {
+		margin: inherit;
+		position: inherit;
+		margin-block-start: var(--wp--style--block-gap);
+	}
+}
