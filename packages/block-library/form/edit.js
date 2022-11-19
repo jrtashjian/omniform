@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useSelect } from '@wordpress/data';
 import {
 	useEntityBlockEditor,
 	useEntityProp,
@@ -23,7 +24,7 @@ import {
 	TextControl,
 } from '@wordpress/components';
 
-const Edit = ( { attributes: { ref } } ) => {
+const Edit = ( { attributes: { ref }, isSelected, clientId } ) => {
 	const hasAlreadyRendered = useHasRecursion( ref );
 	const { record, hasResolved } = useEntityRecord(
 		'postType',
@@ -44,18 +45,21 @@ const Edit = ( { attributes: { ref } } ) => {
 		ref
 	);
 
+	const hasSelectedInnerBlock = useSelect( ( select ) =>
+		select( 'core/block-editor' ).hasSelectedInnerBlock( clientId )
+	);
+
 	const blockProps = useBlockProps( {
 		className: 'block-library-block__reusable-block-container is-layout-flow',
 	} );
 
 	const innerBlockProps = useInnerBlocksProps( blockProps, {
-		__experimentalCaptureToolbars: true,
 		value: blocks,
 		onInput,
 		onChange,
-		renderAppender: blocks?.length
-			? undefined
-			: InnerBlocks.ButtonBlockAppender,
+		renderAppender: isSelected || hasSelectedInnerBlock
+			? InnerBlocks.ButtonBlockAppender
+			: undefined,
 	} );
 
 	if ( hasAlreadyRendered ) {
