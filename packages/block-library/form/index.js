@@ -1,14 +1,20 @@
 /**
+ * External dependencies
+ */
+import { capitalCase } from 'change-case';
+
+/**
  * WordPress dependencies
  */
 import { registerBlockType } from '@wordpress/blocks';
-import { useSelect } from '@wordpress/data';
+import { select } from '@wordpress/data';
+import { decodeEntities } from '@wordpress/html-entities';
 
 /**
  * Internal dependencies
  */
 import json from './block.json';
-import Edit from './edit';
+import edit from './edit';
 
 import './style.scss';
 import './index.scss';
@@ -16,25 +22,25 @@ import './index.scss';
 const { name } = json;
 
 registerBlockType( name, {
-	edit: Edit,
+	edit,
 	// Get block name from the post name.
-	__experimentalLabel: ( attributes ) => {
-		const { ref } = attributes;
+	__experimentalLabel: ( { ref } ) => {
+		if ( ! ref ) {
+			return;
+		}
 
-		const { value } = useSelect(
-			( select ) => {
-				const { getEntityRecord, getEditedEntityRecord } = select( 'core' );
-
-				const record = getEntityRecord( 'postType', 'inquirywp_form', ref );
-				const editedRecord = getEditedEntityRecord( 'postType', 'inquirywp_form', ref );
-
-				return record && editedRecord
-					? { value: editedRecord.title }
-					: {};
-			},
-			[ ref ]
+		const entity = select( 'core' ).getEntityRecord(
+			'postType',
+			'inquirywp_form',
+			ref
 		);
+		if ( ! entity ) {
+			return;
+		}
 
-		return value;
+		return (
+			decodeEntities( entity.title?.rendered ) ||
+			capitalCase( entity.slug )
+		);
 	},
 } );
