@@ -38,7 +38,7 @@ const Edit = ( {
 				aria-describedby="textInputHelp"
 				aria-label={ __( 'Optional placeholder text', 'inquirywp' ) }
 				placeholder={
-					placeholder ? undefined : __( 'Enter a label to the field…', 'inquirywp' )
+					( placeholder || ! isSelected ) ? undefined : __( 'Enter a placeholder…', 'inquirywp' )
 				}
 				value={ placeholder }
 				onChange={ ( event ) =>
@@ -48,7 +48,7 @@ const Edit = ( {
 				rows="10"
 			/>
 
-			{ ( isSelected || !! help ) && (
+			{ ( isSelected || help ) && (
 				<RichText
 					className="inquirywp-field-support"
 					tagName="p"

@@ -45,7 +45,7 @@ const Edit = ( {
 				<option value="3">Three</option>
 			</select>
 
-			{ ( isSelected || !! help ) && (
+			{ ( isSelected || help ) && (
 				<RichText
 					className="inquirywp-field-support"
 					tagName="p"
