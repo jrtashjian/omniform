@@ -40,6 +40,7 @@ registerBlockType( name, {
 
 		return (
 			decodeEntities( entity.title?.rendered ) ||
+			decodeEntities( entity.title?.raw ) ||
 			capitalCase( entity.slug )
 		);
 	},

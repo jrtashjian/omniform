@@ -10,7 +10,7 @@
 		}
 	},
 	"supports": {
-		"customClassName": false,
+		"align": true,
 		"html": false,
 		"reusable": false
 	},
