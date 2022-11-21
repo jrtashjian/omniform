@@ -2,6 +2,7 @@
 	"$schema": "https://json.schemastore.org/block.json",
 	"apiVersion": 2,
 	"name": "inquirywp/field-textarea",
+	"category": "form-control",
 	"title": "field-textarea",
 	"textdomain": "inquirywp",
 	"attributes": {

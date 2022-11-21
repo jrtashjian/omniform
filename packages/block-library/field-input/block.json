@@ -2,6 +2,7 @@
 	"$schema": "https://json.schemastore.org/block.json",
 	"apiVersion": 2,
 	"name": "inquirywp/field-input",
+	"category": "form-control",
 	"title": "field-input",
 	"textdomain": "inquirywp",
 	"attributes": {
@@ -20,6 +21,7 @@
 		}
 	},
 	"supports": {
+		"align": true,
 		"html": false
 	},
 	"editorScript": "file:index.js",

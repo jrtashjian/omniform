@@ -20,6 +20,7 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 	public function boot() {
 		add_action( 'init', array( $this, 'registerBlocks' ) );
 		add_filter( 'render_block_data', array( $this, 'groupFields' ), 10, 3 );
+		add_filter( 'block_categories_all', array( $this, 'registerCategories' ) );
 	}
 
 	/**
@@ -148,6 +149,28 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 		}
 
 		return $parsed_block;
+	}
+
+	/**
+	 * Filters the default array of categories for block types.
+	 *
+	 * @param array[] $block_categories     Array of categories for block types.
+	 */
+	public function registerCategories( $block_categories ) {
+
+		$block_categories[] = array(
+			'slug'  => 'form',
+			'title' => __( 'Forms', 'inquirywp' ),
+			'icon'  => null,
+		);
+
+		$block_categories[] = array(
+			'slug'  => 'form-control',
+			'title' => __( 'Form Controls', 'inquirywp' ),
+			'icon'  => null,
+		);
+
+		return $block_categories;
 	}
 
 	/**

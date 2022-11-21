@@ -2,7 +2,8 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 2,
 	"name": "inquirywp/form",
-	"title": "InquiryWP",
+	"category": "form",
+	"title": "InquiryWP Form",
 	"textdomain": "inquirywp",
 	"attributes": {
 		"ref": {
