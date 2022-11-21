@@ -5,10 +5,12 @@ import { useEntityBlockEditor } from '@wordpress/core-data';
 import {
 	InnerBlocks,
 	useInnerBlocksProps,
-	useSetting,
-	store as blockEditorStore,
 } from '@wordpress/block-editor';
-import { useSelect } from '@wordpress/data';
+
+/**
+ * Internal dependencies
+ */
+import { FORM_POST_TYPE } from '../../shared/constants';
 
 export default function FormInnerBlocks( {
 	blockProps,
@@ -17,7 +19,7 @@ export default function FormInnerBlocks( {
 } ) {
 	const [ blocks, onInput, onChange ] = useEntityBlockEditor(
 		'postType',
-		'inquirywp_form',
+		FORM_POST_TYPE,
 		{ id }
 	);
 
