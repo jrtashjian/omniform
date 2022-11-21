@@ -8,6 +8,11 @@ import { store as coreStore } from '@wordpress/core-data';
 import { serialize } from '@wordpress/blocks';
 
 /**
+ * Internal dependencies
+ */
+import { FORM_POST_TYPE } from '../../shared/constants';
+
+/**
  * Retrieves the available forms.
  *
  * @param {string} excludedId Form ID to exclude.
@@ -21,12 +26,12 @@ export function useAlternativeForms( excludedId ) {
 		return {
 			forms: getEntityRecords(
 				'postType',
-				'inquirywp_form',
+				FORM_POST_TYPE,
 				query
 			),
 			isLoading: _isResolving( 'getEntityRecords', [
 				'postType',
-				'inquirywp_form',
+				FORM_POST_TYPE,
 				query,
 			] ),
 		};
@@ -56,7 +61,7 @@ export function useCreateFormFromBlocks( setAttributes ) {
 		};
 		const form = await saveEntityRecord(
 			'postType',
-			'inquirywp_form',
+			FORM_POST_TYPE,
 			record
 		);
 		setAttributes( { ref: form.id } );
