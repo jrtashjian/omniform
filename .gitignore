@@ -3,6 +3,7 @@
 .idea/
 .vscode/
 .wp-env.override.json
+_scratchpad
 
 npm-debug.log
 node_modules/
