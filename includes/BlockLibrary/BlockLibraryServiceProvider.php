@@ -42,6 +42,54 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 				array( 'render_callback' => array( $block_object, 'renderBlock' ) )
 			);
 		}
+
+		register_block_pattern(
+			'inquirywp/form-pattern-one',
+			array(
+				'title'      => 'Pattern one',
+				'blockTypes' => array( 'inquirywp/form' ),
+				'categories' => array( 'form' ),
+				'content'    => '<!-- wp:inquirywp/field-input {"label":"field-text label","help":"field-text help text"} /-->
+
+				<!-- wp:inquirywp/field-textarea {"label":"field-textarea label"} /-->
+
+				<!-- wp:group {"className":"is-layout-flex wp-block-buttons","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"left"}} -->
+				<div class="wp-block-group is-layout-flex wp-block-buttons"><!-- wp:inquirywp/button-submit /--></div>
+				<!-- /wp:group -->',
+			),
+		);
+
+		register_block_pattern(
+			'inquirywp/form-pattern-two',
+			array(
+				'title'      => 'Pattern two',
+				'blockTypes' => array( 'inquirywp/form' ),
+				'categories' => array( 'form' ),
+				'content'    => '<!-- wp:inquirywp/field-input {"label":"field-text label","help":"field-text help text"} /-->
+
+				<!-- wp:inquirywp/field-textarea {"label":"field-textarea label"} /-->
+
+				<!-- wp:group {"className":"is-layout-flex wp-block-buttons","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"left"}} -->
+				<div class="wp-block-group is-layout-flex wp-block-buttons"><!-- wp:inquirywp/button-submit /--></div>
+				<!-- /wp:group -->',
+			),
+		);
+
+		register_block_pattern(
+			'inquirywp/form-pattern-three',
+			array(
+				'title'      => 'Pattern three',
+				'blockTypes' => array( 'inquirywp/form' ),
+				'categories' => array( 'form' ),
+				'content'    => '<!-- wp:inquirywp/field-input {"label":"field-text label","help":"field-text help text"} /-->
+
+				<!-- wp:inquirywp/field-textarea {"label":"field-textarea label"} /-->
+
+				<!-- wp:group {"className":"is-layout-flex wp-block-buttons","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"left"}} -->
+				<div class="wp-block-group is-layout-flex wp-block-buttons"><!-- wp:inquirywp/button-submit /--></div>
+				<!-- /wp:group -->',
+			),
+		);
 	}
 
 	/**
