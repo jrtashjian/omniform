@@ -7,14 +7,19 @@ import {
 	useBlockProps,
 } from '@wordpress/block-editor';
 
-const Edit = ( {
-	attributes,
-	setAttributes,
-	isSelected,
-} ) => {
+/**
+ * Internal dependencies
+ */
+import FormLabel from '../shared/form-label';
+
+const Edit = ( props ) => {
+	const {
+		attributes,
+		setAttributes,
+		isSelected,
+	} = props;
 	const {
 		type,
-		label,
 		help,
 		placeholder,
 	} = attributes;
@@ -22,14 +27,7 @@ const Edit = ( {
 	const blockProps = useBlockProps();
 	return (
 		<div { ...blockProps }>
-			<RichText
-				className="inquirywp-field-label"
-				aria-label={ __( 'Label text', 'inquirywp' ) }
-				placeholder={ __( 'Enter a label to the field…', 'inquirywp' ) }
-				withoutInteractiveFormatting
-				value={ label }
-				onChange={ ( html ) => setAttributes( { label: html } ) }
-			/>
+			<FormLabel originBlockProps={ props } />
 
 			<textarea
 				type={ type }
