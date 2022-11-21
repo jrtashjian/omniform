@@ -1,8 +1,29 @@
-.wp-block-inquirywp-form {
+@import "~@wordpress/base-styles/variables";
+@import "~@wordpress/base-styles/mixins";
+@import "~@wordpress/base-styles/breakpoints";
 
-	&.block-editor-block-list__block > .block-list-appender {
-		margin: inherit;
-		position: inherit;
-		margin-block-start: var(--wp--style--block-gap);
+.block-editor-form__selection-modal {
+
+	.components-modal__frame {
+
+		@include break-small() {
+			width: calc(100% - #{ $grid-unit-20 * 2 });
+			height: calc(100% - #{ $header-height * 2 });
+		}
+
+		@include break-medium() {
+			width: $break-medium - $grid-unit-20 * 2;
+		}
+
+		@include break-large() {
+			height: 70%;
+		}
+	}
+}
+
+.block-editor-block-preview__content-iframe .block-editor-block-list__layout.is-root-container {
+
+	.wp-block-inquirywp-form {
+		padding: var(--wp--style--block-gap);
 	}
 }
