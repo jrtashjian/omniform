@@ -74,4 +74,8 @@ class FormIngestionEngine {
 	public function formValue( $field_name ) {
 		return empty( $this->form_data[ $field_name ] ) ? '' : $this->form_data[ $field_name ];
 	}
+
+	public function resetFormData() {
+		$this->form_data = array();
+	}
 }

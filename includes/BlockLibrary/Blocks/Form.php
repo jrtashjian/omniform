@@ -48,24 +48,29 @@ class Form implements FormBlockInterface {
 		$form_ingestion = inquirywp()->get( FormIngestionEngine::class );
 		$form_ingestion->setFormId( $attributes['ref'] );
 
+		$post_data = '';
+
 		if ( $form_ingestion->willProcess() ) {
-			return sprintf(
-				'<pre>%s</pre>%s',
+			$post_data = sprintf(
+				'<pre>%s</pre>',
 				print_r(
 					array(
-						'attributes' => $attributes,
-						'_POST'      => $_POST,
+						'attributes'     => $attributes,
+						'_POST'          => $_POST,
+						'form_ingestion' => $form_ingestion,
 					),
 					true
-				),
-				do_blocks( $form_block->post_content )
+				)
 			);
 		}
 
 		$content = do_blocks( $form_block->post_content );
 
+		$form_ingestion->resetFormData();
+
 		return sprintf(
-			'<form method="post" action="%s" class="wp-block-inquirywp-form is-layout-flow">%s</form>',
+			'%s<form method="post" action="%s" class="wp-block-inquirywp-form is-layout-flow">%s</form>',
+			$post_data . '<pre>' . print_r( $attributes, true ) . '</pre>',
 			esc_url( get_the_permalink() ),
 			$form_ingestion->getNonceField() . $content
 		);
