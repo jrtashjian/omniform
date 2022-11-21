@@ -15,6 +15,7 @@ import { decodeEntities } from '@wordpress/html-entities';
  */
 import json from './block.json';
 import edit from './edit';
+import { FORM_POST_TYPE } from '../shared/constants';
 
 import './style.scss';
 import './index.scss';
@@ -31,7 +32,7 @@ registerBlockType( name, {
 
 		const entity = select( 'core' ).getEntityRecord(
 			'postType',
-			'inquirywp_form',
+			FORM_POST_TYPE,
 			ref
 		);
 		if ( ! entity ) {
