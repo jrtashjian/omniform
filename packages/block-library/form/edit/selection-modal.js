@@ -25,6 +25,7 @@ export default function FormSelectionModal( {
 				name: form.slug,
 				title: form.title.raw,
 				blocks: createBlock( 'inquirywp/form', { ref: form.id } ), // parse( form.content.raw ),
+				viewportWidth: 640,
 				form,
 			};
 		} );
