@@ -56,7 +56,9 @@ class BaseFieldBlock implements FormBlockInterface {
 	public function renderBlock( $attributes, $content ) {
 		$this->block_attributes = $attributes;
 
-		$this->field_name = sanitize_title( $this->getBlockAttribute( 'label' ) );
+		$this->field_name = empty( $this->getBlockAttribute( 'name' ) )
+			? sanitize_title( $this->getBlockAttribute( 'label' ) )
+			: $this->getBlockAttribute( 'name' );
 
 		return sprintf(
 			'<div class="wp-block-inquirywp-%1$s inquirywp-%1$s">%2$s</div>',
@@ -74,7 +76,7 @@ class BaseFieldBlock implements FormBlockInterface {
 		return empty( $this->getBlockAttribute( 'label' ) ) ? '' : sprintf(
 			'<label class="inquirywp-field-label" for="%s">%s</label>',
 			esc_attr( $this->field_name ),
-			wp_kses_post( $this->field_name )
+			wp_kses_post( $this->getBlockAttribute( 'label' ) )
 		);
 	}
 

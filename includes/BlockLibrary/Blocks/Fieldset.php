@@ -34,7 +34,7 @@ class Fieldset implements FormBlockInterface {
 		}
 
 		return sprintf(
-			'<fieldset class="wp-block-inquirywp-fieldset is-layout-flow"><legend>%1$s</legend>%2$s</fieldset>',
+			'<fieldset class="wp-block-inquirywp-fieldset is-layout-flow"><legend class="inquirywp-field-label">%1$s</legend>%2$s</fieldset>',
 			esc_html( $attributes['legend'] ),
 			do_blocks( $content )
 		);
