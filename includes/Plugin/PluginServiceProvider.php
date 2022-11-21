@@ -8,6 +8,7 @@
 namespace InquiryWP\Plugin;
 
 use InquiryWP\ServiceProvider;
+use WP_Block_Patterns_Registry;
 
 /**
  * The PluginServiceProvider class.
@@ -188,5 +189,23 @@ class PluginServiceProvider extends ServiceProvider {
 				}
 			);
 		}
+
+		// Filter allowed patterns.
+		$block_patterns_registry = WP_Block_Patterns_Registry::get_instance();
+		array_map(
+			function( $pattern ) use ( $block_patterns_registry ) {
+				$block_types_exists = array_key_exists( 'blockTypes', $pattern );
+
+				if (
+					! $block_types_exists ||
+					( $block_types_exists && in_array( 'inquirywp_form', $pattern['blockTypes'], true ) )
+				) {
+					$block_patterns_registry->unregister( $pattern['name'] );
+				}
+
+				return $pattern;
+			},
+			$block_patterns_registry->get_all_registered()
+		);
 	}
 }
