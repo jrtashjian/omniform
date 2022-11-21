@@ -8,6 +8,7 @@
 namespace InquiryWP\BlockLibrary;
 
 use InquiryWP\ServiceProvider;
+use WP_Query;
 
 /**
  * The BlockLibraryServiceProvider class.
@@ -37,9 +38,41 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 		foreach ( $blocks as $block ) {
 			$block_object = $this->app->make( $block );
 
+			$variations = array();
+
+			if ( Blocks\Form::class === $block ) {
+				$wp_query_args   = array(
+					'post_status'    => array( 'draft', 'publish' ),
+					'post_type'      => 'inquirywp_form',
+					'posts_per_page' => -1,
+					'no_found_rows'  => true,
+				);
+				$variation_query = new WP_Query( $wp_query_args );
+
+				foreach ( $variation_query->posts as $post ) {
+					$variations[] = array(
+						'name'        => 'inquirywp//' . $post->post_name,
+						'title'       => $post->post_title,
+						'description' => $post->post_name,
+						'attributes'  => array(
+							'ref' => $post->ID,
+						),
+						'scope'       => array( 'inserter' ),
+						'example'     => array(
+							'attributes' => array(
+								'ref' => $post->ID,
+							),
+						),
+					);
+				}
+			}
+
 			register_block_type(
 				$block_object->blockTypeMetadata(),
-				array( 'render_callback' => array( $block_object, 'renderBlock' ) )
+				array(
+					'render_callback' => array( $block_object, 'renderBlock' ),
+					'variations'      => $variations,
+				)
 			);
 		}
 
@@ -56,6 +89,7 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 				<!-- wp:group {"className":"is-layout-flex wp-block-buttons","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"left"}} -->
 				<div class="wp-block-group is-layout-flex wp-block-buttons"><!-- wp:inquirywp/button-submit /--></div>
 				<!-- /wp:group -->',
+				'viewportWidth' => 640,
 			),
 		);
 
@@ -72,6 +106,7 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 				<!-- wp:group {"className":"is-layout-flex wp-block-buttons","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"left"}} -->
 				<div class="wp-block-group is-layout-flex wp-block-buttons"><!-- wp:inquirywp/button-submit /--></div>
 				<!-- /wp:group -->',
+				'viewportWidth' => 640,
 			),
 		);
 
@@ -88,6 +123,7 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 				<!-- wp:group {"className":"is-layout-flex wp-block-buttons","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"left"}} -->
 				<div class="wp-block-group is-layout-flex wp-block-buttons"><!-- wp:inquirywp/button-submit /--></div>
 				<!-- /wp:group -->',
+				'viewportWidth' => 640,
 			),
 		);
 	}
