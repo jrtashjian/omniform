@@ -1,0 +1,81 @@
+@import "../shared/mixins";
+
+.wp-block-inquirywp-field-input {
+
+	@include defaults;
+	@include reset;
+	@include field-label;
+	@include field-control;
+	@include field-support;
+
+	width: 100%;
+
+	// Checkbox and Radio
+	&.inquirywp-field-checkbox,
+	&.inquirywp-field-radio {
+		display: flex;
+		flex-wrap: wrap;
+
+		.inquirywp-field-label {
+			order: 1;
+			margin-bottom: 0;
+			width: calc(100% - 1.5em);
+		}
+
+		.inquirywp-field-support {
+			order: 2;
+			margin-left: calc(1.5em + 2px);
+		}
+
+		.inquirywp-field-control {
+			order: 0;
+			width: 1em;
+			height: 1em;
+			padding: 0;
+			margin: 0.25em 0.5em 0 0;
+
+			&[type="radio"] {
+				border-radius: 100%;
+			}
+
+			&:checked {
+				background-repeat: no-repeat;
+				background-position: center;
+				background-size: contain;
+				background-color: var(--wp--preset--color--contrast);
+				border-color: transparent;
+
+				&::before,
+				&::after {
+					content: none;
+				}
+			}
+
+			&[type="checkbox"]:checked {
+				background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+			}
+
+			&[type="radio"]:checked {
+				background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e");
+			}
+		}
+	}
+
+	// Color selector
+	&.inquirywp-field-color {
+
+		.inquirywp-field-control {
+			padding: 0.5em;
+			height: 2.625em;
+		}
+	}
+}
+
+// Consecutive checbox and radio inputs should appear as related.
+:not(.is-layout-flex) {
+
+	> .inquirywp-field-checkbox + .inquirywp-field-checkbox,
+	> .inquirywp-field-radio + .inquirywp-field-radio {
+		margin-top: 0.5em;
+	}
+}

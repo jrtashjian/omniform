@@ -30,7 +30,7 @@ const Edit = ( {
 			className={ classNames( blockProps.className, 'inquirywp-fieldset is-layout-flow' ) }
 		>
 			<RichText
-				className="inquirywp-field-legend"
+				className="inquirywp-field-label"
 				tagName="legend"
 				aria-label={ __( 'Legend text', 'inquirywp' ) }
 				placeholder={ __( 'Enter a title to the field…', 'inquirywp' ) }
