@@ -1,35 +1,37 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
-import { useSelect } from '@wordpress/data';
 import {
-	__experimentalRecursionProvider as RecursionProvider,
-	__experimentalUseHasRecursion as useHasRecursion,
 	store as blockEditorStore,
 	useBlockProps,
-	Warning,
+	Warning, __experimentalRecursionProvider as RecursionProvider,
+	__experimentalUseHasRecursion as useHasRecursion,
 } from '@wordpress/block-editor';
 import {
-	Spinner,
+	Modal, Spinner,
 } from '@wordpress/components';
 import { store as coreStore } from '@wordpress/core-data';
+import { useSelect } from '@wordpress/data';
+import { useState } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
  */
-import FormPlaceholder from './placeholder';
+import { FORM_POST_TYPE } from '../../shared/constants';
 import FormInnerBlocks from './inner-blocks';
 import FormInspectorControls from './inspector-controls';
+import FormPlaceholder from './placeholder';
+import FormSelectionModal from './selection-modal';
 
 export default function FormEdit( {
 	attributes,
 	setAttributes,
 	clientId,
-	isSelected,
 } ) {
 	const { ref } = attributes;
 	const hasAlreadyRendered = useHasRecursion( ref );
+	const [ isFormSelectionOpen, setIsFormSelectionOpen ] = useState( false );
 
 	const { isResolved, innerBlocks, isMissing } = useSelect(
 		( select ) => {
@@ -38,7 +40,7 @@ export default function FormEdit( {
 
 			const getEntityArgs = [
 				'postType',
-				'inquirywp_form',
+				FORM_POST_TYPE,
 				ref,
 			];
 			const entityRecord = ref
@@ -95,6 +97,7 @@ export default function FormEdit( {
 							clientId={ clientId }
 							formId={ ref }
 							setAttributes={ setAttributes }
+							onOpenSelectionModal={ () => setIsFormSelectionOpen( true ) }
 						/>
 					</div>
 				) }
@@ -113,6 +116,20 @@ export default function FormEdit( {
 					</div>
 				) }
 			</RecursionProvider>
+			{ isFormSelectionOpen && (
+				<Modal
+					overlayClassName="block-editor-form__selection-modal"
+					title={ __( 'Choose a Form', 'inquirywp' ) }
+					closeLabel={ __( 'Cancel', 'inquirywp' ) }
+					onRequestClose={ () => setIsFormSelectionOpen( false ) }
+				>
+					<FormSelectionModal
+						formId={ ref }
+						setAttributes={ setAttributes }
+						onClose={ () => setIsFormSelectionOpen( false ) }
+					/>
+				</Modal>
+			) }
 		</>
 	);
 }

@@ -25,6 +25,7 @@ export default function FormPlaceholder( {
 	clientId,
 	formId,
 	setAttributes,
+	onOpenSelectionModal,
 } ) {
 	const { forms, isResolving } = useAlternativeForms();
 	const createFromBlocks = useCreateFormFromBlocks( setAttributes );
@@ -46,21 +47,30 @@ export default function FormPlaceholder( {
 		>
 			{ isResolving && <Spinner /> }
 
-			{ ! isResolving && !! forms.length && (
+			{ ! isResolving && (
 				<Button
 					variant="primary"
-					onClick={ () => console.debug( 'choose' ) }
+					onClick={ () => console.debug( 'explore templates' ) }
 				>
-					{ __( 'Choose', 'inquirywp' ) }
+					{ __( 'Explore templates', 'inquirywp' ) }
+				</Button>
+			) }
+
+			{ ! isResolving && !! forms.length && (
+				<Button
+					variant="tertiary"
+					onClick={ onOpenSelectionModal }
+				>
+					{ __( 'Choose existing', 'inquirywp' ) }
 				</Button>
 			) }
 
 			{ ! isResolving && (
 				<Button
-					variant="secondary"
+					variant="tertiary"
 					onClick={ () => setShowTitleModal( true ) }
 				>
-					{ __( 'Start blank', 'inquirywp' ) }
+					{ __( 'Create new', 'inquirywp' ) }
 				</Button>
 			) }
 
@@ -69,6 +79,7 @@ export default function FormPlaceholder( {
 					title={ __( 'Name and create your new form', 'inquirywp' ) }
 					closeLabel={ __( 'Cancel', 'inquirywp' ) }
 					onRequestClose={ () => setShowTitleModal( false ) }
+					focusOnMount
 				>
 					<form onSubmit={ onSubmitForCreation }>
 						<TextControl
