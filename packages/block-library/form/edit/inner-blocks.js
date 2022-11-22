@@ -12,6 +12,27 @@ import {
  */
 import { FORM_POST_TYPE } from '../../shared/constants';
 
+/**
+ * Allowed blocks constant is passed to InnerBlocks precisely as specified here.
+ * The contents of the array should never change.
+ * The array should contain the name of each block that is allowed.
+ *
+ * @constant
+ * @type {string[]}
+ */
+const ALLOWED_BLOCKS = [
+	'core/group',
+	'core/heading',
+	'core/image',
+	'core/paragraph',
+	'core/spacer',
+	'inquirywp/button-submit',
+	'inquirywp/field-input',
+	'inquirywp/field-select',
+	'inquirywp/field-textarea',
+	'inquirywp/fieldset',
+];
+
 export default function FormInnerBlocks( {
 	blockProps,
 	formId: id,
@@ -24,6 +45,7 @@ export default function FormInnerBlocks( {
 	);
 
 	const innerBlockProps = useInnerBlocksProps( blockProps, {
+		allowedBlocks: ALLOWED_BLOCKS,
 		value: blocks,
 		onInput,
 		onChange,
