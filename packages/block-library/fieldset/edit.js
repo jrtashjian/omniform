@@ -18,7 +18,7 @@ const Edit = ( {
 	setAttributes,
 } ) => {
 	const {
-		legend,
+		label,
 	} = attributes;
 
 	const blockProps = useBlockProps();
@@ -36,8 +36,8 @@ const Edit = ( {
 				placeholder={ __( 'Enter a title to the field…', 'inquirywp' ) }
 				withoutInteractiveFormatting
 				multiple={ false }
-				value={ legend }
-				onChange={ ( html ) => setAttributes( { legend: html } ) }
+				value={ label }
+				onChange={ ( html ) => setAttributes( { label: html } ) }
 			/>
 			{ innerBlockProps.children }
 		</div>

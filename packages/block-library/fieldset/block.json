@@ -6,7 +6,7 @@
 	"title": "fieldset",
 	"textdomain": "inquirywp",
 	"attributes": {
-		"legend": {
+		"label": {
 			"type": "string"
 		}
 	},
