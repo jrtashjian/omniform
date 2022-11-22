@@ -19,7 +19,7 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 	 */
 	public function boot() {
 		add_action( 'init', array( $this, 'registerBlocks' ) );
-		add_action( 'current_screen', array( $this, 'registerPatterns' ) );
+		add_action( 'init', array( $this, 'registerPatterns' ) );
 		add_filter( 'block_categories_all', array( $this, 'registerCategories' ) );
 		add_filter( 'render_block_data', array( $this, 'groupFields' ), 10, 3 );
 	}
@@ -106,11 +106,15 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 	 */
 	public function registerPatterns() {
 
+		register_block_pattern_category(
+			'form',
+			array( 'label' => __( 'Forms', 'inquirywp' ) )
+		);
+
 		register_block_pattern(
 			'inquirywp/form-pattern-one',
 			array(
 				'title'         => 'Pattern one',
-				'blockTypes'    => array( 'inquirywp/form' ),
 				'postTypes'     => array( 'inquirywp_form' ),
 				'categories'    => array( 'form' ),
 				'content'       => '<!-- wp:inquirywp/field-input {"label":"field-text label","help":"field-text help text"} /-->
@@ -128,7 +132,6 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 			'inquirywp/form-pattern-two',
 			array(
 				'title'         => 'Pattern two',
-				'blockTypes'    => array( 'inquirywp/form' ),
 				'postTypes'     => array( 'inquirywp_form' ),
 				'categories'    => array( 'form' ),
 				'content'       => '<!-- wp:inquirywp/field-input {"label":"field-text label","help":"field-text help text"} /-->
@@ -146,7 +149,6 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 			'inquirywp/form-pattern-three',
 			array(
 				'title'         => 'Pattern three',
-				'blockTypes'    => array( 'inquirywp/form' ),
 				'postTypes'     => array( 'inquirywp_form' ),
 				'categories'    => array( 'form' ),
 				'content'       => '<!-- wp:inquirywp/field-input {"label":"field-text label","help":"field-text help text"} /-->
