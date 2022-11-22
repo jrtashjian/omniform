@@ -52,7 +52,7 @@ class Form implements FormBlockInterface {
 
 		if ( $form_ingestion->willProcess() ) {
 			$post_data = sprintf(
-				'<pre>%s</pre>',
+				'<pre class="wp-block-preformatted">%s</pre>',
 				print_r(
 					array(
 						'attributes'     => $attributes,
@@ -70,7 +70,7 @@ class Form implements FormBlockInterface {
 
 		return sprintf(
 			'%s<form method="post" action="%s" class="wp-block-inquirywp-form is-layout-flow">%s</form>',
-			$post_data . '<pre>' . print_r( $attributes, true ) . '</pre>',
+			$post_data,
 			esc_url( get_the_permalink() ),
 			$form_ingestion->getNonceField() . $content
 		);

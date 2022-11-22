@@ -58,7 +58,7 @@ class FieldSelect extends BaseFieldBlock {
 		return sprintf(
 			'<div class="wp-block-inquirywp-%1$s inquirywp-%1$s">%2$s</div>',
 			esc_attr( $this->blockTypeName() ),
-			$this->renderFieldLabel() . $field_control . $this->renderFieldHelpText() . $content
+			$this->renderFieldLabel() . $field_control . $this->renderFieldHelpText() . $this->renderFieldError() . $content
 		);
 	}
 }

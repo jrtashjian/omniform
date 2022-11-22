@@ -70,7 +70,7 @@ class FieldInput extends BaseFieldBlock {
 			'<div class="wp-block-inquirywp-%1$s inquirywp-field-%2$s">%3$s</div>',
 			esc_attr( $this->blockTypeName() ),
 			esc_attr( $attributes['type'] ),
-			$this->renderFieldLabel() . $field_control . $this->renderFieldHelpText() . $content
+			$this->renderFieldLabel() . $field_control . $this->renderFieldHelpText() . $this->renderFieldError() . $content
 		);
 	}
 }

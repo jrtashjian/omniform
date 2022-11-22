@@ -7,6 +7,8 @@
 
 namespace InquiryWP\BlockLibrary\Blocks;
 
+use InquiryWP\Plugin\FormIngestionEngine;
+
 /**
  * The BaseFieldBlock block class.
  */
@@ -89,6 +91,20 @@ class BaseFieldBlock implements FormBlockInterface {
 		return empty( $this->getBlockAttribute( 'help' ) ) ? '' : sprintf(
 			'<p class="inquirywp-field-support">%s</p>',
 			wp_kses_post( $this->getBlockAttribute( 'help' ) )
+		);
+	}
+
+	/**
+	 * Render the input's error text element.
+	 *
+	 * @return string
+	 */
+	protected function renderFieldError() {
+		$form_ingestion = inquirywp()->get( FormIngestionEngine::class );
+		$errors         = $form_ingestion->fieldError( $this->field_name );
+		return empty( $errors ) ? '' : sprintf(
+			'<p class="inquirywp-field-support" style="color:red;">%s</p>',
+			wp_kses_post( $errors )
 		);
 	}
 

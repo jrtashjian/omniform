@@ -75,6 +75,10 @@ class FormIngestionEngine {
 		return empty( $this->form_data[ $field_name ] ) ? '' : $this->form_data[ $field_name ];
 	}
 
+	public function fieldError( $field_name ) {
+		return $this->willProcess() && empty( $this->formValue( $field_name ) ) ? ' MISSING ' : null;
+	}
+
 	public function resetFormData() {
 		$this->form_data = array();
 	}
