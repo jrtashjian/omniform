@@ -49,7 +49,8 @@ class PluginServiceProvider extends ServiceProvider {
 		);
 
 		add_action( 'init', array( $this, 'registerPostType' ) );
-		add_action( 'current_screen', array( $this, 'prepareEditors' ) );
+		add_action( 'init', array( $this, 'filterBlockPatternsOnAdmin' ), PHP_INT_MAX );
+		add_action( 'rest_api_init', array( $this, 'filterBlockPatternsOnRestApi' ), PHP_INT_MAX );
 	}
 
 	/**
@@ -158,54 +159,106 @@ class PluginServiceProvider extends ServiceProvider {
 	}
 
 	/**
-	 * Prepare the block edit screens.
+	 * Filter block patterns for the CPT block editor.
+	 *
+	 * Removes block patterns not specifically registered for the custom post type.
 	 */
-	public function prepareEditors() {
+	public function filterBlockPatternsOnAdmin() {
 		if ( ! is_admin() ) {
 			return;
 		}
 
-		$screen = get_current_screen();
-
-		if ( 'inquirywp_form' === $screen->post_type ) {
-			remove_action( 'enqueue_block_editor_assets', 'wp_enqueue_editor_block_directory_assets' );
-			add_filter( 'should_load_remote_block_patterns', '__return_false' );
-
-			add_filter(
-				'allowed_block_types_all',
-				function() {
-					return array(
-						'inquirywp/button-submit',
-						'inquirywp/field-input',
-						'inquirywp/field-select',
-						'inquirywp/field-textarea',
-						'inquirywp/fieldset',
-						'core/paragraph',
-						'core/heading',
-						'core/image',
-						'core/group',
-						'core/spacer',
-					);
-				}
-			);
+		if (
+			'post.php' !== $GLOBALS['pagenow'] ||
+			empty( $_GET['post'] ) // phpcs:ignore WordPress.Security.NonceVerification
+		) {
+			return;
 		}
 
-		// Filter allowed patterns.
-		$block_patterns_registry = WP_Block_Patterns_Registry::get_instance();
-		array_map(
-			function( $pattern ) use ( $block_patterns_registry ) {
-				$block_types_exists = array_key_exists( 'blockTypes', $pattern );
+		if ( 'inquirywp_form' !== get_post_type( (int) $_GET['post'] ) ) {
+			return;
+		}
 
-				if (
-					! $block_types_exists ||
-					( $block_types_exists && in_array( 'inquirywp_form', $pattern['blockTypes'], true ) )
-				) {
-					$block_patterns_registry->unregister( $pattern['name'] );
-				}
+		$this->filterBlockPatterns();
 
-				return $pattern;
-			},
-			$block_patterns_registry->get_all_registered()
+		// Prevent Block Directory.
+		remove_action( 'enqueue_block_editor_assets', 'wp_enqueue_editor_block_directory_assets' );
+
+		add_filter(
+			'allowed_block_types_all',
+			function() {
+				return array(
+					'inquirywp/button-submit',
+					'inquirywp/field-input',
+					'inquirywp/field-select',
+					'inquirywp/field-textarea',
+					'inquirywp/fieldset',
+					'core/paragraph',
+					'core/heading',
+					'core/image',
+					'core/group',
+					'core/spacer',
+				);
+			}
 		);
+	}
+
+	/**
+	 * Filter block patterns in REST API responses.
+	 *
+	 * Removes block patterns not specifically registered for the custom post type.
+	 */
+	public function filterBlockPatternsOnRestApi() {
+		if ( empty( $_SERVER['HTTP_REFERER'] ) ) {
+			return;
+		}
+
+		$url_parts = wp_parse_url( $_SERVER['HTTP_REFERER'] );
+
+		if ( '/wp-admin/post.php' !== $url_parts['path'] ) {
+			return;
+		}
+
+		$query_args      = array();
+		$query_arg_parts = explode( '&', $url_parts['query'] );
+
+		foreach ( $query_arg_parts as $arg ) {
+			$arg_parts                   = explode( '=', $arg );
+			$query_args[ $arg_parts[0] ] = $arg_parts[1];
+		}
+
+		if (
+			empty( $query_args['post'] ) // phpcs:ignore WordPress.Security.NonceVerification
+		) {
+			return;
+		}
+
+		if ( 'inquirywp_form' !== get_post_type( (int) $query_args['post'] ) ) {
+			return;
+		}
+
+		$this->filterBlockPatterns();
+	}
+
+	/**
+	 * Removes block patterns not registered specifically for CPT.
+	 */
+	private function filterBlockPatterns() {
+		// Prevent block patterns not explicitly registered for the custom post type.
+		add_filter( 'should_load_remote_block_patterns', '__return_false' );
+
+		$block_patterns_registry = WP_Block_Patterns_Registry::get_instance();
+		$registered_patterns     = $block_patterns_registry->get_all_registered();
+
+		foreach ( $registered_patterns as $pattern ) {
+			$post_types_exists = array_key_exists( 'postTypes', $pattern );
+
+			if (
+			! $post_types_exists ||
+			( $post_types_exists && in_array( 'inquirywp', $pattern['postTypes'], true ) )
+			) {
+				$block_patterns_registry->unregister( $pattern['name'] );
+			}
+		}
 	}
 }
