@@ -2,10 +2,10 @@
 /**
  * The ButtonSubmit block class.
  *
- * @package InquiryWP
+ * @package OmniForm
  */
 
-namespace InquiryWP\BlockLibrary\Blocks;
+namespace OmniForm\BlockLibrary\Blocks;
 
 /**
  * The ButtonSubmit block class.
@@ -17,7 +17,7 @@ class ButtonSubmit implements FormBlockInterface {
 	 * @return string path to the JSON file with metadata definition for the block.
 	 */
 	public function blockTypeMetadata() {
-		return inquirywp()->basePath( '/build/block-library/button-submit' );
+		return omniform()->basePath( '/build/block-library/button-submit' );
 	}
 
 	/**
@@ -30,7 +30,7 @@ class ButtonSubmit implements FormBlockInterface {
 	 */
 	public function renderBlock( $attributes, $content ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
 		$button_classes = array(
-			'wp-block-inquirywp-button-submit',
+			'wp-block-omniform-button-submit',
 			'wp-block-button',
 			wp_theme_get_element_class_name( 'button' ),
 		);

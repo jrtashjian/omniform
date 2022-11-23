@@ -1,6 +1,6 @@
 <?php
 
-namespace InquiryWP\Dependencies\Illuminate\Contracts\Container;
+namespace OmniForm\Dependencies\Illuminate\Contracts\Container;
 
 interface ContextualBindingBuilder
 {

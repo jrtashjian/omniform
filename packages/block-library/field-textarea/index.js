@@ -19,7 +19,7 @@ registerBlockType( name, {
 	edit: Edit,
 	example: {
 		attributes: {
-			label: __( 'Example input', 'inquirywp' ),
+			label: __( 'Example input', 'omniform' ),
 		},
 	},
 } );

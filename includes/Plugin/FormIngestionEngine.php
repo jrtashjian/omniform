@@ -2,10 +2,10 @@
 /**
  * The FormIngestionEngine class.
  *
- * @package InquiryWP
+ * @package OmniForm
  */
 
-namespace InquiryWP\Plugin;
+namespace OmniForm\Plugin;
 
 /**
  * The FormIngestionEngine class.
@@ -30,7 +30,7 @@ class FormIngestionEngine {
 	 *
 	 * @var string
 	 */
-	protected $nonce_action = 'inquirywp_form_submission_';
+	protected $nonce_action = 'omniform_form_submission_';
 
 	/**
 	 * The form's nonce name.

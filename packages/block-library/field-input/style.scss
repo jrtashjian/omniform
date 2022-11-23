@@ -1,6 +1,6 @@
 @import "../shared/mixins";
 
-.wp-block-inquirywp-field-input {
+.wp-block-omniform-field-input {
 
 	@include defaults;
 	@include reset;
@@ -11,23 +11,23 @@
 	width: 100%;
 
 	// Checkbox and Radio
-	&.inquirywp-field-checkbox,
-	&.inquirywp-field-radio {
+	&.omniform-field-checkbox,
+	&.omniform-field-radio {
 		display: flex;
 		flex-wrap: wrap;
 
-		.inquirywp-field-label {
+		.omniform-field-label {
 			order: 1;
 			margin-bottom: 0;
 			width: calc(100% - 1.5em);
 		}
 
-		.inquirywp-field-support {
+		.omniform-field-support {
 			order: 2;
 			margin-left: calc(1.5em + 2px);
 		}
 
-		.inquirywp-field-control {
+		.omniform-field-control {
 			order: 0;
 			width: 1em;
 			height: 1em;
@@ -62,9 +62,9 @@
 	}
 
 	// Color selector
-	&.inquirywp-field-color {
+	&.omniform-field-color {
 
-		.inquirywp-field-control {
+		.omniform-field-control {
 			padding: 0.5em;
 			height: 2.625em;
 		}
@@ -74,8 +74,8 @@
 // Consecutive checbox and radio inputs should appear as related.
 :not(.is-layout-flex) {
 
-	> .inquirywp-field-checkbox + .inquirywp-field-checkbox,
-	> .inquirywp-field-radio + .inquirywp-field-radio {
+	> .omniform-field-checkbox + .omniform-field-checkbox,
+	> .omniform-field-radio + .omniform-field-radio {
 		margin-top: 0.5em;
 	}
 }

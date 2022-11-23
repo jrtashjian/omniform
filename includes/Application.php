@@ -2,12 +2,12 @@
 /**
  * The Application class.
  *
- * @package InquiryWP
+ * @package OmniForm
  */
 
-namespace InquiryWP;
+namespace OmniForm;
 
-use InquiryWP\Dependencies\Illuminate\Container\Container;
+use OmniForm\Dependencies\Illuminate\Container\Container;
 
 /**
  * The Application class.
@@ -274,6 +274,6 @@ class Application extends Container {
 	 * Load language files.
 	 */
 	public function loadTextDomain() {
-		load_plugin_textdomain( 'inquirywp', false, $this->basePath( 'languages' ) );
+		load_plugin_textdomain( 'omniform', false, $this->basePath( 'languages' ) );
 	}
 }

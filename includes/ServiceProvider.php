@@ -2,10 +2,10 @@
 /**
  * The ServiceProvider class.
  *
- * @package InquiryWP
+ * @package OmniForm
  */
 
-namespace InquiryWP;
+namespace OmniForm;
 
 /**
  * The ServiceProvider class.
@@ -14,14 +14,14 @@ abstract class ServiceProvider {
 	/**
 	 * The application instance.
 	 *
-	 * @var \InquiryWP\Application
+	 * @var \OmniForm\Application
 	 */
 	protected $app;
 
 	/**
 	 * Create a new service provider instance.
 	 *
-	 * @param \InquiryWP\Application $app The Application.
+	 * @param \OmniForm\Application $app The Application.
 	 */
 	public function __construct( $app ) {
 		$this->app = $app;

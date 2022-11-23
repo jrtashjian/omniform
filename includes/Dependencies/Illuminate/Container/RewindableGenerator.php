@@ -1,6 +1,6 @@
 <?php
 
-namespace InquiryWP\Dependencies\Illuminate\Container;
+namespace OmniForm\Dependencies\Illuminate\Container;
 
 use Countable;
 use IteratorAggregate;

@@ -2,10 +2,10 @@
 /**
  * The Asset class.
  *
- * @package InquiryWP
+ * @package OmniForm
  */
 
-namespace InquiryWP\Plugin;
+namespace OmniForm\Plugin;
 
 /**
  * The Asset class.
@@ -67,7 +67,7 @@ class Asset {
 	protected function loadAssetFile( $filepath ) {
 		$default_asset_file = array(
 			'dependencies' => array(),
-			'version'      => inquirywp()->version(),
+			'version'      => omniform()->version(),
 		);
 
 		return file_exists( $filepath ) ? include $filepath : $default_asset_file;
@@ -81,7 +81,7 @@ class Asset {
 	 * @return string
 	 */
 	protected function getAssetFilePath( $filename ) {
-		return inquirywp()->basePath( 'build/' . $this->package . '/' . $filename . '.asset.php' );
+		return omniform()->basePath( 'build/' . $this->package . '/' . $filename . '.asset.php' );
 	}
 
 	/**
@@ -92,7 +92,7 @@ class Asset {
 	 * @return string
 	 */
 	protected function getAssetUrl( $filename ) {
-		return inquirywp()->baseUrl( 'build/' . $this->package . '/' . $filename );
+		return omniform()->baseUrl( 'build/' . $this->package . '/' . $filename );
 	}
 
 	/**

@@ -8,7 +8,7 @@
 	convertWarningsToExceptions="true"
 	>
 	<testsuites>
-		<testsuite name="InquiryWP Test Suite">
+		<testsuite name="OmniForm Test Suite">
 			<directory suffix=".php">./phpunit/</directory>
 			<exclude>./phpunit/test-sample.php</exclude>
 		</testsuite>

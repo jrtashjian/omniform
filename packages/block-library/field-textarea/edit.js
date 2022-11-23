@@ -31,12 +31,12 @@ const Edit = ( props ) => {
 
 			<textarea
 				type={ type }
-				className="inquirywp-field-control"
+				className="omniform-field-control"
 				id="textInput"
 				aria-describedby="textInputHelp"
-				aria-label={ __( 'Optional placeholder text', 'inquirywp' ) }
+				aria-label={ __( 'Optional placeholder text', 'omniform' ) }
 				placeholder={
-					( placeholder || ! isSelected ) ? undefined : __( 'Enter a placeholder…', 'inquirywp' )
+					( placeholder || ! isSelected ) ? undefined : __( 'Enter a placeholder…', 'omniform' )
 				}
 				value={ placeholder }
 				onChange={ ( event ) =>
@@ -48,10 +48,10 @@ const Edit = ( props ) => {
 
 			{ ( isSelected || help ) && (
 				<RichText
-					className="inquirywp-field-support"
+					className="omniform-field-support"
 					tagName="p"
-					aria-label={ __( 'Help text', 'inquirywp' ) }
-					placeholder={ __( 'Write a help text…', 'inquirywp' ) }
+					aria-label={ __( 'Help text', 'omniform' ) }
+					placeholder={ __( 'Write a help text…', 'omniform' ) }
 					withoutInteractiveFormatting
 					value={ help }
 					onChange={ ( html ) => setAttributes( { help: html } ) }

@@ -2,10 +2,10 @@
 /**
  * The Fieldset block class.
  *
- * @package InquiryWP
+ * @package OmniForm
  */
 
-namespace InquiryWP\BlockLibrary\Blocks;
+namespace OmniForm\BlockLibrary\Blocks;
 
 /**
  * The Fieldset block class.
@@ -17,7 +17,7 @@ class Fieldset implements FormBlockInterface {
 	 * @return string path to the JSON file with metadata definition for the block.
 	 */
 	public function blockTypeMetadata() {
-		return inquirywp()->basePath( '/build/block-library/fieldset' );
+		return omniform()->basePath( '/build/block-library/fieldset' );
 	}
 
 	/**
@@ -34,7 +34,7 @@ class Fieldset implements FormBlockInterface {
 		}
 
 		return sprintf(
-			'<fieldset class="wp-block-inquirywp-fieldset is-layout-flow"><legend class="inquirywp-field-label">%1$s</legend>%2$s</fieldset>',
+			'<fieldset class="wp-block-omniform-fieldset is-layout-flow"><legend class="omniform-field-label">%1$s</legend>%2$s</fieldset>',
 			esc_html( $attributes['legend'] ),
 			do_blocks( $content )
 		);

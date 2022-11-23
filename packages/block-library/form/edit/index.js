@@ -68,7 +68,7 @@ export default function FormEdit( {
 	if ( innerBlocks.length === 0 && isMissing ) {
 		<div { ...blockProps }>
 			<Warning>
-				{ __( 'Form has been deleted or is unavailable.', 'inquirywp' ) }
+				{ __( 'Form has been deleted or is unavailable.', 'omniform' ) }
 			</Warning>
 		</div>;
 	}
@@ -77,7 +77,7 @@ export default function FormEdit( {
 		return (
 			<div { ...blockProps }>
 				<Warning>
-					{ __( 'Form cannot be rendered inside itself.', 'inquirywp' ) }
+					{ __( 'Form cannot be rendered inside itself.', 'omniform' ) }
 				</Warning>
 			</div>
 		);
@@ -119,8 +119,8 @@ export default function FormEdit( {
 			{ isFormSelectionOpen && (
 				<Modal
 					overlayClassName="block-editor-form__selection-modal"
-					title={ __( 'Choose a Form', 'inquirywp' ) }
-					closeLabel={ __( 'Cancel', 'inquirywp' ) }
+					title={ __( 'Choose a Form', 'omniform' ) }
+					closeLabel={ __( 'Cancel', 'omniform' ) }
 					onRequestClose={ () => setIsFormSelectionOpen( false ) }
 				>
 					<FormSelectionModal

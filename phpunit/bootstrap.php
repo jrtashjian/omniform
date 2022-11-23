@@ -2,7 +2,7 @@
 /**
  * PHPUnit bootstrap file
  *
- * @package InquiryWP
+ * @package OmniForm
  * @phpcs:disable WordPress.NamingConventions.PrefixAllGlobals
  */
 

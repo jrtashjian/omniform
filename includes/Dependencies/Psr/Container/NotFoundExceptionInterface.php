@@ -1,6 +1,6 @@
 <?php
 
-namespace InquiryWP\Dependencies\Psr\Container;
+namespace OmniForm\Dependencies\Psr\Container;
 
 /**
  * No entry was found in the container.

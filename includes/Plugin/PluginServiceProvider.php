@@ -2,12 +2,12 @@
 /**
  * The PluginServiceProvider class.
  *
- * @package InquiryWP
+ * @package OmniForm
  */
 
-namespace InquiryWP\Plugin;
+namespace OmniForm\Plugin;
 
-use InquiryWP\ServiceProvider;
+use OmniForm\ServiceProvider;
 use WP_Block_Patterns_Registry;
 
 /**
@@ -25,19 +25,19 @@ class PluginServiceProvider extends ServiceProvider {
 			'admin_menu',
 			function () {
 				add_menu_page(
-					esc_html__( 'InquiryWP', 'inquirywp' ),
-					esc_html__( 'InquiryWP', 'inquirywp' ),
+					esc_html__( 'OmniForm', 'omniform' ),
+					esc_html__( 'OmniForm', 'omniform' ),
 					'manage_options',
-					'inquirywp',
+					'omniform',
 					function () {
 						?>
-						<div id="inquirywp" class="hide-if-no-js"></div>
+						<div id="omniform" class="hide-if-no-js"></div>
 
 						<?php // JavaScript is disabled. ?>
 						<div class="wrap hide-if-js">
-							<h1 class="wp-heading-inline">InquiryWP</h1>
+							<h1 class="wp-heading-inline">OmniForm</h1>
 							<div class="notice notice-error notice-alt">
-								<p><?php esc_html_e( 'InquiryWP requires JavaScript. Please enable JavaScript in your browser settings.', 'inquirywp' ); ?></p>
+								<p><?php esc_html_e( 'OmniForm requires JavaScript. Please enable JavaScript in your browser settings.', 'omniform' ); ?></p>
 							</div>
 						</div>
 						<?php
@@ -66,7 +66,7 @@ class PluginServiceProvider extends ServiceProvider {
 	public function registerScripts() {
 		$current_screen = get_current_screen();
 
-		if ( 'toplevel_page_inquirywp' !== $current_screen->base ) {
+		if ( 'toplevel_page_omniform' !== $current_screen->base ) {
 			return;
 		}
 
@@ -87,9 +87,9 @@ class PluginServiceProvider extends ServiceProvider {
 
 		$init_script = <<<JS
 		( function() {
-			window._loadInquiryWP = new Promise( function( resolve ) {
+			window._loadOmniForm = new Promise( function( resolve ) {
 				wp.domReady( function() {
-					resolve( inquirywp.plugin.initialize( 'inquirywp', %s ) );
+					resolve( omniform.plugin.initialize( 'omniform', %s ) );
 				} );
 			} );
 		} )();
@@ -107,35 +107,35 @@ class PluginServiceProvider extends ServiceProvider {
 	 */
 	public function registerPostType() {
 		register_post_type(
-			'inquirywp_form',
+			'omniform_form',
 			array(
 				'labels'                => array(
-					'name'                     => _x( 'Forms', 'post type general name', 'inquirywp' ),
-					'singular_name'            => _x( 'Form', 'post type singular name', 'inquirywp' ),
-					'add_new'                  => _x( 'Add New', 'Form', 'inquirywp' ),
-					'add_new_item'             => __( 'Add new Form', 'inquirywp' ),
-					'new_item'                 => __( 'New Form', 'inquirywp' ),
-					'edit_item'                => __( 'Edit Form', 'inquirywp' ),
-					'view_item'                => __( 'View Form', 'inquirywp' ),
-					'all_items'                => __( 'All Forms', 'inquirywp' ),
-					'search_items'             => __( 'Search Forms', 'inquirywp' ),
-					'not_found'                => __( 'No Forms found.', 'inquirywp' ),
-					'not_found_in_trash'       => __( 'No Forms found in Trash.', 'inquirywp' ),
-					'filter_items_list'        => __( 'Filter Forms list', 'inquirywp' ),
-					'items_list_navigation'    => __( 'Forms list navigation', 'inquirywp' ),
-					'items_list'               => __( 'Forms list', 'inquirywp' ),
-					'item_published'           => __( 'Form published.', 'inquirywp' ),
-					'item_published_privately' => __( 'Form published privately.', 'inquirywp' ),
-					'item_reverted_to_draft'   => __( 'Form reverted to draft.', 'inquirywp' ),
-					'item_scheduled'           => __( 'Form scheduled.', 'inquirywp' ),
-					'item_updated'             => __( 'Form updated.', 'inquirywp' ),
+					'name'                     => _x( 'Forms', 'post type general name', 'omniform' ),
+					'singular_name'            => _x( 'Form', 'post type singular name', 'omniform' ),
+					'add_new'                  => _x( 'Add New', 'Form', 'omniform' ),
+					'add_new_item'             => __( 'Add new Form', 'omniform' ),
+					'new_item'                 => __( 'New Form', 'omniform' ),
+					'edit_item'                => __( 'Edit Form', 'omniform' ),
+					'view_item'                => __( 'View Form', 'omniform' ),
+					'all_items'                => __( 'All Forms', 'omniform' ),
+					'search_items'             => __( 'Search Forms', 'omniform' ),
+					'not_found'                => __( 'No Forms found.', 'omniform' ),
+					'not_found_in_trash'       => __( 'No Forms found in Trash.', 'omniform' ),
+					'filter_items_list'        => __( 'Filter Forms list', 'omniform' ),
+					'items_list_navigation'    => __( 'Forms list navigation', 'omniform' ),
+					'items_list'               => __( 'Forms list', 'omniform' ),
+					'item_published'           => __( 'Form published.', 'omniform' ),
+					'item_published_privately' => __( 'Form published privately.', 'omniform' ),
+					'item_reverted_to_draft'   => __( 'Form reverted to draft.', 'omniform' ),
+					'item_scheduled'           => __( 'Form scheduled.', 'omniform' ),
+					'item_updated'             => __( 'Form updated.', 'omniform' ),
 				),
 				'public'                => false,
 				'show_ui'               => true,
 				'show_in_menu'          => true,
 				'rewrite'               => false,
 				'show_in_rest'          => true,
-				'rest_namespace'        => 'inquirywp/v1',
+				'rest_namespace'        => 'omniform/v1',
 				'rest_base'             => 'forms',
 				'rest_controller_class' => 'WP_REST_Blocks_Controller',
 				'capability_type'       => 'block',
@@ -175,7 +175,7 @@ class PluginServiceProvider extends ServiceProvider {
 			return;
 		}
 
-		if ( 'inquirywp_form' !== get_post_type( (int) $_GET['post'] ) ) {
+		if ( 'omniform_form' !== get_post_type( (int) $_GET['post'] ) ) {
 			return;
 		}
 
@@ -188,11 +188,11 @@ class PluginServiceProvider extends ServiceProvider {
 			'allowed_block_types_all',
 			function() {
 				return array(
-					'inquirywp/button-submit',
-					'inquirywp/field-input',
-					'inquirywp/field-select',
-					'inquirywp/field-textarea',
-					'inquirywp/fieldset',
+					'omniform/button-submit',
+					'omniform/field-input',
+					'omniform/field-select',
+					'omniform/field-textarea',
+					'omniform/fieldset',
 					'core/paragraph',
 					'core/heading',
 					'core/image',
@@ -233,7 +233,7 @@ class PluginServiceProvider extends ServiceProvider {
 			return;
 		}
 
-		if ( 'inquirywp_form' !== get_post_type( (int) $query_args['post'] ) ) {
+		if ( 'omniform_form' !== get_post_type( (int) $query_args['post'] ) ) {
 			return;
 		}
 
@@ -255,7 +255,7 @@ class PluginServiceProvider extends ServiceProvider {
 
 			if (
 			! $post_types_exists ||
-			( $post_types_exists && in_array( 'inquirywp', $pattern['postTypes'], true ) )
+			( $post_types_exists && in_array( 'omniform', $pattern['postTypes'], true ) )
 			) {
 				$block_patterns_registry->unregister( $pattern['name'] );
 			}

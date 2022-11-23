@@ -1,4 +1,4 @@
-# InquiryWP
+# OmniForm
 
 The Form Builder for the Block Editor
 
@@ -14,7 +14,7 @@ The Form Builder for the Block Editor
 Clone this repository:
 
 ```
-git clone https://github.com/jrtashjian/inquirywp.git
+git clone https://github.com/jrtashjian/omniform.git
 ```
 
 Install the necessary Node.js and Composer dependencies:

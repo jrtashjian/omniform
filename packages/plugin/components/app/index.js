@@ -19,16 +19,16 @@ export default function App( { settings } ) {
 			<InterfaceSkeleton
 				content={ (
 					<div style={ { padding: '1rem' } }>
-						<h1>{ __( 'InquiryWP', 'inquirywp' ) }</h1>
+						<h1>{ __( 'OmniForm', 'omniform' ) }</h1>
 
 						<pre style={ { margin: '0' } }>
-							{ __( 'Initial Settings', 'inquirywp' ) }:<br />
+							{ __( 'Initial Settings', 'omniform' ) }:<br />
 							{ JSON.stringify( settings, null, 2 ) }
 						</pre>
 					</div>
 				) }
 			/>
-			<PluginArea scope="inquirywp" />
+			<PluginArea scope="omniform" />
 			<Popover.Slot />
 		</SlotFillProvider>
 	);

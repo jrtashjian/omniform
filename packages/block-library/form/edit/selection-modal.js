@@ -24,7 +24,7 @@ export default function FormSelectionModal( {
 			return {
 				name: form.slug,
 				title: form.title.raw,
-				blocks: createBlock( 'inquirywp/form', { ref: form.id } ), // parse( form.content.raw ),
+				blocks: createBlock( 'omniform/form', { ref: form.id } ), // parse( form.content.raw ),
 				viewportWidth: 640,
 				form,
 			};
@@ -44,7 +44,7 @@ export default function FormSelectionModal( {
 		<div className="block-library-form__selection-content">
 			{ hasForms && (
 				<div>
-					<h2>{ __( 'Existing forms', 'inquirywp' ) }</h2>
+					<h2>{ __( 'Existing forms', 'omniform' ) }</h2>
 					<BlockPatternsList
 						blockPatterns={ filteredForms }
 						shownPatterns={ shownForms }
@@ -58,7 +58,7 @@ export default function FormSelectionModal( {
 
 			{ ! hasForms && (
 				<HStack alignment="center">
-					<p>{ __( 'No results found.', 'inquirywp' ) }</p>
+					<p>{ __( 'No results found.', 'omniform' ) }</p>
 				</HStack>
 			) }
 		</div>

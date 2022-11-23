@@ -2,12 +2,12 @@
 /**
  * The Form block class.
  *
- * @package InquiryWP
+ * @package OmniForm
  */
 
-namespace InquiryWP\BlockLibrary\Blocks;
+namespace OmniForm\BlockLibrary\Blocks;
 
-use InquiryWP\Plugin\FormIngestionEngine;
+use OmniForm\Plugin\FormIngestionEngine;
 
 /**
  * The Form block class.
@@ -19,7 +19,7 @@ class Form implements FormBlockInterface {
 	 * @return string path to the JSON file with metadata definition for the block.
 	 */
 	public function blockTypeMetadata() {
-		return inquirywp()->basePath( '/build/block-library/form' );
+		return omniform()->basePath( '/build/block-library/form' );
 	}
 
 	/**
@@ -36,7 +36,7 @@ class Form implements FormBlockInterface {
 		}
 
 		$form_block = get_post( $attributes['ref'] );
-		if ( ! $form_block || 'inquirywp_form' !== $form_block->post_type ) {
+		if ( ! $form_block || 'omniform_form' !== $form_block->post_type ) {
 			return '';
 		}
 
@@ -45,7 +45,7 @@ class Form implements FormBlockInterface {
 		}
 
 		// Process the form.
-		$form_ingestion = inquirywp()->get( FormIngestionEngine::class );
+		$form_ingestion = omniform()->get( FormIngestionEngine::class );
 		$form_ingestion->setFormId( $attributes['ref'] );
 
 		$post_data = '';
@@ -69,7 +69,7 @@ class Form implements FormBlockInterface {
 		$form_ingestion->resetFormData();
 
 		return sprintf(
-			'%s<form method="post" action="%s" class="wp-block-inquirywp-form is-layout-flow">%s</form>',
+			'%s<form method="post" action="%s" class="wp-block-omniform-form is-layout-flow">%s</form>',
 			$post_data,
 			esc_url( get_the_permalink() ),
 			$form_ingestion->getNonceField() . $content

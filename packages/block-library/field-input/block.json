@@ -1,10 +1,10 @@
 {
 	"$schema": "https://json.schemastore.org/block.json",
 	"apiVersion": 2,
-	"name": "inquirywp/field-input",
+	"name": "omniform/field-input",
 	"category": "form-control",
 	"title": "field-input",
-	"textdomain": "inquirywp",
+	"textdomain": "omniform",
 	"attributes": {
 		"type": {
 			"type": "string",

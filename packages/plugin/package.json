@@ -1,0 +1,27 @@
+{
+	"name": "@omniform/plugin",
+	"version": "1.0.0-prerelease",
+	"description": "Package description.",
+	"author": "JR Tashjian",
+	"license": "GPL-2.0-only",
+	"keywords": [ "wordpress" ],
+	"homepage": "https://github.com/jrtashjian/omniform/tree/HEAD/packages/plugin/README.md",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jrtashjian/omniform.git",
+		"directory": "packages/plugin"
+	},
+	"bugs": {
+		"url": "https://github.com/jrtashjian/omniform/issues"
+	},
+	"main": "build/index.js",
+	"module": "build-module/index.js",
+	"dependencies": {
+		"@wordpress/components": "^21.0.6",
+		"@wordpress/dom-ready": "^3.17.1",
+		"@wordpress/element": "^4.15.1",
+		"@wordpress/i18n": "^4.17.1",
+		"@wordpress/interface": "^4.16.6",
+		"@wordpress/plugins": "^4.15.2"
+	}
+}

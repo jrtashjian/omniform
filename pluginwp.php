@@ -1,17 +1,17 @@
 <?php
 /**
- * Plugin Name: InquiryWP
- * Plugin URI: https://inquirywp.com
- * Description: InquiryWP Plugin Description.
+ * Plugin Name: OmniForm
+ * Plugin URI: https://omniform.com
+ * Description: OmniForm Plugin Description.
  * Version: 1.0.0
  * Requires at least: 6.0
  * Requires PHP: 7.4
- * Author: InquiryWP
- * Author URI: https://inquirywp.com
- * Text Domain: inquirywp
+ * Author: OmniForm
+ * Author URI: https://omniform.com
+ * Text Domain: omniform
  * Domain Path: /languages
  *
- * Copyright 2019-2022 InquiryWP
+ * Copyright 2019-2022 OmniForm
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,13 +26,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  *
- * @package InquiryWP
+ * @package OmniForm
  */
 
 defined( 'ABSPATH' ) || exit;
 
 // Guard the plugin from initializing more than once.
-if ( class_exists( \InquiryWP\Application::class ) ) {
+if ( class_exists( \OmniForm\Application::class ) ) {
 	return;
 }
 
@@ -43,20 +43,20 @@ require_once dirname( __FILE__ ) . '/vendor/autoload.php';
  *
  * @return Application The application container.
  */
-function inquirywp() {
-	return \InquiryWP\Application::getInstance();
+function omniform() {
+	return \OmniForm\Application::getInstance();
 }
 
-inquirywp()->setBasePath( __FILE__ );
+omniform()->setBasePath( __FILE__ );
 
 /**
  * Service Providers.
  */
-inquirywp()->register( \InquiryWP\Plugin\PluginServiceProvider::class );
-inquirywp()->register( \InquiryWP\BlockLibrary\BlockLibraryServiceProvider::class );
+omniform()->register( \OmniForm\Plugin\PluginServiceProvider::class );
+omniform()->register( \OmniForm\BlockLibrary\BlockLibraryServiceProvider::class );
 
-register_deactivation_hook( __FILE__, array( inquirywp(), 'deactivation' ) );
+register_deactivation_hook( __FILE__, array( omniform(), 'deactivation' ) );
 
 // Boot the plugin.
-add_action( 'plugins_loaded', array( inquirywp(), 'boot' ) );
-add_action( 'plugins_loaded', array( inquirywp(), 'loadTextDomain' ) );
+add_action( 'plugins_loaded', array( omniform(), 'boot' ) );
+add_action( 'plugins_loaded', array( omniform(), 'loadTextDomain' ) );

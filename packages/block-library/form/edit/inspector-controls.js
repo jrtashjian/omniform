@@ -26,7 +26,7 @@ export default function FormInspectorControls( {
 		<InspectorControls __experimentalGroup="advanced">
 			{ isEntityAvailable && (
 				<TextControl
-					label={ __( 'Title', 'inquirywp' ) }
+					label={ __( 'Title', 'omniform' ) }
 					value={ title }
 					onChange={ setTitle }
 				/>

@@ -11,7 +11,7 @@ import App from './components/app';
 import './style.scss';
 
 /**
- * Initializes and returns and instance of InquiryWP.
+ * Initializes and returns and instance of OmniForm.
  *
  * @param {string}  id       Unique identifier for the editor instance.
  * @param {?Object} settings Settings object.

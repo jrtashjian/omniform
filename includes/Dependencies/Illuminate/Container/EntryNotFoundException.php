@@ -1,9 +1,9 @@
 <?php
 
-namespace InquiryWP\Dependencies\Illuminate\Container;
+namespace OmniForm\Dependencies\Illuminate\Container;
 
 use Exception;
-use InquiryWP\Dependencies\Psr\Container\NotFoundExceptionInterface;
+use OmniForm\Dependencies\Psr\Container\NotFoundExceptionInterface;
 
 class EntryNotFoundException extends Exception implements NotFoundExceptionInterface
 {

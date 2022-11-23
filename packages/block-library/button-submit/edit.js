@@ -42,8 +42,8 @@ const Edit = ( {
 					...colorProps.style,
 				} }
 				tagName="button"
-				aria-label={ __( 'Button text', 'inquirywp' ) }
-				placeholder={ __( 'Add text…', 'inquirywp' ) }
+				aria-label={ __( 'Button text', 'omniform' ) }
+				placeholder={ __( 'Add text…', 'omniform' ) }
 				value={ text }
 				withoutInteractiveFormatting
 				onChange={ ( value ) => setAttributes( { text: value } ) }
@@ -51,13 +51,13 @@ const Edit = ( {
 					let block;
 
 					if ( isOriginal || value ) {
-						block = createBlock( 'inquirywp/button-submit', {
+						block = createBlock( 'omniform/button-submit', {
 							...attributes,
 							text: value,
 						} );
 					} else {
 						block = createBlock(
-							getDefaultBlockName() ?? 'inquirywp/button-submit'
+							getDefaultBlockName() ?? 'omniform/button-submit'
 						);
 					}
 

@@ -2,12 +2,12 @@
 /**
  * The FieldInput block class.
  *
- * @package InquiryWP
+ * @package OmniForm
  */
 
-namespace InquiryWP\BlockLibrary\Blocks;
+namespace OmniForm\BlockLibrary\Blocks;
 
-use InquiryWP\Plugin\FormIngestionEngine;
+use OmniForm\Plugin\FormIngestionEngine;
 
 /**
  * The FieldInput block class.
@@ -28,7 +28,7 @@ class FieldInput extends BaseFieldBlock {
 			return '';
 		}
 
-		$form_ingestion = inquirywp()->get( FormIngestionEngine::class );
+		$form_ingestion = omniform()->get( FormIngestionEngine::class );
 
 		$field_attributes = array(
 			'id'          => esc_attr( $this->field_name ),
@@ -61,13 +61,13 @@ class FieldInput extends BaseFieldBlock {
 		);
 
 		$field_control = sprintf(
-			'<input class="inquirywp-field-control" type="%s" %s />',
+			'<input class="omniform-field-control" type="%s" %s />',
 			esc_attr( $attributes['type'] ),
 			implode( ' ', $field_attributes )
 		);
 
 		return sprintf(
-			'<div class="wp-block-inquirywp-%1$s inquirywp-field-%2$s">%3$s</div>',
+			'<div class="wp-block-omniform-%1$s omniform-field-%2$s">%3$s</div>',
 			esc_attr( $this->blockTypeName() ),
 			esc_attr( $attributes['type'] ),
 			$this->renderFieldLabel() . $field_control . $this->renderFieldHelpText() . $this->renderFieldError() . $content

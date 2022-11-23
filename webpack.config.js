@@ -8,7 +8,7 @@ const { camelCaseDash } = require( '@wordpress/dependency-extraction-webpack-plu
  * Internal dependencies.
  */
 const { dependencies } = require( './package' );
-const PLUGIN_NAMESPACE = '@inquirywp/';
+const PLUGIN_NAMESPACE = '@omniform/';
 
 const pluginPackages = Object.keys( dependencies )
 	.filter( ( packageName ) => packageName.startsWith( PLUGIN_NAMESPACE ) )
@@ -24,7 +24,7 @@ module.exports = {
 				[ `${ packageName }/index` ]: {
 					import: `./packages/${ packageName }`,
 					library: {
-						name: [ 'inquirywp', camelCaseDash( packageName ) ],
+						name: [ 'omniform', camelCaseDash( packageName ) ],
 						type: 'window',
 					},
 				},

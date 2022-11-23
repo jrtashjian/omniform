@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 const variations = [
 	{
 		name: 'field-select-multiple',
-		title: __( 'field-select-multiple', 'inquirywp' ),
+		title: __( 'field-select-multiple', 'omniform' ),
 		attributes: { multiple: true },
 	},
 ];

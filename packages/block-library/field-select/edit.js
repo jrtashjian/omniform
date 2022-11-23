@@ -33,11 +33,11 @@ const Edit = ( props ) => {
 	return (
 		<div
 			{ ...blockProps }
-			className={ classNames( blockProps.className, 'inquirywp-field-select' ) }
+			className={ classNames( blockProps.className, 'omniform-field-select' ) }
 		>
 			<FormLabel originBlockProps={ props } />
 
-			<select className="inquirywp-field-control" multiple={ multiple }>
+			<select className="omniform-field-control" multiple={ multiple }>
 				<option value="1">One</option>
 				<option value="2">Two</option>
 				<option value="3">Three</option>
@@ -45,10 +45,10 @@ const Edit = ( props ) => {
 
 			{ ( isSelected || help ) && (
 				<RichText
-					className="inquirywp-field-support"
+					className="omniform-field-support"
 					tagName="p"
-					aria-label={ __( 'Help text', 'inquirywp' ) }
-					placeholder={ __( 'Write a help text…', 'inquirywp' ) }
+					aria-label={ __( 'Help text', 'omniform' ) }
+					placeholder={ __( 'Write a help text…', 'omniform' ) }
 					withoutInteractiveFormatting
 					value={ help }
 					onChange={ ( html ) => setAttributes( { help: html } ) }

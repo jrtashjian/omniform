@@ -26,11 +26,11 @@ const ALLOWED_BLOCKS = [
 	'core/image',
 	'core/paragraph',
 	'core/spacer',
-	'inquirywp/button-submit',
-	'inquirywp/field-input',
-	'inquirywp/field-select',
-	'inquirywp/field-textarea',
-	'inquirywp/fieldset',
+	'omniform/button-submit',
+	'omniform/field-input',
+	'omniform/field-select',
+	'omniform/field-textarea',
+	'omniform/fieldset',
 ];
 
 export default function FormInnerBlocks( {

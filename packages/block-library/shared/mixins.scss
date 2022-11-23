@@ -19,7 +19,7 @@
 
 @mixin field-label {
 
-	.inquirywp-field-label {
+	.omniform-field-label {
 		display: inline-block;
 		font-size: var(--wp--preset--font-size--normal);
 		margin: 0 0 0.5em;
@@ -29,7 +29,7 @@
 
 @mixin field-control {
 
-	.inquirywp-field-control {
+	.omniform-field-control {
 		appearance: none;
 		background-color: var(--wp--preset--color--white);
 		border-radius: 0.25em;
@@ -46,7 +46,7 @@
 
 @mixin field-support {
 
-	.inquirywp-field-support {
+	.omniform-field-support {
 		color: var(--wp--preset--color--black);
 		font-size: 0.875em;
 		margin: 0.25em 0 0;

@@ -2,12 +2,12 @@
 /**
  * Tests the plugin bootstrap file.
  *
- * @package InquiryWP
+ * @package OmniForm
  */
 
-namespace InquiryWP\Tests;
+namespace OmniForm\Tests;
 
-use InquiryWP\Application;
+use OmniForm\Application;
 
 /**
  * Tests the plugin bootstrap file.
@@ -22,10 +22,10 @@ class Bootstrap_Test extends \WP_UnitTestCase {
 	}
 
 	/**
-	 * Test that the inquirywp() helper function returns an instance of the Container.
+	 * Test that the omniform() helper function returns an instance of the Container.
 	 */
 	public function test_curatewp_helper_returns_container_instance() {
-		$container_instance = inquirywp();
+		$container_instance = omniform();
 		$this->assertTrue( $container_instance instanceof Application );
 	}
 }

@@ -31,7 +31,7 @@ export default function FormPlaceholder( {
 	const createFromBlocks = useCreateFormFromBlocks( setAttributes );
 
 	const [ showTitleModal, setShowTitleModal ] = useState( false );
-	const [ title, setTitle ] = useState( __( 'Untitled Form', 'inquirywp' ) );
+	const [ title, setTitle ] = useState( __( 'Untitled Form', 'omniform' ) );
 
 	const onSubmitForCreation = ( event ) => {
 		event.preventDefault();
@@ -42,8 +42,8 @@ export default function FormPlaceholder( {
 	return (
 		<Placeholder
 			icon={ null }
-			label={ __( 'InquiryWP Form', 'inquirywp' ) }
-			instructions={ __( 'Choose an existing form or create a new one.', 'inquirywp' ) }
+			label={ __( 'OmniForm Form', 'omniform' ) }
+			instructions={ __( 'Choose an existing form or create a new one.', 'omniform' ) }
 		>
 			{ isResolving && <Spinner /> }
 
@@ -52,7 +52,7 @@ export default function FormPlaceholder( {
 					variant="primary"
 					onClick={ () => console.debug( 'explore templates' ) }
 				>
-					{ __( 'Explore templates', 'inquirywp' ) }
+					{ __( 'Explore templates', 'omniform' ) }
 				</Button>
 			) }
 
@@ -61,7 +61,7 @@ export default function FormPlaceholder( {
 					variant="tertiary"
 					onClick={ onOpenSelectionModal }
 				>
-					{ __( 'Choose existing', 'inquirywp' ) }
+					{ __( 'Choose existing', 'omniform' ) }
 				</Button>
 			) }
 
@@ -70,20 +70,20 @@ export default function FormPlaceholder( {
 					variant="tertiary"
 					onClick={ () => setShowTitleModal( true ) }
 				>
-					{ __( 'Create new', 'inquirywp' ) }
+					{ __( 'Create new', 'omniform' ) }
 				</Button>
 			) }
 
 			{ showTitleModal && (
 				<Modal
-					title={ __( 'Name and create your new form', 'inquirywp' ) }
-					closeLabel={ __( 'Cancel', 'inquirywp' ) }
+					title={ __( 'Name and create your new form', 'omniform' ) }
+					closeLabel={ __( 'Cancel', 'omniform' ) }
 					onRequestClose={ () => setShowTitleModal( false ) }
 					focusOnMount
 				>
 					<form onSubmit={ onSubmitForCreation }>
 						<TextControl
-							label={ __( 'Name', 'inquirywp' ) }
+							label={ __( 'Name', 'omniform' ) }
 							value={ title }
 							onChange={ setTitle }
 						/>
@@ -95,7 +95,7 @@ export default function FormPlaceholder( {
 									disabled={ ! title.length }
 									aria-disabled={ ! title.length }
 								>
-									{ __( 'Create', 'inquirywp' ) }
+									{ __( 'Create', 'omniform' ) }
 								</Button>
 							</FlexItem>
 						</Flex>

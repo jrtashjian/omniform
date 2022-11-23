@@ -1,4 +1,6 @@
 {
+	"name": "omniform",
+	"private": true,
 	"scripts": {
 		"analyze-bundles": "npm run build -- --webpack-bundle-analyzer",
 		"build": "wp-scripts build --webpack-src-dir=packages",
@@ -10,11 +12,11 @@
 		"postpackages-update": "npm run build",
 		"prelint-php": "wp-env run composer \"install --no-interaction\"",
 		"pretest:php": "wp-env start",
-		"test:php": "wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/inquirywp/phpunit.xml.dist --verbose'",
+		"test:php": "wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/omniform/phpunit.xml.dist --verbose'",
 		"wp-env": "wp-env"
 	},
 	"dependencies": {
-		"@inquirywp/plugin": "file:packages/plugin",
+		"@omniform/plugin": "file:packages/plugin",
 		"@wordpress/base-styles": "^4.8.1",
 		"@wordpress/block-editor": "^10.0.9",
 		"@wordpress/blocks": "^11.16.4",

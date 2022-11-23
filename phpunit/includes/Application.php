@@ -2,13 +2,13 @@
 /**
  * Tests the Core class.
  *
- * @package InquiryWP
+ * @package OmniForm
  */
 
-namespace InquiryWP\Tests\Core;
+namespace OmniForm\Tests\Core;
 
-use InquiryWP\Application;
-use InquiryWP\ServiceProvider;
+use OmniForm\Application;
+use OmniForm\ServiceProvider;
 
 /**
  * Tests the Core class.
@@ -134,7 +134,7 @@ class CoreTest extends \WP_UnitTestCase {
 	public function test_deactivation_hook_is_called() {
 		$plugin_basename = plugin_basename( $this->plugin_file );
 
-		register_deactivation_hook( $plugin_basename, array( inquirywp()->app, 'deactivation' ) );
+		register_deactivation_hook( $plugin_basename, array( omniform()->app, 'deactivation' ) );
 		$this->assertTrue( has_filter( 'deactivate_' . $plugin_basename ) );
 
 		do_action( 'deactivate_' . $plugin_basename ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals

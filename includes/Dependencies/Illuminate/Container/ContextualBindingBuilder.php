@@ -1,16 +1,16 @@
 <?php
 
-namespace InquiryWP\Dependencies\Illuminate\Container;
+namespace OmniForm\Dependencies\Illuminate\Container;
 
-use InquiryWP\Dependencies\Illuminate\Contracts\Container\Container;
-use InquiryWP\Dependencies\Illuminate\Contracts\Container\ContextualBindingBuilder as ContextualBindingBuilderContract;
+use OmniForm\Dependencies\Illuminate\Contracts\Container\Container;
+use OmniForm\Dependencies\Illuminate\Contracts\Container\ContextualBindingBuilder as ContextualBindingBuilderContract;
 
 class ContextualBindingBuilder implements ContextualBindingBuilderContract
 {
     /**
      * The underlying container instance.
      *
-     * @var \InquiryWP\Dependencies\Illuminate\Contracts\Container\Container
+     * @var \OmniForm\Dependencies\Illuminate\Contracts\Container\Container
      */
     protected $container;
 
@@ -31,7 +31,7 @@ class ContextualBindingBuilder implements ContextualBindingBuilderContract
     /**
      * Create a new contextual binding builder.
      *
-     * @param  \InquiryWP\Dependencies\Illuminate\Contracts\Container\Container  $container
+     * @param  \OmniForm\Dependencies\Illuminate\Contracts\Container\Container  $container
      * @param  string|array  $concrete
      * @return void
      */

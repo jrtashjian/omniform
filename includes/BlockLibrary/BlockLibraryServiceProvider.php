@@ -2,12 +2,12 @@
 /**
  * The BlockLibraryServiceProvider class.
  *
- * @package InquiryWP
+ * @package OmniForm
  */
 
-namespace InquiryWP\BlockLibrary;
+namespace OmniForm\BlockLibrary;
 
-use InquiryWP\ServiceProvider;
+use OmniForm\ServiceProvider;
 use WP_Query;
 
 /**
@@ -45,7 +45,7 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 			if ( Blocks\Form::class === $block ) {
 				$wp_query_args   = array(
 					'post_status'    => array( 'draft', 'publish' ),
-					'post_type'      => 'inquirywp_form',
+					'post_type'      => 'omniform_form',
 					'posts_per_page' => -1,
 					'no_found_rows'  => true,
 				);
@@ -53,7 +53,7 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 
 				foreach ( $variation_query->posts as $post ) {
 					$variations[] = array(
-						'name'        => 'inquirywp//' . $post->post_name,
+						'name'        => 'omniform//' . $post->post_name,
 						'title'       => $post->post_title,
 						'description' => $post->post_name,
 						'attributes'  => array(
@@ -91,9 +91,9 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 	 */
 	public function groupFields( $parsed_block, $source_block, $parent_block ) {
 		if (
-			false !== strpos( $source_block['blockName'], 'inquirywp' ) &&
+			false !== strpos( $source_block['blockName'], 'omniform' ) &&
 			! empty( $parent_block ) &&
-			'inquirywp/fieldset' === $parent_block->name
+			'omniform/fieldset' === $parent_block->name
 		) {
 			$parsed_block['attrs']['group'] = sanitize_title( $parent_block->attributes['legend'] );
 		}
@@ -108,55 +108,55 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 
 		register_block_pattern_category(
 			'form',
-			array( 'label' => __( 'Forms', 'inquirywp' ) )
+			array( 'label' => __( 'Forms', 'omniform' ) )
 		);
 
 		register_block_pattern(
-			'inquirywp/form-pattern-one',
+			'omniform/form-pattern-one',
 			array(
 				'title'         => 'Pattern one',
-				'postTypes'     => array( 'inquirywp_form' ),
+				'postTypes'     => array( 'omniform_form' ),
 				'categories'    => array( 'form' ),
-				'content'       => '<!-- wp:inquirywp/field-input {"label":"field-text label","help":"field-text help text"} /-->
+				'content'       => '<!-- wp:omniform/field-input {"label":"field-text label","help":"field-text help text"} /-->
 
-				<!-- wp:inquirywp/field-textarea {"label":"field-textarea label"} /-->
+				<!-- wp:omniform/field-textarea {"label":"field-textarea label"} /-->
 
 				<!-- wp:group {"className":"is-layout-flex wp-block-buttons","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"left"}} -->
-				<div class="wp-block-group is-layout-flex wp-block-buttons"><!-- wp:inquirywp/button-submit /--></div>
+				<div class="wp-block-group is-layout-flex wp-block-buttons"><!-- wp:omniform/button-submit /--></div>
 				<!-- /wp:group -->',
 				'viewportWidth' => 640,
 			),
 		);
 
 		register_block_pattern(
-			'inquirywp/form-pattern-two',
+			'omniform/form-pattern-two',
 			array(
 				'title'         => 'Pattern two',
-				'postTypes'     => array( 'inquirywp_form' ),
+				'postTypes'     => array( 'omniform_form' ),
 				'categories'    => array( 'form' ),
-				'content'       => '<!-- wp:inquirywp/field-input {"label":"field-text label","help":"field-text help text"} /-->
+				'content'       => '<!-- wp:omniform/field-input {"label":"field-text label","help":"field-text help text"} /-->
 
-				<!-- wp:inquirywp/field-textarea {"label":"field-textarea label"} /-->
+				<!-- wp:omniform/field-textarea {"label":"field-textarea label"} /-->
 
 				<!-- wp:group {"className":"is-layout-flex wp-block-buttons","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"left"}} -->
-				<div class="wp-block-group is-layout-flex wp-block-buttons"><!-- wp:inquirywp/button-submit /--></div>
+				<div class="wp-block-group is-layout-flex wp-block-buttons"><!-- wp:omniform/button-submit /--></div>
 				<!-- /wp:group -->',
 				'viewportWidth' => 640,
 			),
 		);
 
 		register_block_pattern(
-			'inquirywp/form-pattern-three',
+			'omniform/form-pattern-three',
 			array(
 				'title'         => 'Pattern three',
-				'postTypes'     => array( 'inquirywp_form' ),
+				'postTypes'     => array( 'omniform_form' ),
 				'categories'    => array( 'form' ),
-				'content'       => '<!-- wp:inquirywp/field-input {"label":"field-text label","help":"field-text help text"} /-->
+				'content'       => '<!-- wp:omniform/field-input {"label":"field-text label","help":"field-text help text"} /-->
 
-				<!-- wp:inquirywp/field-textarea {"label":"field-textarea label"} /-->
+				<!-- wp:omniform/field-textarea {"label":"field-textarea label"} /-->
 
 				<!-- wp:group {"className":"is-layout-flex wp-block-buttons","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"left"}} -->
-				<div class="wp-block-group is-layout-flex wp-block-buttons"><!-- wp:inquirywp/button-submit /--></div>
+				<div class="wp-block-group is-layout-flex wp-block-buttons"><!-- wp:omniform/button-submit /--></div>
 				<!-- /wp:group -->',
 				'viewportWidth' => 640,
 			),
@@ -172,13 +172,13 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 
 		$block_categories[] = array(
 			'slug'  => 'form',
-			'title' => __( 'Forms', 'inquirywp' ),
+			'title' => __( 'Forms', 'omniform' ),
 			'icon'  => null,
 		);
 
 		$block_categories[] = array(
 			'slug'  => 'form-control',
-			'title' => __( 'Form Controls', 'inquirywp' ),
+			'title' => __( 'Form Controls', 'omniform' ),
 			'icon'  => null,
 		);
 

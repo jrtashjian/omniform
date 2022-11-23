@@ -8,8 +8,8 @@ import { __ } from '@wordpress/i18n';
 
 const FormLabel = ( { originBlockProps } ) => (
 	<RichText
-		className="inquirywp-field-label"
-		placeholder={ __( 'Enter a label for the field…', 'inquirywp' ) }
+		className="omniform-field-label"
+		placeholder={ __( 'Enter a label for the field…', 'omniform' ) }
 		value={ originBlockProps.attributes.label }
 		onChange={ ( html ) => originBlockProps.setAttributes( { label: html } ) }
 		// When hitting enter, place a new insertion point. This makes adding field a lot easier.

@@ -2,12 +2,12 @@
 /**
  * The FieldTextarea block class.
  *
- * @package InquiryWP
+ * @package OmniForm
  */
 
-namespace InquiryWP\BlockLibrary\Blocks;
+namespace OmniForm\BlockLibrary\Blocks;
 
-use InquiryWP\Plugin\FormIngestionEngine;
+use OmniForm\Plugin\FormIngestionEngine;
 
 /**
  * The FieldTextarea block class.
@@ -28,7 +28,7 @@ class FieldTextarea extends BaseFieldBlock {
 			return '';
 		}
 
-		$form_ingestion = inquirywp()->get( FormIngestionEngine::class );
+		$form_ingestion = omniform()->get( FormIngestionEngine::class );
 
 		$field_attributes = array(
 			'id'          => esc_attr( $this->field_name ),
@@ -51,13 +51,13 @@ class FieldTextarea extends BaseFieldBlock {
 		);
 
 		$field_control = sprintf(
-			'<textarea class="inquirywp-field-control" rows="10" %s>%s</textarea>',
+			'<textarea class="omniform-field-control" rows="10" %s>%s</textarea>',
 			implode( ' ', $field_attributes ),
 			esc_textarea( $form_ingestion->formValue( $this->field_name ) )
 		);
 
 		return sprintf(
-			'<div class="wp-block-inquirywp-%1$s inquirywp-%1$s">%2$s</div>',
+			'<div class="wp-block-omniform-%1$s omniform-%1$s">%2$s</div>',
 			esc_attr( $this->blockTypeName() ),
 			$this->renderFieldLabel() . $field_control . $this->renderFieldHelpText() . $this->renderFieldError() . $content
 		);

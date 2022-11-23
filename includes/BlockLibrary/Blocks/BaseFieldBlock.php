@@ -2,12 +2,12 @@
 /**
  * The BaseFieldBlock block class.
  *
- * @package InquiryWP
+ * @package OmniForm
  */
 
-namespace InquiryWP\BlockLibrary\Blocks;
+namespace OmniForm\BlockLibrary\Blocks;
 
-use InquiryWP\Plugin\FormIngestionEngine;
+use OmniForm\Plugin\FormIngestionEngine;
 
 /**
  * The BaseFieldBlock block class.
@@ -34,7 +34,7 @@ class BaseFieldBlock implements FormBlockInterface {
 	 * @return string path to the JSON file with metadata definition for the block.
 	 */
 	public function blockTypeMetadata() {
-		return inquirywp()->basePath( '/build/block-library/' . $this->blockTypeName() );
+		return omniform()->basePath( '/build/block-library/' . $this->blockTypeName() );
 	}
 
 	/**
@@ -63,7 +63,7 @@ class BaseFieldBlock implements FormBlockInterface {
 			: $this->getBlockAttribute( 'name' );
 
 		return sprintf(
-			'<div class="wp-block-inquirywp-%1$s inquirywp-%1$s">%2$s</div>',
+			'<div class="wp-block-omniform-%1$s omniform-%1$s">%2$s</div>',
 			esc_attr( $this->blockTypeName() ),
 			$this->renderFieldLabel() . $this->renderFieldHelpText() . $content
 		);
@@ -76,7 +76,7 @@ class BaseFieldBlock implements FormBlockInterface {
 	 */
 	protected function renderFieldLabel() {
 		return empty( $this->getBlockAttribute( 'label' ) ) ? '' : sprintf(
-			'<label class="inquirywp-field-label" for="%s">%s</label>',
+			'<label class="omniform-field-label" for="%s">%s</label>',
 			esc_attr( $this->field_name ),
 			wp_kses_post( $this->getBlockAttribute( 'label' ) )
 		);
@@ -89,7 +89,7 @@ class BaseFieldBlock implements FormBlockInterface {
 	 */
 	protected function renderFieldHelpText() {
 		return empty( $this->getBlockAttribute( 'help' ) ) ? '' : sprintf(
-			'<p class="inquirywp-field-support">%s</p>',
+			'<p class="omniform-field-support">%s</p>',
 			wp_kses_post( $this->getBlockAttribute( 'help' ) )
 		);
 	}
@@ -100,10 +100,10 @@ class BaseFieldBlock implements FormBlockInterface {
 	 * @return string
 	 */
 	protected function renderFieldError() {
-		$form_ingestion = inquirywp()->get( FormIngestionEngine::class );
+		$form_ingestion = omniform()->get( FormIngestionEngine::class );
 		$errors         = $form_ingestion->fieldError( $this->field_name );
 		return empty( $errors ) ? '' : sprintf(
-			'<p class="inquirywp-field-support" style="color:red;">%s</p>',
+			'<p class="omniform-field-support" style="color:red;">%s</p>',
 			wp_kses_post( $errors )
 		);
 	}

@@ -1,16 +1,18 @@
 {
-    "name": "inquirywp/inquirywp",
-    "description": "",
     "license": "GPL-2.0-only",
     "authors": [
         {
-            "name": "InquiryWP",
-            "homepage": "https://inquirywp.com"
+            "name": "JR Tashjian",
+            "homepage": "https://jrtashjian.com"
+        },
+        {
+            "name": "OmniForm",
+            "homepage": "https://omniformwp.com"
         }
     ],
     "autoload": {
         "psr-4": {
-            "InquiryWP\\": "includes"
+            "OmniForm\\": "includes"
         }
     },
     "require": {
@@ -37,26 +39,28 @@
     },
     "extra": {
         "mozart": {
-            "dep_namespace": "InquiryWP\\Dependencies\\",
+            "dep_namespace": "OmniForm\\Dependencies\\",
             "dep_directory": "/includes/Dependencies/",
             "classmap_directory": "/includes/classes/dependencies/",
-            "classmap_prefix": "InquiryWP_"
+            "classmap_prefix": "OmniForm_"
         }
     },
     "scripts": {
         "lint": "phpcs --standard=phpcs.xml.dist",
         "format": "phpcbf --standard=phpcs.xml.dist --report-summary --report-source",
         "test": "phpunit",
-        "makepot": "wp i18n make-pot . --exclude=\"node_modules,vendor\" --headers='{\"Last-Translator\":\"info@inquirywp.com\",\"Language-Team\":\"info@inquirywp.com\",\"Report-Msgid-Bugs-To\":\"https://inquirywp.com/contact\"}'",
+        "makepot": "wp i18n make-pot . --exclude=\"node_modules,vendor\" --headers='{\"Last-Translator\":\"info@omniformwp.com\",\"Language-Team\":\"info@omniformwp.com\",\"Report-Msgid-Bugs-To\":\"https://omniformwp.com/contact\"}'",
         "build-release": [
             "rm -r ./vendor",
             "@composer dump-autoload",
             "wp dist-archive ./",
             "@composer install"
         ],
+        "post-install-cmd": "composer mozart-compose",
+        "post-update-cmd": "composer mozart-compose",
         "mozart-compose": [
             "\"vendor/bin/mozart\" compose",
-            "composer dump-autoload",
+            "composer dump-autoload --optimize",
             "@php -r \"copy('https://raw.githubusercontent.com/php-fig/container/master/LICENSE', 'includes/Dependencies/Psr/Container/LICENSE');\"",
             "find ./includes/Dependencies/Illuminate -type d ! -name Illuminate ! -name Contracts ! -name Container -exec rm -rf {} 2> /dev/null \\; || true",
             "find ./includes/Dependencies/Psr -type d ! -name Psr ! -name Container -exec rm -rf {} 2> /dev/null \\; || true"

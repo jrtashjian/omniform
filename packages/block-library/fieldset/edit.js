@@ -27,13 +27,13 @@ const Edit = ( {
 	return (
 		<div
 			{ ...blockProps }
-			className={ classNames( blockProps.className, 'inquirywp-fieldset is-layout-flow' ) }
+			className={ classNames( blockProps.className, 'omniform-fieldset is-layout-flow' ) }
 		>
 			<RichText
-				className="inquirywp-field-label"
+				className="omniform-field-label"
 				tagName="legend"
-				aria-label={ __( 'Legend text', 'inquirywp' ) }
-				placeholder={ __( 'Enter a title to the field…', 'inquirywp' ) }
+				aria-label={ __( 'Legend text', 'omniform' ) }
+				placeholder={ __( 'Enter a title to the field…', 'omniform' ) }
 				withoutInteractiveFormatting
 				multiple={ false }
 				value={ label }

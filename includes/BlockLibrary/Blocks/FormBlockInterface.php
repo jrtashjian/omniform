@@ -2,10 +2,10 @@
 /**
  * The FormBlockInterface class.
  *
- * @package InquiryWP
+ * @package OmniForm
  */
 
-namespace InquiryWP\BlockLibrary\Blocks;
+namespace OmniForm\BlockLibrary\Blocks;
 
 /**
  * Describes the interface of a form block that exposes methods to render it's content.

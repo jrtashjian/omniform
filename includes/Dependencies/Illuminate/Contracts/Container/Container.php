@@ -1,9 +1,9 @@
 <?php
 
-namespace InquiryWP\Dependencies\Illuminate\Contracts\Container;
+namespace OmniForm\Dependencies\Illuminate\Contracts\Container;
 
 use Closure;
-use InquiryWP\Dependencies\Psr\Container\ContainerInterface;
+use OmniForm\Dependencies\Psr\Container\ContainerInterface;
 
 interface Container extends ContainerInterface
 {
@@ -115,7 +115,7 @@ interface Container extends ContainerInterface
      * Define a contextual binding.
      *
      * @param  string|array  $concrete
-     * @return \InquiryWP\Dependencies\Illuminate\Contracts\Container\ContextualBindingBuilder
+     * @return \OmniForm\Dependencies\Illuminate\Contracts\Container\ContextualBindingBuilder
      */
     public function when($concrete);
 
@@ -141,7 +141,7 @@ interface Container extends ContainerInterface
      * @param  array  $parameters
      * @return mixed
      *
-     * @throws \InquiryWP\Dependencies\Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \OmniForm\Dependencies\Illuminate\Contracts\Container\BindingResolutionException
      */
     public function make($abstract, array $parameters = []);
 

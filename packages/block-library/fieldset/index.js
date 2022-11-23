@@ -21,29 +21,29 @@ registerBlockType( name, {
 	save: Save,
 	example: {
 		attributes: {
-			label: __( 'Field Group', 'inquirywp' ),
+			label: __( 'Field Group', 'omniform' ),
 		},
 		innerBlocks: [
 			{
 				attributes: {
 					type: 'checkbox',
-					label: __( 'Option One', 'inquirywp' ),
+					label: __( 'Option One', 'omniform' ),
 				},
-				name: 'inquirywp/field-input',
+				name: 'omniform/field-input',
 			},
 			{
 				attributes: {
 					type: 'checkbox',
-					label: __( 'Option Two', 'inquirywp' ),
+					label: __( 'Option Two', 'omniform' ),
 				},
-				name: 'inquirywp/field-input',
+				name: 'omniform/field-input',
 			},
 			{
 				attributes: {
 					type: 'checkbox',
-					label: __( 'Option Three', 'inquirywp' ),
+					label: __( 'Option Three', 'omniform' ),
 				},
-				name: 'inquirywp/field-input',
+				name: 'omniform/field-input',
 			},
 		],
 	},
