@@ -1,13 +1,13 @@
 <?php
 /**
  * Plugin Name: OmniForm
- * Plugin URI: https://omniform.com
+ * Plugin URI: https://omniformwp.com
  * Description: OmniForm Plugin Description.
  * Version: 1.0.0
  * Requires at least: 6.0
  * Requires PHP: 7.4
- * Author: OmniForm
- * Author URI: https://omniform.com
+ * Author: JR Tashjian
+ * Author URI: https://jrtashjian.com
  * Text Domain: omniform
  * Domain Path: /languages
  *
