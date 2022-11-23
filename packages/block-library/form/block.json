@@ -3,7 +3,7 @@
 	"apiVersion": 2,
 	"name": "omniform/form",
 	"category": "form",
-	"title": "OmniForm Form",
+	"title": "OmniForm",
 	"textdomain": "omniform",
 	"attributes": {
 		"ref": {
