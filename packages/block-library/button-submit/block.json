@@ -3,7 +3,8 @@
 	"apiVersion": 2,
 	"name": "omniform/button-submit",
 	"category": "form-control",
-	"title": "button-submit",
+	"title": "Submit",
+	"description": "A button for submitting the form",
 	"textdomain": "omniform",
 	"attributes": {
 		"text": {

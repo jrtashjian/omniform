@@ -3,7 +3,8 @@
 	"apiVersion": 2,
 	"name": "omniform/field-textarea",
 	"category": "form-control",
-	"title": "field-textarea",
+	"title": "Textarea",
+	"description": "A text box for long responses.",
 	"textdomain": "omniform",
 	"attributes": {
 		"type": {

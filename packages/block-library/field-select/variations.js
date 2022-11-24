@@ -6,7 +6,8 @@ import { __ } from '@wordpress/i18n';
 const variations = [
 	{
 		name: 'field-select-multiple',
-		title: __( 'field-select-multiple', 'omniform' ),
+		title: __( 'Select Multiple', 'omniform' ),
+		description: __( 'A field with multiple options where multiple choices can be made.', 'omnigroup' ),
 		attributes: { multiple: true },
 	},
 ];

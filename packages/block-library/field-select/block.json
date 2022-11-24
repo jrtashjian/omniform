@@ -3,7 +3,8 @@
 	"apiVersion": 2,
 	"name": "omniform/field-select",
 	"category": "form-control",
-	"title": "field-select",
+	"title": "Select",
+	"description": "A field with multiple options where a single choice can be made.",
 	"textdomain": "omniform",
 	"attributes": {
 		"multiple": {
