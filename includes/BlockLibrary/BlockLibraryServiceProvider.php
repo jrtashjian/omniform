@@ -55,7 +55,6 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 					$variations[] = array(
 						'name'        => 'omniform//' . $post->post_name,
 						'title'       => $post->post_title,
-						'description' => $post->post_name,
 						'attributes'  => array(
 							'ref' => $post->ID,
 						),
