@@ -110,7 +110,7 @@ class PluginServiceProvider extends ServiceProvider {
 			'omniform_form',
 			array(
 				'labels'                => array(
-					'name'                     => _x( 'Forms', 'post type general name', 'omniform' ),
+					'name'                     => _x( 'OmniForm', 'post type general name', 'omniform' ),
 					'singular_name'            => _x( 'Form', 'post type singular name', 'omniform' ),
 					'add_new'                  => _x( 'Add New', 'Form', 'omniform' ),
 					'add_new_item'             => __( 'Add new Form', 'omniform' ),
@@ -155,6 +155,56 @@ class PluginServiceProvider extends ServiceProvider {
 					'title',
 					'editor',
 					'revisions',
+				),
+			)
+		);
+
+		register_post_type(
+			'omniform_submission',
+			array(
+				'labels'                => array(
+					'name'                     => _x( 'Submissions', 'post type general name', 'omniform' ),
+					'singular_name'            => _x( 'Submission', 'post type singular name', 'omniform' ),
+					'add_new'                  => _x( 'Add New', 'Submission', 'omniform' ),
+					'add_new_item'             => __( 'Add new Submission', 'omniform' ),
+					'new_item'                 => __( 'New Submission', 'omniform' ),
+					'edit_item'                => __( 'Edit Submission', 'omniform' ),
+					'view_item'                => __( 'View Submission', 'omniform' ),
+					'all_items'                => __( 'View Submissions', 'omniform' ),
+					'search_items'             => __( 'Search Submissions', 'omniform' ),
+					'not_found'                => __( 'No Submissions found.', 'omniform' ),
+					'not_found_in_trash'       => __( 'No Submissions found in Trash.', 'omniform' ),
+					'filter_items_list'        => __( 'Filter Submissions list', 'omniform' ),
+					'items_list_navigation'    => __( 'Submissions list navigation', 'omniform' ),
+					'items_list'               => __( 'Submissions list', 'omniform' ),
+					'item_published'           => __( 'Submission published.', 'omniform' ),
+					'item_published_privately' => __( 'Submission published privately.', 'omniform' ),
+					'item_reverted_to_draft'   => __( 'Submission reverted to draft.', 'omniform' ),
+					'item_scheduled'           => __( 'Submission scheduled.', 'omniform' ),
+					'item_updated'             => __( 'Submission updated.', 'omniform' ),
+				),
+				'public'                => false,
+				'show_ui'               => true,
+				'show_in_menu'          => 'edit.php?post_type=omniform_form',
+				'menu_position'         => 1,
+				'rewrite'               => false,
+				'show_in_rest'          => true,
+				'rest_namespace'        => 'omniform/v1',
+				'rest_base'             => 'submissions',
+				'rest_controller_class' => 'WP_REST_Blocks_Controller',
+				'capability_type'       => 'block',
+				'capabilities'          => array(
+					'read'                   => 'edit_posts',
+					'create_posts'           => 'edit_posts',
+					'edit_posts'             => 'edit_posts',
+					'edit_published_posts'   => 'edit_published_posts',
+					'delete_published_posts' => 'delete_published_posts',
+					'edit_others_posts'      => 'edit_others_posts',
+					'delete_others_posts'    => 'delete_others_posts',
+				),
+				'map_meta_cap'          => true,
+				'supports'              => array(
+					'title',
 				),
 			)
 		);
