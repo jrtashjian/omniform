@@ -293,12 +293,25 @@ export const fieldSelect = (
 	</SVG>
 );
 
-export const fieldSelectOption = (
+export const selectOption = (
 	<SVG viewBox="0 0 24 24">
-		<Path fill="url(#field-select-option-a)"
+		<Path fill="url(#select-option-a)"
 			d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4V7Zm-1-5C6.49 2 2 6.49 2 12s4.49 10 10 10 10-4.49 10-10S17.51 2 12 2Zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8Z" />
 		<defs>
-			<linearGradient id="field-select-option-a" x1="0" x2="38.4" y1="-12" y2="7.2" gradientUnits="userSpaceOnUse">
+			<linearGradient id="select-option-a" x1="0" x2="38.4" y1="-12" y2="7.2" gradientUnits="userSpaceOnUse">
+				<stop stopColor="#842ED9" />
+				<stop offset=".499" stopColor="#D92E83" />
+				<stop offset="1" stopColor="#FFD500" />
+			</linearGradient>
+		</defs>
+	</SVG>
+);
+
+export const selectGroup = (
+	<SVG viewBox="0 0 24 24">
+		<Path fill="url(#select-group-a)" d="M14 10H3v2h11v-2Zm0-4H3v2h11V6Zm4 8v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4ZM3 16h7v-2H3v2Z" />
+		<defs>
+			<linearGradient id="select-group-a" x1="1.1" x2="32.323" y1="-3.8" y2="17.387" gradientUnits="userSpaceOnUse">
 				<stop stopColor="#842ED9" />
 				<stop offset=".499" stopColor="#D92E83" />
 				<stop offset="1" stopColor="#FFD500" />

@@ -11,7 +11,7 @@ import { decodeEntities } from '@wordpress/html-entities';
 import json from './block.json';
 import Edit from './edit';
 import Save from './save';
-import { fieldSelectOption as icon } from '../shared/icons';
+import { selectGroup as icon } from '../shared/icons';
 
 import './style.scss';
 import './index.scss';
