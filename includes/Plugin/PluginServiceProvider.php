@@ -243,6 +243,8 @@ class PluginServiceProvider extends ServiceProvider {
 					'omniform/button-submit',
 					'omniform/field-input',
 					'omniform/field-select',
+					'omniform/select-option',
+					'omniform/select-group',
 					'omniform/field-textarea',
 					'omniform/fieldset',
 					'core/paragraph',

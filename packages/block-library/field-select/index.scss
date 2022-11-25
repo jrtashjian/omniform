@@ -1,0 +1,18 @@
+@import "~@wordpress/base-styles/variables";
+
+.wp-block-omniform-field-select {
+
+	.omniform-select-options-container {
+		border-top: $border-width solid $gray-300;
+		list-style-type: none;
+
+		+ & {
+			border-top: none;
+		}
+
+		li {
+			padding: $grid-unit-10 0;
+			border-bottom: $border-width solid $gray-300;
+		}
+	}
+}

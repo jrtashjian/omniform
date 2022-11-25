@@ -32,6 +32,8 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 			Blocks\ButtonSubmit::class,
 			Blocks\FieldInput::class,
 			Blocks\FieldSelect::class,
+			Blocks\SelectOption::class,
+			Blocks\SelectGroup::class,
 			Blocks\FieldTextarea::class,
 			Blocks\Form::class,
 			Blocks\Fieldset::class,
@@ -53,13 +55,13 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 
 				foreach ( $variation_query->posts as $post ) {
 					$variations[] = array(
-						'name'        => 'omniform//' . $post->post_name,
-						'title'       => $post->post_title,
-						'attributes'  => array(
+						'name'       => 'omniform//' . $post->post_name,
+						'title'      => $post->post_title,
+						'attributes' => array(
 							'ref' => $post->ID,
 						),
-						'scope'       => array( 'inserter' ),
-						'example'     => array(
+						'scope'      => array( 'inserter' ),
+						'example'    => array(
 							'attributes' => array(
 								'ref' => $post->ID,
 							),

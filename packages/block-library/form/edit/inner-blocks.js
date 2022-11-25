@@ -29,6 +29,8 @@ const ALLOWED_BLOCKS = [
 	'omniform/button-submit',
 	'omniform/field-input',
 	'omniform/field-select',
+	'omniform/select-option',
+	'omniform/select-group',
 	'omniform/field-textarea',
 	'omniform/fieldset',
 ];

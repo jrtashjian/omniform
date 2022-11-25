@@ -10,6 +10,8 @@ import { __ } from '@wordpress/i18n';
 import {
 	RichText,
 	useBlockProps,
+	InnerBlocks,
+	useInnerBlocksProps,
 } from '@wordpress/block-editor';
 
 /**
@@ -30,6 +32,55 @@ const Edit = ( props ) => {
 
 	const blockProps = useBlockProps();
 
+	const innerBlockProps = useInnerBlocksProps( {
+		ref: blockProps.ref,
+		className: 'omniform-select-options-container',
+	}, {
+		allowedBlocks: [ 'omniform/select-option', 'omniform/select-group' ],
+		template: [
+			[ 'omniform/select-option', { label: 'Option One' } ],
+			[ 'omniform/select-option', { label: 'Option Two' } ],
+			[ 'omniform/select-option', { label: 'Option Three' } ],
+			[
+				'omniform/select-group',
+				{ label: 'Option Group One' },
+				[
+					[ 'omniform/select-option', { label: 'Option One' } ],
+					[ 'omniform/select-option', { label: 'Option Two' } ],
+					[ 'omniform/select-option', { label: 'Option Three' } ],
+				],
+			],
+			[
+				'omniform/select-group',
+				{ label: 'Option Group Two' },
+				[
+					[ 'omniform/select-option', { label: 'Option One' } ],
+					[ 'omniform/select-option', { label: 'Option Two' } ],
+					[ 'omniform/select-option', { label: 'Option Three' } ],
+					[
+						'omniform/select-group',
+						{ label: 'Option Group Two' },
+						[
+							[ 'omniform/select-option', { label: 'Option One' } ],
+							[ 'omniform/select-option', { label: 'Option Two' } ],
+							[ 'omniform/select-option', { label: 'Option Three' } ],
+						],
+					],
+				],
+			],
+			[
+				'omniform/select-group',
+				{ label: 'Option Group' },
+				[
+					[ 'omniform/select-option', { label: 'Option One' } ],
+					[ 'omniform/select-option', { label: 'Option Two' } ],
+					[ 'omniform/select-option', { label: 'Option Three' } ],
+				],
+			],
+		],
+		renderAppender: InnerBlocks.ButtonBlockAppender,
+	} );
+
 	return (
 		<div
 			{ ...blockProps }
@@ -37,11 +88,7 @@ const Edit = ( props ) => {
 		>
 			<FormLabel originBlockProps={ props } />
 
-			<select className="omniform-field-control" multiple={ multiple }>
-				<option value="1">One</option>
-				<option value="2">Two</option>
-				<option value="3">Three</option>
-			</select>
+			<select className="omniform-field-control" multiple={ multiple }></select>
 
 			{ ( isSelected || help ) && (
 				<RichText
@@ -54,6 +101,8 @@ const Edit = ( props ) => {
 					onChange={ ( html ) => setAttributes( { help: html } ) }
 				/>
 			) }
+
+			<ul { ...innerBlockProps } />
 		</div>
 	);
 };
