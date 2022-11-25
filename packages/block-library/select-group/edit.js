@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
@@ -7,6 +12,12 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 } from '@wordpress/block-editor';
+import { useState } from '@wordpress/element';
+import {
+	Button,
+	__experimentalHStack as HStack,
+} from '@wordpress/components';
+import { chevronRight, chevronDown } from '@wordpress/icons';
 
 const Edit = ( props ) => {
 	const {
@@ -26,25 +37,42 @@ const Edit = ( props ) => {
 		ref: blockProps.ref,
 		className: 'omniform-select-options-container',
 	}, {
-		allowedBlocks: [ 'omniform/select-option', 'omniform/select-group' ],
+		allowedBlocks: [ 'omniform/select-option' ],
 		template: [
 			[ 'omniform/select-option', { label: 'Option One' } ],
 			[ 'omniform/select-option', { label: 'Option Two' } ],
 			[ 'omniform/select-option', { label: 'Option Three' } ],
 		],
+		__experimentalCaptureToolbars: true,
 	} );
 
+	const [ isOpened, setIsOpened ] = useState( false );
+
 	return (
-		<div { ...blockProps }>
-			<RichText
-				tagName="li"
-				aria-label={ __( 'Help text', 'omniform' ) }
-				placeholder={ __( 'Write the option text…', 'omniform' ) }
-				withoutInteractiveFormatting
-				value={ label }
-				onChange={ ( html ) => setAttributes( { label: html } ) }
-			/>
-			<ul { ...innerBlockProps } />
+		<div
+			{ ...blockProps }
+			className={ classnames( blockProps.className, {
+				[ `is-opened` ]: isOpened,
+			} ) }
+		>
+			<HStack
+				as="li"
+				alignment="left"
+			>
+				<Button
+					isSmall
+					icon={ isOpened ? chevronDown : chevronRight }
+					onClick={ () => setIsOpened( ! isOpened ) }
+				/>
+				<RichText
+					aria-label={ __( 'Help text', 'omniform' ) }
+					placeholder={ __( 'Write the option text…', 'omniform' ) }
+					withoutInteractiveFormatting
+					value={ label }
+					onChange={ ( html ) => setAttributes( { label: html } ) }
+				/>
+			</HStack>
+			{ isOpened && <ul { ...innerBlockProps } /> }
 		</div>
 	);
 };

@@ -3,14 +3,20 @@
 .wp-block-omniform-field-select {
 
 	.omniform-select-options-container {
+		margin-top: $grid-unit;
+		padding-right: $block-selected-border-width;
+		padding-bottom: $block-selected-border-width;
 		border-top: $border-width solid $gray-300;
 		list-style-type: none;
+		max-height: 500px;
+		overflow: scroll;
 
 		+ & {
 			border-top: none;
 		}
 
 		li {
+			margin: 0;
 			padding: $grid-unit-10 0;
 			border-bottom: $border-width solid $gray-300;
 		}

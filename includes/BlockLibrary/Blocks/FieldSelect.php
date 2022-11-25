@@ -51,14 +51,15 @@ class FieldSelect extends BaseFieldBlock {
 		);
 
 		$field_control = sprintf(
-			'<select class="omniform-field-control" %s><option value="One">One</option><option value="Two">Two</option><option value="Three">Three</option></select>',
-			implode( ' ', $field_attributes )
+			'<select class="omniform-field-control" %s>%s</select>',
+			implode( ' ', $field_attributes ),
+			do_blocks( $content )
 		);
 
 		return sprintf(
 			'<div class="wp-block-omniform-%1$s omniform-%1$s">%2$s</div>',
 			esc_attr( $this->blockTypeName() ),
-			$this->renderFieldLabel() . $field_control . $this->renderFieldHelpText() . $this->renderFieldError() . $content
+			$this->renderFieldLabel() . $field_control . $this->renderFieldHelpText() . $this->renderFieldError()
 		);
 	}
 }

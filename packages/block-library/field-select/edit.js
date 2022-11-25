@@ -41,44 +41,10 @@ const Edit = ( props ) => {
 			[ 'omniform/select-option', { label: 'Option One' } ],
 			[ 'omniform/select-option', { label: 'Option Two' } ],
 			[ 'omniform/select-option', { label: 'Option Three' } ],
-			[
-				'omniform/select-group',
-				{ label: 'Option Group One' },
-				[
-					[ 'omniform/select-option', { label: 'Option One' } ],
-					[ 'omniform/select-option', { label: 'Option Two' } ],
-					[ 'omniform/select-option', { label: 'Option Three' } ],
-				],
-			],
-			[
-				'omniform/select-group',
-				{ label: 'Option Group Two' },
-				[
-					[ 'omniform/select-option', { label: 'Option One' } ],
-					[ 'omniform/select-option', { label: 'Option Two' } ],
-					[ 'omniform/select-option', { label: 'Option Three' } ],
-					[
-						'omniform/select-group',
-						{ label: 'Option Group Two' },
-						[
-							[ 'omniform/select-option', { label: 'Option One' } ],
-							[ 'omniform/select-option', { label: 'Option Two' } ],
-							[ 'omniform/select-option', { label: 'Option Three' } ],
-						],
-					],
-				],
-			],
-			[
-				'omniform/select-group',
-				{ label: 'Option Group' },
-				[
-					[ 'omniform/select-option', { label: 'Option One' } ],
-					[ 'omniform/select-option', { label: 'Option Two' } ],
-					[ 'omniform/select-option', { label: 'Option Three' } ],
-				],
-			],
+			[ 'omniform/select-group', { label: 'Option Group One' } ],
 		],
-		renderAppender: InnerBlocks.ButtonBlockAppender,
+		__experimentalCaptureToolbars: true,
+		// renderAppender: InnerBlocks.ButtonBlockAppender,
 	} );
 
 	return (
@@ -88,7 +54,7 @@ const Edit = ( props ) => {
 		>
 			<FormLabel originBlockProps={ props } />
 
-			<select className="omniform-field-control" multiple={ multiple }></select>
+			<select className="omniform-field-control" multiple={ multiple } />
 
 			{ ( isSelected || help ) && (
 				<RichText
