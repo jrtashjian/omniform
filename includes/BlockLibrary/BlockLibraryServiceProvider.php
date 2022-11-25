@@ -96,7 +96,7 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 			! empty( $parent_block ) &&
 			'omniform/fieldset' === $parent_block->name
 		) {
-			$parsed_block['attrs']['group'] = sanitize_title( $parent_block->attributes['legend'] );
+			$parsed_block['attrs']['group'] = sanitize_title( $parent_block->attributes['label'] );
 		}
 
 		return $parsed_block;
