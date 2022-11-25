@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { registerBlockType } from '@wordpress/blocks';
+import { decodeEntities } from '@wordpress/html-entities';
 
 /**
  * Internal dependencies
@@ -26,4 +27,6 @@ registerBlockType( name, {
 				( attributesToMerge.text || '' ),
 		};
 	},
+	// Get block name from the option value.
+	__experimentalLabel: ( { text } ) => text && decodeEntities( text ),
 } );

@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
+import { decodeEntities } from '@wordpress/html-entities';
 
 /**
  * Internal dependencies
@@ -26,4 +27,6 @@ registerBlockType( name, {
 			label: __( 'Example input', 'omniform' ),
 		},
 	},
+	// Get block name from the option value.
+	__experimentalLabel: ( { label } ) => label && decodeEntities( label ),
 } );
