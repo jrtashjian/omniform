@@ -10,6 +10,7 @@ import { decodeEntities } from '@wordpress/html-entities';
  */
 import json from './block.json';
 import Edit from './edit';
+import Save from './save';
 import variations from './variations';
 import { fieldSelect as icon } from '../shared/icons';
 
@@ -20,6 +21,7 @@ const { name } = json;
 
 registerBlockType( name, {
 	edit: Edit,
+	save: Save,
 	icon,
 	example: {
 		attributes: {
