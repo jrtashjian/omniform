@@ -29,6 +29,10 @@ class SelectOption implements FormBlockInterface {
 	 * @return string Returns the block content.
 	 */
 	public function renderBlock( $attributes, $content ) {
+		if ( ! array_key_exists( 'label', $attributes ) ) {
+			return '';
+		}
+
 		return sprintf(
 			'<option>%s</option>',
 			esc_attr( $attributes['label'] )
