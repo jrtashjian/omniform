@@ -1,8 +1,0 @@
-@import "~@wordpress/base-styles/variables";
-
-.wp-block-omniform-select-group {
-
-	li:first-child button.components-button {
-		margin-left: calc(($icon-size + $grid-unit) * -1);
-	}
-}

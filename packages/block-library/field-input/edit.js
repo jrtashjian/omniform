@@ -38,21 +38,21 @@ const Edit = ( props ) => {
 		>
 			<FormLabel originBlockProps={ props } />
 
-			<input
-				type={ type }
-				className="omniform-field-control"
-				id="textInput"
-				aria-describedby="textInputHelp"
-				aria-label={ __( 'Optional placeholder text', 'omniform' ) }
-				placeholder={
-					( placeholder || ! isSelected ) ? undefined : __( 'Enter a placeholder…', 'omniform' )
-				}
-				value={ placeholder }
-				onChange={ ( event ) =>
-					setAttributes( { placeholder: event.target.value } )
-				}
-				autoComplete="off"
-			/>
+			{ ( type === 'checkbox' || type === 'radio' ) ? (
+				<div className="omniform-field-control" />
+			) : (
+				<RichText
+					className="omniform-field-control placeholder-text"
+					aria-label={ __( 'Help text', 'omniform' ) }
+					placeholder={
+						( placeholder || ! isSelected ) ? undefined : __( 'Enter a placeholder…', 'omniform' )
+					}
+					allowedFormats={ [] }
+					withoutInteractiveFormatting
+					value={ placeholder }
+					onChange={ ( html ) => setAttributes( { placeholder: html } ) }
+				/>
+			) }
 
 			{ ( isSelected || help ) && (
 				<RichText

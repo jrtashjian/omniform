@@ -7,11 +7,12 @@ import classNames from 'classnames';
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useSelect } from '@wordpress/data';
 import {
 	RichText,
 	useBlockProps,
-	InnerBlocks,
 	useInnerBlocksProps,
+	store as blockEditorStore,
 } from '@wordpress/block-editor';
 
 /**
@@ -24,16 +25,22 @@ const Edit = ( props ) => {
 		attributes,
 		setAttributes,
 		isSelected,
+		clientId,
 	} = props;
 	const {
+		placeholder,
 		multiple,
 		help,
 	} = attributes;
 
+	const hasSelectedInnerBlock = useSelect(
+		( select ) => select( blockEditorStore ).hasSelectedInnerBlock( clientId, true ),
+		[ clientId ]
+	);
+
 	const blockProps = useBlockProps();
 
 	const innerBlockProps = useInnerBlocksProps( {
-		ref: blockProps.ref,
 		className: 'omniform-select-options-container',
 	}, {
 		allowedBlocks: [ 'omniform/select-option', 'omniform/select-group' ],
@@ -44,17 +51,33 @@ const Edit = ( props ) => {
 			[ 'omniform/select-group', { label: 'Option Group One' } ],
 		],
 		__experimentalCaptureToolbars: true,
-		// renderAppender: InnerBlocks.ButtonBlockAppender,
 	} );
 
 	return (
 		<div
 			{ ...blockProps }
-			className={ classNames( blockProps.className, 'omniform-field-select' ) }
+			className={ classNames( blockProps.className, 'omniform-field-select', { [ `type-multiple` ]: multiple } ) }
 		>
 			<FormLabel originBlockProps={ props } />
 
-			<select className="omniform-field-control" multiple={ multiple } />
+			<div className="omniform-field-control">
+				{ ! multiple && (
+					<RichText
+						className="placeholder-text"
+						aria-label={ __( 'Help text', 'omniform' ) }
+						placeholder={
+							( placeholder || ! isSelected ) ? undefined : __( 'Enter a placeholder…', 'omniform' )
+						}
+						allowedFormats={ [] }
+						withoutInteractiveFormatting
+						value={ placeholder }
+						onChange={ ( html ) => setAttributes( { placeholder: html } ) }
+					/>
+				) }
+				{ ( isSelected || hasSelectedInnerBlock || multiple ) && (
+					<ul { ...innerBlockProps } />
+				) }
+			</div>
 
 			{ ( isSelected || help ) && (
 				<RichText
@@ -67,8 +90,6 @@ const Edit = ( props ) => {
 					onChange={ ( html ) => setAttributes( { help: html } ) }
 				/>
 			) }
-
-			<ul { ...innerBlockProps } />
 		</div>
 	);
 };

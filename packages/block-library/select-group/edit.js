@@ -34,7 +34,6 @@ const Edit = ( props ) => {
 	} );
 
 	const innerBlockProps = useInnerBlocksProps( {
-		ref: blockProps.ref,
 		className: 'omniform-select-options-container',
 	}, {
 		allowedBlocks: [ 'omniform/select-option' ],
@@ -43,7 +42,6 @@ const Edit = ( props ) => {
 			[ 'omniform/select-option', { label: 'Option Two' } ],
 			[ 'omniform/select-option', { label: 'Option Three' } ],
 		],
-		__experimentalCaptureToolbars: true,
 	} );
 
 	const [ isOpened, setIsOpened ] = useState( false );
@@ -67,6 +65,7 @@ const Edit = ( props ) => {
 				<RichText
 					aria-label={ __( 'Help text', 'omniform' ) }
 					placeholder={ __( 'Write the option text…', 'omniform' ) }
+					allowedFormats={ [] }
 					withoutInteractiveFormatting
 					value={ label }
 					onChange={ ( html ) => setAttributes( { label: html } ) }

@@ -2,10 +2,28 @@
 
 .wp-block-omniform-field-select {
 
+	&.is-selected.omniform-field-select .omniform-field-control,
+	&.has-child-selected.omniform-field-select .omniform-field-control,
+	&.type-multiple.omniform-field-select .omniform-field-control {
+
+		background-image: none;
+	}
+
+	.placeholder-text {
+		color: rgba(0, 0, 0, 0.62);
+	}
+
+	.omniform-field-control {
+
+		> .omniform-select-options-container {
+			padding-left: $grid-unit;
+			padding-right: $grid-unit;
+		}
+	}
+
 	.omniform-select-options-container {
-		margin-top: $grid-unit;
-		padding-right: $block-selected-border-width;
-		padding-bottom: $block-selected-border-width;
+		margin: 0;
+		margin-top: 0.5em;
 		border-top: $border-width solid $gray-300;
 		list-style-type: none;
 		max-height: 500px;
@@ -14,11 +32,16 @@
 		+ & {
 			border-top: none;
 		}
+	}
 
-		li {
-			margin: 0;
-			padding: $grid-unit-10 0;
-			border-bottom: $border-width solid $gray-300;
-		}
+	&.type-multiple .omniform-select-options-container {
+		margin-top: 0;
+	}
+
+	li {
+		margin: 0;
+		padding: $grid-unit-10 0;
+		border-bottom: $border-width solid $gray-300;
+		list-style-type: none;
 	}
 }

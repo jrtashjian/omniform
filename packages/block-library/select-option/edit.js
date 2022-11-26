@@ -32,6 +32,7 @@ const Edit = ( props ) => {
 			tagName="li"
 			aria-label={ __( 'Help text', 'omniform' ) }
 			placeholder={ __( 'Write the option text…', 'omniform' ) }
+			allowedFormats={ [] }
 			withoutInteractiveFormatting
 			value={ label }
 			onChange={ ( html ) => setAttributes( { label: html } ) }
