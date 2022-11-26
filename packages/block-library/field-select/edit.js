@@ -48,7 +48,6 @@ const Edit = ( props ) => {
 			[ 'omniform/select-option', { label: 'Option One' } ],
 			[ 'omniform/select-option', { label: 'Option Two' } ],
 			[ 'omniform/select-option', { label: 'Option Three' } ],
-			[ 'omniform/select-group', { label: 'Option Group One' } ],
 		],
 		__experimentalCaptureToolbars: true,
 	} );

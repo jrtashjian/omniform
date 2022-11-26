@@ -6,24 +6,23 @@ import classnames from 'classnames';
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
 import {
 	RichText,
 	useBlockProps,
 	useInnerBlocksProps,
 } from '@wordpress/block-editor';
-import { useState } from '@wordpress/element';
 import {
 	Button,
 	__experimentalHStack as HStack,
 } from '@wordpress/components';
-import { chevronRight, chevronDown } from '@wordpress/icons';
+import { useState } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
+import { chevronDown, chevronRight } from '@wordpress/icons';
 
 const Edit = ( props ) => {
 	const {
 		attributes,
 		setAttributes,
-		isSelected,
 	} = props;
 	const {
 		label,
@@ -44,7 +43,7 @@ const Edit = ( props ) => {
 		],
 	} );
 
-	const [ isOpened, setIsOpened ] = useState( false );
+	const [ isOpened, setIsOpened ] = useState( ! label );
 
 	return (
 		<div

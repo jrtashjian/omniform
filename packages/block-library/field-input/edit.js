@@ -42,7 +42,7 @@ const Edit = ( props ) => {
 				<div className="omniform-field-control" />
 			) : (
 				<RichText
-					className="omniform-field-control placeholder-text"
+					className="omniform-field-control"
 					aria-label={ __( 'Help text', 'omniform' ) }
 					placeholder={
 						( placeholder || ! isSelected ) ? undefined : __( 'Enter a placeholder…', 'omniform' )

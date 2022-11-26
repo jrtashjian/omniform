@@ -29,6 +29,10 @@ class SelectGroup implements FormBlockInterface {
 	 * @return string Returns the block content.
 	 */
 	public function renderBlock( $attributes, $content ) {
+		if ( ! array_key_exists( 'label', $attributes ) ) {
+			return '';
+		}
+
 		return sprintf(
 			'<optgroup label="%s">%s</optgroup>',
 			esc_attr( $attributes['label'] ),
