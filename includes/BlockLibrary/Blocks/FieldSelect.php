@@ -50,10 +50,18 @@ class FieldSelect extends BaseFieldBlock {
 			$field_attributes
 		);
 
+		$placeholder_option = '';
+		if ( ! empty( $attributes['placeholder'] ) ) {
+			$placeholder_option = sprintf(
+				'<option value="">%s</option>',
+				esc_attr( $attributes['placeholder'] )
+			);
+		}
+
 		$field_control = sprintf(
 			'<select class="omniform-field-control" %s>%s</select>',
 			implode( ' ', $field_attributes ),
-			do_blocks( $content )
+			$placeholder_option . do_blocks( $content )
 		);
 
 		return sprintf(
