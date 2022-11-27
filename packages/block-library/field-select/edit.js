@@ -14,11 +14,13 @@ import {
 	useInnerBlocksProps,
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
+import { __experimentalHStack as HStack } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
 import FormLabel from '../shared/form-label';
+import ButtonBlockAppender from '../shared/button-block-appender';
 
 const Edit = ( props ) => {
 	const {
@@ -33,8 +35,18 @@ const Edit = ( props ) => {
 		help,
 	} = attributes;
 
-	const hasSelectedInnerBlock = useSelect(
-		( select ) => select( blockEditorStore ).hasSelectedInnerBlock( clientId, true ),
+	const {
+		hasSelectedInnerBlock,
+		parentClientId,
+	} = useSelect(
+		( select ) => {
+			const blockSelected = select( blockEditorStore ).getSelectedBlock();
+			return {
+				hasSelectedInnerBlock: select( blockEditorStore ).hasSelectedInnerBlock( clientId, true ),
+				parentClientId: select( blockEditorStore ).getBlockRootClientId( blockSelected?.clientId ),
+				selectedBlock: blockSelected,
+			};
+		},
 		[ clientId ]
 	);
 
@@ -50,6 +62,7 @@ const Edit = ( props ) => {
 			[ 'omniform/select-option', { label: 'Option Three' } ],
 		],
 		__experimentalCaptureToolbars: true,
+		renderAppender: false,
 	} );
 
 	return (
@@ -65,7 +78,7 @@ const Edit = ( props ) => {
 						className="placeholder-text"
 						aria-label={ __( 'Help text', 'omniform' ) }
 						placeholder={
-							( placeholder || ! isSelected ) ? undefined : __( 'Enter a placeholder…', 'omniform' )
+							( placeholder || ( ! isSelected && ! hasSelectedInnerBlock ) ) ? undefined : __( 'Enter a placeholder…', 'omniform' )
 						}
 						allowedFormats={ [] }
 						withoutInteractiveFormatting
@@ -75,6 +88,28 @@ const Edit = ( props ) => {
 				) }
 				{ ( isSelected || hasSelectedInnerBlock || multiple ) && (
 					<ul { ...innerBlockProps } />
+				) }
+
+				{ ( isSelected || hasSelectedInnerBlock ) && (
+					<HStack>
+						{ ( ! parentClientId || parentClientId === clientId ) ? (
+							<>
+								<ButtonBlockAppender
+									rootClientId={ clientId }
+									insertBlockType="omniform/select-option"
+								/>
+								<ButtonBlockAppender
+									rootClientId={ clientId }
+									insertBlockType="omniform/select-group"
+								/>
+							</>
+						) : (
+							<ButtonBlockAppender
+								rootClientId={ parentClientId }
+								insertBlockType="omniform/select-option"
+							/>
+						) }
+					</HStack>
 				) }
 			</div>
 

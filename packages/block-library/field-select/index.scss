@@ -28,6 +28,15 @@
 		+ & {
 			border-top: none;
 		}
+
+		.block-editor-button-block-appender {
+			margin-left: 0;
+			margin-right: 0;
+		}
+	}
+
+	.block-editor-button-block-appender {
+		margin: $grid-unit-20 $grid-unit $grid-unit-05;
 	}
 
 	&.type-multiple .omniform-select-options-container {
