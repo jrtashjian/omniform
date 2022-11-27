@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
 
 const FormLabel = ( { originBlockProps } ) => (
 	<RichText
+		identifier="label"
 		className="omniform-field-label"
 		placeholder={ __( 'Enter a label for the field…', 'omniform' ) }
 		value={ originBlockProps.attributes.label }
