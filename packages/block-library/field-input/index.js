@@ -27,6 +27,13 @@ registerBlockType( name, {
 			label: __( 'Example input', 'omniform' ),
 		},
 	},
+	merge: ( attributes, attributesToMerge ) => {
+		return {
+			label:
+				( attributes.label || '' ) +
+				( attributesToMerge.label || '' ),
+		};
+	},
 	// Get block name from the option value.
 	__experimentalLabel: ( { label } ) => label && decodeEntities( label ),
 } );

@@ -19,7 +19,7 @@ const FormLabel = ( { originBlockProps } ) => (
 			if ( isOriginal || value ) {
 				block = createBlock( originBlockProps.name, {
 					...originBlockProps.attributes,
-					text: value,
+					label: value,
 				} );
 			} else {
 				block = createBlock( getDefaultBlockName() );
@@ -31,9 +31,9 @@ const FormLabel = ( { originBlockProps } ) => (
 
 			return block;
 		} }
-		onReplace={ originBlockProps.onReplace }
-		onRemove={ () => originBlockProps.onReplace( [] ) }
 		onMerge={ originBlockProps.mergeBlocks }
+		onReplace={ originBlockProps.onReplace }
+		onRemove={ originBlockProps.onRemove }
 	/>
 );
 export default FormLabel;

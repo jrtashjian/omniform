@@ -29,6 +29,13 @@ registerBlockType( name, {
 		},
 	},
 	variations,
+	merge: ( attributes, attributesToMerge ) => {
+		return {
+			label:
+				( attributes.label || '' ) +
+				( attributesToMerge.label || '' ),
+		};
+	},
 	// Get block name from the option value.
 	__experimentalLabel: ( { label } ) => label && decodeEntities( label ),
 } );
