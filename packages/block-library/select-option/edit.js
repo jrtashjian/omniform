@@ -16,7 +16,6 @@ const Edit = ( props ) => {
 	const {
 		attributes,
 		setAttributes,
-		isSelected,
 	} = props;
 	const {
 		label,
@@ -27,16 +26,16 @@ const Edit = ( props ) => {
 	} );
 
 	return (
-		<RichText
-			{ ...blockProps }
-			tagName="li"
-			aria-label={ __( 'Help text', 'omniform' ) }
-			placeholder={ __( 'Write the option text…', 'omniform' ) }
-			allowedFormats={ [] }
-			withoutInteractiveFormatting
-			value={ label }
-			onChange={ ( html ) => setAttributes( { label: html } ) }
-		/>
+		<li { ...blockProps }>
+			<RichText
+				aria-label={ __( 'Help text', 'omniform' ) }
+				placeholder={ __( 'Write the option text…', 'omniform' ) }
+				allowedFormats={ [] }
+				withoutInteractiveFormatting
+				value={ label }
+				onChange={ ( html ) => setAttributes( { label: html } ) }
+			/>
+		</li>
 	);
 };
 export default Edit;
