@@ -28,6 +28,7 @@ const Edit = ( props ) => {
 	return (
 		<RichText
 			{ ...blockProps }
+			identifier="label"
 			tagName="li"
 			aria-label={ __( 'Help text', 'omniform' ) }
 			placeholder={ __( 'Write the option text…', 'omniform' ) }

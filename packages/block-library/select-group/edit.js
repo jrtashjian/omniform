@@ -62,6 +62,7 @@ const Edit = ( props ) => {
 					onClick={ () => setIsOpened( ! isOpened ) }
 				/>
 				<RichText
+					identifier="label"
 					aria-label={ __( 'Help text', 'omniform' ) }
 					placeholder={ __( 'Write the option text…', 'omniform' ) }
 					allowedFormats={ [] }
