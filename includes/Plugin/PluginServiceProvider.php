@@ -51,6 +51,35 @@ class PluginServiceProvider extends ServiceProvider {
 		add_action( 'init', array( $this, 'registerPostType' ) );
 		// add_action( 'init', array( $this, 'filterBlockPatternsOnAdmin' ), PHP_INT_MAX );
 		// add_action( 'rest_api_init', array( $this, 'filterBlockPatternsOnRestApi' ), PHP_INT_MAX );
+
+		add_filter(
+			'manage_omniform_submission_posts_columns',
+			function( $columns ) {
+				unset( $columns['title'] );
+				return array_merge(
+					$columns,
+					array(
+						'formdata' => __( 'Form Data', 'omniform' ),
+					)
+				);
+			}
+		);
+
+		add_action(
+			'manage_omniform_submission_posts_custom_column',
+			function( $column_key, $post_id ) {
+				if ( 'formdata' !== $column_key ) {
+					return;
+				}
+
+				echo sprintf(
+					'<pre style="overflow:auto;">%s</pre>',
+					wp_kses_post( get_the_content( null, false, $post_id ) )
+				);
+			},
+			10,
+			2
+		);
 	}
 
 	/**
@@ -175,13 +204,14 @@ class PluginServiceProvider extends ServiceProvider {
 				'show_in_menu'          => 'edit.php?post_type=omniform',
 				'show_in_admin_bar'     => false,
 				'rewrite'               => false,
-				'show_in_rest'          => true,
+				'show_in_rest'          => false,
 				'rest_namespace'        => 'omniform/v1',
 				'rest_base'             => 'submissions',
 				'rest_controller_class' => 'WP_REST_Blocks_Controller',
 				'capability_type'       => 'post',
 				'supports'              => array(
 					'title',
+					'editor',
 				),
 			)
 		);
