@@ -25,17 +25,24 @@ class Form implements FormBlockInterface {
 	/**
 	 * Renders the block on the server.
 	 *
-	 * @param array  $attributes Block attributes.
-	 * @param string $content    Block default content.
+	 * @param array    $attributes Block attributes.
+	 * @param string   $content    Block default content.
+	 * @param WP_Block $block      Block instance.
 	 *
 	 * @return string Returns the block content.
 	 */
-	public function renderBlock( $attributes, $content ) {
-		if ( empty( $attributes['ref'] ) ) {
+	public function renderBlock( $attributes, $content, $block ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
+		if ( empty( $attributes['ref'] ) && empty( $block->context['postId'] ) ) {
 			return '';
 		}
 
-		$form_block = get_post( $attributes['ref'] );
+		if ( array_key_exists( 'postType', $block->context ) && 'omniform_form' === $block->context['postType'] ) {
+			$entity_id = $block->context['postId'];
+		} else {
+			$entity_id = $attributes['ref'];
+		}
+
+		$form_block = get_post( $entity_id );
 		if ( ! $form_block || 'omniform_form' !== $form_block->post_type ) {
 			return '';
 		}
@@ -46,7 +53,7 @@ class Form implements FormBlockInterface {
 
 		// Process the form.
 		$form_ingestion = omniform()->get( FormIngestionEngine::class );
-		$form_ingestion->setFormId( $attributes['ref'] );
+		$form_ingestion->setFormId( $entity_id );
 
 		$post_data = '';
 
@@ -65,7 +72,6 @@ class Form implements FormBlockInterface {
 		}
 
 		$content = do_blocks( $form_block->post_content );
-
 		$form_ingestion->resetFormData();
 
 		return sprintf(

@@ -16,13 +16,14 @@ class FieldTextarea extends BaseFieldBlock {
 	/**
 	 * Renders the block on the server.
 	 *
-	 * @param array  $attributes Block attributes.
-	 * @param string $content    Block default content.
+	 * @param array    $attributes Block attributes.
+	 * @param string   $content    Block default content.
+	 * @param WP_Block $block      Block instance.
 	 *
 	 * @return string Returns the block content.
 	 */
-	public function renderBlock( $attributes, $content ) {
-		parent::renderBlock( $attributes, $content );
+	public function renderBlock( $attributes, $content, $block ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
+		parent::renderBlock( $attributes, $content, $block );
 
 		if ( empty( $this->renderFieldLabel() ) ) {
 			return '';
@@ -59,7 +60,7 @@ class FieldTextarea extends BaseFieldBlock {
 		return sprintf(
 			'<div class="wp-block-omniform-%1$s omniform-%1$s">%2$s</div>',
 			esc_attr( $this->blockTypeName() ),
-			$this->renderFieldLabel() . $field_control . $this->renderFieldHelpText() . $this->renderFieldError() . $content
+			$this->renderFieldLabel() . $field_control . $this->renderFieldHelpText() . $this->renderFieldError()
 		);
 	}
 }
