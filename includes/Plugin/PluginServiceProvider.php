@@ -49,8 +49,8 @@ class PluginServiceProvider extends ServiceProvider {
 		);
 
 		add_action( 'init', array( $this, 'registerPostType' ) );
-		add_action( 'init', array( $this, 'filterBlockPatternsOnAdmin' ), PHP_INT_MAX );
-		add_action( 'rest_api_init', array( $this, 'filterBlockPatternsOnRestApi' ), PHP_INT_MAX );
+		// add_action( 'init', array( $this, 'filterBlockPatternsOnAdmin' ), PHP_INT_MAX );
+		// add_action( 'rest_api_init', array( $this, 'filterBlockPatternsOnRestApi' ), PHP_INT_MAX );
 	}
 
 	/**
