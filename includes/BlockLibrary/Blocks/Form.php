@@ -69,6 +69,8 @@ class Form implements FormBlockInterface {
 					true
 				)
 			);
+
+			$form_ingestion->savePostData();
 		}
 
 		$content = do_blocks( $form_block->post_content );

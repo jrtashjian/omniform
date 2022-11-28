@@ -82,4 +82,23 @@ class FormIngestionEngine {
 	public function resetFormData() {
 		$this->form_data = array();
 	}
+
+	public function savePostData() {
+		$post_data = array_filter(
+			$this->form_data,
+			function( $key ) {
+				return ! in_array( $key, array( '_wpnonce', '_wp_http_referer' ) );
+			},
+			ARRAY_FILTER_USE_KEY
+		);
+
+		wp_insert_post(
+			array(
+				'post_title'   => wp_generate_uuid4(),
+				'post_content' => wp_json_encode( $post_data ),
+				'post_type'    => 'omniform_submission',
+				'post_status'  => 'publish',
+			)
+		);
+	}
 }
