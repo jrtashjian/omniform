@@ -24,11 +24,12 @@ class PluginServiceProvider extends ServiceProvider {
 		add_action(
 			'admin_menu',
 			function () {
-				add_menu_page(
-					esc_html__( 'OmniForm', 'omniform' ),
-					esc_html__( 'OmniForm', 'omniform' ),
+				add_submenu_page(
+					'edit.php?post_type=omniform',
+					esc_html__( 'Dashboard', 'omniform' ),
+					esc_html__( 'Dashboard', 'omniform' ),
 					'manage_options',
-					'omniform',
+					'dashboard',
 					function () {
 						?>
 						<div id="omniform" class="hide-if-no-js"></div>
@@ -42,8 +43,7 @@ class PluginServiceProvider extends ServiceProvider {
 						</div>
 						<?php
 					},
-					'',
-					2
+					0
 				);
 			}
 		);
@@ -66,7 +66,7 @@ class PluginServiceProvider extends ServiceProvider {
 	public function registerScripts() {
 		$current_screen = get_current_screen();
 
-		if ( 'toplevel_page_omniform' !== $current_screen->base ) {
+		if ( 'omniform_page_dashboard' !== $current_screen->base ) {
 			return;
 		}
 
@@ -111,10 +111,10 @@ class PluginServiceProvider extends ServiceProvider {
 			array(
 				'labels'                => array(
 					'name'                     => _x( 'OmniForm', 'post type general name', 'omniform' ),
-					'singular_name'            => _x( 'Form', 'post type singular name', 'omniform' ),
-					'add_new'                  => _x( 'Add New', 'Form', 'omniform' ),
-					'add_new_item'             => __( 'Add new Form', 'omniform' ),
-					'new_item'                 => __( 'New Form', 'omniform' ),
+					'singular_name'            => _x( 'OmniForm', 'post type singular name', 'omniform' ),
+					'add_new'                  => _x( 'Create a Form', 'Form', 'omniform' ),
+					'add_new_item'             => __( 'Create a Form', 'omniform' ),
+					'new_item'                 => __( 'Create a Form', 'omniform' ),
 					'edit_item'                => __( 'Edit Form', 'omniform' ),
 					'view_item'                => __( 'View Form', 'omniform' ),
 					'all_items'                => __( 'All Forms', 'omniform' ),
@@ -137,17 +137,7 @@ class PluginServiceProvider extends ServiceProvider {
 				'rest_namespace'        => 'omniform/v1',
 				'rest_base'             => 'forms',
 				'rest_controller_class' => 'WP_REST_Blocks_Controller',
-				'capability_type'       => 'block',
-				'capabilities'          => array(
-					'read'                   => 'edit_posts',
-					'create_posts'           => 'publish_posts',
-					'edit_posts'             => 'edit_posts',
-					'edit_published_posts'   => 'edit_published_posts',
-					'delete_published_posts' => 'delete_published_posts',
-					'edit_others_posts'      => 'edit_others_posts',
-					'delete_others_posts'    => 'delete_others_posts',
-				),
-				'map_meta_cap'          => true,
+				'capability_type'       => 'post',
 				'supports'              => array(
 					'title',
 					'editor',
@@ -183,23 +173,13 @@ class PluginServiceProvider extends ServiceProvider {
 				'public'                => false,
 				'show_ui'               => true,
 				'show_in_menu'          => 'edit.php?post_type=omniform',
-				'menu_position'         => 1,
+				'show_in_admin_bar'     => false,
 				'rewrite'               => false,
 				'show_in_rest'          => true,
 				'rest_namespace'        => 'omniform/v1',
 				'rest_base'             => 'submissions',
 				'rest_controller_class' => 'WP_REST_Blocks_Controller',
-				'capability_type'       => 'block',
-				'capabilities'          => array(
-					'read'                   => 'edit_posts',
-					'create_posts'           => 'edit_posts',
-					'edit_posts'             => 'edit_posts',
-					'edit_published_posts'   => 'edit_published_posts',
-					'delete_published_posts' => 'delete_published_posts',
-					'edit_others_posts'      => 'edit_others_posts',
-					'delete_others_posts'    => 'delete_others_posts',
-				),
-				'map_meta_cap'          => true,
+				'capability_type'       => 'post',
 				'supports'              => array(
 					'title',
 				),
