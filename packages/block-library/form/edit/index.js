@@ -25,12 +25,19 @@ import FormPlaceholder from './placeholder';
 import FormSelectionModal from './selection-modal';
 
 export default function FormEdit( {
+	context,
 	attributes,
 	setAttributes,
 	clientId,
 } ) {
+	const { postId: contextPostId, postType: contextPostType } = context;
 	const { ref } = attributes;
-	const hasAlreadyRendered = useHasRecursion( ref );
+
+	const entityId = ( contextPostType === FORM_POST_TYPE )
+		? contextPostId
+		: ref;
+
+	const hasAlreadyRendered = useHasRecursion( entityId );
 	const [ isFormSelectionOpen, setIsFormSelectionOpen ] = useState( false );
 
 	const { isResolved, innerBlocks, isMissing } = useSelect(
@@ -41,12 +48,12 @@ export default function FormEdit( {
 			const getEntityArgs = [
 				'postType',
 				FORM_POST_TYPE,
-				ref,
+				entityId,
 			];
-			const entityRecord = ref
+			const entityRecord = entityId
 				? getEditedEntityRecord( ...getEntityArgs )
 				: null;
-			const hasResolvedEntity = ref
+			const hasResolvedEntity = entityId
 				? hasFinishedResolution( 'getEditedEntityRecord', getEntityArgs )
 				: false;
 
@@ -56,13 +63,13 @@ export default function FormEdit( {
 				isMissing: hasResolvedEntity && ! entityRecord,
 			};
 		},
-		[ ref, clientId ]
+		[ entityId, clientId, contextPostId, contextPostType ]
 	);
 
 	const blockProps = useBlockProps( {
 		className: 'block-library-block__reusable-block-container is-layout-flow',
 	} );
-	const isPlaceholder = ! ref;
+	const isPlaceholder = ! entityId;
 	const isEntityAvailable = ! isPlaceholder && ! isMissing && isResolved;
 
 	if ( innerBlocks.length === 0 && isMissing ) {
@@ -85,9 +92,9 @@ export default function FormEdit( {
 
 	return (
 		<>
-			<RecursionProvider uniqueId={ ref }>
+			<RecursionProvider uniqueId={ entityId }>
 				<FormInspectorControls
-					formId={ ref }
+					formId={ entityId }
 					isEntityAvailable={ isEntityAvailable }
 				/>
 
@@ -95,7 +102,7 @@ export default function FormEdit( {
 					<div { ...blockProps }>
 						<FormPlaceholder
 							clientId={ clientId }
-							formId={ ref }
+							formId={ entityId }
 							setAttributes={ setAttributes }
 							onOpenSelectionModal={ () => setIsFormSelectionOpen( true ) }
 						/>
@@ -105,7 +112,7 @@ export default function FormEdit( {
 				{ isEntityAvailable && (
 					<FormInnerBlocks
 						blockProps={ blockProps }
-						formId={ ref }
+						formId={ entityId }
 						hasInnerBlocks={ innerBlocks.length > 0 }
 					/>
 				) }
@@ -124,7 +131,7 @@ export default function FormEdit( {
 					onRequestClose={ () => setIsFormSelectionOpen( false ) }
 				>
 					<FormSelectionModal
-						formId={ ref }
+						formId={ entityId }
 						setAttributes={ setAttributes }
 						onClose={ () => setIsFormSelectionOpen( false ) }
 					/>
