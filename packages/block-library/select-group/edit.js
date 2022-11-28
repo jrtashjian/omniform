@@ -17,7 +17,7 @@ import {
 	Button,
 	__experimentalHStack as HStack,
 } from '@wordpress/components';
-import { useState } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { chevronDown, chevronRight } from '@wordpress/icons';
 import { createBlock } from '@wordpress/blocks';
@@ -57,6 +57,11 @@ const Edit = ( props ) => {
 	} );
 
 	const [ isOpened, setIsOpened ] = useState( ! label );
+	useEffect( () => {
+		if ( hasSelectedInnerBlock ) {
+			setIsOpened( true );
+		}
+	}, [ hasSelectedInnerBlock ] );
 
 	return (
 		<div
