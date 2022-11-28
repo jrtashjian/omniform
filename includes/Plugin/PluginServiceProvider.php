@@ -130,12 +130,9 @@ class PluginServiceProvider extends ServiceProvider {
 					'item_scheduled'           => __( 'Form scheduled.', 'omniform' ),
 					'item_updated'             => __( 'Form updated.', 'omniform' ),
 				),
-				'public'                => false,
-				'show_ui'               => true,
-				'show_in_menu'          => true,
+				'public'                => true,
 				// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 				'menu_icon'             => 'data:image/svg+xml;base64,' . base64_encode( '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="black"><path fill="#000" fill-rule="evenodd" d="M2.556 13.556a2.2 2.2 0 0 1 0-3.112L4.3 8.7V6.5a2.2 2.2 0 0 1 2.2-2.2h2.2l1.634-1.634a2.2 2.2 0 0 1 3.111 0L15.08 4.3H17.5a2.2 2.2 0 0 1 2.2 2.2v2.421l1.523 1.523a2.2 2.2 0 0 1 0 3.112L19.7 15.079V17.5a2.2 2.2 0 0 1-2.2 2.2h-2.421l-1.634 1.634a2.2 2.2 0 0 1-3.111 0L8.7 19.7H6.5a2.2 2.2 0 0 1-2.2-2.2v-2.2l-1.744-1.744ZM12 5a7 7 0 0 1 7 7h-1.604A5.396 5.396 0 0 0 12 6.604V5Zm0 12.396V19a7 7 0 0 1-7-7h1.604A5.396 5.396 0 0 0 12 17.396ZM15.5 12A3.5 3.5 0 0 0 12 8.5v1.896c.886 0 1.604.718 1.604 1.604H15.5Zm-5.104 0c0 .886.718 1.604 1.604 1.604V15.5A3.5 3.5 0 0 1 8.5 12h1.896Z" clip-rule="evenodd"/></svg>' ),
-				'rewrite'               => false,
 				'show_in_rest'          => true,
 				'rest_namespace'        => 'omniform/v1',
 				'rest_base'             => 'forms',
@@ -235,26 +232,6 @@ class PluginServiceProvider extends ServiceProvider {
 
 		// Prevent Block Directory.
 		remove_action( 'enqueue_block_editor_assets', 'wp_enqueue_editor_block_directory_assets' );
-
-		add_filter(
-			'allowed_block_types_all',
-			function() {
-				return array(
-					'omniform/button-submit',
-					'omniform/field-input',
-					'omniform/field-select',
-					'omniform/select-option',
-					'omniform/select-group',
-					'omniform/field-textarea',
-					'omniform/fieldset',
-					'core/paragraph',
-					'core/heading',
-					'core/image',
-					'core/group',
-					'core/spacer',
-				);
-			}
-		);
 	}
 
 	/**
