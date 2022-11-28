@@ -30,7 +30,7 @@ class FormIngestionEngine {
 	 *
 	 * @var string
 	 */
-	protected $nonce_action = 'omniform_form_submission_';
+	protected $nonce_action = 'omniform_submission_';
 
 	/**
 	 * The form's nonce name.

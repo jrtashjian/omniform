@@ -36,14 +36,14 @@ class Form implements FormBlockInterface {
 			return '';
 		}
 
-		if ( array_key_exists( 'postType', $block->context ) && 'omniform_form' === $block->context['postType'] ) {
+		if ( array_key_exists( 'postType', $block->context ) && 'omniform' === $block->context['postType'] ) {
 			$entity_id = $block->context['postId'];
 		} else {
 			$entity_id = $attributes['ref'];
 		}
 
 		$form_block = get_post( $entity_id );
-		if ( ! $form_block || 'omniform_form' !== $form_block->post_type ) {
+		if ( ! $form_block || 'omniform' !== $form_block->post_type ) {
 			return '';
 		}
 

@@ -47,7 +47,7 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 			if ( Blocks\Form::class === $block ) {
 				$wp_query_args   = array(
 					'post_status'    => array( 'draft', 'publish' ),
-					'post_type'      => 'omniform_form',
+					'post_type'      => 'omniform',
 					'posts_per_page' => -1,
 					'no_found_rows'  => true,
 				);
@@ -116,7 +116,7 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 			'omniform/form-pattern-one',
 			array(
 				'title'         => 'Pattern one',
-				'postTypes'     => array( 'omniform_form' ),
+				'postTypes'     => array( 'omniform' ),
 				'categories'    => array( 'form' ),
 				'content'       => '<!-- wp:omniform/field-input {"label":"field-text label","help":"field-text help text"} /-->
 
@@ -133,7 +133,7 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 			'omniform/form-pattern-two',
 			array(
 				'title'         => 'Pattern two',
-				'postTypes'     => array( 'omniform_form' ),
+				'postTypes'     => array( 'omniform' ),
 				'categories'    => array( 'form' ),
 				'content'       => '<!-- wp:omniform/field-input {"label":"field-text label","help":"field-text help text"} /-->
 
@@ -150,7 +150,7 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 			'omniform/form-pattern-three',
 			array(
 				'title'         => 'Pattern three',
-				'postTypes'     => array( 'omniform_form' ),
+				'postTypes'     => array( 'omniform' ),
 				'categories'    => array( 'form' ),
 				'content'       => '<!-- wp:omniform/field-input {"label":"field-text label","help":"field-text help text"} /-->
 

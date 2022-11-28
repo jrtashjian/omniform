@@ -107,7 +107,7 @@ class PluginServiceProvider extends ServiceProvider {
 	 */
 	public function registerPostType() {
 		register_post_type(
-			'omniform_form',
+			'omniform',
 			array(
 				'labels'                => array(
 					'name'                     => _x( 'OmniForm', 'post type general name', 'omniform' ),
@@ -182,7 +182,7 @@ class PluginServiceProvider extends ServiceProvider {
 				),
 				'public'                => false,
 				'show_ui'               => true,
-				'show_in_menu'          => 'edit.php?post_type=omniform_form',
+				'show_in_menu'          => 'edit.php?post_type=omniform',
 				'menu_position'         => 1,
 				'rewrite'               => false,
 				'show_in_rest'          => true,
@@ -224,7 +224,7 @@ class PluginServiceProvider extends ServiceProvider {
 			return;
 		}
 
-		if ( 'omniform_form' !== get_post_type( (int) $_GET['post'] ) ) {
+		if ( 'omniform' !== get_post_type( (int) $_GET['post'] ) ) {
 			return;
 		}
 
@@ -264,7 +264,7 @@ class PluginServiceProvider extends ServiceProvider {
 			return;
 		}
 
-		if ( 'omniform_form' !== get_post_type( (int) $query_args['post'] ) ) {
+		if ( 'omniform' !== get_post_type( (int) $query_args['post'] ) ) {
 			return;
 		}
 

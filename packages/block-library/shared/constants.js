@@ -3,4 +3,4 @@
  *
  * @type {string}
  */
-export const FORM_POST_TYPE = 'omniform_form';
+export const FORM_POST_TYPE = 'omniform';
