@@ -72,12 +72,27 @@ export default function FormEdit( {
 	const isPlaceholder = ! entityId;
 	const isEntityAvailable = ! isPlaceholder && ! isMissing && isResolved;
 
+	if (
+		JSON.stringify( context ) === JSON.stringify( {} ) &&
+		typeof ref === 'undefined'
+	) {
+		return (
+			<div { ...blockProps }>
+				<Warning>
+					{ __( 'PLACEHOLDER.', 'omniform' ) }
+				</Warning>
+			</div>
+		);
+	}
+
 	if ( innerBlocks.length === 0 && isMissing ) {
-		<div { ...blockProps }>
-			<Warning>
-				{ __( 'Form has been deleted or is unavailable.', 'omniform' ) }
-			</Warning>
-		</div>;
+		return (
+			<div { ...blockProps }>
+				<Warning>
+					{ __( 'Form has been deleted or is unavailable.', 'omniform' ) }
+				</Warning>
+			</div>
+		);
 	}
 
 	if ( isEntityAvailable && hasAlreadyRendered ) {
