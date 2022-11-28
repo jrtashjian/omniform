@@ -1,0 +1,13 @@
+@import "~@wordpress/base-styles/variables";
+
+.wp-block-omniform-select-group {
+
+	.block-list-appender {
+		position: unset;
+		padding: $grid-unit $grid-unit $grid-unit 0;
+	}
+
+	.block-editor-button-block-appender.components-button {
+		padding: $grid-unit;
+	}
+}

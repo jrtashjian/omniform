@@ -57,6 +57,7 @@ const Edit = ( props ) => {
 			onMerge={ mergeBlocks }
 			onReplace={ onReplace }
 			onRemove={ onRemove }
+			__unstableAllowPrefixTransformations
 		/>
 	);
 };

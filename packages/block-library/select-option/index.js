@@ -10,6 +10,7 @@ import { decodeEntities } from '@wordpress/html-entities';
  */
 import json from './block.json';
 import Edit from './edit';
+import transforms from './transforms';
 import { selectOption as icon } from '../shared/icons';
 
 import './style.scss';
@@ -25,6 +26,7 @@ registerBlockType( name, {
 			label: __( 'Example input', 'omniform' ),
 		},
 	},
+	transforms,
 	merge: ( attributes, attributesToMerge ) => {
 		return {
 			label:
