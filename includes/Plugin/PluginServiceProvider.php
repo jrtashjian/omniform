@@ -274,7 +274,7 @@ class PluginServiceProvider extends ServiceProvider {
 				'show_in_menu'          => 'edit.php?post_type=omniform',
 				'show_in_admin_bar'     => false,
 				'rewrite'               => false,
-				'show_in_rest'          => false,
+				'show_in_rest'          => true,
 				'rest_namespace'        => 'omniform/v1',
 				'rest_base'             => 'submissions',
 				'rest_controller_class' => 'WP_REST_Blocks_Controller',
