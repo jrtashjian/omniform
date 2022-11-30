@@ -98,6 +98,9 @@ class FormIngestionEngine {
 				'post_content' => wp_json_encode( $post_data ),
 				'post_type'    => 'omniform_submission',
 				'post_status'  => 'publish',
+				'meta_input'   => array(
+					'omniform_id' => $this->id,
+				),
 			)
 		);
 	}
