@@ -11,8 +11,12 @@ import {
 	FullscreenMode,
 	InterfaceSkeleton,
 } from '@wordpress/interface';
+import { useEntityRecords } from '@wordpress/core-data';
 
 export default function App( { settings } ) {
+	const { records: formRecords, hasResolved: hasFormRecordsResolved } = useEntityRecords( 'postType', 'omniform' );
+	const { records: submissionRecords, hasResolved: hasSubmissionRecordsResolved } = useEntityRecords( 'postType', 'omniform_submission' );
+
 	return (
 		<SlotFillProvider>
 			<FullscreenMode isActive={ false } />
@@ -25,6 +29,18 @@ export default function App( { settings } ) {
 							{ __( 'Initial Settings', 'omniform' ) }:<br />
 							{ JSON.stringify( settings, null, 2 ) }
 						</pre>
+
+						<ul>
+							{ hasFormRecordsResolved && formRecords.map( ( form ) => (
+								<li key={ form.id }><a href={ `/wp-admin/post.php?post=${ form.id }&action=edit` }>{ form.title.raw }</a></li>
+							) ) }
+						</ul>
+
+						<ul>
+							{ hasSubmissionRecordsResolved && submissionRecords.map( ( form ) => (
+								<li key={ form.id }><a href={ `/wp-admin/post.php?post=${ form.id }&action=edit` }>{ form.title.raw }</a></li>
+							) ) }
+						</ul>
 					</div>
 				) }
 			/>
