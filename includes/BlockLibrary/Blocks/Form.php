@@ -71,6 +71,14 @@ class Form implements FormBlockInterface {
 			);
 
 			$form_ingestion->savePostData();
+
+			// Incremement form submissions.
+			$submissions = get_post_meta( $entity_id, 'submissions', true );
+			update_post_meta( $entity_id, 'submissions', (int) $submissions + 1 );
+		} else {
+			// Incremement form impressions.
+			$impressions = get_post_meta( $entity_id, 'impressions', true );
+			update_post_meta( $entity_id, 'impressions', (int) $impressions + 1 );
 		}
 
 		$content = do_blocks( $form_block->post_content );
