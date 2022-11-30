@@ -20,7 +20,6 @@ const Edit = ( props ) => {
 	} = props;
 	const {
 		type,
-		help,
 		placeholder,
 	} = attributes;
 
@@ -45,18 +44,6 @@ const Edit = ( props ) => {
 				autoComplete="off"
 				rows="10"
 			/>
-
-			{ ( isSelected || help ) && (
-				<RichText
-					className="omniform-field-support"
-					tagName="p"
-					aria-label={ __( 'Help text', 'omniform' ) }
-					placeholder={ __( 'Write a help text…', 'omniform' ) }
-					withoutInteractiveFormatting
-					value={ help }
-					onChange={ ( html ) => setAttributes( { help: html } ) }
-				/>
-			) }
 		</div>
 	);
 };

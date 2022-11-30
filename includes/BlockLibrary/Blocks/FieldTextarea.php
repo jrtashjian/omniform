@@ -60,7 +60,7 @@ class FieldTextarea extends BaseFieldBlock {
 		return sprintf(
 			'<div class="wp-block-omniform-%1$s omniform-%1$s">%2$s</div>',
 			esc_attr( $this->blockTypeName() ),
-			$this->renderFieldLabel() . $field_control . $this->renderFieldHelpText() . $this->renderFieldError()
+			$this->renderFieldLabel() . $field_control . $this->renderFieldError()
 		);
 	}
 }

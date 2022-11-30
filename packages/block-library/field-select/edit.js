@@ -31,7 +31,6 @@ const Edit = ( props ) => {
 	const {
 		placeholder,
 		multiple,
-		help,
 	} = attributes;
 
 	const hasSelectedInnerBlock = useSelect(
@@ -79,18 +78,6 @@ const Edit = ( props ) => {
 					<ul { ...innerBlockProps } />
 				) }
 			</div>
-
-			{ ( isSelected || help ) && (
-				<RichText
-					className="omniform-field-support"
-					tagName="p"
-					aria-label={ __( 'Help text', 'omniform' ) }
-					placeholder={ __( 'Write a help text…', 'omniform' ) }
-					withoutInteractiveFormatting
-					value={ help }
-					onChange={ ( html ) => setAttributes( { help: html } ) }
-				/>
-			) }
 		</div>
 	);
 };

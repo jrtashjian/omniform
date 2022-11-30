@@ -16,9 +16,6 @@
 		},
 		"label": {
 			"type": "string"
-		},
-		"help": {
-			"type": "string"
 		}
 	},
 	"supports": {

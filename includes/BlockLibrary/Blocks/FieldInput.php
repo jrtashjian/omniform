@@ -71,7 +71,7 @@ class FieldInput extends BaseFieldBlock {
 			'<div class="wp-block-omniform-%1$s omniform-field-%2$s">%3$s</div>',
 			esc_attr( $this->blockTypeName() ),
 			esc_attr( $attributes['type'] ),
-			$this->renderFieldLabel() . $field_control . $this->renderFieldHelpText() . $this->renderFieldError()
+			$this->renderFieldLabel() . $field_control . $this->renderFieldError()
 		);
 	}
 }

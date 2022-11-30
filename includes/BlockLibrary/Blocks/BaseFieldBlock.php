@@ -66,7 +66,7 @@ class BaseFieldBlock implements FormBlockInterface {
 		return sprintf(
 			'<div class="wp-block-omniform-%1$s omniform-%1$s">%2$s</div>',
 			esc_attr( $this->blockTypeName() ),
-			$this->renderFieldLabel() . $this->renderFieldHelpText()
+			$this->renderFieldLabel()
 		);
 	}
 
@@ -80,18 +80,6 @@ class BaseFieldBlock implements FormBlockInterface {
 			'<label class="omniform-field-label" for="%s">%s</label>',
 			esc_attr( $this->field_name ),
 			wp_kses_post( $this->getBlockAttribute( 'label' ) )
-		);
-	}
-
-	/**
-	 * Render the input's help text element.
-	 *
-	 * @return string
-	 */
-	protected function renderFieldHelpText() {
-		return empty( $this->getBlockAttribute( 'help' ) ) ? '' : sprintf(
-			'<p class="omniform-field-support">%s</p>',
-			wp_kses_post( $this->getBlockAttribute( 'help' ) )
 		);
 	}
 
