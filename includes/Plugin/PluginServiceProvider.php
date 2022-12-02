@@ -53,6 +53,46 @@ class PluginServiceProvider extends ServiceProvider {
 		// add_action( 'rest_api_init', array( $this, 'filterBlockPatternsOnRestApi' ), PHP_INT_MAX );
 
 		add_filter(
+			'manage_omniform_posts_columns',
+			function( $columns ) {
+				return array_merge(
+					$columns,
+					array(
+						'activity' => __( 'Activity', 'omniform' ),
+					)
+				);
+			}
+		);
+
+		add_action(
+			'manage_omniform_posts_custom_column',
+			function( $column_key, $post_id ) {
+				if ( 'activity' !== $column_key ) {
+					return;
+				}
+
+				$human_readable = new \NumberFormatter( 'en_US', \NumberFormatter::PADDING_POSITION );
+				$percentage_num = new \NumberFormatter( 'en_US', \NumberFormatter::PERCENT );
+
+				$impressions = (int) get_post_meta( $post_id, 'impressions', true );
+				$submissions = (int) get_post_meta( $post_id, 'submissions', true );
+
+				echo sprintf(
+					'<p>%1$s Submissions<br/>%2$s Impressions<br />%3$s Conversion Rate</p>',
+					esc_attr( $human_readable->format( $submissions ) ),
+					esc_attr( $human_readable->format( $impressions ) ),
+					esc_attr(
+						empty( $impressions )
+						? $percentage_num->format( 0 )
+						: $percentage_num->format( $submissions / $impressions )
+					)
+				);
+			},
+			10,
+			2
+		);
+
+		add_filter(
 			'page_row_actions',
 			function( $actions, $post ) {
 				if ( 'omniform' !== $post->post_type ) {
