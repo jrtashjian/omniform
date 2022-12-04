@@ -7,14 +7,24 @@
 	"description": "A field with multiple options where a single choice can be made.",
 	"textdomain": "omniform",
 	"attributes": {
-		"multiple": {
+		"isMultiple": {
 			"type": "boolean",
 			"default": false
 		},
-		"placeholder": {
+		"fieldType": {
+			"type": "string",
+			"default": "text"
+		},
+		"fieldPlaceholder": {
 			"type": "string"
 		},
-		"label": {
+		"fieldLabel": {
+			"type": "string"
+		},
+		"fieldName": {
+			"type": "string"
+		},
+		"fieldValue": {
 			"type": "string"
 		}
 	},

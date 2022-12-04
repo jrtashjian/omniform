@@ -15,6 +15,7 @@ import {
 	useInnerBlocksProps,
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
+import { createBlock, getDefaultBlockName } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -29,8 +30,8 @@ const Edit = ( props ) => {
 		clientId,
 	} = props;
 	const {
-		placeholder,
-		multiple,
+		fieldPlaceholder,
+		isMultiple,
 	} = attributes;
 
 	const hasSelectedInnerBlock = useSelect(
@@ -56,25 +57,41 @@ const Edit = ( props ) => {
 	return (
 		<div
 			{ ...blockProps }
-			className={ classNames( blockProps.className, 'omniform-field-select', { [ `type-multiple` ]: multiple } ) }
+			className={ classNames( blockProps.className, 'omniform-field-select', { [ `type-multiple` ]: isMultiple } ) }
 		>
 			<FormLabel originBlockProps={ props } />
 
 			<div className="omniform-field-control">
-				{ ! multiple && (
+				{ ! isMultiple && (
 					<RichText
+						identifier="fieldControl"
 						className="placeholder-text"
 						aria-label={ __( 'Help text', 'omniform' ) }
 						placeholder={
-							( placeholder || ( ! isSelected && ! hasSelectedInnerBlock ) ) ? undefined : __( 'Enter a placeholder…', 'omniform' )
+							( fieldPlaceholder || ( ! isSelected && ! hasSelectedInnerBlock ) )
+								? undefined
+								: __( 'Enter a placeholder…', 'omniform' )
 						}
 						allowedFormats={ [] }
 						withoutInteractiveFormatting
-						value={ placeholder }
-						onChange={ ( html ) => setAttributes( { placeholder: html } ) }
+						value={ fieldPlaceholder }
+						onChange={ ( html ) => setAttributes( { fieldPlaceholder: html } ) }
+						// When hitting enter, place a new insertion point. This makes adding field a lot easier.
+						onSplit={ ( _value, isOriginal ) => {
+							const block = isOriginal
+								? createBlock( props.name, props.attributes )
+								: createBlock( getDefaultBlockName() );
+
+							if ( isOriginal ) {
+								block.clientId = props.clientId;
+							}
+
+							return block;
+						} }
+						onReplace={ props.onReplace }
 					/>
 				) }
-				{ ( isSelected || hasSelectedInnerBlock || multiple ) && (
+				{ ( isSelected || hasSelectedInnerBlock || isMultiple ) && (
 					<ul { ...innerBlockProps } />
 				) }
 			</div>
