@@ -14,8 +14,8 @@ const variations = [
 
 variations.forEach( ( variation ) => {
 	variation.isActive = ( blockAttributes, variationAttributes ) =>
-		blockAttributes.type ===
-		variationAttributes.type;
+		blockAttributes.isMultiple ===
+		variationAttributes.isMultiple;
 } );
 
 export default variations;
