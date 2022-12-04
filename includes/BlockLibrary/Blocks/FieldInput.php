@@ -75,11 +75,15 @@ class FieldInput extends BaseFieldBlock {
 			implode( ' ', $field_attributes )
 		);
 
+		if ( 'hidden' !== $attributes['fieldType'] ) {
+			$field_control = $this->renderFieldLabel() . $field_control;
+		}
+
 		return sprintf(
 			'<div class="wp-block-omniform-%1$s omniform-field-%2$s">%3$s</div>',
 			esc_attr( $this->blockTypeName() ),
 			esc_attr( $attributes['fieldType'] ),
-			$this->renderFieldLabel() . $field_control . $this->renderFieldError()
+			$field_control . $this->renderFieldError()
 		);
 	}
 }
