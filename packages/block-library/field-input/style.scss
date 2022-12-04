@@ -72,6 +72,39 @@
 			height: 2.625em;
 		}
 	}
+
+	// Range
+	&.omniform-field-range {
+
+		.omniform-field-control {
+			height: 2.625em;
+			padding: 0;
+			margin: 0;
+			background-color: transparent;
+			border: none;
+
+			&::-moz-range-thumb,
+			&::-webkit-slider-thumb {
+				width: 1em;
+				height: 1em;
+				background-color: var(--wp--preset--color--contrast, var(--wp--preset--color--black, #000));
+				border: 0;
+				border-radius: 1em;
+				appearance: none;
+			}
+
+			&::-moz-range-track,
+			&::-webkit-slider-runnable-track {
+				width: 100%;
+				height: 0.5em;
+				color: transparent;
+				cursor: pointer;
+				background-color: var(--wp--preset--color--white);
+				border: 1px solid var(--wp--preset--color--cyan-bluish-gray);
+				border-radius: 1rem;
+			}
+		}
+	}
 }
 
 // Consecutive checbox and radio inputs should appear as related.
