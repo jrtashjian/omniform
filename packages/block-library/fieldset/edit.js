@@ -2,6 +2,7 @@
  * External dependencies
  */
 import classNames from 'classnames';
+import { kebabCase } from 'lodash';
 
 /**
  * WordPress dependencies
@@ -19,6 +20,7 @@ const Edit = ( {
 } ) => {
 	const {
 		fieldLabel,
+		fieldName,
 	} = attributes;
 
 	const blockProps = useBlockProps();
@@ -37,7 +39,10 @@ const Edit = ( {
 				withoutInteractiveFormatting
 				multiple={ false }
 				value={ fieldLabel }
-				onChange={ ( html ) => setAttributes( { fieldLabel: html } ) }
+				onChange={ ( html ) => ! fieldName || fieldName === kebabCase( fieldLabel )
+					? setAttributes( { fieldLabel: html, fieldName: kebabCase( html ) } )
+					: setAttributes( { fieldLabel: html } )
+				}
 			/>
 			{ innerBlockProps.children }
 		</div>

@@ -8,7 +8,13 @@
 	"attributes": {
 		"fieldLabel": {
 			"type": "string"
+		},
+		"fieldName": {
+			"type": "string"
 		}
+	},
+	"providesContext": {
+		"omniform/fieldGroupName": "fieldName"
 	},
 	"editorScript": "file:index.js",
 	"editorStyle": "file:index.css",

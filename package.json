@@ -30,7 +30,8 @@
 		"@wordpress/interface": "^4.16.6",
 		"@wordpress/plugins": "^4.15.2",
 		"change-case": "^4.1.2",
-		"classnames": "^2.3.2"
+		"classnames": "^2.3.2",
+		"lodash": "^4.17.21"
 	},
 	"devDependencies": {
 		"@wordpress/env": "^5.2.2",
