@@ -82,6 +82,15 @@
 			background-color: transparent;
 			border: none;
 
+			&:focus {
+				outline: 0;
+
+				&::-moz-range-thumb,
+				&::-webkit-slider-thumb {
+					box-shadow: 0 0 0 1px #fff, 0 0 0 0.25rem var(--wp--preset--color--primary);
+				}
+			}
+
 			&::-moz-range-thumb,
 			&::-webkit-slider-thumb {
 				width: 1em;
