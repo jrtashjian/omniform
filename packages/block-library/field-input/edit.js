@@ -11,6 +11,7 @@ import {
 	RichText,
 	useBlockProps,
 } from '@wordpress/block-editor';
+import { createBlock, getDefaultBlockName } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -24,32 +25,59 @@ const Edit = ( props ) => {
 		isSelected,
 	} = props;
 	const {
-		type,
-		placeholder,
+		fieldPlaceholder,
+		fieldType,
+		fieldValue,
 	} = attributes;
 
+	const isOptionInput = ( fieldType === 'checkbox' || fieldType === 'radio' );
+	const isHiddenInput = fieldType === 'hidden';
+
 	const blockProps = useBlockProps();
+
+	const richTextPlaceholder = isHiddenInput
+		? __( 'Enter a value…', 'omniform' )
+		: __( 'Enter a placeholder…', 'omniform' );
+	const richTextOnChange = ( html ) => isHiddenInput
+		? setAttributes( { fieldValue: html } )
+		: setAttributes( { fieldPlaceholder: html } );
 
 	return (
 		<div
 			{ ...blockProps }
-			className={ classNames( blockProps.className, `omniform-field-${ type }` ) }
+			className={ classNames( blockProps.className, `omniform-field-${ fieldType }` ) }
 		>
 			<FormLabel originBlockProps={ props } />
 
-			{ ( type === 'checkbox' || type === 'radio' ) ? (
+			{ ( isOptionInput ) ? (
 				<div className="omniform-field-control" />
 			) : (
 				<RichText
+					identifier="fieldControl"
 					className="omniform-field-control"
-					aria-label={ __( 'Help text', 'omniform' ) }
+					aria-label={ __( 'Placeholder text for text input.', 'omniform' ) }
 					placeholder={
-						( placeholder || ! isSelected ) ? undefined : __( 'Enter a placeholder…', 'omniform' )
+						( fieldPlaceholder || fieldValue || ! isSelected )
+							? undefined
+							: richTextPlaceholder
 					}
 					allowedFormats={ [] }
 					withoutInteractiveFormatting
-					value={ placeholder }
-					onChange={ ( html ) => setAttributes( { placeholder: html } ) }
+					value={ isHiddenInput ? fieldValue : fieldPlaceholder }
+					onChange={ richTextOnChange }
+					// When hitting enter, place a new insertion point. This makes adding field a lot easier.
+					onSplit={ ( _value, isOriginal ) => {
+						const block = isOriginal
+							? createBlock( props.name, props.attributes )
+							: createBlock( getDefaultBlockName() );
+
+						if ( isOriginal ) {
+							block.clientId = props.clientId;
+						}
+
+						return block;
+					} }
+					onReplace={ props.onReplace }
 				/>
 			) }
 		</div>

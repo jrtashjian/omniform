@@ -8,11 +8,11 @@ import { __ } from '@wordpress/i18n';
 
 const FormLabel = ( { originBlockProps } ) => (
 	<RichText
-		identifier="label"
+		identifier="fieldLabel"
 		className="omniform-field-label"
 		placeholder={ __( 'Enter a label for the field…', 'omniform' ) }
-		value={ originBlockProps.attributes.label }
-		onChange={ ( html ) => originBlockProps.setAttributes( { label: html } ) }
+		value={ originBlockProps.attributes.fieldLabel }
+		onChange={ ( html ) => originBlockProps.setAttributes( { fieldLabel: html } ) }
 		// When hitting enter, place a new insertion point. This makes adding field a lot easier.
 		onSplit={ ( value, isOriginal ) => {
 			let block;
@@ -20,7 +20,7 @@ const FormLabel = ( { originBlockProps } ) => (
 			if ( isOriginal || value ) {
 				block = createBlock( originBlockProps.name, {
 					...originBlockProps.attributes,
-					label: value,
+					fieldLabel: value,
 				} );
 			} else {
 				block = createBlock( getDefaultBlockName() );

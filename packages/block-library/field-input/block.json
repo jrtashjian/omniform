@@ -7,20 +7,20 @@
 	"description": "A text box for short responses.",
 	"textdomain": "omniform",
 	"attributes": {
-		"type": {
+		"fieldType": {
 			"type": "string",
 			"default": "text"
 		},
-		"placeholder": {
+		"fieldPlaceholder": {
 			"type": "string"
 		},
-		"label": {
+		"fieldLabel": {
 			"type": "string"
 		},
-		"name": {
+		"fieldName": {
 			"type": "string"
 		},
-		"value": {
+		"fieldValue": {
 			"type": "string"
 		},
 		"isHoneypot": {
