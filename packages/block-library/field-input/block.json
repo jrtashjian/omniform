@@ -22,9 +22,6 @@
 		},
 		"fieldValue": {
 			"type": "string"
-		},
-		"isHoneypot": {
-			"type": "boolean"
 		}
 	},
 	"supports": {
