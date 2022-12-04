@@ -30,7 +30,8 @@ const Edit = ( props ) => {
 		fieldValue,
 	} = attributes;
 
-	const isOptionInput = ( fieldType === 'checkbox' || fieldType === 'radio' );
+	const isTextInput = [ 'text', 'email', 'url', 'number', 'month', 'password', 'search', 'tel', 'week', 'hidden' ].includes( fieldType );
+	const isOptionInput = [ 'checkbox', 'radio' ].includes( fieldType );
 	const isHiddenInput = fieldType === 'hidden';
 
 	const blockProps = useBlockProps();
@@ -49,9 +50,7 @@ const Edit = ( props ) => {
 		>
 			<FormLabel originBlockProps={ props } />
 
-			{ ( isOptionInput ) ? (
-				<div className="omniform-field-control" />
-			) : (
+			{ isTextInput && (
 				<RichText
 					identifier="fieldControl"
 					className="omniform-field-control"
@@ -78,6 +77,22 @@ const Edit = ( props ) => {
 						return block;
 					} }
 					onReplace={ props.onReplace }
+				/>
+			) }
+
+			{ isOptionInput && (
+				<div className="omniform-field-control" />
+			) }
+
+			{ ! isTextInput && ! isOptionInput && (
+				<input
+					className="omniform-field-control"
+					type={ fieldType }
+					onChange={ ( event ) => {
+						event.preventDefault();
+						setAttributes( { fieldValue: event.target.value } );
+					} }
+					value={ fieldValue }
 				/>
 			) }
 		</div>

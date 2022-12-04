@@ -35,8 +35,12 @@ class FieldInput extends BaseFieldBlock {
 			'id'          => esc_attr( $this->field_name ),
 			'name'        => esc_attr( $this->field_name ),
 			'placeholder' => empty( $attributes['fieldPlaceholder'] ) ? '' : esc_attr( $attributes['fieldPlaceholder'] ),
-			'value'       => esc_attr( $form_ingestion->formValue( $this->field_name ) ),
+			'value'       => isset( $attributes['fieldValue'] ) ? esc_attr( $attributes['fieldValue'] ) : null,
 		);
+
+		if ( $form_ingestion->formValue( $this->field_name ) ) {
+			$field_attributes['value'] = esc_attr( $form_ingestion->formValue( $this->field_name ) );
+		}
 
 		if ( in_array( $attributes['fieldType'], array( 'checkbox', 'radio' ) ) ) {
 			unset( $field_attributes['placeholder'] );

@@ -81,7 +81,7 @@ class FormIngestionEngine {
 	}
 
 	public function formValue( $field_name ) {
-		return empty( $this->form_data[ $field_name ] ) ? '' : $this->form_data[ $field_name ];
+		return in_array( $field_name, array_keys( $this->form_data ), true ) ? $this->form_data[ $field_name ] : null;
 	}
 
 	public function fieldError( $field_name ) {

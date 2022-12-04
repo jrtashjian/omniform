@@ -46,9 +46,9 @@ const Edit = ( props ) => {
 	}, {
 		allowedBlocks: [ 'omniform/select-option', 'omniform/select-group' ],
 		template: [
-			[ 'omniform/select-option', { label: 'Option One' } ],
-			[ 'omniform/select-option', { label: 'Option Two' } ],
-			[ 'omniform/select-option', { label: 'Option Three' } ],
+			[ 'omniform/select-option', { fieldLabel: 'Option One' } ],
+			[ 'omniform/select-option', { fieldLabel: 'Option Two' } ],
+			[ 'omniform/select-option', { fieldLabel: 'Option Three' } ],
 		],
 		__experimentalCaptureToolbars: true,
 		renderAppender: ( isSelected || hasSelectedInnerBlock ) && InnerBlocks.ButtonBlockAppender,
