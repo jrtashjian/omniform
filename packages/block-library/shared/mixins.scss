@@ -29,7 +29,8 @@
 
 @mixin field-control {
 
-	.omniform-field-control {
+	.omniform-field-control,
+	input[type="file"] {
 		appearance: none;
 		background-color: var(--wp--preset--color--white);
 		border-radius: 0.25em;
