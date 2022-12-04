@@ -34,11 +34,11 @@ class FieldInput extends BaseFieldBlock {
 		$field_attributes = array(
 			'id'          => esc_attr( $this->field_name ),
 			'name'        => esc_attr( $this->field_name ),
-			'placeholder' => empty( $attributes['placeholder'] ) ? '' : esc_attr( $attributes['placeholder'] ),
+			'placeholder' => empty( $attributes['fieldPlaceholder'] ) ? '' : esc_attr( $attributes['fieldPlaceholder'] ),
 			'value'       => esc_attr( $form_ingestion->formValue( $this->field_name ) ),
 		);
 
-		if ( in_array( $attributes['type'], array( 'checkbox', 'radio' ) ) ) {
+		if ( in_array( $attributes['fieldType'], array( 'checkbox', 'radio' ) ) ) {
 			unset( $field_attributes['placeholder'] );
 			$field_attributes['value'] = esc_attr( true );
 
@@ -48,8 +48,8 @@ class FieldInput extends BaseFieldBlock {
 		}
 
 		// Nest form data within a fieldset.
-		if ( ! empty( $attributes['group'] ) ) {
-			$field_attributes['name'] = $attributes['group'] . '[' . sanitize_title( $field_attributes['name'] ) . ']';
+		if ( ! empty( $attributes['fieldGroup'] ) ) {
+			$field_attributes['name'] = $attributes['fieldGroup'] . '[' . sanitize_title( $field_attributes['name'] ) . ']';
 		}
 
 		// Stitch together the input's attributes.
@@ -63,14 +63,14 @@ class FieldInput extends BaseFieldBlock {
 
 		$field_control = sprintf(
 			'<input class="omniform-field-control" type="%s" %s />',
-			esc_attr( $attributes['type'] ),
+			esc_attr( $attributes['fieldType'] ),
 			implode( ' ', $field_attributes )
 		);
 
 		return sprintf(
 			'<div class="wp-block-omniform-%1$s omniform-field-%2$s">%3$s</div>',
 			esc_attr( $this->blockTypeName() ),
-			esc_attr( $attributes['type'] ),
+			esc_attr( $attributes['fieldType'] ),
 			$this->renderFieldLabel() . $field_control . $this->renderFieldError()
 		);
 	}

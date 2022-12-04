@@ -30,13 +30,13 @@ class SelectGroup implements FormBlockInterface {
 	 * @return string Returns the block content.
 	 */
 	public function renderBlock( $attributes, $content, $block ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
-		if ( ! array_key_exists( 'label', $attributes ) ) {
+		if ( ! array_key_exists( 'fieldLabel', $attributes ) ) {
 			return '';
 		}
 
 		return sprintf(
 			'<optgroup label="%s">%s</optgroup>',
-			esc_attr( $attributes['label'] ),
+			esc_attr( $attributes['fieldLabel'] ),
 			do_blocks( $content )
 		);
 	}

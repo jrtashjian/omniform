@@ -30,13 +30,13 @@ class SelectOption implements FormBlockInterface {
 	 * @return string Returns the block content.
 	 */
 	public function renderBlock( $attributes, $content, $block ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
-		if ( ! array_key_exists( 'label', $attributes ) ) {
+		if ( ! array_key_exists( 'fieldLabel', $attributes ) ) {
 			return '';
 		}
 
 		return sprintf(
 			'<option>%s</option>',
-			esc_attr( $attributes['label'] )
+			esc_attr( $attributes['fieldLabel'] )
 		);
 	}
 }

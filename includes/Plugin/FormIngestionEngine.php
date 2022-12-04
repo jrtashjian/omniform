@@ -63,6 +63,15 @@ class FormIngestionEngine {
 		return false;
 	}
 
+	// https://stackoverflow.com/a/19277141
+	// MAKE IT A BLOCK VARIATION OF field-input
+	public function getHoneypotField() {
+		$name        = esc_attr( 'honeypot' );
+		$nonce_field = ''; // '<input id="' . $name . '" name="' . $name . '" value="" />';
+
+		return $nonce_field;
+	}
+
 	public function willProcess() {
 		return $this->verifyNonce();
 	}

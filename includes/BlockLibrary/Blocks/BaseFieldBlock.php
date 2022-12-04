@@ -59,9 +59,9 @@ class BaseFieldBlock implements FormBlockInterface {
 	public function renderBlock( $attributes, $content, $block ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
 		$this->block_attributes = $attributes;
 
-		$this->field_name = empty( $this->getBlockAttribute( 'name' ) )
-			? sanitize_title( $this->getBlockAttribute( 'label' ) )
-			: $this->getBlockAttribute( 'name' );
+		$this->field_name = empty( $this->getBlockAttribute( 'fieldName' ) )
+			? sanitize_title( $this->getBlockAttribute( 'fieldLabel' ) )
+			: $this->getBlockAttribute( 'fieldName' );
 
 		return sprintf(
 			'<div class="wp-block-omniform-%1$s omniform-%1$s">%2$s</div>',
@@ -76,10 +76,10 @@ class BaseFieldBlock implements FormBlockInterface {
 	 * @return string
 	 */
 	protected function renderFieldLabel() {
-		return empty( $this->getBlockAttribute( 'label' ) ) ? '' : sprintf(
+		return empty( $this->getBlockAttribute( 'fieldLabel' ) ) ? '' : sprintf(
 			'<label class="omniform-field-label" for="%s">%s</label>',
 			esc_attr( $this->field_name ),
-			wp_kses_post( $this->getBlockAttribute( 'label' ) )
+			wp_kses_post( $this->getBlockAttribute( 'fieldLabel' ) )
 		);
 	}
 

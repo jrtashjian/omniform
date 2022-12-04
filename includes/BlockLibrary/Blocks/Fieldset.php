@@ -30,13 +30,13 @@ class Fieldset implements FormBlockInterface {
 	 * @return string Returns the block content.
 	 */
 	public function renderBlock( $attributes, $content, $block ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
-		if ( empty( $attributes['label'] ) ) {
+		if ( empty( $attributes['fieldLabel'] ) ) {
 			return '';
 		}
 
 		return sprintf(
 			'<fieldset class="wp-block-omniform-fieldset is-layout-flow"><legend class="omniform-field-label">%1$s</legend>%2$s</fieldset>',
-			esc_html( $attributes['label'] ),
+			esc_html( $attributes['fieldLabel'] ),
 			do_blocks( $content )
 		);
 	}

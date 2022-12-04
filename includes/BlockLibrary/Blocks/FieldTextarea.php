@@ -34,7 +34,7 @@ class FieldTextarea extends BaseFieldBlock {
 		$field_attributes = array(
 			'id'          => esc_attr( $this->field_name ),
 			'name'        => esc_attr( $this->field_name ),
-			'placeholder' => empty( $attributes['placeholder'] ) ? '' : esc_attr( $attributes['placeholder'] ),
+			'placeholder' => empty( $attributes['fieldPlaceholder'] ) ? '' : esc_attr( str_replace( '<br>', "\n", $attributes['fieldPlaceholder'] ) ),
 		);
 
 				// Nest form data within a fieldset.

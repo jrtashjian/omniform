@@ -88,7 +88,7 @@ class Form implements FormBlockInterface {
 			'%s<form method="post" action="%s" class="wp-block-omniform-form is-layout-flow">%s</form>',
 			$post_data,
 			esc_url( get_the_permalink() ),
-			$form_ingestion->getNonceField() . $content
+			$form_ingestion->getNonceField() . $form_ingestion->getHoneypotField() . $content
 		);
 	}
 }

@@ -32,14 +32,14 @@ class FieldSelect extends BaseFieldBlock {
 			'name' => esc_attr( $this->field_name ),
 		);
 
-		if ( ! empty( $attributes['multiple'] ) ) {
-			$field_attributes['multiple'] = 'multiple';
+		if ( ! empty( $attributes['isMultiple'] ) ) {
+			$field_attributes['multiple'] = 'isMultiple';
 			$field_attributes['name']     = $field_attributes['name'] . '[]';
 		}
 
 		// Nest form data within a fieldset.
-		if ( ! empty( $attributes['group'] ) ) {
-			$field_attributes['name'] = $attributes['group'] . '[' . sanitize_title( $field_attributes['name'] ) . ']';
+		if ( ! empty( $attributes['fieldGroup'] ) ) {
+			$field_attributes['name'] = $attributes['fieldGroup'] . '[' . sanitize_title( $field_attributes['name'] ) . ']';
 		}
 
 		// Stitch together the input's attributes.
@@ -52,10 +52,10 @@ class FieldSelect extends BaseFieldBlock {
 		);
 
 		$placeholder_option = '';
-		if ( ! empty( $attributes['placeholder'] ) ) {
+		if ( ! empty( $attributes['fieldPlaceholder'] ) ) {
 			$placeholder_option = sprintf(
 				'<option value="">%s</option>',
-				esc_attr( $attributes['placeholder'] )
+				esc_attr( $attributes['fieldPlaceholder'] )
 			);
 		}
 
