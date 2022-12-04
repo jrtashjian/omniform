@@ -7,14 +7,16 @@
 	"description": "A text box for long responses.",
 	"textdomain": "omniform",
 	"attributes": {
-		"type": {
-			"type": "string",
-			"default": "text"
-		},
-		"placeholder": {
+		"fieldPlaceholder": {
 			"type": "string"
 		},
-		"label": {
+		"fieldLabel": {
+			"type": "string"
+		},
+		"fieldName": {
+			"type": "string"
+		},
+		"fieldValue": {
 			"type": "string"
 		}
 	},

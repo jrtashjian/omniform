@@ -19,8 +19,7 @@ const Edit = ( props ) => {
 		isSelected,
 	} = props;
 	const {
-		type,
-		placeholder,
+		fieldPlaceholder,
 	} = attributes;
 
 	const blockProps = useBlockProps();
@@ -28,21 +27,19 @@ const Edit = ( props ) => {
 		<div { ...blockProps }>
 			<FormLabel originBlockProps={ props } />
 
-			<textarea
-				type={ type }
+			<RichText
+				identifier="fieldControl"
 				className="omniform-field-control"
-				id="textInput"
-				aria-describedby="textInputHelp"
-				aria-label={ __( 'Optional placeholder text', 'omniform' ) }
+				aria-label={ __( 'Placeholder text for text input.', 'omniform' ) }
 				placeholder={
-					( placeholder || ! isSelected ) ? undefined : __( 'Enter a placeholder…', 'omniform' )
+					( fieldPlaceholder || ! isSelected )
+						? undefined
+						: __( 'Enter a placeholder…', 'omniform' )
 				}
-				value={ placeholder }
-				onChange={ ( event ) =>
-					setAttributes( { placeholder: event.target.value } )
-				}
-				autoComplete="off"
-				rows="10"
+				allowedFormats={ [] }
+				withoutInteractiveFormatting
+				value={ fieldPlaceholder }
+				onChange={ ( html ) => setAttributes( { fieldPlaceholder: html } ) }
 			/>
 		</div>
 	);
