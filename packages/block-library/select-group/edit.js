@@ -34,7 +34,7 @@ const Edit = ( props ) => {
 		isSelected,
 	} = props;
 	const {
-		label,
+		fieldLabel,
 	} = attributes;
 
 	const hasSelectedInnerBlock = useSelect(
@@ -51,12 +51,12 @@ const Edit = ( props ) => {
 	}, {
 		allowedBlocks: [ 'omniform/select-option' ],
 		template: [
-			[ 'omniform/select-option', { label: 'Option One' } ],
+			[ 'omniform/select-option', { fieldLabel: 'Option One' } ],
 		],
 		renderAppender: ( isSelected || hasSelectedInnerBlock ) && InnerBlocks.ButtonBlockAppender,
 	} );
 
-	const [ isOpened, setIsOpened ] = useState( ! label );
+	const [ isOpened, setIsOpened ] = useState( ! fieldLabel );
 	useEffect( () => {
 		if ( hasSelectedInnerBlock ) {
 			setIsOpened( true );
@@ -80,20 +80,20 @@ const Edit = ( props ) => {
 					onClick={ () => setIsOpened( ! isOpened ) }
 				/>
 				<RichText
-					identifier="label"
+					identifier="fieldLabel"
 					aria-label={ __( 'Help text', 'omniform' ) }
 					placeholder={ __( 'Write the option text…', 'omniform' ) }
 					allowedFormats={ [] }
 					withoutInteractiveFormatting
-					value={ label }
-					onChange={ ( html ) => setAttributes( { label: html } ) }
+					value={ fieldLabel }
+					onChange={ ( html ) => setAttributes( { fieldLabel: html } ) }
 					onSplit={ ( value, isOriginal ) => {
 						let newAttributes;
 
 						if ( isOriginal || value ) {
 							newAttributes = {
 								...attributes,
-								label: value.trim(),
+								fieldLabel: value.trim(),
 							};
 						}
 
