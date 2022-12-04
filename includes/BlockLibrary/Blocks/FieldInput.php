@@ -50,6 +50,10 @@ class FieldInput extends BaseFieldBlock {
 		// Nest form data within a fieldset.
 		if ( ! empty( $block->context['omniform/fieldGroupName'] ) ) {
 			$field_attributes['name'] = $block->context['omniform/fieldGroupName'] . '[' . sanitize_title( $field_attributes['name'] ) . ']';
+
+			if ( 'radio' === $attributes['fieldType'] ) {
+				$field_attributes['name'] = $block->context['omniform/fieldGroupName'];
+			}
 		}
 
 		// Stitch together the input's attributes.
