@@ -24,32 +24,32 @@ registerBlockType( name, {
 	save: Save,
 	example: {
 		attributes: {
-			label: __( 'Field Group', 'omniform' ),
+			fieldLabel: __( 'Field Group', 'omniform' ),
 		},
 		innerBlocks: [
 			{
 				attributes: {
-					type: 'checkbox',
-					label: __( 'Option One', 'omniform' ),
+					fieldType: 'checkbox',
+					fieldLabel: __( 'Option One', 'omniform' ),
 				},
 				name: 'omniform/field-input',
 			},
 			{
 				attributes: {
-					type: 'checkbox',
-					label: __( 'Option Two', 'omniform' ),
+					fieldType: 'checkbox',
+					fieldLabel: __( 'Option Two', 'omniform' ),
 				},
 				name: 'omniform/field-input',
 			},
 			{
 				attributes: {
-					type: 'checkbox',
-					label: __( 'Option Three', 'omniform' ),
+					fieldType: 'checkbox',
+					fieldLabel: __( 'Option Three', 'omniform' ),
 				},
 				name: 'omniform/field-input',
 			},
 		],
 	},
 	// Get block name from the option value.
-	__experimentalLabel: ( { label } ) => label && decodeEntities( label ),
+	__experimentalLabel: ( { fieldLabel } ) => fieldLabel && decodeEntities( fieldLabel ),
 } );

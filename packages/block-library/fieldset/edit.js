@@ -18,7 +18,7 @@ const Edit = ( {
 	setAttributes,
 } ) => {
 	const {
-		label,
+		fieldLabel,
 	} = attributes;
 
 	const blockProps = useBlockProps();
@@ -36,8 +36,8 @@ const Edit = ( {
 				placeholder={ __( 'Enter a title to the field…', 'omniform' ) }
 				withoutInteractiveFormatting
 				multiple={ false }
-				value={ label }
-				onChange={ ( html ) => setAttributes( { label: html } ) }
+				value={ fieldLabel }
+				onChange={ ( html ) => setAttributes( { fieldLabel: html } ) }
 			/>
 			{ innerBlockProps.children }
 		</div>

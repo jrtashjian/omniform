@@ -6,7 +6,7 @@
 	"title": "Field Group",
 	"textdomain": "omniform",
 	"attributes": {
-		"label": {
+		"fieldLabel": {
 			"type": "string"
 		}
 	},
