@@ -217,6 +217,20 @@ export const fieldTime = (
 	</SVG>
 );
 
+export const fieldHidden = (
+	<SVG viewBox="0 0 24 24">
+		<Path fill="url(#omniform-icon-gradient)" fillRule="evenodd" d="M4.273 3 3 4.273 5.727 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h11.727l4.003 4.003 1.273-1.273L4.273 3ZM4 9h3.727l2 2H6v2h5.727l2 2H4V9Z" clipRule="evenodd" />
+		<Path fill="url(#omniform-icon-gradient)" d="M18.819 15H20V9h-7.181l-2-2H20a2 2 0 0 1 2 2v6a2 2 0 0 1-1.305 1.876L18.819 15Z" />
+		<Defs>
+			<LinearGradient id="omniform-icon-gradient" x1="0" x2="24" y1="0" y2="24" gradientUnits="userSpaceOnUse">
+				<Stop stopColor="#842ED9" />
+				<Stop offset=".5" stopColor="#D92E83" />
+				<Stop offset="1" stopColor="#FFD500" />
+			</LinearGradient>
+		</Defs>
+	</SVG>
+);
+
 export const fieldHoneypot = (
 	<SVG viewBox="0 0 24 24">
 		<Path fill="url(#omniform-icon-gradient)" d="m13.62 8 1.8-3-1.8-3h-3.58l-1.8 3 1.8 3h3.58Zm-3.58 1-1.8 3 1.8 3h3.58l1.8-3-1.8-3h-3.58Zm6.24 2.51h3.59l1.79-3-1.79-3h-3.59l-1.8 3 1.8 3Zm3.59 1h-3.59l-1.8 3 1.8 3h3.59l1.79-3-1.79-3Zm-12.49-1 1.8-3-1.8-3H3.79L2 8.51l1.79 3h3.59Zm0 1H3.79l-1.79 3 1.79 3h3.59l1.8-3-1.8-3ZM10.04 16l-1.8 3 1.8 3h3.58l1.8-3-1.8-3h-3.58Z" />

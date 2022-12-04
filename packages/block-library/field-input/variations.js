@@ -8,6 +8,8 @@ import {
 	fieldDate,
 	fieldEmail,
 	fieldFile,
+	fieldHidden,
+	fieldHoneypot,
 	fieldNumber,
 	fieldPassword,
 	fieldRadio,
@@ -131,12 +133,26 @@ const variations = [
 		description: __( 'A field for collecting a week formatted date.', 'omnigroup' ),
 		attributes: { type: 'week' },
 	},
+	{
+		name: 'field-hidden',
+		icon: fieldHidden,
+		title: __( 'Hidden', 'omniform' ),
+		description: __( '', 'omniform' ),
+		attributes: { type: 'hidden' },
+	},
+	{
+		name: 'field-honeypot',
+		icon: fieldHoneypot,
+		title: __( 'Honeypot', 'omniform' ),
+		description: __( '', 'omnigroup' ),
+		attributes: { type: 'hidden', isHoneypot: true },
+	},
 ];
 
 variations.forEach( ( variation ) => {
 	variation.isActive = ( blockAttributes, variationAttributes ) =>
-		blockAttributes.type ===
-		variationAttributes.type;
+		blockAttributes.type === variationAttributes.type &&
+		blockAttributes.isHoneypot === variationAttributes.isHoneypot;
 } );
 
 export default variations;

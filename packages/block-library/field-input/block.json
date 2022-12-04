@@ -16,6 +16,15 @@
 		},
 		"label": {
 			"type": "string"
+		},
+		"name": {
+			"type": "string"
+		},
+		"value": {
+			"type": "string"
+		},
+		"isHoneypot": {
+			"type": "boolean"
 		}
 	},
 	"supports": {

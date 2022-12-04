@@ -3,4 +3,8 @@
 	.omniform-field-control {
 		color: rgba(0, 0, 0, 0.62);
 	}
+
+	&.omniform-field-hidden .omniform-field-control {
+		border-style: dashed;
+	}
 }
