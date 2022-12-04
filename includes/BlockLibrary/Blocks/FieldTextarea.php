@@ -37,9 +37,9 @@ class FieldTextarea extends BaseFieldBlock {
 			'placeholder' => empty( $attributes['fieldPlaceholder'] ) ? '' : esc_attr( str_replace( '<br>', "\n", $attributes['fieldPlaceholder'] ) ),
 		);
 
-				// Nest form data within a fieldset.
-		if ( ! empty( $attributes['group'] ) ) {
-			$field_attributes['name'] = $attributes['group'] . '[' . sanitize_title( $field_attributes['name'] ) . ']';
+		// Nest form data within a fieldset.
+		if ( ! empty( $block->context['omniform/fieldGroupName'] ) ) {
+			$field_attributes['name'] = $block->context['omniform/fieldGroupName'] . '[' . sanitize_title( $field_attributes['name'] ) . ']';
 		}
 
 		// Stitch together the input's attributes.

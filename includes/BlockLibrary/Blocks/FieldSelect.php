@@ -38,8 +38,8 @@ class FieldSelect extends BaseFieldBlock {
 		}
 
 		// Nest form data within a fieldset.
-		if ( ! empty( $attributes['fieldGroup'] ) ) {
-			$field_attributes['name'] = $attributes['fieldGroup'] . '[' . sanitize_title( $field_attributes['name'] ) . ']';
+		if ( ! empty( $block->context['omniform/fieldGroupName'] ) ) {
+			$field_attributes['name'] = $block->context['omniform/fieldGroupName'] . '[' . sanitize_title( $field_attributes['name'] ) . ']';
 		}
 
 		// Stitch together the input's attributes.
