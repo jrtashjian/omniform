@@ -3,7 +3,6 @@
 .wp-block-omniform-fieldset {
 
 	@include defaults;
-	@include reset;
 	@include field-label;
 
 	margin-left: 0;

@@ -3,7 +3,6 @@
 .wp-block-omniform-field-textarea {
 
 	@include defaults;
-	@include reset;
 	@include field-label;
 	@include field-control;
 
