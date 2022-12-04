@@ -88,11 +88,7 @@ const Edit = ( props ) => {
 				<input
 					className="omniform-field-control"
 					type={ fieldType }
-					onChange={ ( event ) => {
-						event.preventDefault();
-						setAttributes( { fieldValue: event.target.value } );
-					} }
-					value={ fieldValue }
+					disabled
 				/>
 			) }
 		</div>
