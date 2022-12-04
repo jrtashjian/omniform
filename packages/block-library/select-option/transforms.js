@@ -13,8 +13,8 @@ const transforms = {
 		{
 			type: 'prefix',
 			prefix: '>',
-			transform( label ) {
-				return createBlock( 'omniform/select-group', { label } );
+			transform( fieldLabel ) {
+				return createBlock( 'omniform/select-group', { fieldLabel } );
 			},
 		},
 	],

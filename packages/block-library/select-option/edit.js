@@ -18,7 +18,7 @@ const Edit = ( props ) => {
 		clientId,
 	} = props;
 	const {
-		label,
+		fieldLabel,
 	} = attributes;
 
 	const blockProps = useBlockProps( {
@@ -28,21 +28,21 @@ const Edit = ( props ) => {
 	return (
 		<RichText
 			{ ...blockProps }
-			identifier="label"
+			identifier="fieldLabel"
 			tagName="li"
 			aria-label={ __( 'Help text', 'omniform' ) }
 			placeholder={ __( 'Write the option text…', 'omniform' ) }
 			allowedFormats={ [] }
 			withoutInteractiveFormatting
-			value={ label }
-			onChange={ ( html ) => setAttributes( { label: html } ) }
+			value={ fieldLabel }
+			onChange={ ( html ) => setAttributes( { fieldLabel: html } ) }
 			onSplit={ ( value, isOriginal ) => {
 				let newAttributes;
 
 				if ( isOriginal || value ) {
 					newAttributes = {
 						...attributes,
-						label: value.trim(),
+						fieldLabel: value.trim(),
 					};
 				}
 

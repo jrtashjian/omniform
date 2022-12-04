@@ -23,17 +23,17 @@ registerBlockType( name, {
 	icon,
 	example: {
 		attributes: {
-			label: __( 'Example input', 'omniform' ),
+			fieldLabel: __( 'Example input', 'omniform' ),
 		},
 	},
 	transforms,
 	merge: ( attributes, attributesToMerge ) => {
 		return {
-			label:
-				( attributes.label || '' ) +
-				( attributesToMerge.label || '' ),
+			fieldLabel:
+				( attributes.fieldLabel || '' ) +
+				( attributesToMerge.fieldLabel || '' ),
 		};
 	},
 	// Get block name from the option value.
-	__experimentalLabel: ( { label } ) => label && decodeEntities( label ),
+	__experimentalLabel: ( { fieldLabel } ) => fieldLabel && decodeEntities( fieldLabel ),
 } );
