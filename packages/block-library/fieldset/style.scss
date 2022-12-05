@@ -5,13 +5,20 @@
 	@include defaults;
 	@include field-label;
 
-	margin-left: 0;
-	margin-right: 0;
-	margin-bottom: 0;
 	padding: 0;
 	border-width: 0;
 
+	> * {
+		margin-block-start: 0;
+		margin-block-end: 0;
+	}
+
+	> * + * {
+		margin-block-start: 1.5em;
+		margin-block-end: 0;
+	}
+
 	legend + * {
-		margin-top: 0.5em;
+		margin-block-start: 0.5em !important;
 	}
 }

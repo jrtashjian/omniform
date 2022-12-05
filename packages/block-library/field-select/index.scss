@@ -37,7 +37,7 @@
 	li {
 		margin: 0;
 		padding: $grid-unit-10 0;
-		border-bottom: $border-width solid $gray-300;
+		border-bottom: $border-width solid var(--wp--preset--color--contrast, var(--wp--preset--color--foreground, var(--wp--preset--color--cyan-bluish-gray, #000)));
 		list-style-type: none;
 	}
 

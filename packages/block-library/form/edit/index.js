@@ -67,7 +67,7 @@ export default function FormEdit( {
 	);
 
 	const blockProps = useBlockProps( {
-		className: 'block-library-block__reusable-block-container is-layout-flow',
+		className: 'block-library-block__reusable-block-container',
 	} );
 	const isPlaceholder = ! entityId;
 	const isEntityAvailable = ! isPlaceholder && ! isMissing && isResolved;

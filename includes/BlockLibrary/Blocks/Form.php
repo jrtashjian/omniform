@@ -85,7 +85,7 @@ class Form implements FormBlockInterface {
 		$form_ingestion->resetFormData();
 
 		return sprintf(
-			'%s<form method="post" action="%s" class="wp-block-omniform-form is-layout-flow">%s</form>',
+			'%s<form method="post" action="%s" class="wp-block-omniform-form">%s</form>',
 			$post_data,
 			esc_url( get_the_permalink() ),
 			$form_ingestion->getNonceField() . $form_ingestion->getHoneypotField() . $content
