@@ -40,7 +40,7 @@
 				background-repeat: no-repeat;
 				background-position: center;
 				background-size: contain;
-				background-color: var(--wp--preset--color--contrast, var(--wp--preset--color--black, #000));
+				background-color: var(--wp--preset--color--contrast, var(--wp--preset--color--foreground));
 				border-color: transparent;
 
 				&::before,
@@ -76,7 +76,8 @@
 	&.omniform-field-range {
 
 		.omniform-field-control {
-			height: 2.625em;
+			// font-size + line-height + border width
+			height: calc(var(--wp--preset--font-size--normal) + 1.5em + 2px);
 			padding: 0;
 			margin: 0;
 			background-color: transparent;
@@ -84,10 +85,12 @@
 
 			&:focus {
 				outline: 0;
+				box-shadow: none;
 
 				&::-moz-range-thumb,
 				&::-webkit-slider-thumb {
-					box-shadow: 0 0 0 1px #fff, 0 0 0 0.25rem var(--wp--preset--color--primary);
+					outline: 0;
+					box-shadow: 0 0 0 2px var(--wp--preset--color--base, var(--wp--preset--color--background)), 0 0 0 4px var(--wp--preset--color--primary);
 				}
 			}
 
@@ -95,7 +98,7 @@
 			&::-webkit-slider-thumb {
 				width: 1em;
 				height: 1em;
-				background-color: var(--wp--preset--color--contrast, var(--wp--preset--color--black, #000));
+				background-color: var(--wp--preset--color--contrast, var(--wp--preset--color--foreground));
 				border: 0;
 				border-radius: 1em;
 				appearance: none;
@@ -104,11 +107,11 @@
 			&::-moz-range-track,
 			&::-webkit-slider-runnable-track {
 				width: 100%;
-				height: 0.5em;
+				height: 1em;
 				color: transparent;
 				cursor: pointer;
 				background-color: var(--wp--preset--color--white);
-				border: 1px solid var(--wp--preset--color--cyan-bluish-gray);
+				border: 1px solid var(--wp--preset--color--contrast, var(--wp--preset--color--foreground));
 				border-radius: 1rem;
 			}
 		}

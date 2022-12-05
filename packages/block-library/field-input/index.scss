@@ -1,17 +1,25 @@
 .wp-block-omniform-field-input {
 
-	.omniform-field-control {
-		color: var(--wp--preset--color--cyan-bluish-gray);
+	input:disabled {
+		pointer-events: none;
+	}
 
-		&.rich-text [data-rich-text-placeholder]::after {
-			opacity: 1;
+	.omniform-field-control {
+		color: var(--wp--preset--color--foreground, var(--wp--preset--color--contrast));
+
+		&:focus {
+			box-shadow: none;
 		}
 	}
 
 	&.omniform-field-hidden {
 
+		> * {
+			opacity: 0.62;
+		}
+
 		.omniform-field-label {
-			color: var(--wp--preset--color--cyan-bluish-gray);
+			color: var(--wp--preset--color--foreground, var(--wp--preset--color--contrast));
 		}
 
 		.omniform-field-control {

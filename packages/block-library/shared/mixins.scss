@@ -20,7 +20,7 @@
 		appearance: none;
 		background-color: var(--wp--preset--color--white);
 		border-radius: 0.25em;
-		border: 1px solid var(--wp--preset--color--cyan-bluish-gray);
+		border: 1px solid var(--wp--preset--color--contrast, var(--wp--preset--color--foreground));
 		box-sizing: border-box;
 		display: block;
 		font-size: var(--wp--preset--font-size--normal);
@@ -28,5 +28,10 @@
 		max-width: none;
 		padding: 0.5em 0.75em;
 		width: 100%;
+
+		&:focus {
+			outline: 0;
+			box-shadow: 0 0 0 2px var(--wp--preset--color--base, var(--wp--preset--color--background)), 0 0 0 4px var(--wp--preset--color--primary);
+		}
 	}
 }
