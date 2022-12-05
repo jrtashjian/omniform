@@ -1,15 +1,24 @@
 {
 	"$schema": "https://json.schemastore.org/block.json",
 	"apiVersion": 2,
-	"name": "omniform/button-submit",
+	"name": "omniform/button",
 	"category": "form-control",
-	"title": "Submit",
-	"description": "A button for submitting the form",
+	"title": "Button",
+	"description": "A button for the form",
 	"textdomain": "omniform",
 	"attributes": {
-		"text": {
+		"buttonType": {
 			"type": "string",
-			"default": "Submit"
+			"default": "button"
+		},
+		"buttonLabel": {
+			"type": "string"
+		},
+		"buttonName": {
+			"type": "string"
+		},
+		"buttonValue": {
+			"type": "string"
 		},
 		"backgroundColor": {
 			"type": "string"

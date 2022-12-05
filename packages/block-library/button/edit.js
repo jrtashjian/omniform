@@ -24,7 +24,7 @@ const Edit = ( {
 } ) => {
 	const {
 		className,
-		text,
+		buttonLabel,
 	} = attributes;
 
 	const colorProps = useColorProps( attributes );
@@ -33,6 +33,7 @@ const Edit = ( {
 	return (
 		<div { ...blockProps }>
 			<RichText
+				identifier="buttonLabel"
 				className={ classnames(
 					className,
 					colorProps.className,
@@ -44,20 +45,20 @@ const Edit = ( {
 				tagName="button"
 				aria-label={ __( 'Button text', 'omniform' ) }
 				placeholder={ __( 'Add text…', 'omniform' ) }
-				value={ text }
+				value={ buttonLabel }
 				withoutInteractiveFormatting
-				onChange={ ( value ) => setAttributes( { text: value } ) }
+				onChange={ ( value ) => setAttributes( { buttonLabel: value } ) }
 				onSplit={ ( value, isOriginal ) => {
 					let block;
 
 					if ( isOriginal || value ) {
-						block = createBlock( 'omniform/button-submit', {
+						block = createBlock( 'omniform/button', {
 							...attributes,
-							text: value,
+							buttonLabel: value,
 						} );
 					} else {
 						block = createBlock(
-							getDefaultBlockName() ?? 'omniform/button-submit'
+							getDefaultBlockName() ?? 'omniform/button'
 						);
 					}
 

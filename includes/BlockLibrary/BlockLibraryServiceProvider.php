@@ -29,7 +29,7 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 	 */
 	public function registerBlocks() {
 		$blocks = array(
-			Blocks\ButtonSubmit::class,
+			Blocks\Button::class,
 			Blocks\FieldInput::class,
 			Blocks\FieldSelect::class,
 			Blocks\SelectOption::class,
