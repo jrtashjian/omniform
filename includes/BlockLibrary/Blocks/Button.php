@@ -34,14 +34,15 @@ class Button implements FormBlockInterface {
 			'wp-block-omniform-button',
 			'wp-block-button',
 			wp_theme_get_element_class_name( 'button' ),
-			$this->get_color_classes_for_block( $attributes ),
+			$this->getColorClasses( $attributes ),
 		);
 
 		return sprintf(
-			'<button type="%s" class="%s">%s</button>',
+			'<button type="%s" class="%s" %s>%s</button>',
 			esc_attr( $attributes['buttonType'] ),
 			esc_attr( implode( ' ', $button_classes ) ),
-			wp_kses_post( $attributes['buttonLabel'] )
+			$this->getColorStyles( $attributes ),
+			wp_kses_post( $attributes['buttonLabel'] ),
 		);
 	}
 
@@ -52,7 +53,7 @@ class Button implements FormBlockInterface {
 	 *
 	 * @return string The color classnames to be applied to the block elements.
 	 */
-	protected function get_color_classes_for_block( $attributes ) {
+	protected function getColorClasses( $attributes ) {
 		$classnames = array();
 
 		// Text color.
@@ -71,10 +72,10 @@ class Button implements FormBlockInterface {
 		$has_named_gradient          = ! empty( $attributes['gradient'] );
 		$has_custom_gradient         = ! empty( $attributes['style']['color']['gradient'] );
 		if (
-		$has_named_background_color ||
-		$has_custom_background_color ||
-		$has_named_gradient ||
-		$has_custom_gradient
+			$has_named_background_color ||
+			$has_custom_background_color ||
+			$has_named_gradient ||
+			$has_custom_gradient
 		) {
 			$classnames[] = 'has-background';
 		}
@@ -86,5 +87,30 @@ class Button implements FormBlockInterface {
 		}
 
 		return implode( ' ', $classnames );
+	}
+
+	protected function getColorStyles( $attributes ) {
+		$inline_styles = array();
+
+		// Add color styles.
+		$has_text_color = ! empty( $attributes['style']['color']['text'] );
+		if ( $has_text_color ) {
+			$inline_styles[] = sprintf( 'color: %s;', $attributes['style']['color']['text'] );
+		}
+
+		$has_background_color = ! empty( $attributes['style']['color']['background'] );
+		if ( $has_background_color ) {
+			$inline_styles[] = sprintf( 'background-color: %s;', $attributes['style']['color']['background'] );
+		}
+
+		$has_custom_gradient = ! empty( $attributes['style']['color']['gradient'] );
+		if ( $has_custom_gradient ) {
+			$inline_styles[] = sprintf( 'background: %s;', $attributes['style']['color']['gradient'] );
+		}
+
+		return sprintf(
+			'style="%s"',
+			esc_attr( safecss_filter_attr( implode( ' ', $inline_styles ) ) )
+		);
 	}
 }
