@@ -7,7 +7,6 @@ import classnames from 'classnames';
  * WordPress dependencies
  */
 import {
-	InnerBlocks,
 	RichText,
 	useBlockProps,
 	useInnerBlocksProps,
@@ -31,7 +30,6 @@ const Edit = ( props ) => {
 		onReplace,
 		onRemove,
 		clientId,
-		isSelected,
 	} = props;
 	const {
 		fieldLabel,
@@ -53,7 +51,7 @@ const Edit = ( props ) => {
 		template: [
 			[ 'omniform/select-option', { fieldLabel: 'Option One' } ],
 		],
-		renderAppender: ( isSelected || hasSelectedInnerBlock ) && InnerBlocks.ButtonBlockAppender,
+		renderAppender: false,
 	} );
 
 	const [ isOpened, setIsOpened ] = useState( ! fieldLabel );
@@ -70,10 +68,7 @@ const Edit = ( props ) => {
 				[ `is-opened` ]: isOpened,
 			} ) }
 		>
-			<HStack
-				as="li"
-				alignment="left"
-			>
+			<HStack alignment="left">
 				<Button
 					isSmall
 					icon={ isOpened ? chevronDown : chevronRight }
@@ -110,7 +105,9 @@ const Edit = ( props ) => {
 					onRemove={ onRemove }
 				/>
 			</HStack>
-			{ isOpened && <ul { ...innerBlockProps } /> }
+			{ isOpened && (
+				<div { ...innerBlockProps } />
+			) }
 		</div>
 	);
 };

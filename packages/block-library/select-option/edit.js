@@ -26,39 +26,39 @@ const Edit = ( props ) => {
 	} );
 
 	return (
-		<RichText
-			{ ...blockProps }
-			identifier="fieldLabel"
-			tagName="li"
-			aria-label={ __( 'Help text', 'omniform' ) }
-			placeholder={ __( 'Write the option text…', 'omniform' ) }
-			allowedFormats={ [] }
-			withoutInteractiveFormatting
-			value={ fieldLabel }
-			onChange={ ( html ) => setAttributes( { fieldLabel: html } ) }
-			onSplit={ ( value, isOriginal ) => {
-				let newAttributes;
+		<div { ...blockProps }>
+			<RichText
+				identifier="fieldLabel"
+				aria-label={ __( 'Help text', 'omniform' ) }
+				placeholder={ __( 'Write the option text…', 'omniform' ) }
+				allowedFormats={ [] }
+				withoutInteractiveFormatting
+				value={ fieldLabel }
+				onChange={ ( html ) => setAttributes( { fieldLabel: html } ) }
+				onSplit={ ( value, isOriginal ) => {
+					let newAttributes;
 
-				if ( isOriginal || value ) {
-					newAttributes = {
-						...attributes,
-						fieldLabel: value.trim(),
-					};
-				}
+					if ( isOriginal || value ) {
+						newAttributes = {
+							...attributes,
+							fieldLabel: value.trim(),
+						};
+					}
 
-				const block = createBlock( props.name, newAttributes );
+					const block = createBlock( props.name, newAttributes );
 
-				if ( isOriginal ) {
-					block.clientId = clientId;
-				}
+					if ( isOriginal ) {
+						block.clientId = clientId;
+					}
 
-				return block;
-			} }
-			onMerge={ mergeBlocks }
-			onReplace={ onReplace }
-			onRemove={ onRemove }
-			__unstableAllowPrefixTransformations
-		/>
+					return block;
+				} }
+				onMerge={ mergeBlocks }
+				onReplace={ onReplace }
+				onRemove={ onRemove }
+				__unstableAllowPrefixTransformations
+			/>
+		</div>
 	);
 };
 export default Edit;

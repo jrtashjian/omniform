@@ -92,7 +92,7 @@ const Edit = ( props ) => {
 					/>
 				) }
 				{ ( isSelected || hasSelectedInnerBlock || isMultiple ) && (
-					<ul { ...innerBlockProps } />
+					<div { ...innerBlockProps } />
 				) }
 			</div>
 		</div>
