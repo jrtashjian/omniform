@@ -79,10 +79,18 @@ class FieldInput extends BaseFieldBlock {
 			$field_control = $this->renderFieldLabel() . $field_control;
 		}
 
+		$classes = array(
+			'wp-block-omniform-' . $this->blockTypeName(),
+			'omniform-field-' . $attributes['fieldType'],
+		);
+
+		if ( ! empty( $attributes['isRequired'] ) ) {
+			$classes[] = 'field-required';
+		}
+
 		return sprintf(
-			'<div class="wp-block-omniform-%1$s omniform-field-%2$s">%3$s</div>',
-			esc_attr( $this->blockTypeName() ),
-			esc_attr( $attributes['fieldType'] ),
+			'<div class="%s">%s</div>',
+			esc_attr( implode( ' ', $classes ) ),
 			$field_control . $this->renderFieldError()
 		);
 	}

@@ -11,6 +11,13 @@
 		margin: 0 0 0.5em;
 		padding: 0;
 	}
+
+	&.field-required .omniform-field-label::after {
+		content: "*";
+		display: inline;
+		padding: 0 0.25em;
+		color: var(--wp--preset--color--vivid-red);
+	}
 }
 
 @mixin field-control {

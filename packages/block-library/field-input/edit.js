@@ -8,6 +8,8 @@ import classNames from 'classnames';
  */
 import { __ } from '@wordpress/i18n';
 import {
+	BlockControls,
+	InspectorControls,
 	RichText,
 	useBlockProps,
 } from '@wordpress/block-editor';
@@ -17,22 +19,27 @@ import { createBlock, getDefaultBlockName } from '@wordpress/blocks';
  * Internal dependencies
  */
 import FormLabel from '../shared/form-label';
+import { ToolbarButton, ToolbarGroup } from '@wordpress/components';
+import { Required } from '../shared/icons';
 
 const Edit = ( props ) => {
 	const {
 		attributes,
 		setAttributes,
 		isSelected,
+		context,
 	} = props;
 	const {
 		fieldPlaceholder,
 		fieldType,
 		fieldValue,
+		isRequired,
 	} = attributes;
 
 	const isTextInput = [ 'text', 'email', 'url', 'number', 'month', 'password', 'search', 'tel', 'week', 'hidden' ].includes( fieldType );
 	const isOptionInput = [ 'checkbox', 'radio' ].includes( fieldType );
 	const isHiddenInput = fieldType === 'hidden';
+	const isGrouped = !! context[ 'omniform/fieldGroupName' ];
 
 	const blockProps = useBlockProps();
 
@@ -46,7 +53,11 @@ const Edit = ( props ) => {
 	return (
 		<div
 			{ ...blockProps }
-			className={ classNames( blockProps.className, `omniform-field-${ fieldType }` ) }
+			className={ classNames(
+				blockProps.className,
+				`omniform-field-${ fieldType }`,
+				{ [ `field-required` ]: isRequired }
+			) }
 		>
 			<FormLabel originBlockProps={ props } />
 
@@ -91,6 +102,24 @@ const Edit = ( props ) => {
 					disabled
 				/>
 			) }
+
+			<BlockControls>
+				<ToolbarGroup>
+					{ (
+						! isHiddenInput &&
+						( ! isGrouped || ( isGrouped && isTextInput ) )
+					) && (
+						<ToolbarButton
+							icon={ Required }
+							isActive={ isRequired }
+							label={ __( 'Required field', 'omniform' ) }
+							onClick={ () => setAttributes( { isRequired: ! isRequired } ) }
+						/>
+					) }
+				</ToolbarGroup>
+			</BlockControls>
+			<InspectorControls>
+			</InspectorControls>
 		</div>
 	);
 };
