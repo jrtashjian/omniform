@@ -1,7 +1,7 @@
 @import "~@wordpress/base-styles/variables";
 
 .wp-block-omniform-select-option {
-	padding-left: calc($icon-size + $grid-unit);
+	margin-left: calc($icon-size + $grid-unit);
 	margin-block-start: 0.75em;
 
 	.rich-text {

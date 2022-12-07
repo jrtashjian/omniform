@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import classnames from 'classnames';
-
-/**
  * WordPress dependencies
  */
 import {
@@ -13,10 +8,9 @@ import {
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import {
-	Button,
+	Icon,
 	__experimentalHStack as HStack,
 } from '@wordpress/components';
-import { useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { chevronDown, chevronRight } from '@wordpress/icons';
 import { createBlock } from '@wordpress/blocks';
@@ -25,11 +19,12 @@ import { useSelect } from '@wordpress/data';
 const Edit = ( props ) => {
 	const {
 		attributes,
-		setAttributes,
-		mergeBlocks,
-		onReplace,
-		onRemove,
 		clientId,
+		isSelected,
+		mergeBlocks,
+		onRemove,
+		onReplace,
+		setAttributes,
 	} = props;
 	const {
 		fieldLabel,
@@ -54,26 +49,10 @@ const Edit = ( props ) => {
 		renderAppender: false,
 	} );
 
-	const [ isOpened, setIsOpened ] = useState( ! fieldLabel );
-	useEffect( () => {
-		if ( hasSelectedInnerBlock ) {
-			setIsOpened( true );
-		}
-	}, [ hasSelectedInnerBlock ] );
-
 	return (
-		<div
-			{ ...blockProps }
-			className={ classnames( blockProps.className, {
-				[ `is-opened` ]: isOpened,
-			} ) }
-		>
+		<div { ...blockProps }>
 			<HStack alignment="left">
-				<Button
-					isSmall
-					icon={ isOpened ? chevronDown : chevronRight }
-					onClick={ () => setIsOpened( ! isOpened ) }
-				/>
+				<Icon icon={ ( isSelected || hasSelectedInnerBlock ) ? chevronDown : chevronRight } />
 				<RichText
 					identifier="fieldLabel"
 					aria-label={ __( 'Help text', 'omniform' ) }
@@ -105,7 +84,7 @@ const Edit = ( props ) => {
 					onRemove={ onRemove }
 				/>
 			</HStack>
-			{ isOpened && (
+			{ ( isSelected || hasSelectedInnerBlock ) && (
 				<div { ...innerBlockProps } />
 			) }
 		</div>
