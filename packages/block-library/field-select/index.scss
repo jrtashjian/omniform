@@ -9,7 +9,14 @@
 		background-image: none;
 	}
 
-	> .omniform-select-options-container > .wp-block:first-child {
+	.omniform-field-control > .omniform-select-options-container {
+		max-height: 450px;
+		overflow: auto;
+		// 1px spacing so the is-selected box-shadow is not cutoff from overflow.
+		padding: 1px;
+	}
+
+	&.type-multiple .omniform-field-control > .omniform-select-options-container > .wp-block:first-child {
 		margin-block-start: 0;
 	}
 
