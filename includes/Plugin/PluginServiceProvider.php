@@ -189,6 +189,84 @@ class PluginServiceProvider extends ServiceProvider {
 				return $query;
 			}
 		);
+
+		add_filter(
+			'allowed_block_types_all',
+			function( $allowed_block_types, $block_editor_context ) {
+				if ( 'omniform' === $block_editor_context->post->post_type ) {
+					return array(
+						'omniform/button',
+						'omniform/field-input',
+						'omniform/field-select',
+						'omniform/select-option',
+						'omniform/select-group',
+						'omniform/field-textarea',
+						'omniform/fieldset',
+						'core/paragraph',
+						'core/image',
+						'core/heading',
+						'core/gallery',
+						'core/list',
+						'core/list-item',
+						'core/quote',
+						'core/audio',
+						'core/code',
+						'core/column',
+						'core/columns',
+						'core/cover',
+						'core/file',
+						'core/group',
+						'core/media-text',
+						'core/missing',
+						'core/pattern',
+						'core/preformatted',
+						'core/pullquote',
+						'core/block',
+						'core/separator',
+						'core/spacer',
+						'core/table',
+						'core/verse',
+						'core/video',
+						'core/site-logo',
+						'core/site-title',
+						'core/site-tagline',
+					);
+				}
+				return $allowed_block_types;
+			},
+			10,
+			2
+		);
+
+		add_filter(
+			'block_type_metadata',
+			function( $metadata ) {
+				if ( ! is_admin() ) {
+					return $metadata;
+				}
+
+				if (
+					'post.php' !== $GLOBALS['pagenow'] ||
+					empty( $_GET['post'] ) // phpcs:ignore WordPress.Security.NonceVerification
+				) {
+					return $metadata;
+				}
+
+				if ( 'omniform' === get_post_type( (int) $_GET['post'] ) ) {
+					return $metadata;
+				}
+
+				if (
+					str_starts_with( $metadata['name'], 'omniform' ) &&
+					'omniform/form' !== $metadata['name']
+				) {
+					$metadata['ancestor'] = array( 'omniform/form' );
+					return $metadata;
+				}
+
+				return $metadata;
+			},
+		);
 	}
 
 	/**
