@@ -1,16 +1,24 @@
 /**
+ * External dependencies
+ */
+import classNames from 'classnames';
+
+/**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
 import {
+	BlockControls,
 	RichText,
 	useBlockProps,
 } from '@wordpress/block-editor';
+import { ToolbarButton, ToolbarGroup } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
 import FormLabel from '../shared/form-label';
+import { Required } from '../shared/icons';
 
 const Edit = ( props ) => {
 	const {
@@ -20,11 +28,17 @@ const Edit = ( props ) => {
 	} = props;
 	const {
 		fieldPlaceholder,
+		isRequired,
 	} = attributes;
 
 	const blockProps = useBlockProps();
 	return (
-		<div { ...blockProps }>
+		<div
+			{ ...blockProps }
+			className={ classNames( blockProps.className, {
+				[ `field-required` ]: isRequired,
+			} ) }
+		>
 			<FormLabel originBlockProps={ props } />
 
 			<RichText
@@ -41,6 +55,17 @@ const Edit = ( props ) => {
 				value={ fieldPlaceholder }
 				onChange={ ( html ) => setAttributes( { fieldPlaceholder: html } ) }
 			/>
+
+			<BlockControls>
+				<ToolbarGroup>
+					<ToolbarButton
+						icon={ Required }
+						isActive={ isRequired }
+						label={ __( 'Required field', 'omniform' ) }
+						onClick={ () => setAttributes( { isRequired: ! isRequired } ) }
+					/>
+				</ToolbarGroup>
+			</BlockControls>
 		</div>
 	);
 };

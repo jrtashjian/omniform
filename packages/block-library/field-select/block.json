@@ -26,6 +26,9 @@
 		},
 		"fieldValue": {
 			"type": "string"
+		},
+		"isRequired": {
+			"type": "boolean"
 		}
 	},
 	"supports": {
