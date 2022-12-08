@@ -37,6 +37,7 @@ class FieldSelect extends BaseFieldBlock {
 			$field_attributes['name']     = $field_attributes['name'] . '[]';
 
 		}
+
 		if ( ! empty( $attributes['height'] ) ) {
 			$field_attributes['style'] = 'height: ' . $attributes['height'] . 'px;';
 		}

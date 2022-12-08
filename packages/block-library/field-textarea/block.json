@@ -19,6 +19,9 @@
 		"fieldValue": {
 			"type": "string"
 		},
+		"height": {
+			"type": "integer"
+		},
 		"isRequired": {
 			"type": "boolean"
 		}
