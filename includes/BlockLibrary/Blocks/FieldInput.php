@@ -38,8 +38,14 @@ class FieldInput extends BaseFieldBlock {
 			'value'       => isset( $attributes['fieldValue'] ) ? esc_attr( $attributes['fieldValue'] ) : null,
 		);
 
-		if ( $form_ingestion->formValue( $this->field_name ) ) {
+		if ( $form_ingestion->formValue( $this->field_name ) && 'hidden' !== $attributes['fieldType'] ) {
 			$field_attributes['value'] = esc_attr( $form_ingestion->formValue( $this->field_name ) );
+		}
+
+		// Call WordPress functions for hidden inputs.
+		if ( false !== strpos( $field_attributes['value'], '{{' ) ) {
+			$fn = str_replace( array( '{', '}' ), '', $field_attributes['value'] );
+			$field_attributes['value'] = $fn();
 		}
 
 		if ( in_array( $attributes['fieldType'], array( 'checkbox', 'radio' ) ) ) {

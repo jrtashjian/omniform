@@ -139,6 +139,13 @@ const variations = [
 		description: __( '', 'omniform' ),
 		attributes: { fieldType: 'hidden' },
 	},
+	{
+		name: 'field-current-user-id',
+		icon: fieldHidden,
+		title: __( 'Current User ID', 'omniform' ),
+		description: __( '', 'omniform' ),
+		attributes: { fieldType: 'hidden', fieldValue: '{{get_current_user_id}}' },
+	},
 ];
 
 variations.forEach( ( variation ) => {
