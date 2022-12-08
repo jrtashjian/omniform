@@ -14,12 +14,12 @@ import {
 	useBlockProps,
 } from '@wordpress/block-editor';
 import { createBlock, getDefaultBlockName } from '@wordpress/blocks';
+import { ToolbarButton, ToolbarGroup } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
 import FormLabel from '../shared/form-label';
-import { ToolbarButton, ToolbarGroup } from '@wordpress/components';
 import { Required } from '../shared/icons';
 
 const Edit = ( props ) => {

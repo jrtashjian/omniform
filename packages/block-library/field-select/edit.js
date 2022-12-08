@@ -9,6 +9,7 @@ import classNames from 'classnames';
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
 import {
+	BlockControls,
 	InnerBlocks,
 	RichText,
 	useBlockProps,
@@ -16,11 +17,13 @@ import {
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import { createBlock, getDefaultBlockName } from '@wordpress/blocks';
+import { ToolbarButton, ToolbarGroup } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
 import FormLabel from '../shared/form-label';
+import { Required } from '../shared/icons';
 
 const Edit = ( props ) => {
 	const {
@@ -32,6 +35,7 @@ const Edit = ( props ) => {
 	const {
 		fieldPlaceholder,
 		isMultiple,
+		isRequired,
 	} = attributes;
 
 	const hasSelectedInnerBlock = useSelect(
@@ -57,7 +61,10 @@ const Edit = ( props ) => {
 	return (
 		<div
 			{ ...blockProps }
-			className={ classNames( blockProps.className, 'omniform-field-select', { [ `type-multiple` ]: isMultiple } ) }
+			className={ classNames( blockProps.className, 'omniform-field-select', {
+				[ `type-multiple` ]: isMultiple,
+				[ `field-required` ]: isRequired,
+			} ) }
 		>
 			<FormLabel originBlockProps={ props } />
 
@@ -95,6 +102,17 @@ const Edit = ( props ) => {
 					<div { ...innerBlockProps } />
 				) }
 			</div>
+
+			<BlockControls>
+				<ToolbarGroup>
+					<ToolbarButton
+						icon={ Required }
+						isActive={ isRequired }
+						label={ __( 'Required field', 'omniform' ) }
+						onClick={ () => setAttributes( { isRequired: ! isRequired } ) }
+					/>
+				</ToolbarGroup>
+			</BlockControls>
 		</div>
 	);
 };
