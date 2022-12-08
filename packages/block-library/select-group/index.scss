@@ -3,6 +3,10 @@
 .wp-block-omniform-select-group {
 	margin-block-start: 0.75em;
 
+	> div:first-child {
+		font-weight: 700;
+	}
+
 	.omniform-select-options-container {
 		margin-left: $icon-size;
 	}

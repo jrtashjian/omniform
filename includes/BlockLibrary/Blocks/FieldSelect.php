@@ -35,6 +35,10 @@ class FieldSelect extends BaseFieldBlock {
 		if ( ! empty( $attributes['isMultiple'] ) ) {
 			$field_attributes['multiple'] = 'isMultiple';
 			$field_attributes['name']     = $field_attributes['name'] . '[]';
+
+		}
+		if ( ! empty( $attributes['height'] ) ) {
+			$field_attributes['style'] = 'height: ' . $attributes['height'] . 'px;';
 		}
 
 		// Nest form data within a fieldset.

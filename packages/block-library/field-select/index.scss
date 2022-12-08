@@ -3,8 +3,18 @@
 .wp-block-omniform-field-select {
 
 	> .omniform-field-control {
-		max-height: 450px;
+		max-height: 200px;
 		overflow: auto;
+
+		&.components-resizable-box__container {
+			max-height: unset;
+			overflow: unset;
+
+			> div {
+				height: 100%;
+				overflow: auto;
+			}
+		}
 
 		> .omniform-select-options-container {
 			// 1px spacing so the is-selected box-shadow is not cutoff from overflow.

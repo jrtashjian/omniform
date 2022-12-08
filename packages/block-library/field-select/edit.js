@@ -17,7 +17,11 @@ import {
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import { createBlock, getDefaultBlockName } from '@wordpress/blocks';
-import { ToolbarButton, ToolbarGroup } from '@wordpress/components';
+import {
+	ToolbarButton,
+	ToolbarGroup,
+	ResizableBox,
+} from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -36,6 +40,7 @@ const Edit = ( props ) => {
 		fieldPlaceholder,
 		isMultiple,
 		isRequired,
+		height,
 	} = attributes;
 
 	const hasSelectedInnerBlock = useSelect(
@@ -68,8 +73,22 @@ const Edit = ( props ) => {
 		>
 			<FormLabel originBlockProps={ props } />
 
-			<div className="omniform-field-control">
-				{ ! isMultiple && (
+			{ isMultiple && (
+				<ResizableBox
+					className="omniform-field-control"
+					size={ { height: height || 'auto' } }
+					showHandle={ isSelected }
+					enable={ { bottom: true } }
+					onResizeStop={ ( _event, _direction, elt ) => {
+						setAttributes( { height: parseInt( elt.style.height ) } );
+					} }
+				>
+					<div { ...innerBlockProps } />
+				</ResizableBox>
+			) }
+
+			{ ! isMultiple && (
+				<div className="omniform-field-control">
 					<RichText
 						identifier="fieldControl"
 						className="placeholder-text"
@@ -97,11 +116,11 @@ const Edit = ( props ) => {
 						} }
 						onReplace={ props.onReplace }
 					/>
-				) }
-				{ ( isSelected || hasSelectedInnerBlock || isMultiple ) && (
-					<div { ...innerBlockProps } />
-				) }
-			</div>
+					{ ( isSelected || hasSelectedInnerBlock ) && (
+						<div { ...innerBlockProps } />
+					) }
+				</div>
+			) }
 
 			<BlockControls>
 				<ToolbarGroup>
