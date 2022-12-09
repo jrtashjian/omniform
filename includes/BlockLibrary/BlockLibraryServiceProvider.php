@@ -60,7 +60,7 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 						'attributes' => array(
 							'ref' => $post->ID,
 						),
-						'scope'      => array( 'inserter' ),
+						'scope'      => array( 'inserter', 'transform' ),
 						'example'    => array(
 							'attributes' => array(
 								'ref' => $post->ID,
@@ -69,6 +69,8 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 					);
 				}
 			}
+
+			wp_reset_postdata();
 
 			register_block_type(
 				$block_object->blockTypeMetadata(),
