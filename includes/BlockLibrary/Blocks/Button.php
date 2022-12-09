@@ -34,6 +34,7 @@ class Button implements FormBlockInterface {
 			'wp-block-omniform-button',
 			'wp-block-button',
 			wp_theme_get_element_class_name( 'button' ),
+			'wp-block-button__link',
 			$this->getColorClasses( $attributes ),
 		);
 

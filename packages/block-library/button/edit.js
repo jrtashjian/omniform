@@ -38,6 +38,7 @@ const Edit = ( {
 					className,
 					colorProps.className,
 					__experimentalGetElementClassName( 'button' ),
+					'wp-block-button__link',
 				) }
 				style={ {
 					...colorProps.style,
