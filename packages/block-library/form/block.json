@@ -5,7 +5,7 @@
 	"category": "form",
 	"title": "OmniForm",
 	"textdomain": "omniform",
-	"parent": [ "core/post-content", "core/post-template" ],
+	"parent": [ "core/post-content" ],
 	"usesContext": [
 		"postId",
 		"postType"

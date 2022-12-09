@@ -193,43 +193,47 @@ class PluginServiceProvider extends ServiceProvider {
 		add_filter(
 			'allowed_block_types_all',
 			function( $allowed_block_types, $block_editor_context ) {
-				if ( 'omniform' === $block_editor_context->post->post_type ) {
+				if (
+					'core/edit-post' === $block_editor_context->name &&
+					'omniform' === $block_editor_context->post->post_type
+				) {
 					return array(
 						'omniform/button',
 						'omniform/field-input',
 						'omniform/field-select',
-						'omniform/select-option',
-						'omniform/select-group',
 						'omniform/field-textarea',
 						'omniform/fieldset',
-						'core/paragraph',
-						'core/image',
-						'core/heading',
-						'core/gallery',
-						'core/list',
-						'core/list-item',
-						'core/quote',
+						'omniform/form',
+						'omniform/select-group',
+						'omniform/select-option',
 						'core/audio',
+						'core/block',
 						'core/code',
 						'core/column',
 						'core/columns',
 						'core/cover',
 						'core/file',
+						'core/gallery',
 						'core/group',
+						'core/heading',
+						'core/image',
+						'core/list-item',
+						'core/list',
 						'core/media-text',
 						'core/missing',
+						'core/paragraph',
 						'core/pattern',
 						'core/preformatted',
 						'core/pullquote',
-						'core/block',
+						'core/quote',
 						'core/separator',
+						'core/site-logo',
+						'core/site-tagline',
+						'core/site-title',
 						'core/spacer',
 						'core/table',
 						'core/verse',
 						'core/video',
-						'core/site-logo',
-						'core/site-title',
-						'core/site-tagline',
 					);
 				}
 				return $allowed_block_types;
@@ -245,20 +249,20 @@ class PluginServiceProvider extends ServiceProvider {
 					return $metadata;
 				}
 
-				if (
-					'post.php' !== $GLOBALS['pagenow'] ||
-					empty( $_GET['post'] ) // phpcs:ignore WordPress.Security.NonceVerification
-				) {
+				if ( ! in_array( $GLOBALS['pagenow'], array( 'post.php', 'site-editor.php' ), true ) ) {
 					return $metadata;
 				}
 
-				if ( 'omniform' === get_post_type( (int) $_GET['post'] ) ) {
+				if (
+					! empty( $_GET['post'] ) && // phpcs:ignore WordPress.Security.NonceVerification
+					'omniform' === get_post_type( (int) $_GET['post'] ) // phpcs:ignore WordPress.Security.NonceVerification
+				) {
 					return $metadata;
 				}
 
 				if (
 					str_starts_with( $metadata['name'], 'omniform' ) &&
-					'omniform/form' !== $metadata['name']
+					! in_array( $metadata['name'], array( 'omniform/form', 'omniform/select-option', 'omniform/select-group' ), true )
 				) {
 					$metadata['ancestor'] = array( 'omniform/form' );
 					return $metadata;
@@ -359,7 +363,18 @@ class PluginServiceProvider extends ServiceProvider {
 					'title',
 					'editor',
 					'revisions',
+					'custom-fields',
 				),
+			)
+		);
+
+		register_post_meta(
+			'omniform',
+			'sidebar_plugin_meta_block_field',
+			array(
+				'show_in_rest' => true,
+				'single'       => true,
+				'type'         => 'string',
 			)
 		);
 

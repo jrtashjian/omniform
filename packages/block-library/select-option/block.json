@@ -7,6 +7,7 @@
 	"description": "A field with multiple options where a single choice can be made.",
 	"textdomain": "omniform",
 	"parent": [ "omniform/field-select", "omniform/select-group" ],
+	"ancestor": [ "omniform/field-select", "omniform/select-group" ],
 	"attributes": {
 		"fieldLabel": {
 			"type": "string"
