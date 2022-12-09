@@ -9,6 +9,7 @@ import { capitalCase } from 'change-case';
 import { registerBlockType } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
 import { decodeEntities } from '@wordpress/html-entities';
+import { addFilter } from '@wordpress/hooks';
 
 /**
  * Internal dependencies
@@ -48,3 +49,22 @@ registerBlockType( name, {
 		);
 	},
 } );
+
+// Prevent form block from being inserted into an omniform post type unless editing the template.
+addFilter(
+	'blockEditor.__unstableCanInsertBlockType',
+	'removeOmniformFromOmniformPostType',
+	(
+		canInsert,
+		blockType,
+	) => {
+		if (
+			'omniform/form' !== blockType.name ||
+			'omniform' !== select( 'core/editor' ).getCurrentPostType()
+		) {
+			return canInsert;
+		}
+
+		return select( 'core/edit-post' ).isEditingTemplate();
+	}
+);
