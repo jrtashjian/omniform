@@ -21,7 +21,6 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 		add_action( 'init', array( $this, 'registerBlocks' ) );
 		add_action( 'init', array( $this, 'registerPatterns' ) );
 		add_filter( 'block_categories_all', array( $this, 'registerCategories' ) );
-		add_filter( 'render_block_data', array( $this, 'groupFields' ), 10, 3 );
 	}
 
 	/**
@@ -83,32 +82,9 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 	}
 
 	/**
-	 * Filters the block being rendered in render_block(), before it's processed.
-	 *
-	 * @since 5.1.0
-	 * @since 5.9.0 The `$parent_block` parameter was added.
-	 *
-	 * @param array          $parsed_block The block being rendered.
-	 * @param array          $source_block An un-modified copy of $parsed_block, as it appeared in the source content.
-	 * @param \WP_Block|null $parent_block If this is a nested block, a reference to the parent block.
-	 */
-	public function groupFields( $parsed_block, $source_block, $parent_block ) {
-		if (
-			false !== strpos( $source_block['blockName'], 'omniform' ) &&
-			! empty( $parent_block ) &&
-			'omniform/fieldset' === $parent_block->name
-		) {
-			$parsed_block['attrs']['group'] = sanitize_title( $parent_block->attributes['fieldLabel'] );
-		}
-
-		return $parsed_block;
-	}
-
-	/**
 	 * Registers the form block patterns.
 	 */
 	public function registerPatterns() {
-
 		register_block_pattern_category(
 			'form',
 			array( 'label' => __( 'Forms', 'omniform' ) )
@@ -119,14 +95,13 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 			array(
 				'title'         => 'Pattern one',
 				'postTypes'     => array( 'omniform' ),
+				'blockTypes'    => array( 'omniform/form' ),
 				'categories'    => array( 'form' ),
-				'content'       => '<!-- wp:omniform/field-input {"label":"field-text label","help":"field-text help text"} /-->
+				'content'       => '<!-- wp:omniform/field-input {"fieldType":"email","fieldLabel":"Your email address"} /-->
 
-				<!-- wp:omniform/field-textarea {"label":"field-textarea label"} /-->
+				<!-- wp:omniform/field-textarea {"fieldLabel":"Your message","height":230} /-->
 
-				<!-- wp:group {"className":"is-layout-flex wp-block-buttons","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"left"}} -->
-				<div class="wp-block-group is-layout-flex wp-block-buttons"><!-- wp:omniform/button-submit /--></div>
-				<!-- /wp:group -->',
+				<!-- wp:omniform/button {"buttonType":"submit","buttonLabel":"Send Message"} /-->',
 				'viewportWidth' => 640,
 			),
 		);
@@ -136,14 +111,13 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 			array(
 				'title'         => 'Pattern two',
 				'postTypes'     => array( 'omniform' ),
+				'blockTypes'    => array( 'omniform/form' ),
 				'categories'    => array( 'form' ),
-				'content'       => '<!-- wp:omniform/field-input {"label":"field-text label","help":"field-text help text"} /-->
+				'content'       => '<!-- wp:omniform/field-input {"fieldType":"email","fieldLabel":"Your email address"} /-->
 
-				<!-- wp:omniform/field-textarea {"label":"field-textarea label"} /-->
+				<!-- wp:omniform/field-textarea {"fieldLabel":"Your message","height":230} /-->
 
-				<!-- wp:group {"className":"is-layout-flex wp-block-buttons","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"left"}} -->
-				<div class="wp-block-group is-layout-flex wp-block-buttons"><!-- wp:omniform/button-submit /--></div>
-				<!-- /wp:group -->',
+				<!-- wp:omniform/button {"buttonType":"submit","buttonLabel":"Send Message"} /-->',
 				'viewportWidth' => 640,
 			),
 		);
@@ -153,14 +127,13 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 			array(
 				'title'         => 'Pattern three',
 				'postTypes'     => array( 'omniform' ),
+				'blockTypes'    => array( 'omniform/form' ),
 				'categories'    => array( 'form' ),
-				'content'       => '<!-- wp:omniform/field-input {"label":"field-text label","help":"field-text help text"} /-->
+				'content'       => '<!-- wp:omniform/field-input {"fieldType":"email","fieldLabel":"Your email address"} /-->
 
-				<!-- wp:omniform/field-textarea {"label":"field-textarea label"} /-->
+				<!-- wp:omniform/field-textarea {"fieldLabel":"Your message","height":230} /-->
 
-				<!-- wp:group {"className":"is-layout-flex wp-block-buttons","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"left"}} -->
-				<div class="wp-block-group is-layout-flex wp-block-buttons"><!-- wp:omniform/button-submit /--></div>
-				<!-- /wp:group -->',
+				<!-- wp:omniform/button {"buttonType":"submit","buttonLabel":"Send Message"} /-->',
 				'viewportWidth' => 640,
 			),
 		);
