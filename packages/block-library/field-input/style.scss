@@ -6,30 +6,25 @@
 	@include field-label;
 	@include field-control;
 
-	width: 100%;
-
 	// Checkbox and Radio
 	&.omniform-field-checkbox,
 	&.omniform-field-radio {
+		align-items: center;
 		display: flex;
-		flex-wrap: wrap;
+		flex-direction: row-reverse;
+		flex-wrap: nowrap;
+		justify-content: flex-end;
 
 		.omniform-field-label {
-			order: 1;
 			margin-bottom: 0;
 		}
 
-		.omniform-field-support {
-			order: 2;
-			margin-left: calc(1.5em + 2px);
-		}
-
 		.omniform-field-control {
-			order: 0;
+			flex-shrink: 0;
 			width: 1em;
 			height: 1em;
 			padding: 0;
-			margin: 0.25em 0.5em 0 0;
+			margin: 0 0.5em 0 0;
 
 			&[type="radio"] {
 				border-radius: 100%;
