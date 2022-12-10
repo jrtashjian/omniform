@@ -1,0 +1,11 @@
+@import "../shared/mixins";
+
+.wp-block-omniform-button {
+
+	@include defaults;
+
+	&:focus {
+		outline: 0;
+		box-shadow: 0 0 0 2px var(--wp--preset--color--base, var(--wp--preset--color--background, var(--wp--preset--color--white))), 0 0 0 4px var(--wp--preset--color--primary, var(--wp--preset--color--vivid-cyan-blue));
+	}
+}
