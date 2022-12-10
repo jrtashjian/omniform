@@ -5,7 +5,8 @@
 
 @mixin field-label {
 
-	.omniform-field-label {
+	.omniform-field-label,
+	legend.omniform-field-label {
 		display: inline-block;
 		font-size: var(--wp--preset--font-size--normal, 16px);
 		margin: 0 0 0.5em;
@@ -37,9 +38,19 @@
 		margin: 0;
 		width: 100%;
 
+		:checked {
+			color: var(--wp--preset--color--base, var(--wp--preset--color--background, var(--wp--preset--color--white)));
+			background-color: var(--wp--preset--color--primary, var(--wp--preset--color--vivid-cyan-blue));
+		}
+
 		&:focus {
 			outline: 0;
 			box-shadow: 0 0 0 2px var(--wp--preset--color--base, var(--wp--preset--color--background, var(--wp--preset--color--white))), 0 0 0 4px var(--wp--preset--color--primary, var(--wp--preset--color--vivid-cyan-blue));
+		}
+
+		&::selection {
+			color: var(--wp--preset--color--base, var(--wp--preset--color--background, var(--wp--preset--color--white)));
+			background-color: var(--wp--preset--color--primary, var(--wp--preset--color--vivid-cyan-blue));
 		}
 	}
 }
