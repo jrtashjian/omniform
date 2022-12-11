@@ -1,0 +1,8 @@
+.wp-block-omniform-button {
+
+	&:focus,
+	.wp-element-button:focus {
+		outline: none;
+		box-shadow: none;
+	}
+}

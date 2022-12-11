@@ -1,3 +1,20 @@
+/**
+ * Custom Properties: color fallback chain:
+ *
+ * base -> background -> white -> #fff
+ * var(--wp--preset--color--base, var(--wp--preset--color--background, var(--wp--preset--color--white, #fff)))
+ *
+ * contrast -> foreground -> black -> #000
+ * var(--wp--preset--color--contrast, var(--wp--preset--color--foreground, var(--wp--preset--color--black, #000)))
+ *
+ * primary -> vivid-cyan-blue -> currentColor
+ * var(--wp--preset--color--primary, var(--wp--preset--color--vivid-cyan-blue, currentColor))
+ *
+ * Selected Control
+ * accent -> contrast -> foreground -> black -> #000
+ * var(--wp--preset--color--accent, var(--wp--preset--color--contrast, var(--wp--preset--color--foreground, var(--wp--preset--color--black, #000))))
+ */
+
 @mixin defaults {
 	font-size: var(--wp--preset--font-size--normal, 16px);
 	line-height: 1.5;
@@ -26,9 +43,9 @@
 	.omniform-field-control,
 	input[type="file"] {
 		appearance: none;
-		background-color: var(--wp--preset--color--white);
+		background-color: var(--omniform--color--base);
 		border-radius: 0.25em;
-		border: 1px solid rgba(0, 0, 0, 0.25);
+		border: 1px solid var(--omniform--color--border);
 		box-sizing: border-box;
 		display: block;
 		font-size: var(--wp--preset--font-size--normal, 16px);
@@ -37,20 +54,13 @@
 		padding: 0.5em 0.75em;
 		margin: 0;
 		width: 100%;
+		color: var(--omniform--color--contrast);
 
-		:checked {
-			color: var(--wp--preset--color--base, var(--wp--preset--color--background, var(--wp--preset--color--white)));
-			background-color: var(--wp--preset--color--primary, var(--wp--preset--color--vivid-cyan-blue));
-		}
-
+		&.focus,
 		&:focus {
 			outline: 0;
-			box-shadow: 0 0 0 2px var(--wp--preset--color--base, var(--wp--preset--color--background, var(--wp--preset--color--white))), 0 0 0 4px var(--wp--preset--color--primary, var(--wp--preset--color--vivid-cyan-blue));
-		}
-
-		&::selection {
-			color: var(--wp--preset--color--base, var(--wp--preset--color--background, var(--wp--preset--color--white)));
-			background-color: var(--wp--preset--color--primary, var(--wp--preset--color--vivid-cyan-blue));
+			box-shadow: 0 0 0 2px var(--omniform--color--base), 0 0 0 4px var(--omniform--color--accent);
+			border-color: var(--omniform--color--base);
 		}
 	}
 }

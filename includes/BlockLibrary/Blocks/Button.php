@@ -31,15 +31,13 @@ class Button implements FormBlockInterface {
 	 */
 	public function renderBlock( $attributes, $content, $block ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
 		$button_classes = array(
-			'wp-block-omniform-button',
-			'wp-block-button',
 			wp_theme_get_element_class_name( 'button' ),
 			'wp-block-button__link',
 			$this->getColorClasses( $attributes ),
 		);
 
 		return sprintf(
-			'<button type="%s" class="%s" %s>%s</button>',
+			'<div class="wp-block-omniform-button wp-block-button"><button type="%s" class="%s" %s>%s</button></div>',
 			esc_attr( $attributes['buttonType'] ),
 			esc_attr( implode( ' ', $button_classes ) ),
 			$this->getColorStyles( $attributes ),

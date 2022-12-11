@@ -6,6 +6,8 @@
 	@include field-label;
 	@include field-control;
 
+	flex-grow: 1;
+
 	// Checkbox and Radio
 	&.omniform-field-checkbox,
 	&.omniform-field-radio {
@@ -34,8 +36,7 @@
 				background-repeat: no-repeat;
 				background-position: center;
 				background-size: contain;
-				background-color: var(--wp--preset--color--contrast, var(--wp--preset--color--foreground, var(--wp--preset--color--cyan-bluish-gray, #000)));
-				border-color: transparent;
+				background-color: var(--omniform--color--accent);
 
 				&::before,
 				&::after {
@@ -84,7 +85,7 @@
 				&::-moz-range-thumb,
 				&::-webkit-slider-thumb {
 					outline: 0;
-					box-shadow: 0 0 0 2px var(--wp--preset--color--base, var(--wp--preset--color--background)), 0 0 0 4px var(--wp--preset--color--primary);
+					box-shadow: 0 0 0 2px var(--omniform--color--base), 0 0 0 4px var(--omniform--color--accent);
 				}
 			}
 
@@ -92,7 +93,7 @@
 			&::-webkit-slider-thumb {
 				width: 1em;
 				height: 1em;
-				background-color: var(--wp--preset--color--contrast, var(--wp--preset--color--foreground, var(--wp--preset--color--cyan-bluish-gray, #000)));
+				background-color: var(--omniform--color--accent);
 				border: 0;
 				border-radius: 1em;
 				appearance: none;
@@ -104,8 +105,8 @@
 				height: 1em;
 				color: transparent;
 				cursor: pointer;
-				background-color: var(--wp--preset--color--white);
-				border: 1px solid rgba(0, 0, 0, 0.25);
+				background-color: var(--omniform--color--base);
+				border: 1px solid var(--omniform--color--border);
 				border-radius: 1rem;
 			}
 		}

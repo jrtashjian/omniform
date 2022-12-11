@@ -31,7 +31,13 @@ const Edit = ( {
 	const blockProps = useBlockProps();
 
 	return (
-		<div { ...blockProps }>
+		<div
+			{ ...blockProps }
+			className={ classnames(
+				blockProps.className,
+				'wp-block-button',
+			) }
+		>
 			<RichText
 				identifier="buttonLabel"
 				className={ classnames(

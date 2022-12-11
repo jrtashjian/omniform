@@ -5,7 +5,7 @@
 	}
 
 	.omniform-field-control {
-		color: var(--wp--preset--color--contrast, var(--wp--preset--color--foreground, var(--wp--preset--color--cyan-bluish-gray, #000)));
+		color: var(--wp--preset--color--contrast, var(--wp--preset--color--foreground, var(--wp--preset--color--black, #000)));
 
 		&:focus {
 			box-shadow: none;
@@ -19,7 +19,7 @@
 		}
 
 		.omniform-field-label {
-			color: var(--wp--preset--color--contrast, var(--wp--preset--color--foreground, var(--wp--preset--color--cyan-bluish-gray, #000)));
+			color: var(--wp--preset--color--contrast, var(--wp--preset--color--foreground, var(--wp--preset--color--black, #000)));
 		}
 
 		.omniform-field-control {
