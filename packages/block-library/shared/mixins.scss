@@ -16,6 +16,26 @@
  */
 
 @mixin defaults {
+	--omniform--color--base: var(--wp--preset--color--base, var(--wp--preset--color--background, var(--wp--preset--color--white, #fff)));
+	--omniform--color--contrast: var(--wp--preset--color--contrast, var(--wp--preset--color--foreground, var(--wp--preset--color--black, #000)));
+	--omniform--color--accent: var(--wp--preset--color--accent, var(--omniform--color--contrast));
+	--omniform--color--border: rgba(0, 0, 0, 0.25);
+
+	.is-style-inverted &,
+	body.is-dark-theme .is-style-inverted & {
+		--omniform--color--base: var(--wp--preset--color--contrast, var(--wp--preset--color--foreground, var(--wp--preset--color--black, #000)));
+		--omniform--color--contrast: var(--wp--preset--color--base, var(--wp--preset--color--background, var(--wp--preset--color--white, #fff)));
+		--omniform--color--border: rgba(255, 255, 255, 0.25);
+	}
+
+	body.is-dark-theme & {
+		--omniform--color--border: rgba(255, 255, 255, 0.25);
+	}
+
+	body.is-dark-theme .is-style-inverted & {
+		--omniform--color--border: rgba(0, 0, 0, 0.25);
+	}
+
 	font-size: var(--wp--preset--font-size--normal, 16px);
 	line-height: 1.5;
 }
