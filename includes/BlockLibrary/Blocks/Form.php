@@ -32,14 +32,16 @@ class Form implements FormBlockInterface {
 	 * @return string Returns the block content.
 	 */
 	public function renderBlock( $attributes, $content, $block ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
-		if ( empty( $attributes['ref'] ) && empty( $block->context['postId'] ) ) {
-			return '';
-		}
-
 		if ( array_key_exists( 'postType', $block->context ) && 'omniform' === $block->context['postType'] ) {
 			$entity_id = $block->context['postId'];
-		} else {
+		}
+
+		if ( ! empty( $attributes['ref'] ) ) {
 			$entity_id = $attributes['ref'];
+		}
+
+		if ( empty( $entity_id ) ) {
+			return '';
 		}
 
 		$form_block = get_post( $entity_id );
@@ -88,7 +90,7 @@ class Form implements FormBlockInterface {
 			'%s<form method="post" action="%s" class="wp-block-omniform-form">%s</form>',
 			$post_data,
 			esc_url( get_the_permalink() ),
-			$form_ingestion->getNonceField() . $form_ingestion->getHoneypotField() . $content
+			$form_ingestion->getNonceField() . $content
 		);
 	}
 }
