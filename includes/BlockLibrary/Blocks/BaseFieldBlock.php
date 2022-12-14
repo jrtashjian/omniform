@@ -12,14 +12,7 @@ use OmniForm\Plugin\FormIngestionEngine;
 /**
  * The BaseFieldBlock block class.
  */
-class BaseFieldBlock implements FormBlockInterface {
-
-	/**
-	 * The block attributes.
-	 *
-	 * @var array
-	 */
-	protected $block_attributes = array();
+class BaseFieldBlock extends BaseBlock {
 
 	/**
 	 * The input's generated name.
@@ -27,25 +20,6 @@ class BaseFieldBlock implements FormBlockInterface {
 	 * @var string
 	 */
 	protected $field_name;
-
-	/**
-	 * The path to the JSON file with metadata definition for the block.
-	 *
-	 * @return string path to the JSON file with metadata definition for the block.
-	 */
-	public function blockTypeMetadata() {
-		return omniform()->basePath( '/build/block-library/' . $this->blockTypeName() );
-	}
-
-	/**
-	 * Get the block type's name from the class name.
-	 *
-	 * @return string
-	 */
-	protected function blockTypeName() {
-		$calling_class = substr( strrchr( static::class, '\\' ), 1 );
-		return strtolower( preg_replace( '/([A-Z])/', '-$0', lcfirst( $calling_class ) ) );
-	}
 
 	/**
 	 * Renders the block on the server.
@@ -56,8 +30,8 @@ class BaseFieldBlock implements FormBlockInterface {
 	 *
 	 * @return string Returns the block content.
 	 */
-	public function renderBlock( $attributes, $content, $block ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
-		$this->block_attributes = $attributes;
+	public function renderBlock( $attributes, $content, $block ) {
+		parent::renderBlock( $attributes, $content, $block );
 
 		$this->field_name = empty( $this->getBlockAttribute( 'fieldName' ) )
 			? sanitize_title( $this->getBlockAttribute( 'fieldLabel' ) )
@@ -89,22 +63,12 @@ class BaseFieldBlock implements FormBlockInterface {
 	 * @return string
 	 */
 	protected function renderFieldError() {
+		return '';
 		$form_ingestion = omniform()->get( FormIngestionEngine::class );
 		$errors         = $form_ingestion->fieldError( $this->field_name );
 		return empty( $errors ) ? '' : sprintf(
 			'<p class="omniform-field-support" style="color:red;">%s</p>',
 			wp_kses_post( $errors )
 		);
-	}
-
-	/**
-	 * Retrieve the block attribute with the given $key
-	 *
-	 * @param string $key The block attribute key.
-	 *
-	 * @return string
-	 */
-	protected function getBlockAttribute( $key ) {
-		return array_key_exists( $key, $this->block_attributes ) ? $this->block_attributes[ $key ] : '';
 	}
 }

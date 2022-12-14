@@ -12,16 +12,7 @@ use OmniForm\Plugin\FormIngestionEngine;
 /**
  * The Form block class.
  */
-class Form implements FormBlockInterface {
-	/**
-	 * The path to the JSON file with metadata definition for the block.
-	 *
-	 * @return string path to the JSON file with metadata definition for the block.
-	 */
-	public function blockTypeMetadata() {
-		return omniform()->basePath( '/build/block-library/form' );
-	}
-
+class Form extends BaseBlock {
 	/**
 	 * Renders the block on the server.
 	 *
@@ -52,6 +43,10 @@ class Form implements FormBlockInterface {
 		if ( 'publish' !== $form_block->post_status || ! empty( $form_block->post_password ) ) {
 			return '';
 		}
+
+		$form_classes = array(
+			'wp-block-omniform-form',
+		);
 
 		// Process the form.
 		$form_ingestion = omniform()->get( FormIngestionEngine::class );
@@ -87,9 +82,10 @@ class Form implements FormBlockInterface {
 		$form_ingestion->resetFormData();
 
 		return sprintf(
-			'%s<form method="post" action="%s" class="wp-block-omniform-form">%s</form>',
+			'%s<form method="post" action="%s" class="%s">%s</form>',
 			$post_data,
 			esc_url( get_the_permalink() ),
+			esc_attr( implode( ' ', $form_classes ) ),
 			$form_ingestion->getNonceField() . $content
 		);
 	}
