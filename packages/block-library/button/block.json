@@ -28,8 +28,8 @@
 		}
 	},
 	"supports": {
-		"html": false,
 		"align": true,
+		"html": false,
 		"color": {
 			"__experimentalDefaultControls": {
 				"background": true,

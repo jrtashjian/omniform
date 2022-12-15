@@ -5,7 +5,6 @@
 	"category": "form",
 	"title": "OmniForm",
 	"textdomain": "omniform",
-	"parent": [ "core/post-content" ],
 	"usesContext": [
 		"postId",
 		"postType"
@@ -18,7 +17,13 @@
 	"supports": {
 		"align": true,
 		"html": false,
-		"reusable": false
+		"reusable": false,
+		"color": {
+			"__experimentalDefaultControls": {
+				"background": true,
+				"text": true
+			}
+		}
 	},
 	"editorScript": "file:index.js",
 	"editorStyle": "file:index.css",

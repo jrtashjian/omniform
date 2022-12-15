@@ -7,10 +7,14 @@
 
 namespace OmniForm\BlockLibrary\Blocks;
 
+use OmniForm\BlockLibrary\Blocks\Traits\HasColors;
+
 /**
  * The FieldSelect block class.
  */
 class FieldSelect extends BaseFieldBlock {
+	use HasColors;
+
 	/**
 	 * Renders the block on the server.
 	 *
@@ -20,7 +24,7 @@ class FieldSelect extends BaseFieldBlock {
 	 *
 	 * @return string Returns the block content.
 	 */
-	public function renderBlock( $attributes, $content, $block ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
+	public function renderBlock( $attributes, $content, $block ) {
 		parent::renderBlock( $attributes, $content, $block );
 
 		if ( empty( $this->renderFieldLabel() ) ) {
@@ -70,9 +74,16 @@ class FieldSelect extends BaseFieldBlock {
 			$placeholder_option . do_blocks( $content )
 		);
 
+		$classes = array(
+			'wp-block-omniform-' . $this->blockTypeName(),
+			'omniform-' . $this->blockTypeName(),
+			$this->getColorClasses( $attributes ),
+		);
+
 		return sprintf(
-			'<div class="wp-block-omniform-%1$s omniform-%1$s">%2$s</div>',
-			esc_attr( $this->blockTypeName() ),
+			'<div class="%s" %s>%s</div>',
+			esc_attr( implode( ' ', $classes ) ),
+			$this->getColorStyles( $attributes ),
 			$this->renderFieldLabel() . $field_control . $this->renderFieldError()
 		);
 	}

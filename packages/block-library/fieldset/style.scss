@@ -10,6 +10,11 @@
 	padding: 0;
 	border-width: 0;
 
+	legend {
+		float: left;
+		width: 100%;
+	}
+
 	> * {
 		margin-block-start: 0;
 		margin-block-end: 0;
@@ -22,5 +27,6 @@
 
 	legend + * {
 		margin-block-start: 0.5em !important;
+		clear: both;
 	}
 }

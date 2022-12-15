@@ -10,16 +10,7 @@ namespace OmniForm\BlockLibrary\Blocks;
 /**
  * The SelectOption block class.
  */
-class SelectOption implements FormBlockInterface {
-	/**
-	 * The path to the JSON file with metadata definition for the block.
-	 *
-	 * @return string path to the JSON file with metadata definition for the block.
-	 */
-	public function blockTypeMetadata() {
-		return omniform()->basePath( '/build/block-library/select-option' );
-	}
-
+class SelectOption extends BaseBlock {
 	/**
 	 * Renders the block on the server.
 	 *
@@ -29,7 +20,9 @@ class SelectOption implements FormBlockInterface {
 	 *
 	 * @return string Returns the block content.
 	 */
-	public function renderBlock( $attributes, $content, $block ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
+	public function renderBlock( $attributes, $content, $block ) {
+		parent::renderBlock( $attributes, $content, $block );
+
 		if ( ! array_key_exists( 'fieldLabel', $attributes ) ) {
 			return '';
 		}

@@ -29,7 +29,13 @@
 	},
 	"supports": {
 		"align": true,
-		"html": false
+		"html": false,
+		"color": {
+			"__experimentalDefaultControls": {
+				"background": true,
+				"text": true
+			}
+		}
 	},
 	"usesContext": [ "omniform/fieldGroupName" ],
 	"editorScript": "file:index.js",

@@ -35,7 +35,14 @@
 		}
 	},
 	"supports": {
-		"html": false
+		"align": true,
+		"html": false,
+		"color": {
+			"__experimentalDefaultControls": {
+				"background": true,
+				"text": true
+			}
+		}
 	},
 	"usesContext": [ "omniform/fieldGroupName" ],
 	"editorScript": "file:index.js",

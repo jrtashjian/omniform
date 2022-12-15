@@ -6,7 +6,7 @@ import { capitalCase } from 'change-case';
 /**
  * WordPress dependencies
  */
-import { registerBlockType } from '@wordpress/blocks';
+import { registerBlockType, registerBlockStyle } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
 import { decodeEntities } from '@wordpress/html-entities';
 import { addFilter } from '@wordpress/hooks';
@@ -68,3 +68,8 @@ addFilter(
 		return select( 'core/edit-post' ).isEditingTemplate();
 	}
 );
+
+registerBlockStyle( 'omniform/form', {
+	name: 'inverted',
+	label: 'Inverted',
+} );

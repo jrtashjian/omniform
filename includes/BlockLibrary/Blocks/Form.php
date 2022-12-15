@@ -7,12 +7,15 @@
 
 namespace OmniForm\BlockLibrary\Blocks;
 
+use OmniForm\BlockLibrary\Blocks\Traits\HasColors;
 use OmniForm\Plugin\FormIngestionEngine;
 
 /**
  * The Form block class.
  */
 class Form extends BaseBlock {
+	use HasColors;
+
 	/**
 	 * Renders the block on the server.
 	 *
@@ -22,7 +25,9 @@ class Form extends BaseBlock {
 	 *
 	 * @return string Returns the block content.
 	 */
-	public function renderBlock( $attributes, $content, $block ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
+	public function renderBlock( $attributes, $content, $block ) {
+		parent::renderBlock( $attributes, $content, $block );
+
 		if ( array_key_exists( 'postType', $block->context ) && 'omniform' === $block->context['postType'] ) {
 			$entity_id = $block->context['postId'];
 		}
@@ -46,6 +51,8 @@ class Form extends BaseBlock {
 
 		$form_classes = array(
 			'wp-block-omniform-form',
+			empty( $attributes['className'] ) ? '' : esc_attr( $attributes['className'] ),
+			$this->getColorClasses( $attributes ),
 		);
 
 		// Process the form.
@@ -82,10 +89,11 @@ class Form extends BaseBlock {
 		$form_ingestion->resetFormData();
 
 		return sprintf(
-			'%s<form method="post" action="%s" class="%s">%s</form>',
+			'%s<form method="post" action="%s" class="%s" %s>%s</form>',
 			$post_data,
 			esc_url( get_the_permalink() ),
 			esc_attr( implode( ' ', $form_classes ) ),
+			$this->getColorStyles( $attributes ),
 			$form_ingestion->getNonceField() . $content
 		);
 	}

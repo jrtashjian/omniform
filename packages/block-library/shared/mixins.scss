@@ -38,6 +38,17 @@
 
 	font-size: var(--wp--preset--font-size--normal, 16px);
 	line-height: 1.5;
+
+	*,
+	::before,
+	::after {
+		box-sizing: border-box;
+	}
+
+	&.has-background,
+	> .has-background {
+		padding: var(--wp--style--block-gap, 1.5em);
+	}
 }
 
 @mixin field-label {

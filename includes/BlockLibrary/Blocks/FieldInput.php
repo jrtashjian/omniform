@@ -7,12 +7,15 @@
 
 namespace OmniForm\BlockLibrary\Blocks;
 
+use OmniForm\BlockLibrary\Blocks\Traits\HasColors;
 use OmniForm\Plugin\FormIngestionEngine;
 
 /**
  * The FieldInput block class.
  */
 class FieldInput extends BaseFieldBlock {
+	use HasColors;
+
 	/**
 	 * Renders the block on the server.
 	 *
@@ -22,7 +25,7 @@ class FieldInput extends BaseFieldBlock {
 	 *
 	 * @return string Returns the block content.
 	 */
-	public function renderBlock( $attributes, $content, $block ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
+	public function renderBlock( $attributes, $content, $block ) {
 		parent::renderBlock( $attributes, $content, $block );
 
 		if ( empty( $this->renderFieldLabel() ) ) {
@@ -88,6 +91,7 @@ class FieldInput extends BaseFieldBlock {
 		$classes = array(
 			'wp-block-omniform-' . $this->blockTypeName(),
 			'omniform-field-' . $attributes['fieldType'],
+			$this->getColorClasses( $attributes ),
 		);
 
 		if ( ! empty( $attributes['isRequired'] ) ) {
@@ -95,8 +99,9 @@ class FieldInput extends BaseFieldBlock {
 		}
 
 		return sprintf(
-			'<div class="%s">%s</div>',
+			'<div class="%s" %s>%s</div>',
 			esc_attr( implode( ' ', $classes ) ),
+			$this->getColorStyles( $attributes ),
 			$field_control . $this->renderFieldError()
 		);
 	}
