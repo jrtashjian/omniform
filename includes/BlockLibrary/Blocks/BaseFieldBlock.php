@@ -7,12 +7,21 @@
 
 namespace OmniForm\BlockLibrary\Blocks;
 
+use OmniForm\BlockLibrary\Blocks\Traits\HasColors;
 use OmniForm\Plugin\FormIngestionEngine;
 
 /**
  * The BaseFieldBlock block class.
  */
-class BaseFieldBlock extends BaseBlock {
+abstract class BaseFieldBlock extends BaseBlock {
+	use HasColors;
+
+	/**
+	 * The Form Injestion Engine
+	 *
+	 * @var FormIngestionEngine
+	 */
+	protected $injestion;
 
 	/**
 	 * The input's generated name.
@@ -24,24 +33,69 @@ class BaseFieldBlock extends BaseBlock {
 	/**
 	 * Renders the block on the server.
 	 *
-	 * @param array    $attributes Block attributes.
-	 * @param string   $content    Block default content.
-	 * @param WP_Block $block      Block instance.
-	 *
 	 * @return string Returns the block content.
 	 */
-	public function renderBlock( $attributes, $content, $block ) {
-		parent::renderBlock( $attributes, $content, $block );
+	public function render() {
+		if ( empty( $this->getBlockAttribute( 'fieldLabel' ) ) ) {
+			return '';
+		}
+
+		$this->injestion = omniform()->get( FormIngestionEngine::class );
 
 		$this->field_name = empty( $this->getBlockAttribute( 'fieldName' ) )
 			? sanitize_title( $this->getBlockAttribute( 'fieldLabel' ) )
 			: $this->getBlockAttribute( 'fieldName' );
 
-		return sprintf(
-			'<div class="wp-block-omniform-%1$s omniform-%1$s">%2$s</div>',
-			esc_attr( $this->blockTypeName() ),
-			$this->renderFieldLabel()
+		if ( $this->isHiddenInput() ) {
+			return sprintf(
+				'<input type="hidden" %s />',
+				$this->getControlName() . $this->getControlValue()
+			);
+		}
+
+		$attributes = array(
+			$this->blockClasses(),
+			$this->getColorStyles( $this->attributes ),
 		);
+
+		return sprintf(
+			'<div %s>%s</div>',
+			implode( ' ', $attributes ),
+			$this->renderFieldLabel() . $this->renderField() . $this->renderFieldError()
+		);
+	}
+
+	/**
+	 * Determine if the field type is a text input.
+	 *
+	 * @return bool
+	 */
+	protected function isTextInput() {
+		return in_array(
+			$this->getBlockAttribute( 'fieldType' ),
+			array( 'text', 'email', 'url', 'number', 'month', 'password', 'search', 'tel', 'week', 'hidden' )
+		);
+	}
+
+	/**
+	 * Determine if the field type is a checbox or radio.
+	 *
+	 * @return bool
+	 */
+	protected function isOptionInput() {
+		return in_array(
+			$this->getBlockAttribute( 'fieldType' ),
+			array( 'checkbox', 'radio' )
+		);
+	}
+
+	/**
+	 * Determine if the field type is a hidden input.
+	 *
+	 * @return bool
+	 */
+	protected function isHiddenInput() {
+		return 'hidden' === $this->getBlockAttribute( 'fieldType' );
 	}
 
 	/**
@@ -71,4 +125,115 @@ class BaseFieldBlock extends BaseBlock {
 			wp_kses_post( $errors )
 		);
 	}
+
+	/**
+	 * Generate the class="" attribute.
+	 *
+	 * @return string
+	 */
+	protected function blockClasses() {
+		$classes = array(
+			// Standard block type class.
+			'wp-block-omniform-' . $this->blockTypeName(),
+			// Apply custom class for each field type.
+			empty( $this->getBlockAttribute( 'fieldType' ) )
+				? 'omniform-' . $this->blockTypeName()
+				: 'omniform-field-' . $this->getBlockAttribute( 'fieldType' ),
+			$this->getBlockAttribute( 'isRequired' )
+				? 'field-required'
+				: '',
+			// Supports classes.
+			$this->getColorClasses( $this->attributes ),
+		);
+
+		return sprintf(
+			'class="%s"',
+			esc_attr( trim( implode( ' ', $classes ) ) )
+		);
+	}
+
+	/**
+	 * Generate key="value" attributes for control.
+	 *
+	 * @return string
+	 */
+	protected function getControlAttributes() {
+		return trim(
+			implode(
+				' ',
+				array(
+					$this->getControlId(),
+					$this->getControlName(),
+					$this->getControlPlaceholder(),
+					$this->getControlValue(),
+				)
+			)
+		);
+	}
+
+	/**
+	 * Generate the id="" attribute.
+	 *
+	 * @return string
+	 */
+	protected function getControlId() {
+		return sprintf(
+			'id="%s"',
+			esc_attr( sanitize_title( $this->field_name ) )
+		);
+	}
+
+	/**
+	 * Generate the name="" attribute.
+	 *
+	 * @return string
+	 */
+	protected function getControlName() {
+		// Nest form data within a fieldset.
+		if ( $this->getBlockContext( 'omniform/fieldGroupName' ) ) {
+			$input_name = 'radio' === $this->getBlockAttribute( 'fieldType' )
+				? $this->getBlockContext( 'omniform/fieldGroupName' )
+				: $this->getBlockContext( 'omniform/fieldGroupName' ) . '[' . $this->field_name . ']';
+		}
+
+		return sprintf(
+			'name="%s"',
+			esc_attr( $input_name ?? $this->field_name )
+		);
+	}
+
+	/**
+	 * Generate the value="" attribute.
+	 *
+	 * @return string
+	 */
+	protected function getControlValue() {
+		$default_value = $this->getBlockAttribute( 'fieldValue' );
+
+		$submitted_value = $this->injestion->formValue(
+			$this->field_name,
+			$this->getBlockContext( 'omniform/fieldGroupName' )
+		);
+
+		return sprintf(
+			'value="%s"',
+			$submitted_value && ! $this->isHiddenInput()
+				? esc_attr( $submitted_value )
+				: esc_attr( $default_value )
+		);
+	}
+
+	/**
+	 * Generate the placeholder="" attribute.
+	 *
+	 * @return string
+	 */
+	protected function getControlPlaceholder() {
+		return sprintf(
+			'placeholder="%s"',
+			esc_attr( $this->getBlockAttribute( 'fieldPlaceholder' ) )
+		);
+	}
+
+	abstract function renderField();
 }

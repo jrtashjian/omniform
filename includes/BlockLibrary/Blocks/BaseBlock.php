@@ -10,7 +10,7 @@ namespace OmniForm\BlockLibrary\Blocks;
 /**
  * The BaseBlock block class.
  */
-class BaseBlock implements FormBlockInterface {
+abstract class BaseBlock implements FormBlockInterface {
 
 	/**
 	 * The block attributes.
@@ -55,18 +55,15 @@ class BaseBlock implements FormBlockInterface {
 	 * @return string Returns the block content.
 	 */
 	public function renderBlock( $attributes, $content, $block ) {
-		$this->instance   = $block;
 		$this->attributes = $attributes;
+		$this->content = $content;
+		$this->instance   = $block;
 
-		$this->field_name = empty( $this->getBlockAttribute( 'fieldName' ) )
-			? sanitize_title( $this->getBlockAttribute( 'fieldLabel' ) )
-			: $this->getBlockAttribute( 'fieldName' );
+		return $this->render();
+	}
 
-		return sprintf(
-			'<div class="wp-block-omniform-%1$s omniform-%1$s">%2$s</div>',
-			esc_attr( $this->blockTypeName() ),
-			do_blocks( $content )
-		);
+	protected function renderContent() {
+		return do_blocks( $this->content );
 	}
 
 	/**
@@ -77,6 +74,24 @@ class BaseBlock implements FormBlockInterface {
 	 * @return string
 	 */
 	protected function getBlockAttribute( $key ) {
-		return array_key_exists( $key, $this->attributes ) ? $this->attributes[ $key ] : '';
+		return array_key_exists( $key, $this->attributes ) ? $this->attributes[ $key ] : null;
 	}
+
+	/**
+	 * Retrieve the block context with the given $key.
+	 *
+	 * @param string $key The block context key.
+	 *
+	 * @return string
+	 */
+	protected function getBlockContext( $key ) {
+		return array_key_exists( $key, $this->instance->context ) ? $this->instance->context[ $key ] : null;
+	}
+
+	/**
+	 * Renders the block defined by the extending class.
+	 *
+	 * @return string
+	 */
+	abstract protected function render();
 }

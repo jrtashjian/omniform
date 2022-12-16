@@ -19,21 +19,15 @@ class Form extends BaseBlock {
 	/**
 	 * Renders the block on the server.
 	 *
-	 * @param array    $attributes Block attributes.
-	 * @param string   $content    Block default content.
-	 * @param WP_Block $block      Block instance.
-	 *
 	 * @return string Returns the block content.
 	 */
-	public function renderBlock( $attributes, $content, $block ) {
-		parent::renderBlock( $attributes, $content, $block );
-
-		if ( array_key_exists( 'postType', $block->context ) && 'omniform' === $block->context['postType'] ) {
-			$entity_id = $block->context['postId'];
+	public function render() {
+		if ( 'omniform' === $this->getBlockContext( 'postType' ) ) {
+			$entity_id = $this->getBlockContext( 'postId' );
 		}
 
-		if ( ! empty( $attributes['ref'] ) ) {
-			$entity_id = $attributes['ref'];
+		if ( ! empty( $this->attributes['ref'] ) ) {
+			$entity_id = $this->attributes['ref'];
 		}
 
 		if ( empty( $entity_id ) ) {
@@ -51,8 +45,8 @@ class Form extends BaseBlock {
 
 		$form_classes = array(
 			'wp-block-omniform-form',
-			empty( $attributes['className'] ) ? '' : esc_attr( $attributes['className'] ),
-			$this->getColorClasses( $attributes ),
+			empty( $this->attributes['className'] ) ? '' : esc_attr( $this->attributes['className'] ),
+			$this->getColorClasses( $this->attributes ),
 		);
 
 		// Process the form.
@@ -66,7 +60,7 @@ class Form extends BaseBlock {
 				'<pre class="wp-block-preformatted">%s</pre>',
 				print_r(
 					array(
-						'attributes'     => $attributes,
+						'attributes'     => $this->attributes,
 						'_POST'          => $_POST,
 						'form_ingestion' => $form_ingestion,
 					),
@@ -93,7 +87,7 @@ class Form extends BaseBlock {
 			$post_data,
 			esc_url( get_the_permalink() ),
 			esc_attr( implode( ' ', $form_classes ) ),
-			$this->getColorStyles( $attributes ),
+			$this->getColorStyles( $this->attributes ),
 			$form_ingestion->getNonceField() . $content
 		);
 	}

@@ -18,15 +18,9 @@ class FieldSelect extends BaseFieldBlock {
 	/**
 	 * Renders the block on the server.
 	 *
-	 * @param array    $attributes Block attributes.
-	 * @param string   $content    Block default content.
-	 * @param WP_Block $block      Block instance.
-	 *
 	 * @return string Returns the block content.
 	 */
-	public function renderBlock( $attributes, $content, $block ) {
-		parent::renderBlock( $attributes, $content, $block );
-
+	public function renderField() {
 		if ( empty( $this->renderFieldLabel() ) ) {
 			return '';
 		}
@@ -36,19 +30,19 @@ class FieldSelect extends BaseFieldBlock {
 			'name' => esc_attr( $this->field_name ),
 		);
 
-		if ( ! empty( $attributes['isMultiple'] ) ) {
+		if ( ! empty( $this->attributes['isMultiple'] ) ) {
 			$field_attributes['multiple'] = 'isMultiple';
 			$field_attributes['name']     = $field_attributes['name'] . '[]';
 
 		}
 
-		if ( ! empty( $attributes['height'] ) ) {
-			$field_attributes['style'] = 'height: ' . $attributes['height'] . 'px;';
+		if ( ! empty( $this->attributes['height'] ) ) {
+			$field_attributes['style'] = 'height: ' . $this->attributes['height'] . 'px;';
 		}
 
 		// Nest form data within a fieldset.
-		if ( ! empty( $block->context['omniform/fieldGroupName'] ) ) {
-			$field_attributes['name'] = $block->context['omniform/fieldGroupName'] . '[' . sanitize_title( $field_attributes['name'] ) . ']';
+		if ( ! empty( $this->instance->context['omniform/fieldGroupName'] ) ) {
+			$field_attributes['name'] = $this->instance->context['omniform/fieldGroupName'] . '[' . sanitize_title( $field_attributes['name'] ) . ']';
 		}
 
 		// Stitch together the input's attributes.
@@ -61,29 +55,29 @@ class FieldSelect extends BaseFieldBlock {
 		);
 
 		$placeholder_option = '';
-		if ( ! empty( $attributes['fieldPlaceholder'] ) ) {
+		if ( ! empty( $this->attributes['fieldPlaceholder'] ) ) {
 			$placeholder_option = sprintf(
 				'<option value="">%s</option>',
-				esc_attr( $attributes['fieldPlaceholder'] )
+				esc_attr( $this->attributes['fieldPlaceholder'] )
 			);
 		}
 
 		$field_control = sprintf(
 			'<select class="omniform-field-control" %s>%s</select>',
 			implode( ' ', $field_attributes ),
-			$placeholder_option . do_blocks( $content )
+			$placeholder_option . $this->renderContent()
 		);
 
 		$classes = array(
 			'wp-block-omniform-' . $this->blockTypeName(),
 			'omniform-' . $this->blockTypeName(),
-			$this->getColorClasses( $attributes ),
+			$this->getColorClasses( $this->attributes ),
 		);
 
 		return sprintf(
 			'<div class="%s" %s>%s</div>',
 			esc_attr( implode( ' ', $classes ) ),
-			$this->getColorStyles( $attributes ),
+			$this->getColorStyles( $this->attributes ),
 			$this->renderFieldLabel() . $field_control . $this->renderFieldError()
 		);
 	}
