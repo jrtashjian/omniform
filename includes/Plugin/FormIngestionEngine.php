@@ -81,16 +81,19 @@ class FormIngestionEngine {
 	}
 
 	public function formValue( $field_name, $fieldset_name = '' ) {
-		$formdata = $this->form_data;
+		$data = in_array( $fieldset_name, array_keys( $this->form_data ), true )
+			? $this->form_data[ $fieldset_name ]
+			: $this->form_data;
 
-		if (
-			! empty( $fieldset_name ) &&
-			in_array( $fieldset_name, array_keys( $this->form_data ), true )
-		) {
-			$formdata = $this->form_data[ $fieldset_name ];
+		if ( empty( $data ) ) {
+			return null;
 		}
 
-		return in_array( $field_name, array_keys( $formdata ), true ) ? $formdata[ $field_name ] : null;
+		if ( is_string( $data ) ) {
+			return $data;
+		}
+
+		return in_array( $field_name, array_keys( $data ), true ) ? $data[ $field_name ] : null;
 	}
 
 	public function fieldError( $field_name ) {

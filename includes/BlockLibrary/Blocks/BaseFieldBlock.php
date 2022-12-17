@@ -117,9 +117,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 * @return string
 	 */
 	protected function renderFieldError() {
-		return '';
-		$form_ingestion = omniform()->get( FormIngestionEngine::class );
-		$errors         = $form_ingestion->fieldError( $this->field_name );
+		$errors = $this->injestion->fieldError( $this->field_name );
 		return empty( $errors ) ? '' : sprintf(
 			'<p class="omniform-field-support" style="color:red;">%s</p>',
 			wp_kses_post( $errors )
@@ -166,6 +164,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 					$this->getControlName(),
 					$this->getControlPlaceholder(),
 					$this->getControlValue(),
+					$this->getControlSelected(),
 				)
 			)
 		);
@@ -208,12 +207,20 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 * @return string
 	 */
 	protected function getControlValue() {
-		$default_value = $this->getBlockAttribute( 'fieldValue' );
+		$default_value = $this->isOptionInput()
+			? $this->field_name
+			: $this->getBlockAttribute( 'fieldValue' );
 
-		$submitted_value = $this->injestion->formValue(
-			$this->field_name,
-			$this->getBlockContext( 'omniform/fieldGroupName' )
-		);
+		if ( 'checkbox' === $this->getBlockAttribute( 'fieldType' ) ) {
+			$default_value = true;
+		}
+
+		$submitted_value = 'radio' === $this->getBlockAttribute( 'fieldType' )
+			? $default_value
+			: $this->injestion->formValue(
+				$this->field_name,
+				$this->getBlockContext( 'omniform/fieldGroupName' )
+			);
 
 		return sprintf(
 			'value="%s"',
@@ -233,6 +240,25 @@ abstract class BaseFieldBlock extends BaseBlock {
 			'placeholder="%s"',
 			esc_attr( $this->getBlockAttribute( 'fieldPlaceholder' ) )
 		);
+	}
+
+	/**
+	 * Apply the "checked" attribute if the control is selected.
+	 *
+	 * @return string
+	 */
+	protected function getControlSelected() {
+		if ( ! $this->isOptionInput() ) {
+			return '';
+		}
+
+		$submitted_value = $this->injestion->formValue( $this->field_name, $this->getBlockContext( 'omniform/fieldGroupName' ) );
+
+		$is_selected = 'radio' === $this->getBlockAttribute( 'fieldType' )
+			? $this->field_name === $submitted_value
+			: $submitted_value;
+
+		return empty( $is_selected ) ? '' : 'checked';
 	}
 
 	abstract function renderField();
