@@ -20,24 +20,35 @@
 	--omniform--color--contrast: var(--wp--preset--color--contrast, var(--wp--preset--color--foreground, var(--wp--preset--color--black, #000)));
 	--omniform--color--accent: var(--wp--preset--color--accent, var(--omniform--color--contrast));
 	--omniform--color--border: rgba(0, 0, 0, 0.25);
+	--omniform--color--border-hover: rgba(0, 0, 0, 1);
 
 	.is-style-inverted &,
 	body.is-dark-theme .is-style-inverted & {
 		--omniform--color--base: var(--wp--preset--color--contrast, var(--wp--preset--color--foreground, var(--wp--preset--color--black, #000)));
 		--omniform--color--contrast: var(--wp--preset--color--base, var(--wp--preset--color--background, var(--wp--preset--color--white, #fff)));
 		--omniform--color--border: rgba(255, 255, 255, 0.25);
+		--omniform--color--border-hover: rgba(255, 255, 255, 1);
 	}
 
 	body.is-dark-theme & {
 		--omniform--color--border: rgba(255, 255, 255, 0.25);
+		--omniform--color--border-hover: rgba(255, 255, 255, 1);
 	}
 
 	body.is-dark-theme .is-style-inverted & {
 		--omniform--color--border: rgba(0, 0, 0, 0.25);
+		--omniform--color--border-hover: rgba(0, 0, 0, 1);
 	}
 
 	font-size: var(--wp--preset--font-size--normal, 16px);
 	line-height: 1.5;
+
+	*,
+	*::before {
+		transition-duration: 0.1s;
+		transition-property: border-color, box-shadow, opacity;
+		transition-timing-function: ease-in-out;
+	}
 
 	*,
 	::before,
@@ -87,11 +98,14 @@
 		width: 100%;
 		color: var(--omniform--color--contrast);
 
-		&.focus,
 		&:focus {
 			outline: 0;
 			box-shadow: 0 0 0 2px var(--omniform--color--base), 0 0 0 4px var(--omniform--color--accent);
 			border-color: var(--omniform--color--base);
 		}
+	}
+
+	&:hover .omniform-field-control:not(:focus) {
+		border-color: var(--omniform--color--border-hover);
 	}
 }
