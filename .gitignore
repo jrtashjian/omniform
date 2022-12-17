@@ -9,3 +9,6 @@ npm-debug.log
 node_modules/
 vendor/
 build/
+
+phpunit/coverage/
+.phpunit.result.cache
