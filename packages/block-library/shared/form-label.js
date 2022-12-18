@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { kebabCase } from 'lodash';
+
+/**
  * WordPress dependencies
  */
 
@@ -12,7 +17,10 @@ const FormLabel = ( { originBlockProps } ) => (
 		className="omniform-field-label"
 		placeholder={ __( 'Enter a label for the field…', 'omniform' ) }
 		value={ originBlockProps.attributes.fieldLabel }
-		onChange={ ( html ) => originBlockProps.setAttributes( { fieldLabel: html } ) }
+		onChange={ ( html ) => ! originBlockProps.fieldName || originBlockProps.fieldName === kebabCase( originBlockProps.fieldLabel )
+			? originBlockProps.setAttributes( { fieldLabel: html, fieldName: kebabCase( html ) } )
+			: originBlockProps.setAttributes( { fieldLabel: html } )
+		}
 		// When hitting enter, place a new insertion point. This makes adding field a lot easier.
 		onSplit={ ( value, isOriginal ) => {
 			let block;

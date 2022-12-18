@@ -165,6 +165,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 					$this->getControlPlaceholder(),
 					$this->getControlValue(),
 					$this->getControlSelected(),
+					$this->getControlMultiple(),
 				)
 			)
 		);
@@ -188,16 +189,26 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 * @return string
 	 */
 	protected function getControlName() {
+		$input_name = $this->getBlockContext( 'omniform/fieldGroupName' )
+			? $this->getBlockContext( 'omniform/fieldGroupName' ) . '[' . $this->field_name . ']'
+			: $this->field_name;
+
+
 		// Nest form data within a fieldset.
-		if ( $this->getBlockContext( 'omniform/fieldGroupName' ) ) {
-			$input_name = 'radio' === $this->getBlockAttribute( 'fieldType' )
-				? $this->getBlockContext( 'omniform/fieldGroupName' )
-				: $this->getBlockContext( 'omniform/fieldGroupName' ) . '[' . $this->field_name . ']';
+		if (
+			'radio' === $this->getBlockAttribute( 'fieldType' ) &&
+			$this->getBlockContext( 'omniform/fieldGroupName' )
+		) {
+			$input_name = $this->getBlockContext( 'omniform/fieldGroupName' );
+		}
+
+		if ( $this->getBlockAttribute( 'isMultiple' ) ) {
+			$input_name .= '[]';
 		}
 
 		return sprintf(
 			'name="%s"',
-			esc_attr( $input_name ?? $this->field_name )
+			esc_attr( $input_name )
 		);
 	}
 
@@ -218,8 +229,10 @@ abstract class BaseFieldBlock extends BaseBlock {
 		$submitted_value = 'radio' === $this->getBlockAttribute( 'fieldType' )
 			? $default_value
 			: $this->injestion->formValue(
-				$this->field_name,
-				$this->getBlockContext( 'omniform/fieldGroupName' )
+				array(
+					$this->getBlockContext( 'omniform/fieldGroupName' ),
+					$this->field_name,
+				)
 			);
 
 		return sprintf(
@@ -252,13 +265,22 @@ abstract class BaseFieldBlock extends BaseBlock {
 			return '';
 		}
 
-		$submitted_value = $this->injestion->formValue( $this->field_name, $this->getBlockContext( 'omniform/fieldGroupName' ) );
+		$submitted_value = $this->injestion->formValue(
+			array(
+				$this->getBlockContext( 'omniform/fieldGroupName' ),
+				$this->field_name,
+			)
+		);
 
 		$is_selected = 'radio' === $this->getBlockAttribute( 'fieldType' )
 			? $this->field_name === $submitted_value
 			: $submitted_value;
 
 		return empty( $is_selected ) ? '' : 'checked';
+	}
+
+	protected function getControlMultiple() {
+		return $this->getBlockAttribute( 'isMultiple' ) ? 'multiple' : '';
 	}
 
 	abstract function renderField();

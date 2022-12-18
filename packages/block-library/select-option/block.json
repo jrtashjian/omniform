@@ -16,6 +16,7 @@
 	"supports": {
 		"html": false
 	},
+	"usesContext": [ "omniform/fieldSelectName", "omniform/fieldGroupName" ],
 	"editorScript": "file:index.js",
 	"editorStyle": "file:index.css",
 	"style": "file:style-index.css"

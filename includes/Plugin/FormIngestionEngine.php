@@ -80,20 +80,23 @@ class FormIngestionEngine {
 		$this->form_data = $form_data;
 	}
 
-	public function formValue( $field_name, $fieldset_name = '' ) {
-		$data = in_array( $fieldset_name, array_keys( $this->form_data ), true )
-			? $this->form_data[ $fieldset_name ]
-			: $this->form_data;
+	public function formValue( $key, $default = null ) {
+		$key    = is_array( $key ) ? array_filter( $key ) : (array) $key;
+		$target = $this->form_data;
 
-		if ( empty( $data ) ) {
-			return null;
+		foreach ( $key as $segment ) {
+			if ( is_null( $segment ) ) {
+				return $target;
+			}
+
+			if ( is_array( $target ) && array_key_exists( $segment, $target ) ) {
+				$target = $target[ $segment ];
+			} else {
+				return $default;
+			}
 		}
 
-		if ( is_string( $data ) ) {
-			return $data;
-		}
-
-		return in_array( $field_name, array_keys( $data ), true ) ? $data[ $field_name ] : null;
+		return $target;
 	}
 
 	public function fieldError( $field_name ) {
