@@ -193,7 +193,6 @@ abstract class BaseFieldBlock extends BaseBlock {
 			? $this->getBlockContext( 'omniform/fieldGroupName' ) . '[' . $this->field_name . ']'
 			: $this->field_name;
 
-
 		// Nest form data within a fieldset.
 		if (
 			'radio' === $this->getBlockAttribute( 'fieldType' ) &&
@@ -268,7 +267,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 		$submitted_value = $this->injestion->formValue(
 			array(
 				$this->getBlockContext( 'omniform/fieldGroupName' ),
-				$this->field_name,
+				'radio' === $this->getBlockAttribute( 'fieldType' ) ? '' : $this->field_name,
 			)
 		);
 
