@@ -11,13 +11,12 @@ namespace OmniForm\BlockLibrary\Blocks;
  * The FieldInput block class.
  */
 class FieldInput extends BaseFieldBlock {
-
 	/**
 	 * Renders the block on the server.
 	 *
 	 * @return string Returns the block content.
 	 */
-	public function renderField() {
+	public function renderControl() {
 		// $form_ingestion = omniform()->get( FormIngestionEngine::class );
 
 		// if ( $form_ingestion->formValue( $this->field_name ) && 'hidden' !== $this->attributes['fieldType'] ) {
@@ -41,8 +40,41 @@ class FieldInput extends BaseFieldBlock {
 
 		return sprintf(
 			'<input class="omniform-field-control" type="%s" %s />',
-			esc_attr( $this->attributes['fieldType'] ),
+			esc_attr( $this->getBlockAttribute( 'fieldType' ) ),
 			$this->getControlAttributes()
 		);
+	}
+
+	/**
+	 * Determine if the field type is a text input.
+	 *
+	 * @return bool
+	 */
+	protected function isTextInput() {
+		return in_array(
+			$this->getBlockAttribute( 'fieldType' ),
+			array( 'text', 'email', 'url', 'number', 'month', 'password', 'search', 'tel', 'week', 'hidden' )
+		);
+	}
+
+	/**
+	 * Determine if the field type is a checbox or radio.
+	 *
+	 * @return bool
+	 */
+	protected function isCheckedInput() {
+		return in_array(
+			$this->getBlockAttribute( 'fieldType' ),
+			array( 'checkbox', 'radio' )
+		);
+	}
+
+	/**
+	 * Determine if the field type is a hidden input.
+	 *
+	 * @return bool
+	 */
+	protected function isHiddenInput() {
+		return 'hidden' === $this->getBlockAttribute( 'fieldType' );
 	}
 }

@@ -20,7 +20,7 @@ class FieldSelect extends BaseFieldBlock {
 	 *
 	 * @return string Returns the block content.
 	 */
-	public function renderField() {
+	public function renderControl() {
 		$placeholder_option = '';
 		if ( ! empty( $this->attributes['fieldPlaceholder'] ) ) {
 			$placeholder_option = sprintf(

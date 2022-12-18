@@ -25,16 +25,18 @@ class Fieldset extends BaseBlock {
 			return '';
 		}
 
-		$classes = array(
-			'wp-block-omniform-' . $this->blockTypeName(),
-			'is-layout-flow',
+		$classes = array_merge(
+			array(
+				$this->blockTypeClassName(),
+				'is-layout-flow',
+			),
 			$this->getColorClasses( $this->attributes ),
 		);
 
 		return sprintf(
-			'<fieldset class="%s" %s><legend class="omniform-field-label">%s</legend>%s</fieldset>',
-			esc_attr( implode( ' ', $classes ) ),
-			$this->getColorStyles( $this->attributes ),
+			'<fieldset %s %s><legend class="omniform-field-label">%s</legend>%s</fieldset>',
+			$this->getElementAttribute( 'class', $classes ),
+			$this->getElementAttribute( 'style', $this->getColorStyles( $this->attributes ) ),
 			esc_html( $this->attributes['fieldLabel'] ),
 			$this->renderContent()
 		);

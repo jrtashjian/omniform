@@ -53,7 +53,7 @@ trait HasColors {
 			$classnames[] = sprintf( 'has-%s-gradient-background', $attributes['gradient'] );
 		}
 
-		return implode( ' ', $classnames );
+		return $classnames;
 	}
 
 	/**
@@ -84,9 +84,6 @@ trait HasColors {
 			$inline_styles[] = sprintf( 'background: %s;', $attributes['style']['color']['gradient'] );
 		}
 
-		return sprintf(
-			'style="%s"',
-			esc_attr( safecss_filter_attr( implode( ' ', $inline_styles ) ) )
-		);
+		return array_map( 'safecss_filter_attr', $inline_styles );
 	}
 }

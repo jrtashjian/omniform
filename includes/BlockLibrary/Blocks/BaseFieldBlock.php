@@ -55,7 +55,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 
 		$attributes = array(
 			$this->blockClasses(),
-			$this->getColorStyles( $this->attributes ),
+			$this->getElementAttribute( 'style', $this->getColorStyles( $this->attributes ) ),
 		);
 
 		return sprintf(
@@ -140,14 +140,15 @@ abstract class BaseFieldBlock extends BaseBlock {
 			$this->getBlockAttribute( 'isRequired' )
 				? 'field-required'
 				: '',
+		);
+
+		$classes = array_merge(
+			$classes,
 			// Supports classes.
 			$this->getColorClasses( $this->attributes ),
 		);
 
-		return sprintf(
-			'class="%s"',
-			esc_attr( trim( implode( ' ', $classes ) ) )
-		);
+		return $this->getElementAttribute( 'class', $classes );
 	}
 
 	/**
@@ -177,10 +178,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 * @return string
 	 */
 	protected function getControlId() {
-		return sprintf(
-			'id="%s"',
-			esc_attr( sanitize_title( $this->field_name ) )
-		);
+		return $this->getElementAttribute( 'id', sanitize_title( $this->field_name ) );
 	}
 
 	/**
@@ -205,10 +203,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 			$input_name .= '[]';
 		}
 
-		return sprintf(
-			'name="%s"',
-			esc_attr( $input_name )
-		);
+		return $this->getElementAttribute( 'name', $input_name );
 	}
 
 	/**
@@ -238,11 +233,11 @@ abstract class BaseFieldBlock extends BaseBlock {
 				)
 			);
 
-		return sprintf(
-			'value="%s"',
+		return $this->getElementAttribute(
+			'value',
 			$submitted_value && ! $this->isHiddenInput()
-				? esc_attr( $submitted_value )
-				: esc_attr( $default_value )
+				? $submitted_value
+				: $default_value
 		);
 	}
 
@@ -252,10 +247,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 * @return string
 	 */
 	protected function getControlPlaceholder() {
-		return sprintf(
-			'placeholder="%s"',
-			esc_attr( $this->getBlockAttribute( 'fieldPlaceholder' ) )
-		);
+		return $this->getElementAttribute( 'placeholder', $this->getBlockAttribute( 'fieldPlaceholder' ) );
 	}
 
 	/**

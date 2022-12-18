@@ -45,6 +45,10 @@ abstract class BaseBlock implements FormBlockInterface {
 		return strtolower( preg_replace( '/([A-Z])/', '-$0', lcfirst( $calling_class ) ) );
 	}
 
+	public function blockTypeClassName() {
+		return 'wp-block-omniform-' . $this->blockTypeName();
+	}
+
 	/**
 	 * Renders the block on the server.
 	 *
@@ -56,7 +60,7 @@ abstract class BaseBlock implements FormBlockInterface {
 	 */
 	public function renderBlock( $attributes, $content, $block ) {
 		$this->attributes = $attributes;
-		$this->content = $content;
+		$this->content    = $content;
 		$this->instance   = $block;
 
 		return $this->render();
@@ -86,6 +90,27 @@ abstract class BaseBlock implements FormBlockInterface {
 	 */
 	protected function getBlockContext( $key ) {
 		return array_key_exists( $key, $this->instance->context ) ? $this->instance->context[ $key ] : null;
+	}
+
+	/**
+	 * Generate element attributes and escape the attributes.
+	 *
+	 * @param string       $key The attribute key.
+	 * @param string|array $value The attribute value.
+	 *
+	 * @return string
+	 */
+	protected function getElementAttribute( $key, $value ) {
+		if ( empty( $value ) ) {
+			return;
+		}
+
+		$value = is_array( $value ) ? $value : (array) $value;
+		return sprintf(
+			'%s="%s"',
+			esc_attr( $key ),
+			esc_attr( trim( implode( ' ', $value ) ) )
+		);
 	}
 
 	/**

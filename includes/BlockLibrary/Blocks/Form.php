@@ -43,9 +43,11 @@ class Form extends BaseBlock {
 			return '';
 		}
 
-		$form_classes = array(
-			'wp-block-omniform-form',
-			empty( $this->attributes['className'] ) ? '' : esc_attr( $this->attributes['className'] ),
+		$form_classes = array_merge(
+			array(
+				'wp-block-omniform-form',
+				empty( $this->attributes['className'] ) ? '' : esc_attr( $this->attributes['className'] ),
+			),
 			$this->getColorClasses( $this->attributes ),
 		);
 
@@ -83,11 +85,11 @@ class Form extends BaseBlock {
 		$form_ingestion->resetFormData();
 
 		return sprintf(
-			'%s<form method="post" action="%s" class="%s" %s>%s</form>',
+			'%s<form method="post" action="%s" %s %s>%s</form>',
 			$post_data,
 			esc_url( get_the_permalink() ),
-			esc_attr( implode( ' ', $form_classes ) ),
-			$this->getColorStyles( $this->attributes ),
+			$this->getElementAttribute( 'class', $form_classes ),
+			$this->getElementAttribute( 'style', $this->getColorStyles( $this->attributes ) ),
 			$form_ingestion->getNonceField() . $content
 		);
 	}

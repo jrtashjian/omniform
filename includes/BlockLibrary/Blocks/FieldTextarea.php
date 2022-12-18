@@ -17,7 +17,7 @@ class FieldTextarea extends BaseFieldBlock {
 	 *
 	 * @return string Returns the block content.
 	 */
-	public function renderField() {
+	public function renderControl() {
 		// if ( ! empty( $this->attributes['height'] ) ) {
 		// 	$field_attributes['style'] = 'height: ' . $this->attributes['height'] . 'px;';
 		// }

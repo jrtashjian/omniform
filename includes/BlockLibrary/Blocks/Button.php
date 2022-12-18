@@ -21,17 +21,19 @@ class Button extends BaseBlock {
 	 * @return string Returns the block content.
 	 */
 	public function render() {
-		$button_classes = array(
-			wp_theme_get_element_class_name( 'button' ),
-			'wp-block-button__link',
+		$button_classes = array_merge(
+			array(
+				wp_theme_get_element_class_name( 'button' ),
+				'wp-block-button__link',
+			),
 			$this->getColorClasses( $this->attributes ),
 		);
 
 		return sprintf(
-			'<div class="wp-block-omniform-button wp-block-button"><button type="%s" class="%s" %s>%s</button></div>',
+			'<div class="wp-block-omniform-button wp-block-button"><button type="%s" %s %s>%s</button></div>',
 			esc_attr( $this->attributes['buttonType'] ),
-			esc_attr( implode( ' ', $button_classes ) ),
-			$this->getColorStyles( $this->attributes ),
+			$this->getElementAttribute( 'class', $button_classes ),
+			$this->getElementAttribute( 'style', $this->getColorStyles( $this->attributes ) ),
 			wp_kses_post( $this->attributes['buttonLabel'] ),
 		);
 	}
