@@ -217,6 +217,10 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 * @return string
 	 */
 	protected function getControlValue() {
+		if ( 'field-select' === $this->blockTypeName() ) {
+			return '';
+		}
+
 		$default_value = $this->isOptionInput()
 			? $this->field_name
 			: $this->getBlockAttribute( 'fieldValue' );
