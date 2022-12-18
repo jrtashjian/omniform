@@ -61,7 +61,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 		return sprintf(
 			'<div %s>%s</div>',
 			implode( ' ', $attributes ),
-			$this->renderFieldLabel() . $this->renderField() . $this->renderFieldError()
+			$this->renderLabel() . $this->renderControl()
 		);
 	}
 
@@ -103,7 +103,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 *
 	 * @return string
 	 */
-	protected function renderFieldLabel() {
+	protected function renderLabel() {
 		return empty( $this->getBlockAttribute( 'fieldLabel' ) ) ? '' : sprintf(
 			'<label class="omniform-field-label" for="%s">%s</label>',
 			esc_attr( $this->field_name ),
@@ -286,5 +286,5 @@ abstract class BaseFieldBlock extends BaseBlock {
 		return $this->getBlockAttribute( 'isMultiple' ) ? 'multiple' : '';
 	}
 
-	abstract function renderField();
+	abstract function renderControl();
 }
