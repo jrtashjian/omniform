@@ -11,10 +11,6 @@
 			"type": "boolean",
 			"default": false
 		},
-		"fieldType": {
-			"type": "string",
-			"default": "text"
-		},
 		"fieldPlaceholder": {
 			"type": "string"
 		},
