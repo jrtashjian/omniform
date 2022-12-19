@@ -28,36 +28,21 @@ class FieldInput extends BaseFieldBlock {
 	}
 
 	/**
-	 * Renders the block on the server.
+	 * Renders the form control.
 	 *
-	 * @return string Returns the block content.
+	 * @return string
 	 */
 	public function renderControl() {
-		// $form_ingestion = omniform()->get( FormIngestionEngine::class );
-
-		// if ( $form_ingestion->formValue( $this->field_name ) && 'hidden' !== $this->attributes['fieldType'] ) {
-		// $field_attributes['value'] = esc_attr( $form_ingestion->formValue( $this->field_name ) );
-		// }
-
 		// // Call WordPress functions for hidden inputs.
 		// if ( false !== strpos( $field_attributes['value'], '{{' ) ) {
 		// $fn = str_replace( array( '{', '}' ), '', $field_attributes['value'] );
 		// $field_attributes['value'] = $fn();
 		// }
 
-		// if ( in_array( $this->attributes['fieldType'], array( 'checkbox', 'radio' ) ) ) {
-		// unset( $field_attributes['placeholder'] );
-		// $field_attributes['value'] = esc_attr( $this->field_name );
-
-		// if ( ! empty( $form_ingestion->formValue( $this->field_name ) ) ) {
-		// $field_attributes['checked'] = 'checked';
-		// }
-		// }
-
 		return sprintf(
 			'<input class="omniform-field-control" type="%s" %s />',
 			esc_attr( $this->getBlockAttribute( 'fieldType' ) ),
-			$this->getControlAttributes()
+			trim( implode( ' ', $this->getControlAttributes() ) )
 		);
 	}
 
@@ -69,7 +54,8 @@ class FieldInput extends BaseFieldBlock {
 	protected function isTextInput() {
 		return in_array(
 			$this->getBlockAttribute( 'fieldType' ),
-			array( 'text', 'email', 'url', 'number', 'month', 'password', 'search', 'tel', 'week', 'hidden' )
+			array( 'text', 'email', 'url', 'number', 'month', 'password', 'search', 'tel', 'week', 'hidden' ),
+			true
 		);
 	}
 
@@ -81,7 +67,8 @@ class FieldInput extends BaseFieldBlock {
 	protected function isCheckedInput() {
 		return in_array(
 			$this->getBlockAttribute( 'fieldType' ),
-			array( 'checkbox', 'radio' )
+			array( 'checkbox', 'radio' ),
+			true
 		);
 	}
 
@@ -92,6 +79,28 @@ class FieldInput extends BaseFieldBlock {
 	 */
 	protected function isHiddenInput() {
 		return 'hidden' === $this->getBlockAttribute( 'fieldType' );
+	}
+
+	/**
+	 * Determine if the checkbox or radio input has been selected.
+	 *
+	 * @return bool
+	 */
+	protected function isSelected() {
+		if ( ! $this->isCheckedInput() ) {
+			return false;
+		}
+
+		$submitted_value = $this->injestion->formValue(
+			array(
+				$this->getBlockContext( 'omniform/fieldGroupName' ),
+				'radio' === $this->getBlockAttribute( 'fieldType' ) ? '' : $this->getFieldName(),
+			)
+		);
+
+		return 'radio' === $this->getBlockAttribute( 'fieldType' )
+			? $this->getFieldName() === $submitted_value
+			: ! empty( $submitted_value );
 	}
 
 	/**
@@ -125,5 +134,22 @@ class FieldInput extends BaseFieldBlock {
 			default:
 				return parent::getControlValue();
 		}
+	}
+
+	/**
+	 * The attr="value" attributes for the control.
+	 *
+	 * @return array
+	 */
+	protected function getControlAttributes() {
+		$attributes = wp_parse_args(
+			array(
+				$this->getElementAttribute( 'placeholder', $this->getBlockAttribute( 'fieldPlaceholder' ) ),
+				$this->getElementAttribute( 'value', $this->getControlValue() ),
+				$this->isSelected() ? 'checked' : '',
+			),
+			parent::getControlAttributes()
+		);
+		return array_filter( $attributes );
 	}
 }

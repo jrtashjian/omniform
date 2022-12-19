@@ -42,7 +42,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 
 		return sprintf(
 			'<div %s>%s</div>',
-			implode( ' ', $attributes ),
+			trim( implode( ' ', $attributes ) ),
 			$this->renderLabel() . $this->renderControl()
 		);
 	}
@@ -94,27 +94,6 @@ abstract class BaseFieldBlock extends BaseBlock {
 	}
 
 	/**
-	 * Determine if the field type is a checbox or radio.
-	 *
-	 * @return bool
-	 */
-	protected function isOptionInput() {
-		return in_array(
-			$this->getBlockAttribute( 'fieldType' ),
-			array( 'checkbox', 'radio' )
-		);
-	}
-
-	/**
-	 * Determine if the field type is a hidden input.
-	 *
-	 * @return bool
-	 */
-	protected function isHiddenInput() {
-		return 'hidden' === $this->getBlockAttribute( 'fieldType' );
-	}
-
-	/**
 	 * Render the input's label element.
 	 *
 	 * @return string
@@ -143,31 +122,15 @@ abstract class BaseFieldBlock extends BaseBlock {
 	/**
 	 * Generate key="value" attributes for control.
 	 *
-	 * @return string
+	 * @return array
 	 */
 	protected function getControlAttributes() {
-		return trim(
-			implode(
-				' ',
-				array(
-					$this->getControlId(),
-					$this->getElementAttribute( 'name', $this->getControlName() ),
-					$this->getControlPlaceholder(),
-					$this->getElementAttribute( 'value', $this->getControlValue() ),
-					$this->getControlSelected(),
-					$this->getControlMultiple(),
-				)
+		return array_filter(
+			array(
+				$this->getElementAttribute( 'id', sanitize_title( $this->getFieldName() ) ),
+				$this->getElementAttribute( 'name', $this->getControlName() ),
 			)
 		);
-	}
-
-	/**
-	 * Generate the id="" attribute.
-	 *
-	 * @return string
-	 */
-	protected function getControlId() {
-		return $this->getElementAttribute( 'id', sanitize_title( $this->getFieldName() ) );
 	}
 
 	/**
@@ -187,45 +150,22 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 * @return string
 	 */
 	protected function getControlValue() {
-		return $this->getBlockAttribute( 'fieldValue' );
-	}
-
-	/**
-	 * Generate the placeholder="" attribute.
-	 *
-	 * @return string
-	 */
-	protected function getControlPlaceholder() {
-		return $this->getElementAttribute( 'placeholder', $this->getBlockAttribute( 'fieldPlaceholder' ) );
-	}
-
-	/**
-	 * Apply the "checked" attribute if the control is selected.
-	 *
-	 * @return string
-	 */
-	protected function getControlSelected() {
-		if ( ! $this->isOptionInput() ) {
-			return '';
-		}
-
 		$submitted_value = $this->injestion->formValue(
 			array(
 				$this->getBlockContext( 'omniform/fieldGroupName' ),
-				'radio' === $this->getBlockAttribute( 'fieldType' ) ? '' : $this->getFieldName(),
+				$this->getFieldName(),
 			)
 		);
 
-		$is_selected = 'radio' === $this->getBlockAttribute( 'fieldType' )
-			? $this->getFieldName() === $submitted_value
+		return empty( $submitted_value )
+			? $this->getBlockAttribute( 'fieldValue' )
 			: $submitted_value;
-
-		return empty( $is_selected ) ? '' : 'checked';
 	}
 
-	protected function getControlMultiple() {
-		return $this->getBlockAttribute( 'isMultiple' ) ? 'multiple' : '';
-	}
-
-	abstract function renderControl();
+	/**
+	 * Renders the form control.
+	 *
+	 * @return string
+	 */
+	abstract public function renderControl();
 }

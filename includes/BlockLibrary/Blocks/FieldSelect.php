@@ -31,9 +31,24 @@ class FieldSelect extends BaseFieldBlock {
 
 		return sprintf(
 			'<select class="omniform-field-control" %s>%s</select>',
-			$this->getControlAttributes(),
+			trim( implode( ' ', $this->getControlAttributes() ) ),
 			$placeholder_option . $this->content
 		);
+	}
+
+	/**
+	 * The attr="value" attributes for the control.
+	 *
+	 * @return array
+	 */
+	protected function getControlAttributes() {
+		$attributes = wp_parse_args(
+			array(
+				$this->getBlockAttribute( 'isMultiple' ) ? 'multiple' : '',
+			),
+			parent::getControlAttributes()
+		);
+		return array_filter( $attributes );
 	}
 
 	/**

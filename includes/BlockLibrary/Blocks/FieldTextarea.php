@@ -24,8 +24,23 @@ class FieldTextarea extends BaseFieldBlock {
 
 		return sprintf(
 			'<textarea class="omniform-field-control" %s>%s</textarea>',
-			$this->getControlAttributes(),
-			esc_textarea( '' )
+			trim( implode( ' ', $this->getControlAttributes() ) ),
+			esc_textarea( $this->getControlValue() )
 		);
+	}
+
+	/**
+	 * The attr="value" attributes for the control.
+	 *
+	 * @return array
+	 */
+	protected function getControlAttributes() {
+		$attributes = wp_parse_args(
+			array(
+				$this->getElementAttribute( 'placeholder', $this->getBlockAttribute( 'fieldPlaceholder' ) ),
+			),
+			parent::getControlAttributes()
+		);
+		return array_filter( $attributes );
 	}
 }
