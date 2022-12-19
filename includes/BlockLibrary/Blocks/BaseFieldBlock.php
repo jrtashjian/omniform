@@ -24,13 +24,6 @@ abstract class BaseFieldBlock extends BaseBlock {
 	protected $injestion;
 
 	/**
-	 * The input's generated name.
-	 *
-	 * @var string
-	 */
-	protected $field_name;
-
-	/**
 	 * Renders the block on the server.
 	 *
 	 * @return string Returns the block content.
@@ -41,10 +34,6 @@ abstract class BaseFieldBlock extends BaseBlock {
 		}
 
 		$this->injestion = omniform()->get( FormIngestionEngine::class );
-
-		$this->field_name = empty( $this->getBlockAttribute( 'fieldName' ) )
-			? sanitize_title( $this->getBlockAttribute( 'fieldLabel' ) )
-			: $this->getBlockAttribute( 'fieldName' );
 
 		if ( $this->isHiddenInput() ) {
 			return sprintf(
@@ -63,6 +52,18 @@ abstract class BaseFieldBlock extends BaseBlock {
 			implode( ' ', $attributes ),
 			$this->renderLabel() . $this->renderControl()
 		);
+	}
+
+	/**
+	 * Get the sanitized fieldName key. Fallback to fieldLabel.
+	 *
+	 * @return string
+	 */
+	public function getFieldName() {
+		$field_name = $this->getBlockAttribute( 'fieldName' );
+		return empty( $field_name )
+			? sanitize_key( $this->getBlockAttribute( 'fieldLabel' ) )
+			: sanitize_key( $field_name );
 	}
 
 	/**
@@ -106,7 +107,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 	protected function renderLabel() {
 		return empty( $this->getBlockAttribute( 'fieldLabel' ) ) ? '' : sprintf(
 			'<label class="omniform-field-label" for="%s">%s</label>',
-			esc_attr( $this->field_name ),
+			esc_attr( $this->getFieldName() ),
 			wp_kses_post( $this->getBlockAttribute( 'fieldLabel' ) )
 		);
 	}
@@ -117,7 +118,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 * @return string
 	 */
 	protected function renderFieldError() {
-		$errors = $this->injestion->fieldError( $this->field_name );
+		$errors = $this->injestion->fieldError( $this->getFieldName() );
 		return empty( $errors ) ? '' : sprintf(
 			'<p class="omniform-field-support" style="color:red;">%s</p>',
 			wp_kses_post( $errors )
@@ -178,7 +179,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 * @return string
 	 */
 	protected function getControlId() {
-		return $this->getElementAttribute( 'id', sanitize_title( $this->field_name ) );
+		return $this->getElementAttribute( 'id', sanitize_title( $this->getFieldName() ) );
 	}
 
 	/**
@@ -188,8 +189,8 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 */
 	protected function getControlName() {
 		$input_name = $this->getBlockContext( 'omniform/fieldGroupName' )
-			? $this->getBlockContext( 'omniform/fieldGroupName' ) . '[' . $this->field_name . ']'
-			: $this->field_name;
+			? $this->getBlockContext( 'omniform/fieldGroupName' ) . '[' . $this->getFieldName() . ']'
+			: $this->getFieldName();
 
 		// Nest form data within a fieldset.
 		if (
@@ -217,7 +218,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 		}
 
 		$default_value = $this->isOptionInput()
-			? $this->field_name
+			? $this->getFieldName()
 			: $this->getBlockAttribute( 'fieldValue' );
 
 		if ( 'checkbox' === $this->getBlockAttribute( 'fieldType' ) ) {
@@ -229,7 +230,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 			: $this->injestion->formValue(
 				array(
 					$this->getBlockContext( 'omniform/fieldGroupName' ),
-					$this->field_name,
+					$this->getFieldName(),
 				)
 			);
 
@@ -263,12 +264,12 @@ abstract class BaseFieldBlock extends BaseBlock {
 		$submitted_value = $this->injestion->formValue(
 			array(
 				$this->getBlockContext( 'omniform/fieldGroupName' ),
-				'radio' === $this->getBlockAttribute( 'fieldType' ) ? '' : $this->field_name,
+				'radio' === $this->getBlockAttribute( 'fieldType' ) ? '' : $this->getFieldName(),
 			)
 		);
 
 		$is_selected = 'radio' === $this->getBlockAttribute( 'fieldType' )
-			? $this->field_name === $submitted_value
+			? $this->getFieldName() === $submitted_value
 			: $submitted_value;
 
 		return empty( $is_selected ) ? '' : 'checked';
