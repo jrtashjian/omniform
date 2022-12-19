@@ -35,15 +35,8 @@ abstract class BaseFieldBlock extends BaseBlock {
 
 		$this->injestion = omniform()->get( FormIngestionEngine::class );
 
-		if ( $this->isHiddenInput() ) {
-			return sprintf(
-				'<input type="hidden" %s />',
-				$this->getControlName() . $this->getControlValue()
-			);
-		}
-
 		$attributes = array(
-			$this->blockClasses(),
+			$this->getElementAttribute( 'class', $this->getDefaultClasses() ),
 			$this->getElementAttribute( 'style', $this->getColorStyles( $this->attributes ) ),
 		);
 
@@ -64,6 +57,31 @@ abstract class BaseFieldBlock extends BaseBlock {
 		return empty( $field_name )
 			? sanitize_key( $this->getBlockAttribute( 'fieldLabel' ) )
 			: sanitize_key( $field_name );
+	}
+
+	/**
+	 * Get the default classes to be applied to the block wrapper.
+	 *
+	 * @return array
+	 */
+	public function getDefaultClasses() {
+		$default = array(
+			$this->blockTypeClassname(),
+
+			// Apply custom class for each field type.
+			empty( $this->getBlockAttribute( 'fieldType' ) )
+				? 'omniform-' . $this->blockTypeName()
+				: 'omniform-field-' . $this->getBlockAttribute( 'fieldType' ),
+
+			$this->getBlockAttribute( 'isRequired' )
+				? 'field-required'
+				: '',
+		);
+
+		return array_merge(
+			$default,
+			$this->getColorClasses( $this->attributes ),
+		);
 	}
 
 	/**
@@ -105,7 +123,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 * @return string
 	 */
 	protected function renderLabel() {
-		return empty( $this->getBlockAttribute( 'fieldLabel' ) ) ? '' : sprintf(
+		return sprintf(
 			'<label class="omniform-field-label" for="%s">%s</label>',
 			esc_attr( $this->getFieldName() ),
 			wp_kses_post( $this->getBlockAttribute( 'fieldLabel' ) )
@@ -123,33 +141,6 @@ abstract class BaseFieldBlock extends BaseBlock {
 			'<p class="omniform-field-support" style="color:red;">%s</p>',
 			wp_kses_post( $errors )
 		);
-	}
-
-	/**
-	 * Generate the class="" attribute.
-	 *
-	 * @return string
-	 */
-	protected function blockClasses() {
-		$classes = array(
-			// Standard block type class.
-			'wp-block-omniform-' . $this->blockTypeName(),
-			// Apply custom class for each field type.
-			empty( $this->getBlockAttribute( 'fieldType' ) )
-				? 'omniform-' . $this->blockTypeName()
-				: 'omniform-field-' . $this->getBlockAttribute( 'fieldType' ),
-			$this->getBlockAttribute( 'isRequired' )
-				? 'field-required'
-				: '',
-		);
-
-		$classes = array_merge(
-			$classes,
-			// Supports classes.
-			$this->getColorClasses( $this->attributes ),
-		);
-
-		return $this->getElementAttribute( 'class', $classes );
 	}
 
 	/**

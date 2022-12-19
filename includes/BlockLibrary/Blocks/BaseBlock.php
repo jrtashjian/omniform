@@ -36,7 +36,7 @@ abstract class BaseBlock implements FormBlockInterface {
 	}
 
 	/**
-	 * Get the block type's name from the class name.
+	 * The block type's name
 	 *
 	 * @return string
 	 */
@@ -45,7 +45,12 @@ abstract class BaseBlock implements FormBlockInterface {
 		return strtolower( preg_replace( '/([A-Z])/', '-$0', lcfirst( $calling_class ) ) );
 	}
 
-	public function blockTypeClassName() {
+	/**
+	 * The classname applied to the block wrapper.
+	 *
+	 * @return string
+	 */
+	public function blockTypeClassname() {
 		return 'wp-block-omniform-' . $this->blockTypeName();
 	}
 

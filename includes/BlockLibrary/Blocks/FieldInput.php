@@ -16,6 +16,22 @@ class FieldInput extends BaseFieldBlock {
 	 *
 	 * @return string Returns the block content.
 	 */
+	public function render() {
+		if ( $this->isHiddenInput() ) {
+			return sprintf(
+				'<input type="hidden" %s />',
+				$this->getControlName() . $this->getControlValue()
+			);
+		}
+
+		return parent::render();
+	}
+
+	/**
+	 * Renders the block on the server.
+	 *
+	 * @return string Returns the block content.
+	 */
 	public function renderControl() {
 		// $form_ingestion = omniform()->get( FormIngestionEngine::class );
 
