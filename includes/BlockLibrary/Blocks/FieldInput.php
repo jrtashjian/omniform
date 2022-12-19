@@ -93,4 +93,20 @@ class FieldInput extends BaseFieldBlock {
 	protected function isHiddenInput() {
 		return 'hidden' === $this->getBlockAttribute( 'fieldType' );
 	}
+
+	/**
+	 * The form control's name attribute.
+	 *
+	 * @return string
+	 */
+	protected function getControlName() {
+		$name = parent::getControlName();
+
+		if ( 'radio' === $this->getBlockAttribute( 'fieldType' ) && $this->isGrouped() ) {
+			$name = $this->getBlockContext( 'omniform/fieldGroupName' );
+		}
+
+		return $name;
+	}
+
 }

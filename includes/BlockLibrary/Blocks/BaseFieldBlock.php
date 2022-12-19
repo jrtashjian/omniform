@@ -85,15 +85,12 @@ abstract class BaseFieldBlock extends BaseBlock {
 	}
 
 	/**
-	 * Determine if the field type is a text input.
+	 * If the fieldGroupName context exists, the field is part of a group.
 	 *
 	 * @return bool
 	 */
-	protected function isTextInput() {
-		return in_array(
-			$this->getBlockAttribute( 'fieldType' ),
-			array( 'text', 'email', 'url', 'number', 'month', 'password', 'search', 'tel', 'week', 'hidden' )
-		);
+	protected function isGrouped() {
+		return ! empty( $this->getBlockContext( 'omniform/fieldGroupName' ) );
 	}
 
 	/**
@@ -154,7 +151,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 				' ',
 				array(
 					$this->getControlId(),
-					$this->getControlName(),
+					$this->getElementAttribute( 'name', $this->getControlName() ),
 					$this->getControlPlaceholder(),
 					$this->getControlValue(),
 					$this->getControlSelected(),
@@ -174,28 +171,14 @@ abstract class BaseFieldBlock extends BaseBlock {
 	}
 
 	/**
-	 * Generate the name="" attribute.
+	 * The form control's name attribute.
 	 *
 	 * @return string
 	 */
 	protected function getControlName() {
-		$input_name = $this->getBlockContext( 'omniform/fieldGroupName' )
+		return $this->isGrouped()
 			? $this->getBlockContext( 'omniform/fieldGroupName' ) . '[' . $this->getFieldName() . ']'
 			: $this->getFieldName();
-
-		// Nest form data within a fieldset.
-		if (
-			'radio' === $this->getBlockAttribute( 'fieldType' ) &&
-			$this->getBlockContext( 'omniform/fieldGroupName' )
-		) {
-			$input_name = $this->getBlockContext( 'omniform/fieldGroupName' );
-		}
-
-		if ( $this->getBlockAttribute( 'isMultiple' ) ) {
-			$input_name .= '[]';
-		}
-
-		return $this->getElementAttribute( 'name', $input_name );
 	}
 
 	/**

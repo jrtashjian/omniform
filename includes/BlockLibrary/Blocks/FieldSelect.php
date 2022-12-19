@@ -35,4 +35,17 @@ class FieldSelect extends BaseFieldBlock {
 			$placeholder_option . $this->content
 		);
 	}
+
+	/**
+	 * The form control's name attribute.
+	 *
+	 * @return string
+	 */
+	protected function getControlName() {
+		$name = parent::getControlName();
+
+		return $this->getBlockAttribute( 'isMultiple' )
+			? $name . '[]'
+			: $name;
+	}
 }
