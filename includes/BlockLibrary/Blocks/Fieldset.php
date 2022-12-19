@@ -38,7 +38,7 @@ class Fieldset extends BaseBlock {
 			$this->getElementAttribute( 'class', $classes ),
 			$this->getElementAttribute( 'style', $this->getColorStyles( $this->attributes ) ),
 			esc_html( $this->attributes['fieldLabel'] ),
-			$this->renderContent()
+			$this->content
 		);
 	}
 }

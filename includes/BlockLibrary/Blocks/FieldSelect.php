@@ -32,7 +32,7 @@ class FieldSelect extends BaseFieldBlock {
 		return sprintf(
 			'<select class="omniform-field-control" %s>%s</select>',
 			$this->getControlAttributes(),
-			$placeholder_option . $this->renderContent()
+			$placeholder_option . $this->content
 		);
 	}
 }

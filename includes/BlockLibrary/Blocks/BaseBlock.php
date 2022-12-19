@@ -53,7 +53,7 @@ abstract class BaseBlock implements FormBlockInterface {
 	 * Renders the block on the server.
 	 *
 	 * @param array     $attributes Block attributes.
-	 * @param string    $content    Block default content.
+	 * @param string    $content    Rendered block output (InnerBlocks).
 	 * @param \WP_Block $block      Block instance.
 	 *
 	 * @return string Returns the block content.
@@ -66,10 +66,6 @@ abstract class BaseBlock implements FormBlockInterface {
 		return $this->render();
 	}
 
-	protected function renderContent() {
-		return do_blocks( $this->content );
-	}
-
 	/**
 	 * Retrieve the block attribute with the given $key
 	 *
@@ -77,8 +73,10 @@ abstract class BaseBlock implements FormBlockInterface {
 	 *
 	 * @return string
 	 */
-	protected function getBlockAttribute( $key ) {
-		return array_key_exists( $key, $this->attributes ) ? $this->attributes[ $key ] : null;
+	public function getBlockAttribute( $key ) {
+		return array_key_exists( $key, $this->attributes )
+			? $this->attributes[ $key ]
+			: null;
 	}
 
 	/**
@@ -88,8 +86,10 @@ abstract class BaseBlock implements FormBlockInterface {
 	 *
 	 * @return string
 	 */
-	protected function getBlockContext( $key ) {
-		return array_key_exists( $key, $this->instance->context ) ? $this->instance->context[ $key ] : null;
+	public function getBlockContext( $key ) {
+		return array_key_exists( $key, $this->instance->context )
+			? $this->instance->context[ $key ]
+			: null;
 	}
 
 	/**
@@ -100,8 +100,8 @@ abstract class BaseBlock implements FormBlockInterface {
 	 *
 	 * @return string
 	 */
-	protected function getElementAttribute( $key, $value ) {
-		if ( empty( $value ) ) {
+	public function getElementAttribute( $key, $value ) {
+		if ( empty( $key ) || empty( $value ) ) {
 			return;
 		}
 

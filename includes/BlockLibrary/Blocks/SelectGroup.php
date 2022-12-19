@@ -20,7 +20,7 @@ class SelectGroup extends BaseBlock {
 		return sprintf(
 			'<optgroup label="%s">%s</optgroup>',
 			esc_attr( $this->getBlockAttribute( 'fieldLabel' ) ),
-			$this->renderContent()
+			$this->content
 		);
 	}
 }
