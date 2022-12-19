@@ -106,7 +106,7 @@ abstract class BaseBlock implements FormBlockInterface {
 	 * @return string
 	 */
 	public function getElementAttribute( $key, $value ) {
-		if ( empty( $key ) || empty( $value ) ) {
+		if ( empty( $key ) || ! isset( $value ) ) {
 			return;
 		}
 

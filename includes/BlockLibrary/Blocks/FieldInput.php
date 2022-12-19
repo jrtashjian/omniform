@@ -20,7 +20,7 @@ class FieldInput extends BaseFieldBlock {
 		if ( $this->isHiddenInput() ) {
 			return sprintf(
 				'<input type="hidden" %s />',
-				$this->getControlName() . $this->getControlValue()
+				trim( implode( ' ', $this->getControlAttributes() ) )
 			);
 		}
 
@@ -33,12 +33,6 @@ class FieldInput extends BaseFieldBlock {
 	 * @return string
 	 */
 	public function renderControl() {
-		// // Call WordPress functions for hidden inputs.
-		// if ( false !== strpos( $field_attributes['value'], '{{' ) ) {
-		// $fn = str_replace( array( '{', '}' ), '', $field_attributes['value'] );
-		// $field_attributes['value'] = $fn();
-		// }
-
 		return sprintf(
 			'<input class="omniform-field-control" type="%s" %s />',
 			esc_attr( $this->getBlockAttribute( 'fieldType' ) ),
@@ -131,6 +125,8 @@ class FieldInput extends BaseFieldBlock {
 			// Radios are always grouped so value is its name.
 			case 'radio':
 				return $this->getFieldName();
+			case 'hidden':
+				return $this->valueFromCallback();
 			default:
 				return parent::getControlValue();
 		}
@@ -151,5 +147,40 @@ class FieldInput extends BaseFieldBlock {
 			parent::getControlAttributes()
 		);
 		return array_filter( $attributes );
+	}
+
+	/**
+	 * Get the calculated value from a callback function.
+	 *
+	 * @return string
+	 */
+	protected function valueFromCallback() {
+		$callback = $this->getBlockAttribute( 'fieldValue' );
+
+		if ( ! $callback ) {
+			return '';
+		}
+
+		// Callback functions must be surrounded by curly brackets. Example: "{{ callback_function }}".
+		if ( false === strpos( $callback, '{{' ) ) {
+			// Allow non-callback values to be set.
+			return $callback;
+		}
+
+		$fn = trim( str_replace( array( '{', '}' ), '', $callback ) );
+
+		// Ensure the function exists before calling.
+		if ( ! function_exists( $fn ) ) {
+			return '';
+		}
+
+		$result = $fn();
+
+		// Return an empty string if a string result was not received from the callback function.
+		if ( is_array( $result ) || is_object( $result ) ) {
+			return '';
+		}
+
+		return strval( is_bool( $result ) ? intval( $result ) : $result );
 	}
 }
