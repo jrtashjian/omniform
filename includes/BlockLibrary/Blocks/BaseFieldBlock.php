@@ -153,7 +153,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 					$this->getControlId(),
 					$this->getElementAttribute( 'name', $this->getControlName() ),
 					$this->getControlPlaceholder(),
-					$this->getControlValue(),
+					$this->getElementAttribute( 'value', $this->getControlValue() ),
 					$this->getControlSelected(),
 					$this->getControlMultiple(),
 				)
@@ -182,38 +182,12 @@ abstract class BaseFieldBlock extends BaseBlock {
 	}
 
 	/**
-	 * Generate the value="" attribute.
+	 * The form control's value attribute.
 	 *
 	 * @return string
 	 */
 	protected function getControlValue() {
-		if ( 'field-select' === $this->blockTypeName() ) {
-			return '';
-		}
-
-		$default_value = $this->isOptionInput()
-			? $this->getFieldName()
-			: $this->getBlockAttribute( 'fieldValue' );
-
-		if ( 'checkbox' === $this->getBlockAttribute( 'fieldType' ) ) {
-			$default_value = true;
-		}
-
-		$submitted_value = 'radio' === $this->getBlockAttribute( 'fieldType' )
-			? $default_value
-			: $this->injestion->formValue(
-				array(
-					$this->getBlockContext( 'omniform/fieldGroupName' ),
-					$this->getFieldName(),
-				)
-			);
-
-		return $this->getElementAttribute(
-			'value',
-			$submitted_value && ! $this->isHiddenInput()
-				? $submitted_value
-				: $default_value
-		);
+		return $this->getBlockAttribute( 'fieldValue' );
 	}
 
 	/**

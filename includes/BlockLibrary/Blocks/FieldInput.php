@@ -109,4 +109,21 @@ class FieldInput extends BaseFieldBlock {
 		return $name;
 	}
 
+	/**
+	 * The form control's value attribute.
+	 *
+	 * @return string
+	 */
+	protected function getControlValue() {
+		switch ( $this->getBlockAttribute( 'fieldType' ) ) {
+			// Checboxes should always be boolean.
+			case 'checkbox':
+				return true;
+			// Radios are always grouped so value is its name.
+			case 'radio':
+				return $this->getFieldName();
+			default:
+				return parent::getControlValue();
+		}
+	}
 }

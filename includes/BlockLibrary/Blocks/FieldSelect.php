@@ -48,4 +48,14 @@ class FieldSelect extends BaseFieldBlock {
 			? $name . '[]'
 			: $name;
 	}
+
+	/**
+	 * The form control's value attribute.
+	 *
+	 * @return string
+	 */
+	protected function getControlValue() {
+		// Select form fields don't use the "value" attribute.
+		return '';
+	}
 }
