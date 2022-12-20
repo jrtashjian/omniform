@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { registerBlockType } from '@wordpress/blocks';
+import { createBlock, registerBlockType } from '@wordpress/blocks';
 import { decodeEntities } from '@wordpress/html-entities';
 
 /**
@@ -34,4 +34,14 @@ registerBlockType( name, {
 	},
 	// Get block name from the option value.
 	__experimentalLabel: ( { fieldLabel } ) => fieldLabel && decodeEntities( fieldLabel ),
+	transforms: {
+		from: [
+			{
+				type: 'block',
+				blocks: [ 'omniform/field-input' ],
+				transform: ( { fieldLabel, fieldName, fieldPlaceholder, fieldValue, isRequired } ) =>
+					createBlock( name, { fieldLabel, fieldName, fieldPlaceholder, fieldValue, isRequired } ),
+			},
+		],
+	},
 } );

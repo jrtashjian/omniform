@@ -5,12 +5,14 @@ import { __ } from '@wordpress/i18n';
 
 const variations = [
 	{
+		// This is a default to improve variation transforms.
 		name: 'button',
 		title: __( 'Button', 'omniform' ),
 		description: __( '', 'omnigroup' ),
 		attributes: {
 			buttonType: 'button',
 		},
+		scope: [ 'transform' ],
 	},
 	{
 		name: 'button-submit',
@@ -37,7 +39,9 @@ variations.forEach( ( variation ) => {
 		blockAttributes.buttonType ===
 		variationAttributes.buttonType;
 
-	variation.scope = [ 'inserter', 'block', 'transform' ];
+	if ( ! variation.scope ) {
+		variation.scope = [ 'inserter', 'block', 'transform' ];
+	}
 } );
 
 export default variations;

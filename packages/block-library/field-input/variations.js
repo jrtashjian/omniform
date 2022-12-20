@@ -14,7 +14,7 @@ import {
 	// fieldPassword,
 	fieldRadio,
 	// fieldRange,
-	fieldSearch,
+	// fieldSearch,
 	fieldTel,
 	fieldTime,
 	fieldUrl,
@@ -22,11 +22,13 @@ import {
 
 const variations = [
 	{
+		// This is a default to improve variation transforms.
 		name: 'field-text',
 		icon: { foreground: '#D92E83', src: fieldInput },
 		title: __( 'Text', 'omniform' ),
 		description: __( 'A text box for short responses.', 'omnigroup' ),
 		attributes: { fieldType: 'text' },
+		scope: [ 'transform' ],
 	},
 	{
 		name: 'field-email',
@@ -170,7 +172,9 @@ variations.forEach( ( variation ) => {
 		return blockAttributes.fieldType === variationAttributes.fieldType;
 	};
 
-	variation.scope = [ 'inserter', 'block', 'transform' ];
+	if ( ! variation.scope ) {
+		variation.scope = [ 'inserter', 'block', 'transform' ];
+	}
 } );
 
 export default variations;
