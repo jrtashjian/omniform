@@ -35,9 +35,11 @@ abstract class BaseFieldBlock extends BaseBlock {
 
 		$this->injestion = omniform()->get( FormIngestionEngine::class );
 
-		$attributes = array(
-			$this->getElementAttribute( 'class', $this->getDefaultClasses() ),
-			$this->getElementAttribute( 'style', $this->getColorStyles( $this->attributes ) ),
+		$attributes = array_filter(
+			array(
+				$this->getElementAttribute( 'class', $this->getDefaultClasses() ),
+				$this->getElementAttribute( 'style', $this->getColorStyles( $this->attributes ) ),
+			)
 		);
 
 		return sprintf(

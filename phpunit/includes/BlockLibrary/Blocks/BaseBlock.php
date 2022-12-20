@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests the Core class.
+ * Tests the BaseBlock class.
  *
  * @package OmniForm
  */
@@ -10,7 +10,7 @@ namespace OmniForm\Tests\BlockLibrary\Blocks;
 use OmniForm\BlockLibrary\Blocks\BaseBlock;
 
 /**
- * Tests the Core class.
+ * Tests the BaseBlock class.
  */
 class BaseBlockTest extends \WP_UnitTestCase {
 	public function test_block_type_metadata() {
@@ -20,14 +20,14 @@ class BaseBlockTest extends \WP_UnitTestCase {
 		);
 	}
 
-	public function test_block_type_class_name() {
+	public function test_block_type_classname() {
 		$this->assertEquals(
 			'wp-block-omniform-base-block-stub',
-			( new BaseBlockStub() )->blockTypeClassName()
+			( new BaseBlockStub() )->blockTypeClassname()
 		);
 	}
 
-	public function test_render_block_with_attributes() {
+	public function test_render_block() {
 		$this->assertEquals(
 			'BaseBlockStub::render',
 			( new BaseBlockStub() )->renderBlock( array(), '', (object) array() )

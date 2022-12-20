@@ -24,7 +24,7 @@ abstract class BaseBlock implements FormBlockInterface {
 	 *
 	 * @var \WP_Block
 	 */
-	protected $instance = array();
+	protected $instance;
 
 	/**
 	 * The path to the JSON file with metadata definition for the block.
@@ -92,7 +92,7 @@ abstract class BaseBlock implements FormBlockInterface {
 	 * @return string
 	 */
 	public function getBlockContext( $key ) {
-		return array_key_exists( $key, $this->instance->context )
+		return property_exists( $this->instance, 'context' ) && array_key_exists( $key, $this->instance->context )
 			? $this->instance->context[ $key ]
 			: null;
 	}
