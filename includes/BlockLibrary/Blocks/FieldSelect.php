@@ -18,7 +18,7 @@ class FieldSelect extends BaseFieldBlock {
 	 */
 	public function renderControl() {
 		$placeholder_option = '';
-		if ( ! empty( $this->attributes['fieldPlaceholder'] ) ) {
+		if ( ! empty( $this->attributes['fieldPlaceholder'] ) && ! $this->getBlockAttribute( 'isMultiple' ) ) {
 			$placeholder_option = sprintf(
 				'<option value="">%s</option>',
 				esc_attr( $this->attributes['fieldPlaceholder'] )
