@@ -3,8 +3,8 @@
 	"apiVersion": 2,
 	"name": "omniform/field-input",
 	"category": "form-control",
-	"title": "Text",
-	"description": "A text box for short responses.",
+	"title": "Input Field",
+	"description": "A simple form field.",
 	"textdomain": "omniform",
 	"attributes": {
 		"fieldType": {

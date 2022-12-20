@@ -9,6 +9,7 @@ import {
 	fieldEmail,
 	// fieldFile,
 	fieldHidden,
+	fieldInput,
 	fieldNumber,
 	// fieldPassword,
 	fieldRadio,
@@ -20,6 +21,13 @@ import {
 } from '../shared/icons';
 
 const variations = [
+	{
+		name: 'field-text',
+		icon: { foreground: '#D92E83', src: fieldInput },
+		title: __( 'Text', 'omniform' ),
+		description: __( 'A text box for short responses.', 'omnigroup' ),
+		attributes: { fieldType: 'text' },
+	},
 	{
 		name: 'field-email',
 		icon: { foreground: '#D92E83', src: fieldEmail },
@@ -46,14 +54,14 @@ const variations = [
 		icon: { foreground: '#D92E83', src: fieldCheckbox },
 		title: __( 'Checkbox', 'omniform' ),
 		description: __( 'A field with can be grouped to give multiple options where multiple choices can be made.', 'omnigroup' ),
-		attributes: { fieldType: 'checkbox' },
+		attributes: { fieldType: 'checkbox', isRequired: false },
 	},
 	{
 		name: 'field-radio',
 		icon: { foreground: '#D92E83', src: fieldRadio },
 		title: __( 'Radio', 'omniform' ),
 		description: __( 'A field with can be grouped to give multiple options where a single choice can be made.', 'omnigroup' ),
-		attributes: { fieldType: 'radio' },
+		attributes: { fieldType: 'radio', isRequired: false },
 	},
 	// {
 	// 	name: 'field-color',
@@ -133,25 +141,36 @@ const variations = [
 		attributes: { fieldType: 'week' },
 	},
 	{
-		name: 'field-hidden',
-		icon: { foreground: '#D92E83', src: fieldHidden },
-		title: __( 'Hidden', 'omniform' ),
-		description: __( '', 'omniform' ),
-		attributes: { fieldType: 'hidden' },
-	},
-	{
 		name: 'field-current-user-id',
 		icon: { foreground: '#D92E83', src: fieldHidden },
 		title: __( 'Current User ID', 'omniform' ),
 		description: __( '', 'omniform' ),
-		attributes: { fieldType: 'hidden', fieldValue: '{{get_current_user_id}}' },
+		attributes: { fieldType: 'hidden', isRequired: false, fieldValue: '{{get_current_user_id}}', fieldPlaceholder: '' },
+	},
+	{
+		name: 'field-hidden',
+		icon: { foreground: '#D92E83', src: fieldHidden },
+		title: __( 'Hidden', 'omniform' ),
+		description: __( '', 'omniform' ),
+		attributes: { fieldType: 'hidden', isRequired: false, fieldValue: '', fieldPlaceholder: '' },
 	},
 ];
 
 variations.forEach( ( variation ) => {
-	variation.isActive = ( blockAttributes, variationAttributes ) =>
-		blockAttributes.fieldType ===
-		variationAttributes.fieldType;
+	variation.isActive = ( blockAttributes, variationAttributes ) => {
+		// Detect which "hidden" variation is active based on the preset fieldValue.
+		if (
+			'hidden' === blockAttributes.fieldType &&
+			blockAttributes.fieldType === variationAttributes.fieldType
+		) {
+			return blockAttributes.fieldValue === variationAttributes.fieldValue ||
+				( '' !== blockAttributes.fieldValue && '' === variationAttributes.fieldValue );
+		}
+
+		return blockAttributes.fieldType === variationAttributes.fieldType;
+	};
+
+	variation.scope = [ 'inserter', 'block', 'transform' ];
 } );
 
 export default variations;
