@@ -101,10 +101,19 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 * @return string
 	 */
 	protected function renderLabel() {
+		$form_id = $this->injestion->getFormId() ?? $this->getBlockContext( 'postId' );
+
+		$label_required = ! $this->getBlockAttribute( 'isRequired' )
+			? null
+			: sprintf(
+				'<span class="omniform-field-required">%s</span>',
+				wp_kses_post( get_post_meta( $form_id, 'required_label', true ) )
+			);
+
 		return sprintf(
 			'<label class="omniform-field-label" for="%s">%s</label>',
 			esc_attr( $this->getFieldName() ),
-			wp_kses_post( $this->getBlockAttribute( 'fieldLabel' ) )
+			wp_kses_post( $this->getBlockAttribute( 'fieldLabel' ) ) . $label_required
 		);
 	}
 

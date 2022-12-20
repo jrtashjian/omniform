@@ -37,7 +37,11 @@
 			}
 		}
 	},
-	"usesContext": [ "omniform/fieldGroupName" ],
+	"usesContext": [
+		"postId",
+		"postType",
+		"omniform/fieldGroupName"
+	],
 	"editorScript": "file:index.js",
 	"editorStyle": "file:index.css",
 	"style": "file:style-index.css"

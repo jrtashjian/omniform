@@ -43,6 +43,10 @@ class FormIngestionEngine {
 		$this->id = $id;
 	}
 
+	public function getFormId() {
+		return $this->id;
+	}
+
 	public function getNonceField() {
 		return wp_nonce_field( $this->nonce_action . $this->id, $this->nonce_name, true, false );
 	}

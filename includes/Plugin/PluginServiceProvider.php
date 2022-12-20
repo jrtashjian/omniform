@@ -370,11 +370,12 @@ class PluginServiceProvider extends ServiceProvider {
 
 		register_post_meta(
 			'omniform',
-			'sidebar_plugin_meta_block_field',
+			'required_label',
 			array(
 				'show_in_rest' => true,
 				'single'       => true,
 				'type'         => 'string',
+				'default'      => '*',
 			)
 		);
 
