@@ -5,6 +5,14 @@ import { __ } from '@wordpress/i18n';
 
 const variations = [
 	{
+		name: 'button',
+		title: __( 'Button', 'omniform' ),
+		description: __( '', 'omnigroup' ),
+		attributes: {
+			buttonType: 'button',
+		},
+	},
+	{
 		name: 'button-submit',
 		title: __( 'Submit', 'omniform' ),
 		description: __( '', 'omnigroup' ),
@@ -28,6 +36,8 @@ variations.forEach( ( variation ) => {
 	variation.isActive = ( blockAttributes, variationAttributes ) =>
 		blockAttributes.buttonType ===
 		variationAttributes.buttonType;
+
+	variation.scope = [ 'inserter', 'block', 'transform' ];
 } );
 
 export default variations;
