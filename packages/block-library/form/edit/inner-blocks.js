@@ -5,7 +5,9 @@ import { useEntityBlockEditor } from '@wordpress/core-data';
 import {
 	InnerBlocks,
 	useInnerBlocksProps,
+	BlockContextProvider,
 } from '@wordpress/block-editor';
+import { useMemo } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -63,6 +65,10 @@ export default function FormInnerBlocks( {
 	formId: id,
 	hasInnerBlocks,
 } ) {
+	const defaultBlockContext = useMemo( () => {
+		return { postId: id, postType: FORM_POST_TYPE };
+	}, [ id ] );
+
 	const [ blocks, onInput, onChange ] = useEntityBlockEditor(
 		'postType',
 		FORM_POST_TYPE,
@@ -79,5 +85,9 @@ export default function FormInnerBlocks( {
 			: InnerBlocks.ButtonBlockAppender,
 	} );
 
-	return <div { ...innerBlockProps } />;
+	return (
+		<BlockContextProvider value={ defaultBlockContext }>
+			<div { ...innerBlockProps } />
+		</BlockContextProvider>
+	);
 }

@@ -5,10 +5,6 @@
 	"category": "form",
 	"title": "OmniForm",
 	"textdomain": "omniform",
-	"usesContext": [
-		"postId",
-		"postType"
-	],
 	"attributes": {
 		"ref": {
 			"type": "number"
