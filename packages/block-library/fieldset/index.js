@@ -11,7 +11,7 @@ import { decodeEntities } from '@wordpress/html-entities';
 import json from './block.json';
 import Edit from './edit';
 import Save from './save';
-import { fieldGroup as icon } from '../shared/icons';
+import { fieldGroup } from '../shared/icons';
 
 import './style.scss';
 import './index.scss';
@@ -20,7 +20,7 @@ const { name } = json;
 
 registerBlockType( name, {
 	edit: Edit,
-	icon,
+	icon: { foreground: '#D92E83', src: fieldGroup },
 	save: Save,
 	example: {
 		attributes: {

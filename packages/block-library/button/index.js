@@ -10,7 +10,7 @@ import { decodeEntities } from '@wordpress/html-entities';
 import json from './block.json';
 import Edit from './edit';
 import variations from './variations';
-import { Button as icon } from '../shared/icons';
+import { Button } from '../shared/icons';
 
 import './style.scss';
 import './index.scss';
@@ -19,7 +19,7 @@ const { name } = json;
 
 registerBlockType( name, {
 	edit: Edit,
-	icon,
+	icon: { foreground: '#D92E83', src: Button },
 	example: {},
 	variations,
 	merge( attributes, attributesToMerge ) {

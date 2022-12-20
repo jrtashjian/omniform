@@ -17,7 +17,7 @@ import { addFilter } from '@wordpress/hooks';
 import json from './block.json';
 import edit from './edit';
 import { FORM_POST_TYPE } from '../shared/constants';
-import { form as icon } from '../shared/icons';
+import { form } from '../shared/icons';
 
 import './style.scss';
 import './index.scss';
@@ -26,7 +26,7 @@ const { name } = json;
 
 registerBlockType( name, {
 	edit,
-	icon,
+	icon: { foreground: '#D92E83', src: form },
 	// Get block name from the post name.
 	__experimentalLabel: ( { ref } ) => {
 		if ( ! ref ) {

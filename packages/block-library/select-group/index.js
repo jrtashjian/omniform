@@ -11,7 +11,7 @@ import { decodeEntities } from '@wordpress/html-entities';
 import json from './block.json';
 import Edit from './edit';
 import Save from './save';
-import { selectGroup as icon } from '../shared/icons';
+import { selectGroup } from '../shared/icons';
 
 import './style.scss';
 import './index.scss';
@@ -21,7 +21,7 @@ const { name } = json;
 registerBlockType( name, {
 	edit: Edit,
 	save: Save,
-	icon,
+	icon: { foreground: '#D92E83', src: selectGroup },
 	example: {
 		attributes: {
 			fieldLabel: __( 'Example input', 'omniform' ),

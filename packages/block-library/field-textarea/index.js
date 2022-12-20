@@ -10,7 +10,7 @@ import { decodeEntities } from '@wordpress/html-entities';
  */
 import json from './block.json';
 import Edit from './edit';
-import { fieldTextarea as icon } from '../shared/icons';
+import { fieldTextarea } from '../shared/icons';
 
 import './style.scss';
 import './index.scss';
@@ -19,7 +19,7 @@ const { name } = json;
 
 registerBlockType( name, {
 	edit: Edit,
-	icon,
+	icon: { foreground: '#D92E83', src: fieldTextarea },
 	example: {
 		attributes: {
 			fieldLabel: __( 'Example input', 'omniform' ),
