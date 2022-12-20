@@ -112,13 +112,13 @@ const variations = [
 	// 	description: __( 'A field for selecting a number from a range of numbers.', 'omnigroup' ),
 	// 	attributes: { fieldType: 'range' },
 	// },
-	{
-		name: 'field-search',
-		icon: { foreground: '#D92E83', src: fieldSearch },
-		title: __( 'Search', 'omniform' ),
-		description: __( 'A field for collecting a search query.', 'omnigroup' ),
-		attributes: { fieldType: 'search' },
-	},
+	// {
+	// 	name: 'field-search',
+	// 	icon: { foreground: '#D92E83', src: fieldSearch },
+	// 	title: __( 'Search', 'omniform' ),
+	// 	description: __( 'A field for collecting a search query.', 'omnigroup' ),
+	// 	attributes: { fieldType: 'search' },
+	// },
 	{
 		name: 'field-tel',
 		icon: { foreground: '#D92E83', src: fieldTel },
