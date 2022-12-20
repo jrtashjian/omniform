@@ -55,8 +55,8 @@ abstract class BaseFieldBlock extends BaseBlock {
 	public function getFieldName() {
 		$field_name = $this->getBlockAttribute( 'fieldName' );
 		return empty( $field_name )
-			? sanitize_key( $this->getBlockAttribute( 'fieldLabel' ) )
-			: sanitize_key( $field_name );
+			? sanitize_title( $this->getBlockAttribute( 'fieldLabel' ) )
+			: sanitize_title( $field_name );
 	}
 
 	/**
