@@ -12,20 +12,27 @@ use OmniForm\Plugin\FormIngestionEngine;
 /**
  * The SelectOption block class.
  */
-class SelectOption extends BaseBlock {
+class SelectOption extends BaseFieldBlock {
 	/**
 	 * Renders the block on the server.
 	 *
 	 * @return string Returns the block content.
 	 */
 	public function render() {
-		$name = empty( $this->getBlockAttribute( 'fieldName' ) )
-			? sanitize_title( $this->getBlockAttribute( 'fieldLabel' ) )
-			: $this->getBlockAttribute( 'fieldName' );
+		$this->injestion = omniform()->get( FormIngestionEngine::class );
 
-		$form_ingestion = omniform()->get( FormIngestionEngine::class );
+		return empty( $this->getBlockAttribute( 'fieldLabel' ) )
+			? ''
+			: $this->renderControl();
+	}
 
-		$target = $form_ingestion->formValue(
+	/**
+	 * Renders the block on the server.
+	 *
+	 * @return string Returns the block content.
+	 */
+	public function renderControl() {
+		$target = $this->injestion->formValue(
 			array(
 				$this->getBlockContext( 'omniform/fieldGroupName' ),
 				$this->getBlockContext( 'omniform/fieldSelectName' ),
@@ -33,13 +40,19 @@ class SelectOption extends BaseBlock {
 		);
 
 		$is_selected = is_array( $target )
-			? in_array( $name, $target )
-			: $name === $target;
+			? in_array( $this->getFieldName(), $target, true )
+			: $this->getFieldName() === $target;
+
+		$attributes = array_filter(
+			array(
+				$this->getElementAttribute( 'value', $this->getFieldName() ),
+				$is_selected ? 'selected' : null,
+			)
+		);
 
 		return sprintf(
-			'<option value="%s"%s>%s</option>',
-			esc_attr( $name ),
-			$is_selected ? ' selected ' : '',
+			'<option %s>%s</option>',
+			trim( implode( ' ', $attributes ) ),
 			esc_attr( $this->getBlockAttribute( 'fieldLabel' ) )
 		);
 	}

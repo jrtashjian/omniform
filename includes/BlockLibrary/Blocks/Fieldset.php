@@ -25,20 +25,35 @@ class Fieldset extends BaseBlock {
 			return '';
 		}
 
-		$classes = array_merge(
+		$attributes = array_filter(
 			array(
-				$this->blockTypeClassName(),
-				'is-layout-flow',
-			),
-			$this->getColorClasses( $this->attributes ),
+				$this->getElementAttribute( 'class', $this->getDefaultClasses() ),
+				$this->getElementAttribute( 'style', $this->getColorStyles( $this->attributes ) ),
+			)
 		);
 
 		return sprintf(
-			'<fieldset %s %s><legend class="omniform-field-label">%s</legend>%s</fieldset>',
-			$this->getElementAttribute( 'class', $classes ),
-			$this->getElementAttribute( 'style', $this->getColorStyles( $this->attributes ) ),
-			esc_html( $this->attributes['fieldLabel'] ),
+			'<fieldset %s><legend class="omniform-field-label">%s</legend>%s</fieldset>',
+			trim( implode( ' ', $attributes ) ),
+			esc_html( $this->getBlockAttribute( 'fieldLabel' ) ),
 			$this->content
+		);
+	}
+
+	/**
+	 * Get the default classes to be applied to the block wrapper.
+	 *
+	 * @return array
+	 */
+	public function getDefaultClasses() {
+		$default = array(
+			$this->blockTypeClassname(),
+			'is-layout-flow',
+		);
+
+		return array_merge(
+			$default,
+			$this->getColorClasses( $this->attributes ),
 		);
 	}
 }

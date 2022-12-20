@@ -7,14 +7,10 @@
 
 namespace OmniForm\BlockLibrary\Blocks;
 
-use OmniForm\BlockLibrary\Blocks\Traits\HasColors;
-
 /**
  * The FieldSelect block class.
  */
 class FieldSelect extends BaseFieldBlock {
-	use HasColors;
-
 	/**
 	 * Renders the block on the server.
 	 *
