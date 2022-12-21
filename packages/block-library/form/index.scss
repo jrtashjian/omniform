@@ -1,6 +1,7 @@
 @import "~@wordpress/base-styles/variables";
 @import "~@wordpress/base-styles/mixins";
 @import "~@wordpress/base-styles/breakpoints";
+@import "../shared/mixins";
 
 .block-editor-form__selection-modal {
 
@@ -21,9 +22,27 @@
 	}
 }
 
-.block-editor-block-preview__content-iframe .block-editor-block-list__layout.is-root-container {
+.block-editor-block-preview__content-iframe {
 
-	.wp-block-omniform-form {
+	.block-editor-iframe__body.post-type-omniform .block-editor-block-list__layout.is-root-container,
+	.block-editor-block-list__layout.is-root-container .wp-block-omniform-form {
+
+		@include defaults;
+
 		padding: var(--wp--style--block-gap, var(--global--spacing-vertical, 1.5em));
+
+		> * {
+			margin-block-start: 0;
+			margin-block-end: 0;
+		}
+
+		> * + * {
+			margin-block-start: var(--wp--style--block-gap, var(--global--spacing-vertical, 1.5em));
+			margin-block-end: 0;
+		}
+
+		.omniform-field-control {
+			border-width: 2px;
+		}
 	}
 }
