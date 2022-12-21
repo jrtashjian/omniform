@@ -534,8 +534,8 @@ class PluginServiceProvider extends ServiceProvider {
 			$post_types_exists = array_key_exists( 'postTypes', $pattern );
 
 			if (
-			! $post_types_exists ||
-			( $post_types_exists && in_array( 'omniform', $pattern['postTypes'], true ) )
+				! $post_types_exists ||
+				( $post_types_exists && in_array( 'omniform', $pattern['postTypes'], true ) )
 			) {
 				$block_patterns_registry->unregister( $pattern['name'] );
 			}

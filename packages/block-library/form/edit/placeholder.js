@@ -4,14 +4,12 @@
 import { __ } from '@wordpress/i18n';
 import {
 	Button,
-	Flex,
-	FlexItem,
-	Modal,
 	Placeholder,
 	Spinner,
-	TextControl,
 } from '@wordpress/components';
+import { useDispatch } from '@wordpress/data';
 import { useState } from '@wordpress/element';
+import { store as noticesStore } from '@wordpress/notices';
 
 /**
  * Internal dependencies
@@ -20,23 +18,37 @@ import {
 	useAlternativeForms,
 	useCreateFormFromBlocks,
 } from '../utils/hooks';
+import CreateFormModal from './create-form-modal';
 
 export default function FormPlaceholder( {
-	clientId,
-	formId,
 	setAttributes,
 	onOpenSelectionModal,
 } ) {
 	const { forms, isResolving } = useAlternativeForms();
 	const createFromBlocks = useCreateFormFromBlocks( setAttributes );
 
-	const [ showTitleModal, setShowTitleModal ] = useState( false );
-	const [ title, setTitle ] = useState( __( 'Untitled Form', 'omniform' ) );
+	const [ isModalOpen, setIsModalOpen ] = useState( false );
+	const { createSuccessNotice, createErrorNotice } = useDispatch( noticesStore );
 
-	const onSubmitForCreation = ( event ) => {
-		event.preventDefault();
-		createFromBlocks( [], title );
-		setShowTitleModal( false );
+	const createForm = async ( { title, type } ) => {
+		if ( ! title ) {
+			createErrorNotice( __( 'Title is not defined', 'omniform' ), { type: 'snackbar' } );
+			return;
+		}
+
+		try {
+			await createFromBlocks( [], title, type );
+			createSuccessNotice( __( 'Form created', 'omniform' ), { type: 'snackbar' } );
+			setIsModalOpen( false );
+		} catch ( error ) {
+			const errorMessage =
+				error.message && error.code !== 'unknown_error'
+					? error.message
+					: __( 'An error occurred while creating the form.', 'omniform' );
+
+			createErrorNotice( errorMessage, { type: 'snackbar' } );
+			setIsModalOpen( false );
+		}
 	};
 
 	return (
@@ -47,60 +59,29 @@ export default function FormPlaceholder( {
 		>
 			{ isResolving && <Spinner /> }
 
-			{ ! isResolving && (
-				<Button
-					variant="primary"
-					onClick={ () => console.debug( 'explore templates' ) }
-				>
-					{ __( 'Explore templates', 'omniform' ) }
-				</Button>
-			) }
-
 			{ ! isResolving && !! forms.length && (
 				<Button
-					variant="tertiary"
+					variant="primary"
 					onClick={ onOpenSelectionModal }
 				>
-					{ __( 'Choose existing', 'omniform' ) }
+					{ __( 'Choose', 'omniform' ) }
 				</Button>
 			) }
 
 			{ ! isResolving && (
 				<Button
-					variant="tertiary"
-					onClick={ () => setShowTitleModal( true ) }
+					variant="secondary"
+					onClick={ () => setIsModalOpen( true ) }
 				>
-					{ __( 'Create new', 'omniform' ) }
+					{ __( 'Start blank', 'omniform' ) }
 				</Button>
 			) }
 
-			{ showTitleModal && (
-				<Modal
-					title={ __( 'Name and create your new form', 'omniform' ) }
-					closeLabel={ __( 'Cancel', 'omniform' ) }
-					onRequestClose={ () => setShowTitleModal( false ) }
-					focusOnMount
-				>
-					<form onSubmit={ onSubmitForCreation }>
-						<TextControl
-							label={ __( 'Name', 'omniform' ) }
-							value={ title }
-							onChange={ setTitle }
-						/>
-						<Flex justify="flex-end">
-							<FlexItem>
-								<Button
-									variant="primary"
-									type="submit"
-									disabled={ ! title.length }
-									aria-disabled={ ! title.length }
-								>
-									{ __( 'Create', 'omniform' ) }
-								</Button>
-							</FlexItem>
-						</Flex>
-					</form>
-				</Modal>
+			{ isModalOpen && (
+				<CreateFormModal
+					closeModal={ () => setIsModalOpen( false ) }
+					onCreate={ createForm }
+				/>
 			) }
 		</Placeholder>
 	);
