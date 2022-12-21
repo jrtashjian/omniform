@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { registerBlockType } from '@wordpress/blocks';
+import { createBlock, registerBlockType } from '@wordpress/blocks';
 import { decodeEntities } from '@wordpress/html-entities';
 
 /**
@@ -29,21 +29,21 @@ registerBlockType( name, {
 		innerBlocks: [
 			{
 				attributes: {
-					fieldType: 'checkbox',
+					fieldType: 'radio',
 					fieldLabel: __( 'Option One', 'omniform' ),
 				},
 				name: 'omniform/field-input',
 			},
 			{
 				attributes: {
-					fieldType: 'checkbox',
+					fieldType: 'radio',
 					fieldLabel: __( 'Option Two', 'omniform' ),
 				},
 				name: 'omniform/field-input',
 			},
 			{
 				attributes: {
-					fieldType: 'checkbox',
+					fieldType: 'radio',
 					fieldLabel: __( 'Option Three', 'omniform' ),
 				},
 				name: 'omniform/field-input',
@@ -52,4 +52,30 @@ registerBlockType( name, {
 	},
 	// Get block name from the option value.
 	__experimentalLabel: ( { fieldLabel } ) => fieldLabel && decodeEntities( fieldLabel ),
+
+	transforms: {
+		from: [
+			{
+				type: 'block',
+				blocks: [ 'omniform/field-select' ],
+				transform: ( { fieldLabel, fieldName }, innerBlocks ) => {
+					const options = [];
+
+					const getOptionLabels = ( block ) => {
+						if ( ! block.innerBlocks || block.innerBlocks.length === 0 ) {
+							options.push( block.attributes.fieldLabel );
+						}
+						block.innerBlocks.forEach( getOptionLabels );
+					};
+					innerBlocks.forEach( getOptionLabels );
+
+					return createBlock(
+						name,
+						{ fieldLabel, fieldName },
+						options.map( ( label ) => createBlock( 'omniform/field-input', { fieldType: 'radio', fieldLabel: label } ) )
+					);
+				},
+			},
+		],
+	},
 } );
