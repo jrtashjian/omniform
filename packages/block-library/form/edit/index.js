@@ -4,11 +4,14 @@
 import {
 	store as blockEditorStore,
 	useBlockProps,
-	Warning, __experimentalRecursionProvider as RecursionProvider,
+	Warning,
+	__experimentalRecursionProvider as RecursionProvider,
 	__experimentalUseHasRecursion as useHasRecursion,
 } from '@wordpress/block-editor';
 import {
-	Modal, Spinner,
+	Modal,
+	Placeholder,
+	Spinner,
 } from '@wordpress/components';
 import { store as coreStore } from '@wordpress/core-data';
 import { useSelect } from '@wordpress/data';
@@ -19,6 +22,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { FORM_POST_TYPE } from '../../shared/constants';
+import { form } from '../../shared/icons';
 import FormInnerBlocks from './inner-blocks';
 import FormInspectorControls from './inspector-controls';
 import FormPlaceholder from './placeholder';
@@ -78,9 +82,11 @@ export default function FormEdit( {
 	) {
 		return (
 			<div { ...blockProps }>
-				<Warning>
-					{ __( 'PLACEHOLDER.', 'omniform' ) }
-				</Warning>
+				<Placeholder
+					icon={ form }
+					label={ __( 'OmniForm', 'omniform' ) }
+					instructions={ __( 'A single form will be rendered here.', 'omniform' ) }
+				/>
 			</div>
 		);
 	}
