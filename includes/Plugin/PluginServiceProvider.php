@@ -339,32 +339,66 @@ class PluginServiceProvider extends ServiceProvider {
 					'view_item'                => __( 'View Form', 'omniform' ),
 					'all_items'                => __( 'All Forms', 'omniform' ),
 					'search_items'             => __( 'Search Forms', 'omniform' ),
-					'not_found'                => __( 'No Forms found.', 'omniform' ),
-					'not_found_in_trash'       => __( 'No Forms found in Trash.', 'omniform' ),
-					'filter_items_list'        => __( 'Filter Forms list', 'omniform' ),
-					'items_list_navigation'    => __( 'Forms list navigation', 'omniform' ),
-					'items_list'               => __( 'Forms list', 'omniform' ),
+					'not_found'                => __( 'No forms found.', 'omniform' ),
+					'not_found_in_trash'       => __( 'No forms found in Trash.', 'omniform' ),
+					'filter_items_list'        => __( 'Filter form list', 'omniform' ),
+					'items_list_navigation'    => __( 'Form list navigation', 'omniform' ),
+					'items_list'               => __( 'Form list', 'omniform' ),
 					'item_published'           => __( 'Form published.', 'omniform' ),
 					'item_published_privately' => __( 'Form published privately.', 'omniform' ),
 					'item_reverted_to_draft'   => __( 'Form reverted to draft.', 'omniform' ),
 					'item_scheduled'           => __( 'Form scheduled.', 'omniform' ),
 					'item_updated'             => __( 'Form updated.', 'omniform' ),
 				),
-				'public'                => true,
+				'public'                => false,
 				'hierarchical'          => true, // Literally just so I can use wp_dropdown_pages.
+				'show_ui'               => true,
+				// 'show_in_menu'          => false,
+				// 'rewrite'               => false,
 				// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 				'menu_icon'             => 'data:image/svg+xml;base64,' . base64_encode( '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M3.33 15.424a4.842 4.842 0 0 1 0-6.848l.207-.208v-2.42a2.421 2.421 0 0 1 2.421-2.422H8.38l.086-.086a4.842 4.842 0 0 1 6.848 0l.086.086h2.665a2.421 2.421 0 0 1 2.421 2.421v2.665a4.842 4.842 0 0 1 0 6.776v2.665a2.421 2.421 0 0 1-2.421 2.42h-2.665l-.086.087a4.842 4.842 0 0 1-6.848 0l-.086-.086H5.96a2.421 2.421 0 0 1-2.422-2.421v-2.421l-.207-.208ZM12 5a7 7 0 0 1 7 7h-1.604A5.396 5.396 0 0 0 12 6.604V5Zm0 12.396V19a7 7 0 0 1-7-7h1.604A5.396 5.396 0 0 0 12 17.396ZM15.5 12A3.5 3.5 0 0 0 12 8.5v1.896c.886 0 1.604.718 1.604 1.604H15.5Zm-5.104 0c0 .886.718 1.604 1.604 1.604V15.5A3.5 3.5 0 0 1 8.5 12h1.896Z" clip-rule="evenodd"/></svg>' ),
 				'show_in_rest'          => true,
 				'rest_namespace'        => 'omniform/v1',
 				'rest_base'             => 'forms',
 				'rest_controller_class' => 'WP_REST_Blocks_Controller',
-				'capability_type'       => 'post',
+				'capability_type'       => 'block',
+				'capabilities'          => array(
+					// You need to be able to edit posts, in order to read blocks in their raw form.
+					'read'                   => 'edit_posts',
+					// You need to be able to publish posts, in order to create blocks.
+					'create_posts'           => 'publish_posts',
+					'edit_posts'             => 'edit_posts',
+					'edit_published_posts'   => 'edit_published_posts',
+					'delete_published_posts' => 'delete_published_posts',
+					'edit_others_posts'      => 'edit_others_posts',
+					'delete_others_posts'    => 'delete_others_posts',
+				),
+				'map_meta_cap'          => true,
 				'supports'              => array(
 					'title',
+					'slug',
 					'editor',
 					'revisions',
 					'custom-fields',
 				),
+			)
+		);
+
+		register_taxonomy(
+			'omniform_type',
+			array( 'omniform' ),
+			array(
+				'public'       => true,
+				'hierarchical' => false,
+				'labels'       => array(
+					'name'          => __( 'Form Types', 'omniform' ),
+					'singular_name' => __( 'Form Type', 'omniform' ),
+				),
+				'query_var'    => false,
+				'rewrite'      => false,
+				// 'show_ui'           => false,
+				// 'show_in_nav_menus' => false,
+				// 'show_in_rest'      => false,
 			)
 		);
 
