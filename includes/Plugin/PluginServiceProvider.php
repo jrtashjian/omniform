@@ -350,7 +350,7 @@ class PluginServiceProvider extends ServiceProvider {
 					'item_scheduled'           => __( 'Form scheduled.', 'omniform' ),
 					'item_updated'             => __( 'Form updated.', 'omniform' ),
 				),
-				'public'                => false,
+				'public'                => true,
 				'hierarchical'          => true, // Literally just so I can use wp_dropdown_pages.
 				'show_ui'               => true,
 				// 'show_in_menu'          => false,
