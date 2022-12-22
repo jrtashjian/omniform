@@ -35,16 +35,13 @@ abstract class BaseFieldBlock extends BaseBlock {
 
 		$this->injestion = omniform()->get( FormIngestionEngine::class );
 
-		$attributes = array_filter(
-			array(
-				$this->getElementAttribute( 'class', $this->getDefaultClasses() ),
-				$this->getElementAttribute( 'style', $this->getColorStyles( $this->attributes ) ),
-			)
+		$attributes = get_block_wrapper_attributes(
+			array( 'class' => implode( ' ', $this->getDefaultClasses() ) )
 		);
 
 		return sprintf(
 			'<div %s>%s</div>',
-			trim( implode( ' ', $attributes ) ),
+			$attributes,
 			$this->renderLabel() . $this->renderControl()
 		);
 	}
@@ -67,9 +64,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 * @return array
 	 */
 	public function getDefaultClasses() {
-		$default = array(
-			$this->blockTypeClassname(),
-
+		return array(
 			// Apply custom class for each field type.
 			empty( $this->getBlockAttribute( 'fieldType' ) )
 				? 'omniform-' . $this->blockTypeName()
@@ -78,11 +73,6 @@ abstract class BaseFieldBlock extends BaseBlock {
 			$this->getBlockAttribute( 'isRequired' )
 				? 'field-required'
 				: '',
-		);
-
-		return array_merge(
-			$default,
-			$this->getColorClasses( $this->attributes ),
 		);
 	}
 
