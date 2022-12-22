@@ -360,7 +360,7 @@ class PluginServiceProvider extends ServiceProvider {
 				'show_in_rest'          => true,
 				'rest_namespace'        => 'omniform/v1',
 				'rest_base'             => 'forms',
-				'rest_controller_class' => 'WP_REST_Blocks_Controller',
+				'rest_controller_class' => \OmniForm\Plugin\RestApi\SubmissionsController::class,
 				'capability_type'       => 'block',
 				'capabilities'          => array(
 					// You need to be able to edit posts, in order to read blocks in their raw form.
