@@ -8,7 +8,6 @@
 namespace OmniForm\BlockLibrary\Blocks;
 
 use OmniForm\BlockLibrary\Blocks\Traits\HasColors;
-use OmniForm\Plugin\FormIngestionEngine;
 
 /**
  * The Form block class.
@@ -43,45 +42,21 @@ class Form extends BaseBlock {
 			return '';
 		}
 
-		// // Process the form.
-		// $form_ingestion = omniform()->get( FormIngestionEngine::class );
-		// $form_ingestion->setFormId( $entity_id );
-
-		// $post_data = '';
-
-		// if ( $form_ingestion->willProcess() ) {
-		// $post_data = sprintf(
-		// '<pre class="wp-block-preformatted">%s</pre>',
-		// print_r(
-		// array(
-		// 'attributes'     => $this->attributes,
-		// '_POST'          => $_POST,
-		// 'form_ingestion' => $form_ingestion,
-		// ),
-		// true
-		// )
-		// );
-
-		// $form_ingestion->savePostData();
-
-		// Incremement form submissions.
-		// $submissions = get_post_meta( $entity_id, 'submissions', true );
-		// update_post_meta( $entity_id, 'submissions', (int) $submissions + 1 );
-		// } else {
 		// Incremement form impressions.
 		// $impressions = get_post_meta( $entity_id, 'impressions', true );
 		// update_post_meta( $entity_id, 'impressions', (int) $impressions + 1 );
-		// }
 
 		$content     = do_blocks( $form_block->post_content );
 		$nonce_field = wp_nonce_field( 'omniform', 'wp_rest', true, false );
-		// $form_ingestion->resetFormData();
+
+		$redirect_to_url     = remove_query_arg( '_wp_http_referer' );
+		$default_redirect_to = '<input type="hidden" name="_omniform_redirect" value="' . esc_url( $redirect_to_url ) . '" />';
 
 		return sprintf(
 			'<form method="post" action="%s" %s>%s</form>',
 			esc_url( rest_url( 'omniform/v1/forms/' . $entity_id . '/submissions' ) ),
 			get_block_wrapper_attributes(),
-			$content . $nonce_field
+			$content . $nonce_field . $default_redirect_to
 		);
 	}
 }
