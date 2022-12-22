@@ -34,7 +34,6 @@
 		"omniform/fieldSelectName": "fieldName"
 	},
 	"supports": {
-		"align": true,
 		"html": false,
 		"color": {
 			"__experimentalDefaultControls": {
