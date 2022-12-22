@@ -1,0 +1,12 @@
+.wp-block-omniform-fieldset {
+
+	legend {
+		float: none;
+		display: block;
+	}
+
+	> .block-list-appender {
+		position: unset;
+		width: 100%;
+	}
+}

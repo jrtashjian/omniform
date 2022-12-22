@@ -8,23 +8,36 @@ import { kebabCase } from 'lodash';
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useSelect } from '@wordpress/data';
 import {
+	InnerBlocks,
 	RichText,
 	useBlockProps,
 	useInnerBlocksProps,
+	store as blockEditorStore,
 } from '@wordpress/block-editor';
 
 const Edit = ( {
 	attributes,
 	setAttributes,
+	isSelected,
+	clientId,
 } ) => {
 	const {
 		fieldLabel,
 		fieldName,
 	} = attributes;
 
+	const hasSelectedInnerBlock = useSelect(
+		( select ) => select( blockEditorStore ).hasSelectedInnerBlock( clientId, true ),
+		[ clientId ]
+	);
+
 	const blockProps = useBlockProps();
-	const innerBlockProps = useInnerBlocksProps();
+
+	const innerBlockProps = useInnerBlocksProps( {}, {
+		renderAppender: ( isSelected || hasSelectedInnerBlock ) && InnerBlocks.ButtonBlockAppender,
+	} );
 
 	return (
 		<div
