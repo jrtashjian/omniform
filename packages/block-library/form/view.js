@@ -18,13 +18,13 @@ import tinycolor from 'tinycolor2';
 			}
 			console.debug( debug );
 
-			// fetch( action, { method, body } )
-			// 	.then( ( response ) => console.debug( response ) )
-			// 	.catch( ( error ) => console.debug( error ) );
+			fetch( action, { method, body } )
+				.then( ( response ) => console.debug( response ) )
+				.catch( ( error ) => console.debug( error ) );
 		};
 
-		document.querySelectorAll( 'form.wp-block-omniform-form' )
-			.forEach( ( form ) => form.addEventListener( 'submit', formSubmissionHandler ) );
+		// document.querySelectorAll( 'form.wp-block-omniform-form' )
+		// 	.forEach( ( form ) => form.addEventListener( 'submit', formSubmissionHandler ) );
 
 		const isDark = ( elm ) => {
 			const context = document.defaultView.getComputedStyle( elm, null );
