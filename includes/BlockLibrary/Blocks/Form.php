@@ -7,14 +7,10 @@
 
 namespace OmniForm\BlockLibrary\Blocks;
 
-use OmniForm\BlockLibrary\Blocks\Traits\HasColors;
-
 /**
  * The Form block class.
  */
 class Form extends BaseBlock {
-	use HasColors;
-
 	/**
 	 * Renders the block on the server.
 	 *

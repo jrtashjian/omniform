@@ -8,20 +8,12 @@
 namespace OmniForm\BlockLibrary\Blocks;
 
 use OmniForm\BlockLibrary\Blocks\Traits\HasColors;
-use OmniForm\Plugin\FormIngestionEngine;
 
 /**
  * The BaseFieldBlock block class.
  */
 abstract class BaseFieldBlock extends BaseBlock {
 	use HasColors;
-
-	/**
-	 * The Form Injestion Engine
-	 *
-	 * @var FormIngestionEngine
-	 */
-	protected $injestion;
 
 	/**
 	 * Renders the block on the server.
@@ -32,8 +24,6 @@ abstract class BaseFieldBlock extends BaseBlock {
 		if ( empty( $this->getBlockAttribute( 'fieldLabel' ) ) ) {
 			return '';
 		}
-
-		$this->injestion = omniform()->get( FormIngestionEngine::class );
 
 		$attributes = get_block_wrapper_attributes(
 			array( 'class' => implode( ' ', $this->getDefaultClasses() ) )
@@ -91,7 +81,8 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 * @return string
 	 */
 	protected function renderLabel() {
-		$form_id = $this->injestion->getFormId() ?? $this->getBlockContext( 'postId' );
+		// $form_id = $this->injestion->getFormId() ?? $this->getBlockContext( 'postId' );
+		$form_id = $this->getBlockContext( 'postId' );
 
 		$label_required = ! $this->getBlockAttribute( 'isRequired' )
 			? null
@@ -113,7 +104,8 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 * @return string
 	 */
 	protected function renderFieldError() {
-		$errors = $this->injestion->fieldError( $this->getFieldName() );
+		// $errors = $this->injestion->fieldError( $this->getFieldName() );
+		$errors = false;
 		return empty( $errors ) ? '' : sprintf(
 			'<p class="omniform-field-support" style="color:red;">%s</p>',
 			wp_kses_post( $errors )
@@ -151,12 +143,13 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 * @return string
 	 */
 	protected function getControlValue() {
-		$submitted_value = $this->injestion->formValue(
-			array(
-				$this->getBlockContext( 'omniform/fieldGroupName' ),
-				$this->getFieldName(),
-			)
-		);
+		// $submitted_value = $this->injestion->formValue(
+		// 	array(
+		// 		$this->getBlockContext( 'omniform/fieldGroupName' ),
+		// 		$this->getFieldName(),
+		// 	)
+		// );
+		$submitted_value = null;
 
 		return empty( $submitted_value )
 			? $this->getBlockAttribute( 'fieldValue' )

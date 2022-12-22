@@ -7,14 +7,10 @@
 
 namespace OmniForm\BlockLibrary\Blocks;
 
-use OmniForm\BlockLibrary\Blocks\Traits\HasColors;
-
 /**
  * The Fieldset block class.
  */
 class Fieldset extends BaseBlock {
-	use HasColors;
-
 	/**
 	 * Renders the block on the server.
 	 *

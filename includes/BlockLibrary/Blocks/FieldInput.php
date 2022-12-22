@@ -85,12 +85,13 @@ class FieldInput extends BaseFieldBlock {
 			return false;
 		}
 
-		$submitted_value = $this->injestion->formValue(
-			array(
-				$this->getBlockContext( 'omniform/fieldGroupName' ),
-				'radio' === $this->getBlockAttribute( 'fieldType' ) ? '' : $this->getFieldName(),
-			)
-		);
+		// $submitted_value = $this->injestion->formValue(
+		// 	array(
+		// 		$this->getBlockContext( 'omniform/fieldGroupName' ),
+		// 		'radio' === $this->getBlockAttribute( 'fieldType' ) ? '' : $this->getFieldName(),
+		// 	)
+		// );
+		$submitted_value = null;
 
 		return 'radio' === $this->getBlockAttribute( 'fieldType' )
 			? $this->getFieldName() === $submitted_value

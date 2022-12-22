@@ -8,7 +8,6 @@
 namespace OmniForm\Plugin;
 
 use OmniForm\ServiceProvider;
-use WP_Block_Patterns_Registry;
 
 /**
  * The PluginServiceProvider class.
@@ -276,9 +275,7 @@ class PluginServiceProvider extends ServiceProvider {
 	/**
 	 * Register any application services.
 	 */
-	public function register() {
-		$this->app->singleton( FormIngestionEngine::class );
-	}
+	public function register() {}
 
 	/**
 	 * Enqueue required scripts and styles.
@@ -527,7 +524,7 @@ class PluginServiceProvider extends ServiceProvider {
 		// Prevent block patterns not explicitly registered for the custom post type.
 		add_filter( 'should_load_remote_block_patterns', '__return_false' );
 
-		$block_patterns_registry = WP_Block_Patterns_Registry::get_instance();
+		$block_patterns_registry = \WP_Block_Patterns_Registry::get_instance();
 		$registered_patterns     = $block_patterns_registry->get_all_registered();
 
 		foreach ( $registered_patterns as $pattern ) {
