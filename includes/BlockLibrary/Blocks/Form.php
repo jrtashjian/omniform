@@ -38,6 +38,10 @@ class Form extends BaseBlock {
 			return '';
 		}
 
+		// Setup the Form object.
+		$form = omniform()->make( \OmniForm\Plugin\Form::class );
+		$form->setId( $entity_id );
+
 		// Incremement form impressions.
 		// $impressions = get_post_meta( $entity_id, 'impressions', true );
 		// update_post_meta( $entity_id, 'impressions', (int) $impressions + 1 );
