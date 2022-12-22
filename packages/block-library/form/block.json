@@ -11,14 +11,29 @@
 		}
 	},
 	"supports": {
-		"align": true,
+		"anchor": true,
+		"align": [ "full", "wide" ],
 		"html": false,
 		"reusable": false,
 		"color": {
+			"link": true,
 			"__experimentalDefaultControls": {
 				"background": true,
-				"text": true
+				"text": true,
+				"link": true
 			}
+		},
+		"spacing": {
+			"margin": [ "top", "bottom" ],
+			"padding": true,
+			"blockGap": true,
+			"__experimentalDefaultControls": {
+				"padding": true,
+				"blockGap": true
+			}
+		},
+		"__experimentalLayout": {
+			"allowEditing": false
 		}
 	},
 	"usesContext": [
