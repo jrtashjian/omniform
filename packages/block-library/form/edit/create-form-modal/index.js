@@ -19,7 +19,7 @@ import { useInstanceId } from '@wordpress/compose';
 import { check } from '@wordpress/icons';
 
 import './index.scss';
-import { typeGeneral, typeLock, typeSearch } from '../../../shared/icons';
+import { fieldGroup, typeLock, typeSearch } from '../../../shared/icons';
 
 export default function CreateFormModal( { closeModal, onCreate } ) {
 	const [ title, setTitle ] = useState( '' );
@@ -31,21 +31,31 @@ export default function CreateFormModal( { closeModal, onCreate } ) {
 		{
 			type: 'uncategorized',
 			description: __( 'General forms are used to collect and organize information for processing or storage.', 'omniform' ),
-			icon: typeGeneral,
+			icon: fieldGroup,
 			label: __( 'General', 'omniform' ),
 		},
 		{
 			type: 'search',
 			description: __( 'A search form allows users to enter a search query and find relevant information on the website.', 'omniform' ),
 			icon: typeSearch,
-			label: __( 'Search (coming soon)', 'omniform' ),
+			label: (
+				<>
+					{ __( 'Search', 'omniform' ) }
+					<span className="badge">{ __( 'coming soon', 'omniform' ) }</span>
+				</>
+			),
 			disabled: true,
 		},
 		{
 			type: 'login',
 			description: __( 'A login form is used to authenticate a user\'s identity and grant them access to the website.', 'omniform' ),
 			icon: typeLock,
-			label: __( 'Login (coming soon)', 'omniform' ),
+			label: (
+				<>
+					{ __( 'Login', 'omniform' ) }
+					<span className="badge">{ __( 'coming soon', 'omniform' ) }</span>
+				</>
+			),
 			disabled: true,
 		},
 	];

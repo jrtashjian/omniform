@@ -11,6 +11,21 @@
 			max-width: 500px;
 		}
 	}
+
+	.badge {
+		display: inline-block;
+		margin-left: 8px;
+		padding: 4px 8px;
+		font-size: 12px;
+		font-weight: 700;
+		line-height: 1;
+		color: #fff;
+		background-color: #000;
+		text-align: center;
+		white-space: nowrap;
+		vertical-align: baseline;
+		border-radius: 50rem;
+	}
 }
 
 
