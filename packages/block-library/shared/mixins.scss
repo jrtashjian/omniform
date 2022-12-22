@@ -1,18 +1,21 @@
 /**
  * Custom Properties: color fallback chain:
  *
- * base -> background -> white -> #fff
- * var(--wp--preset--color--base, var(--wp--preset--color--background, var(--wp--preset--color--white, #fff)))
+ * BASE: var(--omniform--color--base)
+ * 1. --wp--preset--color--base
+ * 2. --wp--preset--color--background
+ * 3. --wp--preset--color--white
+ * 4. #fff
  *
- * contrast -> foreground -> black -> #000
- * var(--wp--preset--color--contrast, var(--wp--preset--color--foreground, var(--wp--preset--color--black, #000)))
+ * CONTRAST: var(--omniform--color--contrast)
+ * 1. --wp--preset--color--contrast
+ * 2. --wp--preset--color--foreground
+ * 3. --wp--preset--color--black
+ * 4. #000
  *
- * primary -> vivid-cyan-blue -> currentColor
- * var(--wp--preset--color--primary, var(--wp--preset--color--vivid-cyan-blue, currentColor))
- *
- * Selected Control
- * accent -> contrast -> foreground -> black -> #000
- * var(--wp--preset--color--accent, var(--wp--preset--color--contrast, var(--wp--preset--color--foreground, var(--wp--preset--color--black, #000))))
+ * ACCENT:
+ * 1. --wp--preset--color--accent
+ * 2. --omniform--color--contrast
  */
 
 @mixin defaults {
@@ -71,13 +74,6 @@
 		margin: 0 0 0.5em;
 		padding: 0;
 	}
-
-	// &.field-required .omniform-field-label::after {
-	// 	content: "(required)";
-	// 	display: inline;
-	// 	padding: 0 0.25em;
-	// 	color: var(--wp--preset--color--vivid-red);
-	// }
 
 	.omniform-field-label .omniform-field-required {
 		padding: 0 0.25em;
