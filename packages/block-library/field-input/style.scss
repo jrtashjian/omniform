@@ -6,6 +6,7 @@
 	@include field-label;
 	@include field-control;
 
+	align-self: stretch;
 	flex-grow: 1;
 
 	// Checkbox and Radio
