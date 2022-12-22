@@ -29,24 +29,18 @@ class Form extends BaseBlock {
 			return '';
 		}
 
-		$form_block = get_post( $entity_id );
-		if ( ! $form_block || 'omniform' !== $form_block->post_type ) {
-			return '';
-		}
-
-		if ( 'publish' !== $form_block->post_status || ! empty( $form_block->post_password ) ) {
-			return '';
-		}
-
 		// Setup the Form object.
-		$form = omniform()->make( \OmniForm\Plugin\Form::class );
-		$form->setId( $entity_id );
+		$form = \OmniForm\Plugin\Form::getInstance( $entity_id );
+
+		if ( ! $form || ! $form->isPublished() || $form->isPrivate() ) {
+			return '';
+		}
 
 		// Incremement form impressions.
 		// $impressions = get_post_meta( $entity_id, 'impressions', true );
 		// update_post_meta( $entity_id, 'impressions', (int) $impressions + 1 );
 
-		$content     = do_blocks( $form_block->post_content );
+		$content     = do_blocks( $form->getContent() );
 		$nonce_field = wp_nonce_field( 'omniform', 'wp_rest', true, false );
 
 		$redirect_to_url     = remove_query_arg( '_wp_http_referer' );
@@ -54,7 +48,7 @@ class Form extends BaseBlock {
 
 		return sprintf(
 			'<form method="post" action="%s" %s>%s</form>',
-			esc_url( rest_url( 'omniform/v1/forms/' . $entity_id . '/submissions' ) ),
+			esc_url( rest_url( 'omniform/v1/forms/' . $form->getId() . '/submissions' ) ),
 			get_block_wrapper_attributes(),
 			$content . $nonce_field . $default_redirect_to
 		);
