@@ -148,6 +148,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 			array(
 				$this->getElementAttribute( 'id', sanitize_title( $this->getFieldName() ) ),
 				$this->getElementAttribute( 'name', $this->getControlName() ),
+				$this->isRequired() ? 'required' : '',
 			)
 		);
 	}
