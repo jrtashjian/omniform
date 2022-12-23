@@ -20,7 +20,8 @@
 			"type": "string"
 		},
 		"height": {
-			"type": "integer"
+			"type": "integer",
+			"default": 230
 		},
 		"isRequired": {
 			"type": "boolean"
