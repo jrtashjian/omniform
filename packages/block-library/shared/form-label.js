@@ -31,7 +31,7 @@ const FormLabel = ( { originBlockProps, isGrouped, isRadioInput } ) => {
 				placeholder={ __( 'Enter a label for the field…', 'omniform' ) }
 				value={ originBlockProps.attributes.fieldLabel }
 				onChange={ ( html ) => ! originBlockProps.fieldName || originBlockProps.fieldName === kebabCase( originBlockProps.fieldLabel )
-					? originBlockProps.setAttributes( { fieldLabel: html, fieldName: kebabCase( html ) } )
+					? originBlockProps.setAttributes( { fieldLabel: html, fieldName: kebabCase( html.replace( /(<([^>]+)>)/gi, '' ) ) } )
 					: originBlockProps.setAttributes( { fieldLabel: html } )
 				}
 				// When hitting enter, place a new insertion point. This makes adding field a lot easier.
