@@ -4,7 +4,7 @@
 	"name": "omniform/select-option",
 	"category": "form-control",
 	"title": "Option",
-	"description": "A field with multiple options where a single choice can be made.",
+	"description": "A choice within a Select block that can be selected.",
 	"textdomain": "omniform",
 	"parent": [ "omniform/field-select", "omniform/select-group" ],
 	"ancestor": [ "omniform/field-select", "omniform/select-group" ],

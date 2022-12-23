@@ -4,6 +4,7 @@
 	"name": "omniform/fieldset",
 	"category": "form-control",
 	"title": "Field Group",
+	"description": "Organize and group related controls.",
 	"textdomain": "omniform",
 	"attributes": {
 		"fieldLabel": {

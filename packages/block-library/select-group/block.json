@@ -4,7 +4,7 @@
 	"name": "omniform/select-group",
 	"category": "form-control",
 	"title": "Option Group",
-	"description": "A field with multiple options where a single choice can be made.",
+	"description": "Organize Option blocks that have a shared label into a group.",
 	"textdomain": "omniform",
 	"parent": [ "omniform/field-select" ],
 	"ancestor": [ "omniform/field-select" ],

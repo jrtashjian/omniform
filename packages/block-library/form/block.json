@@ -4,6 +4,7 @@
 	"name": "omniform/form",
 	"category": "form",
 	"title": "OmniForm",
+	"description": "Easily create professional forms for your website",
 	"textdomain": "omniform",
 	"attributes": {
 		"ref": {
