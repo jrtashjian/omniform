@@ -47,7 +47,8 @@ class Form extends BaseBlock {
 		$default_redirect_to = '<input type="hidden" name="_omniform_redirect" value="' . esc_url( $redirect_to_url ) . '" />';
 
 		return sprintf(
-			'<form method="post" action="%s" %s>%s</form>',
+			'%s<form method="post" action="%s" %s>%s</form>',
+			empty( $_GET['success'] ) ? '' : '<p style="background-color:var(--wp--preset--color--vivid-green-cyan);padding:1rem 1.5rem;">Submitted!</p>',
 			esc_url( rest_url( 'omniform/v1/forms/' . $form->getId() . '/submissions' ) ),
 			get_block_wrapper_attributes(),
 			$content . $nonce_field . $default_redirect_to

@@ -105,7 +105,7 @@ class SubmissionsController extends \WP_REST_Posts_Controller {
 		update_post_meta( $form->getId(), '_omniform_submissions', (int) $submission_count + 1 );
 
 		if ( $request->has_param( '_omniform_redirect' ) ) {
-			wp_safe_redirect( $request->get_param( '_omniform_redirect' ) );
+			wp_safe_redirect( add_query_arg( 'success', true, $request->get_param( '_omniform_redirect' ) ) );
 			exit;
 		}
 
