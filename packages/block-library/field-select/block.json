@@ -34,13 +34,7 @@
 		"omniform/fieldSelectName": "fieldName"
 	},
 	"supports": {
-		"html": false,
-		"color": {
-			"__experimentalDefaultControls": {
-				"background": true,
-				"text": true
-			}
-		}
+		"html": false
 	},
 	"usesContext": [
 		"postId",
