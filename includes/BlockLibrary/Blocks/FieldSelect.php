@@ -41,6 +41,10 @@ class FieldSelect extends BaseFieldBlock {
 		$attributes = wp_parse_args(
 			array(
 				$this->getBlockAttribute( 'isMultiple' ) ? 'multiple' : '',
+
+				$this->getBlockAttribute( 'height' )
+				? $this->getElementAttribute( 'style', 'height:' . $this->getBlockAttribute( 'height' ) . 'px' )
+				: null,
 			),
 			parent::getControlAttributes()
 		);

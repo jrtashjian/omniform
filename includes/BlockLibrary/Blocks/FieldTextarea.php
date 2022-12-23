@@ -18,10 +18,6 @@ class FieldTextarea extends BaseFieldBlock {
 	 * @return string Returns the block content.
 	 */
 	public function renderControl() {
-		// if ( ! empty( $this->attributes['height'] ) ) {
-		// 	$field_attributes['style'] = 'height: ' . $this->attributes['height'] . 'px;';
-		// }
-
 		return sprintf(
 			'<textarea class="omniform-field-control" %s>%s</textarea>',
 			trim( implode( ' ', $this->getControlAttributes() ) ),
@@ -38,6 +34,10 @@ class FieldTextarea extends BaseFieldBlock {
 		$attributes = wp_parse_args(
 			array(
 				$this->getElementAttribute( 'placeholder', $this->getBlockAttribute( 'fieldPlaceholder' ) ),
+
+				$this->getBlockAttribute( 'height' )
+					? $this->getElementAttribute( 'style', 'height:' . $this->getBlockAttribute( 'height' ) . 'px' )
+					: null,
 			),
 			parent::getControlAttributes()
 		);
