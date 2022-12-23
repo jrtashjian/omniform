@@ -91,6 +91,30 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 		);
 
 		register_block_pattern(
+			'omniform/form-contact-me',
+			array(
+				'title'         => 'Contact Me',
+				'postTypes'     => array( 'omniform' ),
+				'blockTypes'    => array( 'omniform/form' ),
+				'categories'    => array( 'form' ),
+				'content'       => '<!-- wp:heading -->
+				<h2>' . __( 'Contact Us', 'omniform' ) . '</h2>
+				<!-- /wp:heading -->
+
+				<!-- wp:paragraph -->
+				<p>' . __( "If you have any questions or comments, or if you'd like to work with me or collaborate on a project, please don't hesitate to get in touch. I look forward to hearing from you!", 'omniform' ) . '</p>
+				<!-- /wp:paragraph -->
+
+				<!-- wp:omniform/field-input {"fieldType":"email","fieldLabel":"Your email address","fieldName":"your-email-address","isRequired":true} /-->
+
+				<!-- wp:omniform/field-textarea {"fieldLabel":"Your message","fieldName":"your-message","height":230,"isRequired":true} /-->
+
+				<!-- wp:omniform/button {"buttonType":"submit","buttonLabel":"Send Message"} /-->',
+				'viewportWidth' => 640,
+			)
+		);
+
+		register_block_pattern(
 			'omniform/form-pattern-one',
 			array(
 				'title'         => 'Pattern one',
