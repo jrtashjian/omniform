@@ -52,7 +52,7 @@ class FieldSelect extends BaseFieldBlock {
 	 *
 	 * @return string
 	 */
-	protected function getControlName() {
+	public function getControlName() {
 		$name = parent::getControlName();
 
 		return $this->getBlockAttribute( 'isMultiple' )
@@ -65,7 +65,7 @@ class FieldSelect extends BaseFieldBlock {
 	 *
 	 * @return string
 	 */
-	protected function getControlValue() {
+	public function getControlValue() {
 		// Select form fields don't use the "value" attribute.
 		return '';
 	}

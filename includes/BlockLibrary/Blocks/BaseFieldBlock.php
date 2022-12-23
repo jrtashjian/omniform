@@ -34,6 +34,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 
 		// Use the Form object.
 		$this->form = omniform()->get( \OmniForm\Plugin\Form::class );
+		$this->form->addField( $this );
 
 		$attributes = get_block_wrapper_attributes(
 			array( 'class' => implode( ' ', $this->getDefaultClasses() ) )
@@ -59,6 +60,17 @@ abstract class BaseFieldBlock extends BaseBlock {
 	}
 
 	/**
+	 * Get the sanitized omniform/fieldGroup key.
+	 *
+	 * @return string
+	 */
+	public function getFieldGroupName() {
+		return $this->isGrouped()
+			? sanitize_title( $this->getBlockContext( 'omniform/fieldGroupName' ) )
+			: null;
+	}
+
+	/**
 	 * Get the default classes to be applied to the block wrapper.
 	 *
 	 * @return array
@@ -69,10 +81,6 @@ abstract class BaseFieldBlock extends BaseBlock {
 			empty( $this->getBlockAttribute( 'fieldType' ) )
 				? 'omniform-' . $this->blockTypeName()
 				: 'omniform-field-' . $this->getBlockAttribute( 'fieldType' ),
-
-			$this->getBlockAttribute( 'isRequired' )
-				? 'field-required'
-				: '',
 		);
 	}
 
@@ -81,8 +89,17 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 *
 	 * @return bool
 	 */
-	protected function isGrouped() {
+	public function isGrouped() {
 		return ! empty( $this->getBlockContext( 'omniform/fieldGroupName' ) );
+	}
+
+	/**
+	 * Does the field require a value?
+	 *
+	 * @return bool
+	 */
+	public function isRequired() {
+		return ! empty( $this->getBlockAttribute( 'isRequired' ) );
 	}
 
 	/**
@@ -93,7 +110,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 	protected function renderLabel() {
 		$form_id = $this->form->getId() ?? $this->getBlockContext( 'postId' );
 
-		$label_required = ! $this->getBlockAttribute( 'isRequired' )
+		$label_required = ! $this->isRequired()
 			? null
 			: sprintf(
 				'<span class="omniform-field-required">%s</span>',
@@ -140,9 +157,9 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 *
 	 * @return string
 	 */
-	protected function getControlName() {
+	public function getControlName() {
 		return $this->isGrouped()
-			? $this->getBlockContext( 'omniform/fieldGroupName' ) . '[' . $this->getFieldName() . ']'
+			? $this->getFieldGroupName() . '[' . $this->getFieldName() . ']'
 			: $this->getFieldName();
 	}
 
@@ -151,12 +168,12 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 *
 	 * @return string
 	 */
-	protected function getControlValue() {
+	public function getControlValue() {
 		// $submitted_value = $this->injestion->formValue(
-		// 	array(
-		// 		$this->getBlockContext( 'omniform/fieldGroupName' ),
-		// 		$this->getFieldName(),
-		// 	)
+		// array(
+		// $this->getBlockContext( 'omniform/fieldGroupName' ),
+		// $this->getFieldName(),
+		// )
 		// );
 		$submitted_value = null;
 

@@ -103,7 +103,7 @@ class FieldInput extends BaseFieldBlock {
 	 *
 	 * @return string
 	 */
-	protected function getControlName() {
+	public function getControlName() {
 		$name = parent::getControlName();
 
 		if ( 'radio' === $this->getBlockAttribute( 'fieldType' ) && $this->isGrouped() ) {
@@ -118,7 +118,7 @@ class FieldInput extends BaseFieldBlock {
 	 *
 	 * @return string
 	 */
-	protected function getControlValue() {
+	public function getControlValue() {
 		switch ( $this->getBlockAttribute( 'fieldType' ) ) {
 			// Checboxes should always be boolean.
 			case 'checkbox':

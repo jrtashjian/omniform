@@ -7,6 +7,8 @@
 
 namespace OmniForm\Plugin;
 
+use OmniForm\BlockLibrary\Blocks\BaseFieldBlock;
+
 /**
  * The Form class.
  */
@@ -24,6 +26,8 @@ class Form {
 	 * @var \WP_Post
 	 */
 	protected $post_data;
+
+	protected $fields = array();
 
 	/**
 	 * Retrieve Form instance.
@@ -44,7 +48,14 @@ class Form {
 			return false;
 		}
 
-		return new Form( $_form );
+		omniform()->singleton(
+			self::class,
+			function ( $app ) use ( $_form ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
+				return new Form( $_form );
+			}
+		);
+
+		return omniform()->get( self::class );
 	}
 
 	/**
@@ -102,5 +113,81 @@ class Form {
 	 */
 	public function getContent() {
 		return $this->post_data->post_content;
+	}
+
+	/**
+	 * Add a parsed field block to the form for processing.
+	 *
+	 * @param BaseFieldBlock $field The parsed field block.
+	 */
+	public function addField( BaseFieldBlock $field ) {
+		$data = array(
+			'control_name'  => $field->getControlName(),
+			'control_label' => $field->getBlockAttribute( 'fieldLabel' ),
+			'is_required'   => $field->isRequired(),
+		);
+
+		$control_name = str_replace( array( '[', ']' ), array( '.', '' ), $field->getControlName() );
+
+		$this->fields[ $control_name ] = $data;
+	}
+
+	/**
+	 * Parses blocks out of the form's `post_content`.
+	 */
+	protected function registerFields() {
+		do_blocks( $this->getContent() );
+	}
+
+	/**
+	 * Validate the form.
+	 *
+	 * @param \WP_REST_Request $request Full details about the request.
+	 */
+	public function validate( \WP_REST_Request $request ) {
+		$errors = array();
+
+		$this->registerFields();
+
+		$params_flattened = $this->flatten( $request->get_params() );
+
+		foreach ( $this->fields as $key => $def ) {
+			if (
+				! empty( $def['is_required'] ) &&
+				( ! array_key_exists( $key, $params_flattened ) || empty( $params_flattened[ $key ] ) )
+			) {
+				$errors[] = array(
+					'message'       => 'This fields is required',
+					'control_name'  => esc_attr( $def['control_name'] ),
+					'control_label' => esc_attr( $def['control_label'] ),
+				);
+			}
+		}
+
+		return $errors;
+	}
+
+	/**
+	 * Flatten a multi-dimensional associative array with dots.
+	 *
+	 * @see https://github.com/laravel/framework/blob/8.x/src/Illuminate/Collections/Arr.php#L102-L122
+	 *
+	 * @param  iterable $array The array to flatten.
+	 * @param  string   $prepend The existing chain of parents.
+	 *
+	 * @return array
+	 */
+	public function flatten( $array, $prepend = '' ) {
+		$results = array();
+
+		foreach ( $array as $key => $value ) {
+			if ( is_array( $value ) && ! empty( $value ) ) {
+				$results = array_merge( $results, $this->flatten( $value, $prepend . $key . '.' ) );
+			} else {
+				$results[ $prepend . $key ] = $value;
+			}
+		}
+
+		return $results;
 	}
 }

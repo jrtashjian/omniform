@@ -275,9 +275,7 @@ class PluginServiceProvider extends ServiceProvider {
 	/**
 	 * Register any application services.
 	 */
-	public function register() {
-		$this->app->singleton( Form::class );
-	}
+	public function register() {}
 
 	/**
 	 * Enqueue required scripts and styles.
