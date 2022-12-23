@@ -12,7 +12,7 @@ import { createBlock, getDefaultBlockName } from '@wordpress/blocks';
 import { useEntityProp } from '@wordpress/core-data';
 import { __ } from '@wordpress/i18n';
 
-const FormLabel = ( { originBlockProps } ) => {
+const FormLabel = ( { originBlockProps, isGrouped, isRadioInput } ) => {
 	const { postId: contextPostId, postType: contextPostType } = originBlockProps.context;
 
 	const [ meta, setMeta ] = useEntityProp( 'postType', contextPostType, 'meta', contextPostId );
@@ -57,7 +57,7 @@ const FormLabel = ( { originBlockProps } ) => {
 				onReplace={ originBlockProps.onReplace }
 				onRemove={ originBlockProps.onRemove }
 			/>
-			{ originBlockProps.attributes.isRequired && (
+			{ originBlockProps.attributes.isRequired && ( ! isRadioInput || ( isRadioInput && ! isGrouped ) ) && (
 				<RichText
 					identifier="requiredLabel"
 					tagName="span"

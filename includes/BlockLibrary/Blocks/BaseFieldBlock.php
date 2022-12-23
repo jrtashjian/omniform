@@ -110,12 +110,17 @@ abstract class BaseFieldBlock extends BaseBlock {
 	protected function renderLabel() {
 		$form_id = $this->form->getId() ?? $this->getBlockContext( 'postId' );
 
-		$label_required = ! $this->isRequired()
-			? null
-			: sprintf(
+		$label_required = null;
+
+		if ( $this->isRequired() && (
+			'radio' !== $this->getBlockAttribute( 'fieldType' ) ||
+			( 'radio' === $this->getBlockAttribute( 'fieldType' ) && ! $this->isGrouped() )
+		) ) {
+			$label_required = sprintf(
 				'<span class="omniform-field-required">%s</span>',
 				wp_kses_post( get_post_meta( $form_id, 'required_label', true ) )
 			);
+		}
 
 		return sprintf(
 			'<label class="omniform-field-label" for="%s">%s</label>',

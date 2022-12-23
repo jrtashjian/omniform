@@ -59,7 +59,11 @@ const Edit = ( props ) => {
 				{ [ `field-required` ]: isRequired }
 			) }
 		>
-			<FormLabel originBlockProps={ props } />
+			<FormLabel
+				originBlockProps={ props }
+				isRadioInput={ 'radio' === fieldType }
+				isGrouped={ isGrouped }
+			/>
 
 			{ isTextInput && (
 				<RichText
@@ -105,10 +109,7 @@ const Edit = ( props ) => {
 
 			<BlockControls>
 				<ToolbarGroup>
-					{ (
-						! isHiddenInput &&
-						( ! isGrouped || ( isGrouped && isTextInput ) )
-					) && (
+					{ ! isHiddenInput && (
 						<ToolbarButton
 							icon={ Required }
 							isActive={ isRequired }
