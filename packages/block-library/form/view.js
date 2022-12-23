@@ -1,5 +1,6 @@
 /* global FormData */
 import tinycolor from 'tinycolor2';
+import apiFetch from '@wordpress/api-fetch';
 
 ( function() {
 	'use strict';
@@ -9,18 +10,24 @@ import tinycolor from 'tinycolor2';
 			event.preventDefault();
 
 			const formElement = event.target;
-			const { action, method } = formElement;
+			const { action: url, method } = formElement;
 			const body = new FormData( formElement );
 
-			const debug = { action, method, data: {} };
+			const debug = { url, method, data: {} };
 			for ( const pair of body.entries() ) {
 				debug.data[ pair[ 0 ] ] = pair[ 1 ];
 			}
-			console.debug( debug );
+			console.debug( 'debug', debug );
 
-			fetch( action, { method, body } )
-				.then( ( response ) => console.debug( response ) )
-				.catch( ( error ) => console.debug( error ) );
+			apiFetch( {
+				url,
+				method,
+				body,
+			} ).then( ( response ) => {
+				console.debug( 'response', response );
+			} ).catch( ( error ) => {
+				console.debug( 'error', error );
+			} );
 		};
 
 		// document.querySelectorAll( 'form.wp-block-omniform-form' )
