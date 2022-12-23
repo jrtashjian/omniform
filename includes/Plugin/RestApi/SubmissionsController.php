@@ -49,13 +49,27 @@ class SubmissionsController extends \WP_REST_Posts_Controller {
 	 * @return \WP_REST_Response|\WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function create_submission( \WP_REST_Request $request ) {
-		$form = get_post( $request->get_param( 'id' ) );
+		$form = \OmniForm\Plugin\Form::getInstance( $request->get_param( 'id' ) );
 
 		if ( ! $form ) {
 			return new \WP_Error(
 				'omniform_not_found',
 				__( 'The requested form was not found.', 'omniform' ),
 				array( 'status' => 404 )
+			);
+		}
+
+		$errors = $form->validate( $request );
+
+		if ( ! empty( $errors ) ) {
+			$response = array(
+				'status'         => 400,
+				'message'        => 'validation_failed',
+				'invalid_fields' => $errors,
+			);
+
+			return rest_ensure_response(
+				new \WP_HTTP_Response( $response, $response['status'] )
 			);
 		}
 
@@ -74,7 +88,7 @@ class SubmissionsController extends \WP_REST_Posts_Controller {
 				'post_type'    => 'omniform_submission',
 				'post_status'  => 'publish',
 				'meta_input'   => array(
-					'_omniform_id'      => $form->ID,
+					'_omniform_id'      => $form->getId(),
 					'_omniform_user_ip' => $_SERVER['REMOTE_ADDR'],
 					'_wp_http_referer'  => $request->get_param( '_wp_http_referer' ),
 				),
@@ -87,16 +101,21 @@ class SubmissionsController extends \WP_REST_Posts_Controller {
 		}
 
 		// Incremement form submissions.
-		$submission_count = get_post_meta( $form->ID, '_omniform_submissions', true );
-		update_post_meta( $form->ID, '_omniform_submissions', (int) $submission_count + 1 );
+		$submission_count = get_post_meta( $form->getId(), '_omniform_submissions', true );
+		update_post_meta( $form->getId(), '_omniform_submissions', (int) $submission_count + 1 );
 
-		if ( $request->has_param( '_omniform_redirect' ) ) {
-			wp_safe_redirect( $request->get_param( '_omniform_redirect' ) );
-			exit;
-		}
+		// if ( $request->has_param( '_omniform_redirect' ) ) {
+		// wp_safe_redirect( $request->get_param( '_omniform_redirect' ) );
+		// exit;
+		// }
+
+		$response = array(
+			'status'  => 201,
+			'message' => 'submission_created',
+		);
 
 		return rest_ensure_response(
-			new \WP_HTTP_Response( $submission_data, 201 )
+			new \WP_HTTP_Response( $response, $response['status'] )
 		);
 	}
 }
