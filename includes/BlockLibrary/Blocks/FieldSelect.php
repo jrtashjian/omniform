@@ -42,7 +42,7 @@ class FieldSelect extends BaseFieldBlock {
 			array(
 				$this->getBlockAttribute( 'isMultiple' ) ? 'multiple' : '',
 
-				$this->getBlockAttribute( 'height' )
+				$this->getBlockAttribute( 'height' ) && $this->getBlockAttribute( 'isMultiple' )
 				? $this->getElementAttribute( 'style', 'height:' . $this->getBlockAttribute( 'height' ) . 'px' )
 				: null,
 			),
