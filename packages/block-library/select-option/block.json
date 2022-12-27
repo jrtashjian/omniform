@@ -2,7 +2,7 @@
 	"$schema": "https://json.schemastore.org/block.json",
 	"apiVersion": 2,
 	"name": "omniform/select-option",
-	"category": "form-control",
+	"category": "omniform-control-simple",
 	"title": "Option",
 	"description": "A choice within a Select block that can be selected.",
 	"textdomain": "omniform",

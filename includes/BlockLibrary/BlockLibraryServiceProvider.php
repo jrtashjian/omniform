@@ -171,14 +171,20 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 	public function registerCategories( $block_categories ) {
 
 		$block_categories[] = array(
-			'slug'  => 'form',
+			'slug'  => 'omniform',
 			'title' => __( 'Forms', 'omniform' ),
 			'icon'  => null,
 		);
 
 		$block_categories[] = array(
-			'slug'  => 'form-control',
-			'title' => __( 'Form Controls', 'omniform' ),
+			'slug'  => 'omniform-control-simple',
+			'title' => __( 'Simple Controls', 'omniform' ),
+			'icon'  => null,
+		);
+
+		$block_categories[] = array(
+			'slug'  => 'omniform-control-group',
+			'title' => __( 'Grouped Controls', 'omniform' ),
 			'icon'  => null,
 		);
 

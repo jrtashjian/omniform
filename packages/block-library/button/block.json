@@ -2,7 +2,7 @@
 	"$schema": "https://json.schemastore.org/block.json",
 	"apiVersion": 2,
 	"name": "omniform/button",
-	"category": "form-control",
+	"category": "omniform-control-simple",
 	"title": "Button",
 	"description": "A button for the form",
 	"textdomain": "omniform",

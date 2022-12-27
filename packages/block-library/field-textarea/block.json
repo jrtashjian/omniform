@@ -2,7 +2,7 @@
 	"$schema": "https://json.schemastore.org/block.json",
 	"apiVersion": 2,
 	"name": "omniform/field-textarea",
-	"category": "form-control",
+	"category": "omniform-control-simple",
 	"title": "Long Text",
 	"description": "A text field for long responses.",
 	"textdomain": "omniform",
