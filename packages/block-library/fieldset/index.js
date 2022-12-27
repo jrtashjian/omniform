@@ -11,6 +11,7 @@ import { decodeEntities } from '@wordpress/html-entities';
 import json from './block.json';
 import Edit from './edit';
 import Save from './save';
+import variations from './variations';
 import { fieldGroup } from '../shared/icons';
 
 import './style.scss';
@@ -22,6 +23,7 @@ registerBlockType( name, {
 	edit: Edit,
 	icon: { foreground: '#D92E83', src: fieldGroup },
 	save: Save,
+	variations,
 	example: {
 		attributes: {
 			fieldLabel: __( 'Field Group', 'omniform' ),
