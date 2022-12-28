@@ -4,17 +4,12 @@
 import { __ } from '@wordpress/i18n';
 import {
 	fieldCheckbox,
-	// fieldColor,
 	fieldDate,
 	fieldEmail,
-	// fieldFile,
 	fieldHidden,
 	fieldInput,
 	fieldNumber,
-	// fieldPassword,
 	fieldRadio,
-	// fieldRange,
-	// fieldSearch,
 	fieldTel,
 	fieldTime,
 	fieldUrl,
@@ -65,13 +60,6 @@ const variations = [
 		description: __( 'A field that can be grouped, from which a single choice can be made.', 'omnigroup' ),
 		attributes: { fieldType: 'radio', isRequired: false, fieldValue: undefined },
 	},
-	// {
-	// 	name: 'field-color',
-	// 	icon: { foreground: '#D92E83', src: fieldColor },
-	// 	title: __( 'Color Picker', 'omniform' ),
-	// 	description: __( 'A field for collecting a color value from a color picker.', 'omnigroup' ),
-	// 	attributes: { fieldType: 'color', fieldValue: undefined },
-	// },
 	{
 		name: 'field-date',
 		icon: { foreground: '#D92E83', src: fieldDate },
@@ -86,13 +74,6 @@ const variations = [
 		description: __( 'A field for collecting a localize date and time.', 'omnigroup' ),
 		attributes: { fieldType: 'datetime-local', fieldValue: undefined },
 	},
-	// {
-	// 	name: 'field-file',
-	// 	icon: { foreground: '#D92E83', src: fieldFile },
-	// 	title: __( 'File Upload', 'omniform' ),
-	// 	description: __( 'A field for uploading files.', 'omnigroup' ),
-	// 	attributes: { fieldType: 'file', fieldValue: undefined },
-	// },
 	{
 		name: 'field-month',
 		icon: { foreground: '#D92E83', src: fieldDate },
@@ -100,27 +81,6 @@ const variations = [
 		description: __( 'A field for collecting a month formatted date.', 'omnigroup' ),
 		attributes: { fieldType: 'month', fieldValue: undefined },
 	},
-	// {
-	// 	name: 'field-password',
-	// 	icon: { foreground: '#D92E83', src: fieldPassword },
-	// 	title: __( 'Password', 'omniform' ),
-	// 	description: __( 'A field for collecting a password.', 'omnigroup' ),
-	// 	attributes: { fieldType: 'password', fieldValue: undefined },
-	// },
-	// {
-	// 	name: 'field-range',
-	// 	icon: { foreground: '#D92E83', src: fieldRange },
-	// 	title: __( 'Range', 'omniform' ),
-	// 	description: __( 'A field for selecting a number from a range of numbers.', 'omnigroup' ),
-	// 	attributes: { fieldType: 'range', fieldValue: undefined },
-	// },
-	// {
-	// 	name: 'field-search',
-	// 	icon: { foreground: '#D92E83', src: fieldSearch },
-	// 	title: __( 'Search', 'omniform' ),
-	// 	description: __( 'A field for collecting a search query.', 'omnigroup' ),
-	// 	attributes: { fieldType: 'search', fieldValue: undefined },
-	// },
 	{
 		name: 'field-tel',
 		icon: { foreground: '#D92E83', src: fieldTel },
