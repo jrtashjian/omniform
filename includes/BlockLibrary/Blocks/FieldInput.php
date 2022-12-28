@@ -126,6 +126,17 @@ class FieldInput extends BaseFieldBlock {
 			// Radios are always grouped so value is its name.
 			case 'radio':
 				return $this->getFieldName();
+			// Date and time inputs need a default vaule to display properly on iOS.
+			case 'date':
+				return gmdate( 'Y-m-d' );
+			case 'time':
+				return gmdate( 'h:i:00' );
+			case 'month':
+				return gmdate( 'Y-m' );
+			case 'week':
+				return gmdate( 'Y-\WW' );
+			case 'datetime-local':
+				return gmdate( 'Y-m-d H:i:00' );
 			case 'hidden':
 				return $this->valueFromCallback();
 			default:
