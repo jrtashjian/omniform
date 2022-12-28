@@ -58,11 +58,6 @@
 	::after {
 		box-sizing: border-box;
 	}
-
-	// &.has-background[class*="wp-block-omniform"],
-	// > .has-background[class*="wp-block-omniform"] {
-	// 	padding: var(--wp--style--block-gap, 1.5em);
-	// }
 }
 
 @mixin field-label {
