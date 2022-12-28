@@ -48,8 +48,8 @@ class PluginServiceProvider extends ServiceProvider {
 		);
 
 		add_action( 'init', array( $this, 'registerPostType' ) );
-		// add_action( 'init', array( $this, 'filterBlockPatternsOnAdmin' ), PHP_INT_MAX );
-		// add_action( 'rest_api_init', array( $this, 'filterBlockPatternsOnRestApi' ), PHP_INT_MAX );
+		add_action( 'init', array( $this, 'filterBlockPatternsOnAdmin' ), PHP_INT_MAX );
+		add_action( 'rest_api_init', array( $this, 'filterBlockPatternsOnRestApi' ), PHP_INT_MAX );
 
 		add_filter(
 			'manage_omniform_posts_columns',
@@ -241,35 +241,35 @@ class PluginServiceProvider extends ServiceProvider {
 			2
 		);
 
-		add_filter(
-			'block_type_metadata',
-			function( $metadata ) {
-				if ( ! is_admin() ) {
-					return $metadata;
-				}
+		// add_filter(
+		// 	'block_type_metadata',
+		// 	function( $metadata ) {
+		// 		if ( ! is_admin() ) {
+		// 			return $metadata;
+		// 		}
 
-				if ( ! in_array( $GLOBALS['pagenow'], array( 'post.php', 'site-editor.php' ), true ) ) {
-					return $metadata;
-				}
+		// 		if ( ! in_array( $GLOBALS['pagenow'], array( 'post.php', 'site-editor.php' ), true ) ) {
+		// 			return $metadata;
+		// 		}
 
-				if (
-					! empty( $_GET['post'] ) && // phpcs:ignore WordPress.Security.NonceVerification
-					'omniform' === get_post_type( (int) $_GET['post'] ) // phpcs:ignore WordPress.Security.NonceVerification
-				) {
-					return $metadata;
-				}
+		// 		if (
+		// 			! empty( $_GET['post'] ) && // phpcs:ignore WordPress.Security.NonceVerification
+		// 			'omniform' === get_post_type( (int) $_GET['post'] ) // phpcs:ignore WordPress.Security.NonceVerification
+		// 		) {
+		// 			return $metadata;
+		// 		}
 
-				if (
-					str_starts_with( $metadata['name'], 'omniform' ) &&
-					! in_array( $metadata['name'], array( 'omniform/form', 'omniform/select-option', 'omniform/select-group' ), true )
-				) {
-					$metadata['ancestor'] = array( 'omniform/form' );
-					return $metadata;
-				}
+		// 		if (
+		// 			str_starts_with( $metadata['name'], 'omniform' ) &&
+		// 			! in_array( $metadata['name'], array( 'omniform/form', 'omniform/select-option', 'omniform/select-group' ), true )
+		// 		) {
+		// 			$metadata['ancestor'] = array( 'omniform/form' );
+		// 			return $metadata;
+		// 		}
 
-				return $metadata;
-			},
-		);
+		// 		return $metadata;
+		// 	},
+		// );
 	}
 
 	/**
@@ -532,7 +532,7 @@ class PluginServiceProvider extends ServiceProvider {
 
 			if (
 				! $post_types_exists ||
-				( $post_types_exists && in_array( 'omniform', $pattern['postTypes'], true ) )
+				! in_array( 'omniform', $pattern['postTypes'], true )
 			) {
 				$block_patterns_registry->unregister( $pattern['name'] );
 			}
