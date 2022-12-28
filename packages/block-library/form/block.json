@@ -17,24 +17,25 @@
 		"html": false,
 		"reusable": false,
 		"color": {
+			"background": true,
+			"text": true,
 			"link": true,
-			"__experimentalDefaultControls": {
-				"background": true,
-				"text": true,
-				"link": true
-			}
+			"gradients": true
 		},
 		"spacing": {
 			"margin": [ "top", "bottom" ],
 			"padding": true,
 			"blockGap": true,
 			"__experimentalDefaultControls": {
-				"padding": true,
 				"blockGap": true
 			}
 		},
+		"__experimentalBorder": true,
 		"__experimentalLayout": {
-			"allowEditing": false
+			"allowEditing": false,
+			"default": {
+				"type": "default"
+			}
 		}
 	},
 	"usesContext": [
