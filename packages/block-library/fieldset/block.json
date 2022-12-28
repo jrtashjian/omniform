@@ -20,24 +20,23 @@
 	"supports": {
 		"html": false,
 		"color": {
-			"__experimentalDefaultControls": {
-				"background": true,
-				"text": true
-			}
+			"background": true,
+			"text": true,
+			"gradients": true
 		},
 		"spacing": {
 			"margin": [ "top", "bottom" ],
 			"padding": true,
 			"blockGap": true,
 			"__experimentalDefaultControls": {
-				"padding": true,
 				"blockGap": true
 			}
 		},
+		"__experimentalBorder": true,
 		"__experimentalLayout": {
 			"allowEditing": false,
 			"default": {
-				"type": "flow"
+				"type": "default"
 			}
 		}
 	},

@@ -42,11 +42,10 @@ const Edit = ( {
 	return (
 		<div
 			{ ...blockProps }
-			className={ classNames( blockProps.className, 'omniform-fieldset is-layout-flow' ) }
+			className={ classNames( blockProps.className, 'omniform-fieldset' ) }
 		>
 			<RichText
 				className="omniform-field-label"
-				tagName="legend"
 				aria-label={ __( 'Legend text', 'omniform' ) }
 				placeholder={ __( 'Enter a title to the field…', 'omniform' ) }
 				withoutInteractiveFormatting

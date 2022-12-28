@@ -10,13 +10,12 @@
 	padding: 0;
 	border-width: 0;
 
+	> .omniform-field-label,
 	legend.omniform-field-label {
-		float: left;
-		width: 100%;
 		margin-bottom: 0;
 	}
 
-	legend + * {
-		clear: both;
+	legend.omniform-field-label {
+		display: contents;
 	}
 }
