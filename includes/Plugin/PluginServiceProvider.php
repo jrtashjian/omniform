@@ -241,35 +241,35 @@ class PluginServiceProvider extends ServiceProvider {
 			2
 		);
 
-		// add_filter(
-		// 	'block_type_metadata',
-		// 	function( $metadata ) {
-		// 		if ( ! is_admin() ) {
-		// 			return $metadata;
-		// 		}
+		add_filter(
+			'block_type_metadata',
+			function( $metadata ) {
+				if ( ! is_admin() ) {
+					return $metadata;
+				}
 
-		// 		if ( ! in_array( $GLOBALS['pagenow'], array( 'post.php', 'site-editor.php' ), true ) ) {
-		// 			return $metadata;
-		// 		}
+				if ( ! in_array( $GLOBALS['pagenow'], array( 'post.php', 'site-editor.php' ), true ) ) {
+					return $metadata;
+				}
 
-		// 		if (
-		// 			! empty( $_GET['post'] ) && // phpcs:ignore WordPress.Security.NonceVerification
-		// 			'omniform' === get_post_type( (int) $_GET['post'] ) // phpcs:ignore WordPress.Security.NonceVerification
-		// 		) {
-		// 			return $metadata;
-		// 		}
+				if (
+					! empty( $_GET['post'] ) && // phpcs:ignore WordPress.Security.NonceVerification
+					'omniform' === get_post_type( (int) $_GET['post'] ) // phpcs:ignore WordPress.Security.NonceVerification
+				) {
+					return $metadata;
+				}
 
-		// 		if (
-		// 			str_starts_with( $metadata['name'], 'omniform' ) &&
-		// 			! in_array( $metadata['name'], array( 'omniform/form', 'omniform/select-option', 'omniform/select-group' ), true )
-		// 		) {
-		// 			$metadata['ancestor'] = array( 'omniform/form' );
-		// 			return $metadata;
-		// 		}
+				if (
+					str_starts_with( $metadata['name'], 'omniform' ) &&
+					! in_array( $metadata['name'], array( 'omniform/form', 'omniform/select-option', 'omniform/select-group' ), true )
+				) {
+					$metadata['ancestor'] = array( 'omniform/form' );
+					return $metadata;
+				}
 
-		// 		return $metadata;
-		// 	},
-		// );
+				return $metadata;
+			},
+		);
 	}
 
 	/**
