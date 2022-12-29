@@ -168,6 +168,45 @@ class Form {
 	}
 
 	/**
+	 * Response to message.
+	 *
+	 * @param int $submission_id Submission ID.
+	 *
+	 * @return string|false The message, false otherwise.
+	 */
+	public function response_email_message( $submission_id ) {
+		$submission_id = (int) $submission_id;
+		if ( ! $submission_id ) {
+			return false;
+		}
+
+		$_submission = get_post( $submission_id );
+
+		if ( ! $_submission || 'omniform_response' !== $_submission->post_type ) {
+			return false;
+		}
+
+		$this->registerFields();
+
+		$message = array();
+
+		$submission_data = $this->flatten( json_decode( $_submission->post_content, true ) );
+
+		foreach ( $this->fields as $key => $def ) {
+			$message[] = $def['control_label'] . ': ' . $submission_data[ $key ];
+		}
+
+		$message[] = '';
+		$message[] = '---';
+		$message[] = sprintf( 'This email was sent to notify you of a submission made through the contact form on %s.', get_bloginfo( 'url' ) );
+		$message[] = 'Time: ' . $_submission->post_date;
+		$message[] = 'IP Address: ' . $_SERVER['REMOTE_ADDR'];
+		$message[] = 'Form URL: ' . get_post_meta( $submission_id, '_wp_http_referer', true );
+
+		return implode( "\n", $message );
+	}
+
+	/**
 	 * Flatten a multi-dimensional associative array with dots.
 	 *
 	 * @see https://github.com/laravel/framework/blob/8.x/src/Illuminate/Collections/Arr.php#L102-L122

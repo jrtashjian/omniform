@@ -85,7 +85,7 @@ class SubmissionsController extends \WP_REST_Posts_Controller {
 			array(
 				'post_title'   => wp_generate_uuid4(),
 				'post_content' => wp_json_encode( $submission_data ),
-				'post_type'    => 'omniform_submission',
+				'post_type'    => 'omniform_response',
 				'post_status'  => 'publish',
 				'meta_input'   => array(
 					'_omniform_id'      => $form->getId(),
@@ -100,9 +100,15 @@ class SubmissionsController extends \WP_REST_Posts_Controller {
 			return rest_ensure_response( $submission_id );
 		}
 
-		// Incremement form submissions.
-		$submission_count = get_post_meta( $form->getId(), '_omniform_submissions', true );
-		update_post_meta( $form->getId(), '_omniform_submissions', (int) $submission_count + 1 );
+		wp_mail(
+			'test@example.com',
+			'OmniForm Response',
+			$form->response_email_message( $submission_id )
+		);
+
+		// Incremement form responses.
+		$response_count = get_post_meta( $form->getId(), '_omniform_responses', true );
+		update_post_meta( $form->getId(), '_omniform_responses', (int) $response_count + 1 );
 
 		if ( $request->has_param( '_omniform_redirect' ) ) {
 			wp_safe_redirect( add_query_arg( 'success', true, $request->get_param( '_omniform_redirect' ) ) );
