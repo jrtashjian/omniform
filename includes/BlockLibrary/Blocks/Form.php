@@ -37,8 +37,8 @@ class Form extends BaseBlock {
 		}
 
 		// Incremement form impressions.
-		// $impressions = get_post_meta( $entity_id, 'impressions', true );
-		// update_post_meta( $entity_id, 'impressions', (int) $impressions + 1 );
+		$impressions = get_post_meta( $entity_id, '_omniform_impressions', true );
+		update_post_meta( $entity_id, '_omniform_impressions', (int) $impressions + 1 );
 
 		$content     = do_blocks( $form->getContent() );
 		$nonce_field = wp_nonce_field( 'omniform', 'wp_rest', true, false );
