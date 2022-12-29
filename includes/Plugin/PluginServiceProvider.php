@@ -18,35 +18,6 @@ class PluginServiceProvider extends ServiceProvider {
 	 * This method will be used for hooking into WordPress with actions/filters.
 	 */
 	public function boot() {
-		add_action( 'admin_enqueue_scripts', array( $this, 'registerScripts' ) );
-
-		add_action(
-			'admin_menu',
-			function () {
-				add_submenu_page(
-					'edit.php?post_type=omniform',
-					esc_html__( 'Dashboard', 'omniform' ),
-					esc_html__( 'Dashboard', 'omniform' ),
-					'manage_options',
-					'dashboard',
-					function () {
-						?>
-						<div id="omniform" class="hide-if-no-js"></div>
-
-						<?php // JavaScript is disabled. ?>
-						<div class="wrap hide-if-js">
-							<h1 class="wp-heading-inline">OmniForm</h1>
-							<div class="notice notice-error notice-alt">
-								<p><?php esc_html_e( 'OmniForm requires JavaScript. Please enable JavaScript in your browser settings.', 'omniform' ); ?></p>
-							</div>
-						</div>
-						<?php
-					},
-					0
-				);
-			}
-		);
-
 		add_action( 'init', array( $this, 'registerPostType' ) );
 		add_action( 'init', array( $this, 'filterBlockPatternsOnAdmin' ), PHP_INT_MAX );
 		add_action( 'rest_api_init', array( $this, 'filterBlockPatternsOnRestApi' ), PHP_INT_MAX );
@@ -74,16 +45,16 @@ class PluginServiceProvider extends ServiceProvider {
 				$percentage_num = new \NumberFormatter( 'en_US', \NumberFormatter::PERCENT );
 
 				$impressions = (int) get_post_meta( $post_id, 'impressions', true );
-				$submissions = (int) get_post_meta( $post_id, 'submissions', true );
+				$responses   = (int) get_post_meta( $post_id, 'responses', true );
 
 				echo sprintf(
-					'<p>%1$s Submissions<br/>%2$s Impressions<br />%3$s Conversion Rate</p>',
-					esc_attr( $human_readable->format( $submissions ) ),
+					'<p>%1$s Responses<br/>%2$s Impressions<br />%3$s Conversion Rate</p>',
+					esc_attr( $human_readable->format( $responses ) ),
 					esc_attr( $human_readable->format( $impressions ) ),
 					esc_attr(
 						empty( $impressions )
 						? $percentage_num->format( 0 )
-						: $percentage_num->format( $submissions / $impressions )
+						: $percentage_num->format( $responses / $impressions )
 					)
 				);
 			},
@@ -98,12 +69,12 @@ class PluginServiceProvider extends ServiceProvider {
 					return $actions;
 				}
 
-				$actions['submissions'] = sprintf(
+				$actions['responses'] = sprintf(
 					'<a href="%s" aria-label="%s">%s</a>',
-					admin_url( sprintf( 'edit.php?post_type=omniform_submission&omniform_id=%d', $post->ID ) ),
+					admin_url( sprintf( 'edit.php?post_type=omniform_response&omniform_id=%d', $post->ID ) ),
 					/* translators: %s: Form title. */
-					esc_attr( sprintf( __( 'View &#8220;%s&#8221; submissions', 'omniform' ), $post->post_title ) ),
-					__( 'Submissions', 'omniform' ),
+					esc_attr( sprintf( __( 'View &#8220;%s&#8221; responses', 'omniform' ), $post->post_title ) ),
+					__( 'Responses', 'omniform' ),
 				);
 
 				return $actions;
@@ -113,7 +84,7 @@ class PluginServiceProvider extends ServiceProvider {
 		);
 
 		add_filter(
-			'manage_omniform_submission_posts_columns',
+			'manage_omniform_response_posts_columns',
 			function( $columns ) {
 				unset( $columns['title'] );
 				return array_merge(
@@ -126,7 +97,7 @@ class PluginServiceProvider extends ServiceProvider {
 		);
 
 		add_action(
-			'manage_omniform_submission_posts_custom_column',
+			'manage_omniform_response_posts_custom_column',
 			function( $column_key, $post_id ) {
 				if ( 'formdata' !== $column_key ) {
 					return;
@@ -141,11 +112,11 @@ class PluginServiceProvider extends ServiceProvider {
 			2
 		);
 
-		// Filter submissions by form id.
+		// Filter responses by form id.
 		add_action(
 			'restrict_manage_posts',
 			function( $post_type ) {
-				if ( 'omniform_submission' !== $post_type ) {
+				if ( 'omniform_response' !== $post_type ) {
 					return;
 				}
 
@@ -167,7 +138,7 @@ class PluginServiceProvider extends ServiceProvider {
 					return $query;
 				}
 
-				if ( 'omniform_submission' !== $query->query['post_type'] ) {
+				if ( 'omniform_response' !== $query->query['post_type'] ) {
 					return $query;
 				}
 
@@ -278,48 +249,6 @@ class PluginServiceProvider extends ServiceProvider {
 	public function register() {}
 
 	/**
-	 * Enqueue required scripts and styles.
-	 */
-	public function registerScripts() {
-		$current_screen = get_current_screen();
-
-		if ( 'omniform_page_dashboard' !== $current_screen->base ) {
-			return;
-		}
-
-		// Prevent default hooks rendering content to the page.
-		remove_all_actions( 'network_admin_notices' );
-		remove_all_actions( 'user_admin_notices' );
-		remove_all_actions( 'admin_notices' );
-		remove_all_actions( 'all_admin_notices' );
-
-		$asset_loader = $this->app->makeWith(
-			Asset::class,
-			array( 'handle' => strtolower( str_replace( '\\', '-', __NAMESPACE__ ) ) )
-		);
-
-		$asset_loader->setPackageName( strtolower( basename( __DIR__ ) ) );
-		$asset_loader->enqueueScript();
-		$asset_loader->enqueueStyle();
-
-		$init_script = <<<JS
-		( function() {
-			window._loadOmniForm = new Promise( function( resolve ) {
-				wp.domReady( function() {
-					resolve( omniform.plugin.initialize( 'omniform', %s ) );
-				} );
-			} );
-		} )();
-		JS;
-
-		$script = sprintf(
-			$init_script,
-			wp_json_encode( array() )
-		);
-		wp_add_inline_script( $asset_loader->getHandle(), $script );
-	}
-
-	/**
 	 * Register post type
 	 */
 	public function registerPostType() {
@@ -381,24 +310,6 @@ class PluginServiceProvider extends ServiceProvider {
 			)
 		);
 
-		register_taxonomy(
-			'omniform_type',
-			array( 'omniform' ),
-			array(
-				'public'       => true,
-				'hierarchical' => false,
-				'labels'       => array(
-					'name'          => __( 'Form Types', 'omniform' ),
-					'singular_name' => __( 'Form Type', 'omniform' ),
-				),
-				'query_var'    => false,
-				'rewrite'      => false,
-				// 'show_ui'           => false,
-				// 'show_in_nav_menus' => false,
-				// 'show_in_rest'      => false,
-			)
-		);
-
 		register_post_meta(
 			'omniform',
 			'required_label',
@@ -411,28 +322,18 @@ class PluginServiceProvider extends ServiceProvider {
 		);
 
 		register_post_type(
-			'omniform_submission',
+			'omniform_response',
 			array(
 				'labels'                => array(
-					'name'                     => _x( 'Submissions', 'post type general name', 'omniform' ),
-					'singular_name'            => _x( 'Submission', 'post type singular name', 'omniform' ),
-					'add_new'                  => _x( 'Add New', 'Submission', 'omniform' ),
-					'add_new_item'             => __( 'Add new Submission', 'omniform' ),
-					'new_item'                 => __( 'New Submission', 'omniform' ),
-					'edit_item'                => __( 'Edit Submission', 'omniform' ),
-					'view_item'                => __( 'View Submission', 'omniform' ),
-					'all_items'                => __( 'View Submissions', 'omniform' ),
-					'search_items'             => __( 'Search Submissions', 'omniform' ),
-					'not_found'                => __( 'No Submissions found.', 'omniform' ),
-					'not_found_in_trash'       => __( 'No Submissions found in Trash.', 'omniform' ),
-					'filter_items_list'        => __( 'Filter Submissions list', 'omniform' ),
-					'items_list_navigation'    => __( 'Submissions list navigation', 'omniform' ),
-					'items_list'               => __( 'Submissions list', 'omniform' ),
-					'item_published'           => __( 'Submission published.', 'omniform' ),
-					'item_published_privately' => __( 'Submission published privately.', 'omniform' ),
-					'item_reverted_to_draft'   => __( 'Submission reverted to draft.', 'omniform' ),
-					'item_scheduled'           => __( 'Submission scheduled.', 'omniform' ),
-					'item_updated'             => __( 'Submission updated.', 'omniform' ),
+					'name'               => _x( 'Responses', 'post type general name', 'omniform' ),
+					'singular_name'      => _x( 'Response', 'post type singular name', 'omniform' ),
+					'all_items'          => __( 'View responses', 'omniform' ),
+					'edit_item'          => __( 'Edit response', 'omniform' ),
+					'filter_items_list'  => __( 'Filter responses list', 'omniform' ),
+					'not_found_in_trash' => __( 'No responses found in Trash.', 'omniform' ),
+					'not_found'          => __( 'No responses found.', 'omniform' ),
+					'search_items'       => __( 'Search responses', 'omniform' ),
+					'view_item'          => __( 'View response', 'omniform' ),
 				),
 				'public'                => false,
 				'show_ui'               => true,
@@ -441,9 +342,22 @@ class PluginServiceProvider extends ServiceProvider {
 				'rewrite'               => false,
 				'show_in_rest'          => true,
 				'rest_namespace'        => 'omniform/v1',
-				'rest_base'             => 'submissions',
+				'rest_base'             => 'responses',
 				'rest_controller_class' => 'WP_REST_Blocks_Controller',
-				'capability_type'       => 'post',
+				'capability_type'       => 'page',
+				'capabilities'          => array(
+					'create_posts'        => 'do_not_allow',
+					'publish_posts'       => 'publish_pages',
+					'edit_posts'          => 'edit_pages',
+					'edit_others_posts'   => 'edit_others_pages',
+					'delete_posts'        => 'delete_pages',
+					'delete_others_posts' => 'delete_others_pages',
+					'read_private_posts'  => 'read_private_pages',
+					'edit_post'           => 'edit_page',
+					'delete_post'         => 'delete_page',
+					'read_post'           => 'read_page',
+				),
+				'map_meta_cap'          => true,
 				'supports'              => array(
 					'title',
 					'editor',
