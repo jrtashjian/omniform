@@ -127,8 +127,14 @@ abstract class BaseFieldBlock extends BaseBlock {
 			);
 		}
 
+		$classnames = array(
+			'omniform-field-label',
+			! empty( $this->getBlockAttribute( 'isLabelHidden' ) ) ? 'screen-reader-text' : null,
+		);
+
 		return sprintf(
-			'<label class="omniform-field-label" for="%s">%s</label>',
+			'<label class="%s" for="%s">%s</label>',
+			esc_attr( implode( ' ', $classnames ) ),
 			esc_attr( $this->getFieldName() ),
 			wp_kses( $this->getBlockAttribute( 'fieldLabel' ), $allowed_html ) . $label_required
 		);
