@@ -23,6 +23,7 @@ import {
  */
 import FormLabel from '../shared/form-label';
 import { Required } from '../shared/icons';
+import FieldInspectorControls from '../shared/inspector-controls';
 
 const Edit = ( props ) => {
 	const {
@@ -33,6 +34,7 @@ const Edit = ( props ) => {
 	const {
 		fieldPlaceholder,
 		isRequired,
+		isLabelHidden,
 		height,
 	} = attributes;
 
@@ -44,7 +46,9 @@ const Edit = ( props ) => {
 				[ `field-required` ]: isRequired,
 			} ) }
 		>
-			<FormLabel originBlockProps={ props } />
+			{ ( ! isLabelHidden || isSelected ) && (
+				<FormLabel originBlockProps={ props } />
+			) }
 
 			<ResizableBox
 				className="omniform-field-control"
@@ -82,6 +86,12 @@ const Edit = ( props ) => {
 					/>
 				</ToolbarGroup>
 			</BlockControls>
+
+			<FieldInspectorControls
+				originBlockProps={ props }
+				showRequiredControl
+				showLabelControl
+			/>
 		</div>
 	);
 };

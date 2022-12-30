@@ -29,6 +29,9 @@
 		},
 		"isRequired": {
 			"type": "boolean"
+		},
+		"isLabelHidden": {
+			"type": "boolean"
 		}
 	},
 	"providesContext": {

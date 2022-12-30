@@ -25,6 +25,9 @@
 		},
 		"isRequired": {
 			"type": "boolean"
+		},
+		"isLabelHidden": {
+			"type": "boolean"
 		}
 	},
 	"supports": {

@@ -28,6 +28,7 @@ import {
  */
 import FormLabel from '../shared/form-label';
 import { Required } from '../shared/icons';
+import FieldInspectorControls from '../shared/inspector-controls';
 
 const Edit = ( props ) => {
 	const {
@@ -40,6 +41,7 @@ const Edit = ( props ) => {
 		fieldPlaceholder,
 		isMultiple,
 		isRequired,
+		isLabelHidden,
 		height,
 	} = attributes;
 
@@ -71,7 +73,9 @@ const Edit = ( props ) => {
 				[ `field-required` ]: isRequired,
 			} ) }
 		>
-			<FormLabel originBlockProps={ props } />
+			{ ( ! isLabelHidden || isSelected ) && (
+				<FormLabel originBlockProps={ props } />
+			) }
 
 			{ isMultiple && (
 				<ResizableBox
@@ -132,6 +136,12 @@ const Edit = ( props ) => {
 					/>
 				</ToolbarGroup>
 			</BlockControls>
+
+			<FieldInspectorControls
+				originBlockProps={ props }
+				showRequiredControl
+				showLabelControl
+			/>
 		</div>
 	);
 };

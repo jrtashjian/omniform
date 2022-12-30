@@ -9,7 +9,6 @@ import classNames from 'classnames';
 import { __ } from '@wordpress/i18n';
 import {
 	BlockControls,
-	InspectorControls,
 	RichText,
 	useBlockProps,
 } from '@wordpress/block-editor';
@@ -21,6 +20,7 @@ import { ToolbarButton, ToolbarGroup } from '@wordpress/components';
  */
 import FormLabel from '../shared/form-label';
 import { Required } from '../shared/icons';
+import FieldInspectorControls from '../shared/inspector-controls';
 
 const Edit = ( props ) => {
 	const {
@@ -34,6 +34,7 @@ const Edit = ( props ) => {
 		fieldType,
 		fieldValue,
 		isRequired,
+		isLabelHidden,
 	} = attributes;
 
 	const isTextInput = [ 'text', 'email', 'url', 'number', 'month', 'password', 'search', 'tel', 'week', 'hidden' ].includes( fieldType );
@@ -59,12 +60,14 @@ const Edit = ( props ) => {
 				{ [ `field-required` ]: isRequired }
 			) }
 		>
-			<FormLabel
-				originBlockProps={ props }
-				isRadioInput={ 'radio' === fieldType }
-				isGrouped={ isGrouped }
-				isOptionInput={ isOptionInput }
-			/>
+			{ ( ! isLabelHidden || isSelected ) && (
+				<FormLabel
+					originBlockProps={ props }
+					isRadioInput={ 'radio' === fieldType }
+					isGrouped={ isGrouped }
+					isOptionInput={ isOptionInput }
+				/>
+			) }
 
 			{ isTextInput && (
 				<RichText
@@ -120,8 +123,12 @@ const Edit = ( props ) => {
 					) }
 				</ToolbarGroup>
 			</BlockControls>
-			<InspectorControls>
-			</InspectorControls>
+
+			<FieldInspectorControls
+				originBlockProps={ props }
+				showRequiredControl
+				showLabelControl={ ! ( isOptionInput || isHiddenInput ) }
+			/>
 		</div>
 	);
 };
