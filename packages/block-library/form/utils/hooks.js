@@ -10,7 +10,7 @@ import { serialize } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import { FORM_POST_TYPE } from '../../shared/constants';
+import { POST_TYPE } from '../../shared/constants';
 
 /**
  * Retrieves the available forms.
@@ -26,12 +26,12 @@ export function useAlternativeForms( excludedId ) {
 		return {
 			forms: getEntityRecords(
 				'postType',
-				FORM_POST_TYPE,
+				POST_TYPE,
 				query
 			),
 			isLoading: _isResolving( 'getEntityRecords', [
 				'postType',
-				FORM_POST_TYPE,
+				POST_TYPE,
 				query,
 			] ),
 		};
@@ -61,7 +61,7 @@ export function useCreateFormFromBlocks( setAttributes ) {
 		};
 		const form = await saveEntityRecord(
 			'postType',
-			FORM_POST_TYPE,
+			POST_TYPE,
 			record
 		);
 		setAttributes( { ref: form.id } );

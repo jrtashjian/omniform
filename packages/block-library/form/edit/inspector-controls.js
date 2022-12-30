@@ -3,34 +3,40 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useEntityProp } from '@wordpress/core-data';
-import { TextControl } from '@wordpress/components';
+import { Button, PanelBody, TextControl } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
+import { addQueryArgs } from '@wordpress/url';
 
 /**
  * Internal dependencies
  */
-import { FORM_POST_TYPE } from '../../shared/constants';
+import { POST_TYPE, RESPONSE_POST_TYPE } from '../../shared/constants';
 
 export default function FormInspectorControls( {
 	formId,
 	isEntityAvailable,
 } ) {
-	const [ title, setTitle ] = useEntityProp(
-		'postType',
-		FORM_POST_TYPE,
-		'title',
-		formId
-	);
+	const [ title, setTitle ] = useEntityProp( 'postType', POST_TYPE, 'title', formId );
 
-	return (
-		<InspectorControls __experimentalGroup="advanced">
-			{ isEntityAvailable && (
+	return isEntityAvailable && (
+		<InspectorControls>
+			<PanelBody title={ __( 'Form Settings', 'omniform' ) }>
 				<TextControl
-					label={ __( 'Title', 'omniform' ) }
+					label={ __( 'Name', 'omniform' ) }
 					value={ title }
 					onChange={ setTitle }
+					help={ __( 'This name will not be visible to viewers and is only for identifying the form.', 'omniform' ) }
 				/>
-			) }
+				<Button
+					variant="link"
+					href={ addQueryArgs( 'edit.php', {
+						post_type: RESPONSE_POST_TYPE,
+						omniform_id: formId,
+					} ) }
+				>
+					{ __( 'View Submitted Responses', 'omniform' ) }
+				</Button>
+			</PanelBody>
 		</InspectorControls>
 	);
 }

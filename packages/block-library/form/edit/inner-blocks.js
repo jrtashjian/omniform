@@ -12,7 +12,7 @@ import { useMemo } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { FORM_POST_TYPE } from '../../shared/constants';
+import { POST_TYPE } from '../../shared/constants';
 
 /**
  * Allowed blocks constant is passed to InnerBlocks precisely as specified here.
@@ -66,12 +66,12 @@ export default function FormInnerBlocks( {
 	hasInnerBlocks,
 } ) {
 	const defaultBlockContext = useMemo( () => {
-		return { postId: id, postType: FORM_POST_TYPE };
+		return { postId: id, postType: POST_TYPE };
 	}, [ id ] );
 
 	const [ blocks, onInput, onChange ] = useEntityBlockEditor(
 		'postType',
-		FORM_POST_TYPE,
+		POST_TYPE,
 		{ id }
 	);
 

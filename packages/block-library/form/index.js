@@ -16,7 +16,7 @@ import { addFilter } from '@wordpress/hooks';
  */
 import json from './block.json';
 import edit from './edit';
-import { FORM_POST_TYPE } from '../shared/constants';
+import { POST_TYPE } from '../shared/constants';
 import { form } from '../shared/icons';
 
 import './style.scss';
@@ -35,7 +35,7 @@ registerBlockType( name, {
 
 		const entity = select( 'core' ).getEntityRecord(
 			'postType',
-			FORM_POST_TYPE,
+			POST_TYPE,
 			ref
 		);
 		if ( ! entity ) {

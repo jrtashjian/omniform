@@ -21,7 +21,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { FORM_POST_TYPE } from '../../shared/constants';
+import { POST_TYPE } from '../../shared/constants';
 import { form } from '../../shared/icons';
 import FormInnerBlocks from './inner-blocks';
 import FormInspectorControls from './inspector-controls';
@@ -37,7 +37,7 @@ export default function FormEdit( {
 	const { postId: contextPostId, postType: contextPostType } = context;
 	const { ref } = attributes;
 
-	const entityId = ( contextPostType === FORM_POST_TYPE )
+	const entityId = ( contextPostType === POST_TYPE )
 		? contextPostId
 		: ref;
 
@@ -51,7 +51,7 @@ export default function FormEdit( {
 
 			const getEntityArgs = [
 				'postType',
-				FORM_POST_TYPE,
+				POST_TYPE,
 				entityId,
 			];
 			const entityRecord = entityId
