@@ -1,6 +1,6 @@
 <?php
 /**
- * The SubmissionsController class.
+ * The ResponsesController class.
  *
  * @package OmniForm
  */
@@ -8,9 +8,9 @@
 namespace OmniForm\Plugin\RestApi;
 
 /**
- * The SubmissionsController class.
+ * The ResponsesController class.
  */
-class SubmissionsController extends \WP_REST_Posts_Controller {
+class ResponsesController extends \WP_REST_Posts_Controller {
 	/**
 	 * Registers the routes for attachments.
 	 *
@@ -21,34 +21,34 @@ class SubmissionsController extends \WP_REST_Posts_Controller {
 
 		register_rest_route(
 			$this->namespace,
-			'/' . $this->rest_base . '/(?P<id>[\d]+)/submissions',
+			'/' . $this->rest_base . '/(?P<id>[\d]+)/responses',
 			array(
 				'methods'             => \WP_REST_Server::CREATABLE,
-				'callback'            => array( $this, 'create_submission' ),
-				'permission_callback' => array( $this, 'create_submission_permissions_check' ),
+				'callback'            => array( $this, 'create_response' ),
+				'permission_callback' => array( $this, 'create_response_permissions_check' ),
 			)
 		);
 	}
 
 	/**
-	 * Checks if a given request has access to create a submission.
+	 * Checks if a given request has access to create a response.
 	 *
 	 * @param \WP_REST_Request $request Full details about the request.
 	 *
 	 * @return true|\WP_Error True if the request has access to create items, WP_Error object otherwise.
 	 */
-	public function create_submission_permissions_check( \WP_REST_Request $request ) {
+	public function create_response_permissions_check( \WP_REST_Request $request ) {
 		return rest_cookie_check_errors( null );
 	}
 
 	/**
-	 * Creates a single submission.
+	 * Creates a single response.
 	 *
 	 * @param \WP_REST_Request $request Full details about the request.
 	 *
 	 * @return \WP_REST_Response|\WP_Error Response object on success, or WP_Error object on failure.
 	 */
-	public function create_submission( \WP_REST_Request $request ) {
+	public function create_response( \WP_REST_Request $request ) {
 		$form = \OmniForm\Plugin\Form::getInstance( $request->get_param( 'id' ) );
 
 		if ( ! $form ) {
@@ -73,7 +73,7 @@ class SubmissionsController extends \WP_REST_Posts_Controller {
 			);
 		}
 
-		$submission_data = array_filter(
+		$response_data = array_filter(
 			$request->get_params(),
 			function( $key ) {
 				return ! in_array( $key, array( 'rest_route', 'wp_rest', '_wp_http_referer', '_omniform_redirect' ), true );
@@ -81,10 +81,10 @@ class SubmissionsController extends \WP_REST_Posts_Controller {
 			ARRAY_FILTER_USE_KEY
 		);
 
-		$submission_id = wp_insert_post(
+		$response_id = wp_insert_post(
 			array(
 				'post_title'   => wp_generate_uuid4(),
-				'post_content' => wp_json_encode( $submission_data ),
+				'post_content' => wp_json_encode( $response_data ),
 				'post_type'    => 'omniform_response',
 				'post_status'  => 'publish',
 				'meta_input'   => array(
@@ -96,14 +96,14 @@ class SubmissionsController extends \WP_REST_Posts_Controller {
 			true
 		);
 
-		if ( is_wp_error( $submission_id ) ) {
-			return rest_ensure_response( $submission_id );
+		if ( is_wp_error( $response_id ) ) {
+			return rest_ensure_response( $response_id );
 		}
 
 		wp_mail(
 			'test@example.com',
 			'OmniForm Response',
-			$form->response_email_message( $submission_id )
+			$form->response_email_message( $response_id )
 		);
 
 		// Incremement form responses.
@@ -117,7 +117,7 @@ class SubmissionsController extends \WP_REST_Posts_Controller {
 
 		$response = array(
 			'status'  => 201,
-			'message' => 'submission_created',
+			'message' => 'response_created',
 		);
 
 		return rest_ensure_response(

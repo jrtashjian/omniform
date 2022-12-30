@@ -49,7 +49,7 @@ class Form extends BaseBlock {
 		return sprintf(
 			'%s<form method="post" action="%s" %s>%s</form>',
 			empty( $_GET['success'] ) ? '' : '<p style="background-color:var(--wp--preset--color--vivid-green-cyan);padding:1rem 1.5rem;">Submitted!</p>',
-			esc_url( rest_url( 'omniform/v1/forms/' . $form->getId() . '/submissions' ) ),
+			esc_url( rest_url( 'omniform/v1/forms/' . $form->getId() . '/responses' ) ),
 			get_block_wrapper_attributes(),
 			$content . $nonce_field . $default_redirect_to
 		);

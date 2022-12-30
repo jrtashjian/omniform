@@ -22,46 +22,83 @@ class PluginServiceProvider extends ServiceProvider {
 		add_action( 'init', array( $this, 'filterBlockPatternsOnAdmin' ), PHP_INT_MAX );
 		add_action( 'rest_api_init', array( $this, 'filterBlockPatternsOnRestApi' ), PHP_INT_MAX );
 
+		// Add custom columns to CPT.
 		add_filter(
 			'manage_omniform_posts_columns',
 			function( $columns ) {
+				$part_one = array_slice( $columns, 0, 2 );
+				$part_two = array_slice( $columns, 2 );
+
 				return array_merge(
-					$columns,
+					$part_one,
 					array(
-						'activity' => __( 'Activity', 'omniform' ),
-					)
+						'responses'   => __( 'Responses', 'omniform' ),
+						'impressions' => __( 'Impressions', 'omniform' ),
+						'conversion'  => __( 'Conversion Rate', 'omniform' ),
+					),
+					$part_two,
 				);
 			}
 		);
 
+		// Add "Conversion Rate" column to CPT.
 		add_action(
 			'manage_omniform_posts_custom_column',
 			function( $column_key, $post_id ) {
-				if ( 'activity' !== $column_key ) {
+				if ( 'conversion' !== $column_key ) {
 					return;
 				}
 
-				$human_readable = new \NumberFormatter( 'en_US', \NumberFormatter::PADDING_POSITION );
 				$percentage_num = new \NumberFormatter( 'en_US', \NumberFormatter::PERCENT );
 
-				$impressions = (int) get_post_meta( $post_id, 'impressions', true );
-				$responses   = (int) get_post_meta( $post_id, 'responses', true );
+				$impressions = (int) get_post_meta( $post_id, '_omniform_impressions', true );
+				$responses   = (int) get_post_meta( $post_id, '_omniform_responses', true );
 
-				echo sprintf(
-					'<p>%1$s Responses<br/>%2$s Impressions<br />%3$s Conversion Rate</p>',
-					esc_attr( $human_readable->format( $responses ) ),
-					esc_attr( $human_readable->format( $impressions ) ),
-					esc_attr(
-						empty( $impressions )
+				echo esc_attr(
+					empty( $impressions )
 						? $percentage_num->format( 0 )
 						: $percentage_num->format( $responses / $impressions )
-					)
 				);
 			},
 			10,
 			2
 		);
 
+		// Add "Responses" column to CPT.
+		add_action(
+			'manage_omniform_posts_custom_column',
+			function( $column_key, $post_id ) {
+				if ( 'responses' !== $column_key ) {
+					return;
+				}
+
+				$human_readable = new \NumberFormatter( 'en_US', \NumberFormatter::PADDING_POSITION );
+				$responses      = (int) get_post_meta( $post_id, '_omniform_responses', true );
+
+				echo esc_attr( $human_readable->format( $responses ) );
+			},
+			10,
+			2
+		);
+
+		// Add "Impressions" column to CPT.
+		add_action(
+			'manage_omniform_posts_custom_column',
+			function( $column_key, $post_id ) {
+				if ( 'impressions' !== $column_key ) {
+					return;
+				}
+
+				$human_readable = new \NumberFormatter( 'en_US', \NumberFormatter::PADDING_POSITION );
+				$impressions    = (int) get_post_meta( $post_id, '_omniform_impressions', true );
+
+				echo esc_attr( $human_readable->format( $impressions ) );
+			},
+			10,
+			2
+		);
+
+		// Add responses quick link on CPT table list.
 		add_filter(
 			'page_row_actions',
 			function( $actions, $post ) {
@@ -71,7 +108,7 @@ class PluginServiceProvider extends ServiceProvider {
 
 				$actions['responses'] = sprintf(
 					'<a href="%s" aria-label="%s">%s</a>',
-					admin_url( sprintf( 'edit.php?post_type=omniform_response&omniform_id=%d', $post->ID ) ),
+					esc_url( admin_url( sprintf( 'edit.php?post_type=omniform_response&omniform_id=%d', $post->ID ) ) ),
 					/* translators: %s: Form title. */
 					esc_attr( sprintf( __( 'View &#8220;%s&#8221; responses', 'omniform' ), $post->post_title ) ),
 					__( 'Responses', 'omniform' ),
@@ -83,6 +120,7 @@ class PluginServiceProvider extends ServiceProvider {
 			2
 		);
 
+		// Add custom columns to Responses CPT.
 		add_filter(
 			'manage_omniform_response_posts_columns',
 			function( $columns ) {
@@ -90,12 +128,37 @@ class PluginServiceProvider extends ServiceProvider {
 				return array_merge(
 					$columns,
 					array(
+						'form'     => __( 'Form', 'omniform' ),
 						'formdata' => __( 'Form Data', 'omniform' ),
 					)
 				);
 			}
 		);
 
+		// Add "Form" column to Responses CPT.
+		add_action(
+			'manage_omniform_response_posts_custom_column',
+			function( $column_key, $post_id ) {
+				if ( 'form' !== $column_key ) {
+					return;
+				}
+
+				$form_id = (int) get_post_meta( $post_id, '_omniform_id', true );
+				$form    = Form::getInstance( $form_id );
+
+				echo sprintf(
+					'<a href="%s" aria-label="%s">%s</a>',
+					esc_url( admin_url( sprintf( 'post.php?post=%d&action=edit', $form->getId() ) ) ),
+					/* translators: %s: Form title. */
+					esc_attr( sprintf( __( 'View &#8220;%s&#8221; responses', 'omniform' ), $form->getTitle() ) ),
+					esc_attr( $form->getTitle() ),
+				);
+			},
+			10,
+			2
+		);
+
+		// Add "Form Data" column to Responses CPT.
 		add_action(
 			'manage_omniform_response_posts_custom_column',
 			function( $column_key, $post_id ) {
@@ -107,6 +170,16 @@ class PluginServiceProvider extends ServiceProvider {
 					'<pre style="overflow:auto;">%s</pre>',
 					wp_kses_post( get_the_content( null, false, $post_id ) )
 				);
+			},
+			10,
+			2
+		);
+
+		// Hide row actions for Responses CPT.
+		add_filter(
+			'post_row_actions',
+			function( $actions, $post ) {
+				return 'omniform_response' === $post->post_type ? array() : $actions;
 			},
 			10,
 			2
@@ -150,7 +223,7 @@ class PluginServiceProvider extends ServiceProvider {
 					'meta_query',
 					array(
 						array(
-							'key'   => 'omniform_id',
+							'key'   => '_omniform_id',
 							'value' => (int) $_GET['omniform_id'],
 						),
 					)
@@ -286,7 +359,7 @@ class PluginServiceProvider extends ServiceProvider {
 				'show_in_rest'          => true,
 				'rest_namespace'        => 'omniform/v1',
 				'rest_base'             => 'forms',
-				'rest_controller_class' => \OmniForm\Plugin\RestApi\SubmissionsController::class,
+				'rest_controller_class' => \OmniForm\Plugin\RestApi\ResponsesController::class,
 				'capability_type'       => 'block',
 				'capabilities'          => array(
 					// You need to be able to edit posts, in order to read blocks in their raw form.

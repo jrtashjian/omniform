@@ -6,7 +6,7 @@ import apiFetch from '@wordpress/api-fetch';
 	'use strict';
 
 	document.addEventListener( 'DOMContentLoaded', function() {
-		const formSubmissionHandler = ( event ) => {
+		const formResponseHandler = ( event ) => {
 			event.preventDefault();
 
 			const formElement = event.target;
@@ -31,7 +31,7 @@ import apiFetch from '@wordpress/api-fetch';
 		};
 
 		// document.querySelectorAll( 'form.wp-block-omniform-form' )
-		// 	.forEach( ( form ) => form.addEventListener( 'submit', formSubmissionHandler ) );
+		// 	.forEach( ( form ) => form.addEventListener( 'submit', formResponseHandler ) );
 
 		const isDark = ( elm ) => {
 			const context = document.defaultView.getComputedStyle( elm, null );

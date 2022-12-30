@@ -107,6 +107,15 @@ class Form {
 	}
 
 	/**
+	 * The form's post_title.
+	 *
+	 * @return string
+	 */
+	public function getTitle() {
+		return $this->post_data->post_title;
+	}
+
+	/**
 	 * The form's post_content.
 	 *
 	 * @return string
@@ -170,19 +179,19 @@ class Form {
 	/**
 	 * Response to message.
 	 *
-	 * @param int $submission_id Submission ID.
+	 * @param int $response_id Submission ID.
 	 *
 	 * @return string|false The message, false otherwise.
 	 */
-	public function response_email_message( $submission_id ) {
-		$submission_id = (int) $submission_id;
-		if ( ! $submission_id ) {
+	public function response_email_message( $response_id ) {
+		$response_id = (int) $response_id;
+		if ( ! $response_id ) {
 			return false;
 		}
 
-		$_submission = get_post( $submission_id );
+		$_response = get_post( $response_id );
 
-		if ( ! $_submission || 'omniform_response' !== $_submission->post_type ) {
+		if ( ! $_response || 'omniform_response' !== $_response->post_type ) {
 			return false;
 		}
 
@@ -190,18 +199,18 @@ class Form {
 
 		$message = array();
 
-		$submission_data = $this->flatten( json_decode( $_submission->post_content, true ) );
+		$response_data = $this->flatten( json_decode( $_response->post_content, true ) );
 
 		foreach ( $this->fields as $key => $def ) {
-			$message[] = $def['control_label'] . ': ' . $submission_data[ $key ];
+			$message[] = $def['control_label'] . ': ' . $response_data[ $key ];
 		}
 
 		$message[] = '';
 		$message[] = '---';
-		$message[] = sprintf( 'This email was sent to notify you of a submission made through the contact form on %s.', get_bloginfo( 'url' ) );
-		$message[] = 'Time: ' . $_submission->post_date;
+		$message[] = sprintf( 'This email was sent to notify you of a response made through the contact form on %s.', get_bloginfo( 'url' ) );
+		$message[] = 'Time: ' . $_response->post_date;
 		$message[] = 'IP Address: ' . $_SERVER['REMOTE_ADDR'];
-		$message[] = 'Form URL: ' . get_post_meta( $submission_id, '_wp_http_referer', true );
+		$message[] = 'Form URL: ' . get_post_meta( $response_id, '_wp_http_referer', true );
 
 		return implode( "\n", $message );
 	}

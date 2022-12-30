@@ -15,7 +15,7 @@ import { useEntityRecords } from '@wordpress/core-data';
 
 export default function App( { settings } ) {
 	const { records: formRecords, hasResolved: hasFormRecordsResolved } = useEntityRecords( 'postType', 'omniform' );
-	const { records: submissionRecords, hasResolved: hasSubmissionRecordsResolved } = useEntityRecords( 'postType', 'omniform_submission' );
+	const { records: responseRecords, hasResolved: hasResponseRecordsResolved } = useEntityRecords( 'postType', 'omniform_response' );
 
 	return (
 		<SlotFillProvider>
@@ -37,7 +37,7 @@ export default function App( { settings } ) {
 						</ul>
 
 						<ul>
-							{ hasSubmissionRecordsResolved && submissionRecords.map( ( form ) => (
+							{ hasResponseRecordsResolved && responseRecords.map( ( form ) => (
 								<li key={ form.id }><a href={ `/wp-admin/post.php?post=${ form.id }&action=edit` }>{ form.title.raw }</a></li>
 							) ) }
 						</ul>
