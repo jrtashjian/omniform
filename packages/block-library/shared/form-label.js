@@ -12,7 +12,7 @@ import { createBlock, getDefaultBlockName } from '@wordpress/blocks';
 import { useEntityProp } from '@wordpress/core-data';
 import { __ } from '@wordpress/i18n';
 
-const FormLabel = ( { originBlockProps, isGrouped, isRadioInput } ) => {
+const FormLabel = ( { originBlockProps, isGrouped, isOptionInput, isRadioInput } ) => {
 	const { postId: contextPostId, postType: contextPostType } = originBlockProps.context;
 
 	const [ meta, setMeta ] = useEntityProp( 'postType', contextPostType, 'meta', contextPostId );
@@ -27,10 +27,9 @@ const FormLabel = ( { originBlockProps, isGrouped, isRadioInput } ) => {
 			<RichText
 				identifier="fieldLabel"
 				tagName="span"
-				// className="omniform-field-label"
 				placeholder={ __( 'Enter a label for the field…', 'omniform' ) }
 				value={ originBlockProps.attributes.fieldLabel }
-				onChange={ ( html ) => ! originBlockProps.fieldName || originBlockProps.fieldName === kebabCase( originBlockProps.fieldLabel )
+				onChange={ ( html ) => ! originBlockProps.attributes.fieldName || originBlockProps.attributes.fieldName === kebabCase( originBlockProps.attributes.fieldLabel )
 					? originBlockProps.setAttributes( { fieldLabel: html, fieldName: kebabCase( html.replace( /(<([^>]+)>)/gi, '' ) ) } )
 					: originBlockProps.setAttributes( { fieldLabel: html } )
 				}
@@ -44,7 +43,9 @@ const FormLabel = ( { originBlockProps, isGrouped, isRadioInput } ) => {
 							fieldLabel: value,
 						} );
 					} else {
-						block = createBlock( getDefaultBlockName() );
+						block = isGrouped && isOptionInput
+							? createBlock( originBlockProps.name, { fieldType: originBlockProps.attributes.fieldType } )
+							: createBlock( getDefaultBlockName() );
 					}
 
 					if ( isOriginal ) {

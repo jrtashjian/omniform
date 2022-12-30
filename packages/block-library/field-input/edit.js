@@ -63,6 +63,7 @@ const Edit = ( props ) => {
 				originBlockProps={ props }
 				isRadioInput={ 'radio' === fieldType }
 				isGrouped={ isGrouped }
+				isOptionInput={ isOptionInput }
 			/>
 
 			{ isTextInput && (
