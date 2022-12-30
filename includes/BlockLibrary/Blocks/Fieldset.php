@@ -21,10 +21,15 @@ class Fieldset extends BaseBlock {
 			return '';
 		}
 
+		$allowed_html = array(
+			'strong' => array(),
+			'em'     => array(),
+		);
+
 		return sprintf(
 			'<fieldset %s><legend class="omniform-field-label">%s</legend>%s</fieldset>',
 			get_block_wrapper_attributes(),
-			esc_html( $this->getBlockAttribute( 'fieldLabel' ) ),
+			wp_kses( $this->getBlockAttribute( 'fieldLabel' ), $allowed_html ),
 			$this->content
 		);
 	}

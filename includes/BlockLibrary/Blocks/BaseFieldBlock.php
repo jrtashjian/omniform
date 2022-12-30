@@ -110,6 +110,11 @@ abstract class BaseFieldBlock extends BaseBlock {
 	protected function renderLabel() {
 		$form_id = $this->form->getId() ?? $this->getBlockContext( 'postId' );
 
+		$allowed_html = array(
+			'strong' => array(),
+			'em'     => array(),
+		);
+
 		$label_required = null;
 
 		if ( $this->isRequired() && (
@@ -118,14 +123,14 @@ abstract class BaseFieldBlock extends BaseBlock {
 		) ) {
 			$label_required = sprintf(
 				'<span class="omniform-field-required">%s</span>',
-				wp_kses_post( get_post_meta( $form_id, 'required_label', true ) )
+				wp_kses( get_post_meta( $form_id, 'required_label', true ), $allowed_html )
 			);
 		}
 
 		return sprintf(
 			'<label class="omniform-field-label" for="%s">%s</label>',
 			esc_attr( $this->getFieldName() ),
-			wp_kses_post( $this->getBlockAttribute( 'fieldLabel' ) ) . $label_required
+			wp_kses( $this->getBlockAttribute( 'fieldLabel' ), $allowed_html ) . $label_required
 		);
 	}
 

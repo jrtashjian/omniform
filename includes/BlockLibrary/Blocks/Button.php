@@ -29,12 +29,17 @@ class Button extends BaseBlock {
 			$this->getColorClasses( $this->attributes ),
 		);
 
+		$allowed_html = array(
+			'strong' => array(),
+			'em'     => array(),
+		);
+
 		return sprintf(
 			'<div class="wp-block-omniform-button wp-block-button"><button type="%s" %s %s>%s</button></div>',
 			esc_attr( $this->attributes['buttonType'] ),
 			$this->getElementAttribute( 'class', $button_classes ),
 			$this->getElementAttribute( 'style', $this->getColorStyles( $this->attributes ) ),
-			wp_kses_post( $this->attributes['buttonLabel'] ),
+			wp_kses( $this->attributes['buttonLabel'], $allowed_html ),
 		);
 	}
 }
