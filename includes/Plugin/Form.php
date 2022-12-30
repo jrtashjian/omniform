@@ -132,7 +132,9 @@ class Form {
 	public function addField( BaseFieldBlock $field ) {
 		$data = array(
 			'control_name'  => $field->getControlName(),
-			'control_label' => $field->getBlockAttribute( 'fieldLabel' ),
+			'control_label' => $field->isGrouped()
+				? $field->getFieldGroupName()
+				: $field->getBlockAttribute( 'fieldLabel' ),
 			'is_required'   => $field->isRequired(),
 		);
 
@@ -177,7 +179,44 @@ class Form {
 	}
 
 	/**
-	 * Response to message.
+	 * Response to text content.
+	 *
+	 * @param int $response_id Submission ID.
+	 *
+	 * @return string|false The message, false otherwise.
+	 */
+	public function response_text_content( $response_id ) {
+		$response_id = (int) $response_id;
+		if ( ! $response_id ) {
+			return false;
+		}
+
+		$_response = get_post( $response_id );
+
+		if ( ! $_response || 'omniform_response' !== $_response->post_type ) {
+			return false;
+		}
+
+		$this->registerFields();
+
+		$message = array();
+
+		$response_data = $this->flatten( json_decode( $_response->post_content, true ) );
+
+		foreach ( $this->fields as $key => $def ) {
+			$value     = array_key_exists( $key, $response_data ) ? $response_data[ $key ] : '';
+			$message[] = sprintf(
+				'<strong>%s:</strong> %s',
+				esc_attr( $def['control_label'] ),
+				esc_attr( $value )
+			);
+		}
+
+		return implode( '<br />', $message );
+	}
+
+	/**
+	 * Response to email message.
 	 *
 	 * @param int $response_id Submission ID.
 	 *
@@ -202,7 +241,8 @@ class Form {
 		$response_data = $this->flatten( json_decode( $_response->post_content, true ) );
 
 		foreach ( $this->fields as $key => $def ) {
-			$message[] = $def['control_label'] . ': ' . $response_data[ $key ];
+			$value     = array_key_exists( $key, $response_data ) ? $response_data[ $key ] : '';
+			$message[] = $def['control_label'] . ': ' . $value;
 		}
 
 		$message[] = '';

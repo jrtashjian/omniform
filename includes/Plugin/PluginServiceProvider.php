@@ -166,10 +166,10 @@ class PluginServiceProvider extends ServiceProvider {
 					return;
 				}
 
-				echo sprintf(
-					'<pre style="overflow:auto;">%s</pre>',
-					wp_kses_post( get_the_content( null, false, $post_id ) )
-				);
+				$form_id = (int) get_post_meta( $post_id, '_omniform_id', true );
+				$form    = Form::getInstance( $form_id );
+
+				echo wp_kses_post( $form->response_text_content( $post_id ) );
 			},
 			10,
 			2

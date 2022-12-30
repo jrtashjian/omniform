@@ -37,7 +37,7 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 	 *
 	 * @return true|\WP_Error True if the request has access to create items, WP_Error object otherwise.
 	 */
-	public function create_response_permissions_check( \WP_REST_Request $request ) {
+	public function create_response_permissions_check( \WP_REST_Request $request ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
 		return rest_cookie_check_errors( null );
 	}
 
@@ -76,7 +76,7 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 		$response_data = array_filter(
 			$request->get_params(),
 			function( $key ) {
-				return ! in_array( $key, array( 'rest_route', 'wp_rest', '_wp_http_referer', '_omniform_redirect' ), true );
+				return ! in_array( $key, array( 'id', 'rest_route', 'wp_rest', '_wp_http_referer', '_omniform_redirect' ), true );
 			},
 			ARRAY_FILTER_USE_KEY
 		);
@@ -102,7 +102,7 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 
 		wp_mail(
 			'test@example.com',
-			'OmniForm Response',
+			$form->getTitle() . ' Response',
 			$form->response_email_message( $response_id )
 		);
 
