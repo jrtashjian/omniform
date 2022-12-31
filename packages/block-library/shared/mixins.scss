@@ -14,14 +14,14 @@
  * 4. #000
  *
  * ACCENT:
- * 1. --wp--preset--color--accent
+ * 1. --wp--custom--color--accent
  * 2. --omniform--color--contrast
  */
 
 @mixin defaults {
 	--omniform--color--base: var(--wp--preset--color--base, var(--wp--preset--color--background, var(--wp--preset--color--white, #fff)));
 	--omniform--color--contrast: var(--wp--preset--color--contrast, var(--wp--preset--color--foreground, var(--wp--preset--color--black, #000)));
-	--omniform--color--accent: var(--wp--preset--color--accent, var(--omniform--color--contrast));
+	--omniform--color--accent: var(--wp--custom--color--accent, var(--omniform--color--contrast));
 	--omniform--color--border: rgba(0, 0, 0, 0.25);
 	--omniform--color--border-hover: rgba(0, 0, 0, 1);
 
