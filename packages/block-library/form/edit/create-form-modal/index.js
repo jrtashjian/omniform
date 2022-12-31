@@ -19,7 +19,7 @@ import { useInstanceId } from '@wordpress/compose';
 import { check } from '@wordpress/icons';
 
 import './index.scss';
-import { fieldGroup, typeLock, typeSearch } from '../../../shared/icons';
+import { typeGeneral, typeLock, typeSearch } from '../../../shared/icons';
 
 export default function CreateFormModal( { closeModal, onCreate } ) {
 	const [ title, setTitle ] = useState( '' );
@@ -31,7 +31,7 @@ export default function CreateFormModal( { closeModal, onCreate } ) {
 		{
 			type: 'uncategorized',
 			description: __( 'General forms are used to collect and organize information for processing or storage.', 'omniform' ),
-			icon: fieldGroup,
+			icon: typeGeneral,
 			label: __( 'General', 'omniform' ),
 		},
 		{
