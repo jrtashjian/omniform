@@ -43,8 +43,8 @@
 		--omniform--color--border-hover: rgba(0, 0, 0, 1);
 	}
 
-	font-size: var(--wp--preset--font-size--normal, 16px);
-	line-height: 1.5;
+	// font-size: var(--wp--preset--font-size--normal, 16px);
+	// line-height: 1.5;
 
 	*,
 	*::before {
@@ -65,7 +65,8 @@
 	.omniform-field-label,
 	legend.omniform-field-label {
 		display: inline-block;
-		font-size: var(--wp--preset--font-size--normal, 16px);
+		// font-size: var(--wp--preset--font-size--normal, 16px);
+		font-size: inherit;
 		margin: 0 0 0.5em;
 		padding: 0;
 	}
@@ -91,8 +92,10 @@
 		border: 1px solid var(--omniform--color--border);
 		box-sizing: border-box;
 		display: block;
-		font-size: var(--wp--preset--font-size--normal, 16px);
-		line-height: 1.5;
+		// font-size: var(--wp--preset--font-size--normal, 16px);
+		font-size: inherit;
+		// line-height: 1.5;
+		line-height: inherit;
 		max-width: none;
 		padding: 0.5em 0.75em;
 		margin: 0;
