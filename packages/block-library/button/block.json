@@ -35,7 +35,8 @@
 				"background": true,
 				"text": true
 			}
-		}
+		},
+		"__experimentalSelector": ".wp-block-omniform-button .wp-element-button"
 	},
 	"styles": [
 		{ "name": "fill", "label": "Fill", "isDefault": true },
