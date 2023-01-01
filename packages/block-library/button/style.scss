@@ -14,4 +14,11 @@
 		outline: 0;
 		box-shadow: 0 0 0 2px var(--omniform--color--base), 0 0 0 4px var(--omniform--color--accent);
 	}
+
+	&.is-style-outline > .wp-element-button {
+		border: 2px solid currentcolor;
+		color: currentcolor;
+		background-color: transparent;
+		background-image: none;
+	}
 }

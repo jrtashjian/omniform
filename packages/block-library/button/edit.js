@@ -33,10 +33,9 @@ const Edit = ( {
 	return (
 		<div
 			{ ...blockProps }
-			className={ classnames(
-				blockProps.className,
-				'wp-block-button',
-			) }
+			// Prevent color supports on wrapper.
+			className={ blockProps.className.replace( colorProps.className, '' ) }
+			style={ null }
 		>
 			<RichText
 				identifier="buttonLabel"
@@ -49,7 +48,6 @@ const Edit = ( {
 				style={ {
 					...colorProps.style,
 				} }
-				tagName="button"
 				aria-label={ __( 'Button text', 'omniform' ) }
 				placeholder={ __( 'Add text…', 'omniform' ) }
 				value={ buttonLabel }
