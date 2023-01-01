@@ -12,7 +12,7 @@
 
 	.wp-element-button:focus {
 		outline: 0;
-		box-shadow: 0 0 0 2px var(--omniform--color--base), 0 0 0 4px var(--omniform--color--accent);
+		box-shadow: 0 0 0 2px var(--wp--preset--color--base, var(--wp--preset--color--background, var(--wp--preset--color--white, #fff))), 0 0 0 4px var(--omniform--color--accent);
 	}
 
 	&.is-style-outline > .wp-element-button {
