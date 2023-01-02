@@ -4,12 +4,6 @@
 
 	@include defaults;
 
-	// .wp-element-button,
-	// .wp-block-button__link {
-	// 	color: var(--omniform--color--base);
-	// 	background-color: var(--omniform--color--contrast);
-	// }
-
 	.wp-element-button:focus {
 		outline: 0;
 		box-shadow: 0 0 0 2px var(--wp--preset--color--base, var(--wp--preset--color--background, var(--wp--preset--color--white, #fff))), 0 0 0 4px var(--omniform--color--accent);
