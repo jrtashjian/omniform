@@ -6,7 +6,6 @@ import { kebabCase } from 'lodash';
 /**
  * WordPress dependencies
  */
-
 import { RichText } from '@wordpress/block-editor';
 import { createBlock, getDefaultBlockName } from '@wordpress/blocks';
 import { useEntityProp } from '@wordpress/core-data';

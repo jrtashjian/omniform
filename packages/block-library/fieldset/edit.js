@@ -51,8 +51,8 @@ const Edit = ( {
 				withoutInteractiveFormatting
 				multiple={ false }
 				value={ fieldLabel }
-				onChange={ ( html ) => ! fieldName || fieldName === kebabCase( fieldLabel )
-					? setAttributes( { fieldLabel: html, fieldName: kebabCase( html ) } )
+				onChange={ ( html ) => ! fieldName || fieldName === kebabCase( fieldLabel.replace( /(<([^>]+)>)/gi, '' ) )
+					? setAttributes( { fieldLabel: html, fieldName: kebabCase( html.replace( /(<([^>]+)>)/gi, '' ) ) } )
 					: setAttributes( { fieldLabel: html } )
 				}
 			/>
