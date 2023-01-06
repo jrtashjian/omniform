@@ -31,7 +31,8 @@
 		}
 	},
 	"supports": {
-		"html": false
+		"html": false,
+		"__experimentalSelector": ".wp-block-omniform-field-textarea .omniform-field-control"
 	},
 	"usesContext": [
 		"postId",

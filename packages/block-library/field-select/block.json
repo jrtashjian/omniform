@@ -38,7 +38,8 @@
 		"omniform/fieldSelectName": "fieldName"
 	},
 	"supports": {
-		"html": false
+		"html": false,
+		"__experimentalSelector": ".wp-block-omniform-field-select .omniform-field-control"
 	},
 	"usesContext": [
 		"postId",
