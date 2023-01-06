@@ -2,6 +2,7 @@
 
 .wp-block-omniform-fieldset {
 
+	@include custom-properties;
 	@include defaults;
 	@include field-label;
 

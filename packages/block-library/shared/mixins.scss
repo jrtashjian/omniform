@@ -1,13 +1,13 @@
 /**
- * Custom Properties: color fallback chain:
+ * Color fallback chain:
  *
- * BASE: var(--omniform--color--base)
+ * BASE:
  * 1. --wp--preset--color--base
  * 2. --wp--preset--color--background
  * 3. --wp--preset--color--white
  * 4. #fff
  *
- * CONTRAST: var(--omniform--color--contrast)
+ * CONTRAST:
  * 1. --wp--preset--color--contrast
  * 2. --wp--preset--color--foreground
  * 3. --wp--preset--color--black
@@ -15,34 +15,42 @@
  *
  * ACCENT:
  * 1. --wp--custom--color--accent
- * 2. --omniform--color--contrast
+ * 2. $contrast-color (or $base-color if style is inverted)
  */
 
-@mixin defaults {
-	--omniform--color--base: var(--wp--preset--color--base, var(--wp--preset--color--background, var(--wp--preset--color--white, #fff)));
-	--omniform--color--contrast: var(--wp--preset--color--contrast, var(--wp--preset--color--foreground, var(--wp--preset--color--black, #000)));
-	--omniform--color--accent: var(--wp--custom--color--accent, var(--omniform--color--contrast));
-	--omniform--color--border: rgba(0, 0, 0, 0.25);
-	--omniform--color--border-hover: rgba(0, 0, 0, 0.75);
+$base-color: var(--wp--preset--color--base, var(--wp--preset--color--background, var(--wp--preset--color--white, #fff)));
+$contrast-color: var(--wp--preset--color--contrast, var(--wp--preset--color--foreground, var(--wp--preset--color--black, #000)));
+
+$focus-color: var(--wp--custom--color--accent, #{$contrast-color});
+
+$light-theme-border: rgba(0, 0, 0, 0.25);
+$light-theme-border-hover: rgba(0, 0, 0, 0.75);
+
+$dark-theme-border: rgba(255, 255, 255, 0.25);
+$dark-theme-border-hover: rgba(255, 255, 255, 0.75);
+
+@mixin custom-properties {
+	--omniform--color--base: #{$base-color};
+	--omniform--color--contrast: #{$contrast-color};
+	--omniform--color--accent: var(--wp--custom--color--accent, #{$contrast-color});
+
+	--omniform--color--border: #{$light-theme-border};
+	--omniform--color--border-hover: #{$light-theme-border-hover};
+
+	body.is-dark-theme & {
+		--omniform--color--border: #{$dark-theme-border};
+		--omniform--color--border-hover: #{$dark-theme-border-hover};
+	}
 
 	.is-style-inverted &,
 	body.is-dark-theme .is-style-inverted & {
-		--omniform--color--base: var(--wp--preset--color--contrast, var(--wp--preset--color--foreground, var(--wp--preset--color--black, #000)));
-		--omniform--color--contrast: var(--wp--preset--color--base, var(--wp--preset--color--background, var(--wp--preset--color--white, #fff)));
-		--omniform--color--border: rgba(255, 255, 255, 0.25);
-		--omniform--color--border-hover: rgba(255, 255, 255, 0.75);
+		--omniform--color--base: #{$contrast-color};
+		--omniform--color--contrast: #{$base-color};
+		--omniform--color--accent: var(--wp--custom--color--accent, #{$base-color});
 	}
+}
 
-	body.is-dark-theme & {
-		--omniform--color--border: rgba(255, 255, 255, 0.25);
-		--omniform--color--border-hover: rgba(255, 255, 255, 0.75);
-	}
-
-	body.is-dark-theme .is-style-inverted & {
-		--omniform--color--border: rgba(0, 0, 0, 0.25);
-		--omniform--color--border-hover: rgba(0, 0, 0, 0.75);
-	}
-
+@mixin defaults {
 	// font-size: var(--wp--preset--font-size--normal, 16px);
 	// line-height: 1.5;
 
@@ -104,7 +112,7 @@
 
 		&:focus {
 			outline: 0;
-			box-shadow: 0 0 0 2px var(--wp--preset--color--base, var(--wp--preset--color--background, var(--wp--preset--color--white, #fff))), 0 0 0 4px var(--omniform--color--accent);
+			box-shadow: 0 0 0 2px #{$base-color}, 0 0 0 4px #{$focus-color};
 			border-color: var(--omniform--color--base);
 		}
 	}

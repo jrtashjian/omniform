@@ -2,6 +2,7 @@
 
 .wp-block-omniform-field-input {
 
+	@include custom-properties;
 	@include defaults;
 	@include field-label;
 	@include field-control;
@@ -104,7 +105,7 @@
 				&::-moz-range-thumb,
 				&::-webkit-slider-thumb {
 					outline: 0;
-					box-shadow: 0 0 0 2px var(--omniform--color--base), 0 0 0 4px var(--omniform--color--accent);
+					box-shadow: 0 0 0 2px #{$base-color}, 0 0 0 4px #{$focus-color};
 				}
 			}
 

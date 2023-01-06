@@ -2,6 +2,7 @@
 
 .wp-block-omniform-field-textarea {
 
+	@include custom-properties;
 	@include defaults;
 	@include field-label;
 	@include field-control;
