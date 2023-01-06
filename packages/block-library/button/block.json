@@ -31,11 +31,13 @@
 		"align": true,
 		"html": false,
 		"color": {
+			"gradients": true,
 			"__experimentalDefaultControls": {
 				"background": true,
 				"text": true
 			}
 		},
+		"__experimentalBorder": true,
 		"__experimentalSelector": ".wp-block-omniform-button .wp-element-button"
 	},
 	"styles": [
