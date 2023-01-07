@@ -1,5 +1,5 @@
 /* global FormData */
-import tinycolor from 'tinycolor2';
+import { colord } from 'colord';
 import apiFetch from '@wordpress/api-fetch';
 
 ( function() {
@@ -24,18 +24,20 @@ import apiFetch from '@wordpress/api-fetch';
 				method,
 				body,
 			} ).then( ( response ) => {
+				document.getElementsByClassName( 'omniform-response-message' )[ 0 ].innerText = 'Thank you for signing up!';
 				console.debug( 'response', response );
 			} ).catch( ( error ) => {
+				document.getElementsByClassName( 'omniform-response-message' )[ 0 ].innerText = 'Something went wrong...';
 				console.debug( 'error', error );
 			} );
 		};
 
-		// document.querySelectorAll( 'form.wp-block-omniform-form' )
-		// 	.forEach( ( form ) => form.addEventListener( 'submit', formResponseHandler ) );
+		document.querySelectorAll( 'form.wp-block-omniform-form' )
+			.forEach( ( form ) => form.addEventListener( 'submit', formResponseHandler ) );
 
 		const isDark = ( elm ) => {
 			const context = document.defaultView.getComputedStyle( elm, null );
-			return tinycolor( context.getPropertyValue( 'color' ) ).isDark();
+			return colord( context.getPropertyValue( 'color' ) ).isDark();
 		};
 
 		document.querySelectorAll( 'body' ).forEach(
