@@ -23,11 +23,11 @@
 	}
 
 
-	&.is-selected.omniform-field-select .omniform-field-control,
-	&.has-child-selected.omniform-field-select .omniform-field-control,
-	&.type-multiple.omniform-field-select .omniform-field-control {
+	&.omniform-field-select.is-selected .omniform-field-control,
+	&.omniform-field-select.has-child-selected .omniform-field-control,
+	&.omniform-field-select.type-multiple .omniform-field-control {
 
-		background-image: none;
+		background-image: none !important;
 	}
 
 	&.type-multiple .omniform-field-control > .omniform-select-options-container > .wp-block:first-child {
