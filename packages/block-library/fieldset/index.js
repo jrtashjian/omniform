@@ -60,7 +60,7 @@ registerBlockType( name, {
 			{
 				type: 'block',
 				blocks: [ 'omniform/field-select' ],
-				transform: ( { fieldLabel, fieldName }, innerBlocks ) => {
+				transform: ( { fieldLabel, fieldName, isMultiple }, innerBlocks ) => {
 					const options = [];
 
 					const getOptionLabels = ( block ) => {
@@ -74,7 +74,10 @@ registerBlockType( name, {
 					return createBlock(
 						name,
 						{ fieldLabel, fieldName },
-						options.map( ( label ) => createBlock( 'omniform/field-input', { fieldType: 'radio', fieldLabel: label } ) )
+						options.map( ( label ) => createBlock( 'omniform/field-input', {
+							fieldType: isMultiple ? 'checkbox' : 'radio',
+							fieldLabel: label,
+						} ) )
 					);
 				},
 			},
