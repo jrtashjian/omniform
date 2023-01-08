@@ -44,7 +44,7 @@ const Edit = ( props ) => {
 	}, {
 		allowedBlocks: [ 'omniform/select-option' ],
 		template: [
-			[ 'omniform/select-option', { fieldLabel: 'Option One' } ],
+			[ 'omniform/select-option' ],
 		],
 		renderAppender: false,
 	} );
