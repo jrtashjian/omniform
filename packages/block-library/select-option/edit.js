@@ -31,10 +31,10 @@ const Edit = ( props ) => {
 				identifier="fieldLabel"
 				aria-label={ __( 'Help text', 'omniform' ) }
 				placeholder={ __( 'Write the option text…', 'omniform' ) }
-				allowedFormats={ [] }
-				withoutInteractiveFormatting
 				value={ fieldLabel }
 				onChange={ ( html ) => setAttributes( { fieldLabel: html } ) }
+				withoutInteractiveFormatting
+				allowedFormats={ [] }
 				onSplit={ ( value, isOriginal ) => {
 					let newAttributes;
 

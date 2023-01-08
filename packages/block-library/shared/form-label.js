@@ -31,13 +31,14 @@ const FormLabel = ( { originBlockProps, isGrouped, isOptionInput, isRadioInput }
 		<div className="omniform-field-label">
 			<RichText
 				identifier="fieldLabel"
-				tagName="span"
 				placeholder={ __( 'Enter a label for the field…', 'omniform' ) }
 				value={ originBlockProps.attributes.fieldLabel }
 				onChange={ ( html ) => ! originBlockProps.attributes.fieldName || originBlockProps.attributes.fieldName === kebabCase( originBlockProps.attributes.fieldLabel )
 					? originBlockProps.setAttributes( { fieldLabel: html, fieldName: kebabCase( html.replace( /(<([^>]+)>)/gi, '' ) ) } )
 					: originBlockProps.setAttributes( { fieldLabel: html } )
 				}
+				withoutInteractiveFormatting
+				allowedFormats={ [ 'core/bold', 'core/italic', 'core/image' ] }
 				// When hitting enter, place a new insertion point. This makes adding field a lot easier.
 				onSplit={ ( value, isOriginal ) => {
 					let block;
@@ -70,6 +71,8 @@ const FormLabel = ( { originBlockProps, isGrouped, isOptionInput, isRadioInput }
 					placeholder={ __( 'Enter a required field label…', 'omniform' ) }
 					value={ metaRequiredLabel }
 					onChange={ updateMetaRequiredLabel }
+					withoutInteractiveFormatting
+					allowedFormats={ [ 'core/bold', 'core/italic', 'core/image' ] }
 				/>
 			) }
 		</div>

@@ -68,10 +68,10 @@ const Edit = ( props ) => {
 								? undefined
 								: __( 'Enter a placeholder…', 'omniform' )
 						}
-						allowedFormats={ [] }
-						withoutInteractiveFormatting
 						value={ fieldPlaceholder }
 						onChange={ ( html ) => setAttributes( { fieldPlaceholder: html } ) }
+						withoutInteractiveFormatting
+						allowedFormats={ [] }
 					/>
 				</div>
 			</ResizableBox>

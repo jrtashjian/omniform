@@ -79,10 +79,10 @@ const Edit = ( props ) => {
 							? undefined
 							: richTextPlaceholder
 					}
-					allowedFormats={ [] }
-					withoutInteractiveFormatting
 					value={ isHiddenInput ? fieldValue : fieldPlaceholder }
 					onChange={ richTextOnChange }
+					withoutInteractiveFormatting
+					allowedFormats={ [] }
 					// When hitting enter, place a new insertion point. This makes adding field a lot easier.
 					onSplit={ ( _value, isOriginal ) => {
 						const block = isOriginal

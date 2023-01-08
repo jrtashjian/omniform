@@ -36,13 +36,14 @@ const Edit = ( {
 				className="omniform-field-label"
 				aria-label={ __( 'Legend text', 'omniform' ) }
 				placeholder={ __( 'Enter a title to the field…', 'omniform' ) }
-				withoutInteractiveFormatting
 				multiple={ false }
 				value={ fieldLabel }
 				onChange={ ( html ) => ! fieldName || fieldName === kebabCase( fieldLabel.replace( /(<([^>]+)>)/gi, '' ) )
 					? setAttributes( { fieldLabel: html, fieldName: kebabCase( html.replace( /(<([^>]+)>)/gi, '' ) ) } )
 					: setAttributes( { fieldLabel: html } )
 				}
+				withoutInteractiveFormatting
+				allowedFormats={ [ 'core/bold', 'core/italic', 'core/image' ] }
 			/>
 			{ innerBlockProps.children }
 		</div>

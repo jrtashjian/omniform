@@ -103,10 +103,10 @@ const Edit = ( props ) => {
 								? undefined
 								: __( 'Enter a placeholder…', 'omniform' )
 						}
-						allowedFormats={ [] }
-						withoutInteractiveFormatting
 						value={ fieldPlaceholder }
 						onChange={ ( html ) => setAttributes( { fieldPlaceholder: html } ) }
+						withoutInteractiveFormatting
+						allowedFormats={ [] }
 						// When hitting enter, place a new insertion point. This makes adding field a lot easier.
 						onSplit={ ( _value, isOriginal ) => {
 							const block = isOriginal

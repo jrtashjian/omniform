@@ -59,8 +59,10 @@ const Edit = ( {
 				aria-label={ __( 'Button text', 'omniform' ) }
 				placeholder={ __( 'Add text…', 'omniform' ) }
 				value={ buttonLabel }
-				withoutInteractiveFormatting
 				onChange={ ( value ) => setAttributes( { buttonLabel: value } ) }
+				preserveWhiteSpace
+				withoutInteractiveFormatting
+				allowedFormats={ [ 'core/bold', 'core/italic', 'core/image' ] }
 				onSplit={ ( value, isOriginal ) => {
 					let block;
 
