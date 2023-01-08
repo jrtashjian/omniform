@@ -113,6 +113,12 @@ abstract class BaseFieldBlock extends BaseBlock {
 		$allowed_html = array(
 			'strong' => array(),
 			'em'     => array(),
+			'img'    => array(
+				'class' => true,
+				'style' => true,
+				'src'   => true,
+				'alt'   => true,
+			),
 		);
 
 		$label_required = null;
@@ -169,15 +175,23 @@ abstract class BaseFieldBlock extends BaseBlock {
 		);
 	}
 
+	public function getControlNameParts() {
+		return $this->isGrouped()
+			? array( $this->getFieldGroupName(), $this->getFieldName() )
+			: array( $this->getFieldName() );
+	}
+
 	/**
 	 * The form control's name attribute.
 	 *
 	 * @return string
 	 */
 	public function getControlName() {
-		return $this->isGrouped()
-			? $this->getFieldGroupName() . '[' . $this->getFieldName() . ']'
-			: $this->getFieldName();
+		$parts = $this->getControlNameParts();
+
+		return 2 === count( $parts )
+			? sprintf( '%s[%s]', $parts[0], $parts[1] )
+			: $parts[0];
 	}
 
 	/**

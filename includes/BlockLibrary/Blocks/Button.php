@@ -45,6 +45,12 @@ class Button extends BaseBlock {
 		$allowed_html = array(
 			'strong' => array(),
 			'em'     => array(),
+			'img'    => array(
+				'class' => true,
+				'style' => true,
+				'src'   => true,
+				'alt'   => true,
+			),
 		);
 
 		return sprintf(
