@@ -49,14 +49,16 @@ const Edit = ( props ) => {
 	const registry = useRegistry();
 
 	const {
-		getBlockRootClientId,
-		getBlockOrder,
 		getBlockIndex,
+		getBlockListSettings,
+		getBlockOrder,
+		getBlockRootClientId,
 	} = useSelect( blockEditorStore );
 
 	const {
-		replaceBlock,
 		moveBlocksToPosition,
+		replaceBlock,
+		updateBlockListSettings,
 	} = useDispatch( blockEditorStore );
 
 	const onMerge = ( forward ) => {
@@ -78,6 +80,7 @@ const Edit = ( props ) => {
 
 			// Convert select-group to select-option.
 			replaceBlock( clientId, createBlock( 'omniform/select-option', attributes ) );
+			updateBlockListSettings( clientId, getBlockListSettings( parentId ) );
 		}, [] );
 	};
 
@@ -113,7 +116,7 @@ const Edit = ( props ) => {
 					} }
 					onMerge={ onMerge }
 					onReplace={ onReplace }
-					onRemove={ onRemove }
+					// onRemove={ onRemove }
 				/>
 			</HStack>
 			{ ( isSelected || hasSelectedInnerBlock ) && (
