@@ -13,7 +13,7 @@ import {
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { chevronDown, chevronRight } from '@wordpress/icons';
-import { createBlock } from '@wordpress/blocks';
+import { cloneBlock, createBlock } from '@wordpress/blocks';
 import { useDispatch, useSelect, useRegistry } from '@wordpress/data';
 
 const Edit = ( props ) => {
@@ -49,6 +49,7 @@ const Edit = ( props ) => {
 	const registry = useRegistry();
 
 	const {
+		getBlock,
 		getBlockIndex,
 		getBlockListSettings,
 		getBlockOrder,
@@ -97,16 +98,17 @@ const Edit = ( props ) => {
 					value={ fieldLabel }
 					onChange={ ( html ) => setAttributes( { fieldLabel: html } ) }
 					onSplit={ ( value, isOriginal ) => {
-						let newAttributes;
+						let block;
 
 						if ( isOriginal || value ) {
-							newAttributes = {
-								...attributes,
+							block = cloneBlock( getBlock( clientId ), {
 								fieldLabel: value.trim(),
-							};
+							} );
+						} else {
+							block = createBlock( props.name, {
+								fieldLabel: value.trim(),
+							} );
 						}
-
-						const block = createBlock( props.name, newAttributes );
 
 						if ( isOriginal ) {
 							block.clientId = clientId;
@@ -116,7 +118,7 @@ const Edit = ( props ) => {
 					} }
 					onMerge={ onMerge }
 					onReplace={ onReplace }
-					// onRemove={ onRemove }
+					onRemove={ onRemove }
 				/>
 			</HStack>
 			{ ( isSelected || hasSelectedInnerBlock ) && (
