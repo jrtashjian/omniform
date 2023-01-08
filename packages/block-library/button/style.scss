@@ -6,7 +6,15 @@
 	@include defaults;
 
 	.wp-element-button {
+		align-items: center;
+		display: inline-flex;
+		gap: 0.5em;
 		word-break: normal;
+
+		strong,
+		em {
+			display: contents;
+		}
 	}
 
 	.wp-element-button:focus {

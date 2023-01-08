@@ -72,7 +72,6 @@ $dark-theme-border-hover: rgba(255, 255, 255, 0.75);
 
 	.omniform-field-label,
 	legend.omniform-field-label {
-		display: inline-block;
 		// font-size: var(--wp--preset--font-size--normal, 16px);
 		font-size: inherit;
 		margin: 0 0 0.5em;
@@ -82,10 +81,22 @@ $dark-theme-border-hover: rgba(255, 255, 255, 0.75);
 	.omniform-field-label .omniform-field-required {
 		padding: 0 0.25em;
 		color: var(--wp--preset--color--vivid-red, "#cf2e2e");
+	}
 
-		img {
-			display: inline-block;
-			vertical-align: middle;
+	.omniform-field-label,
+	.omniform-field-required,
+	legend.omniform-field-label {
+
+		&,
+		.rich-text {
+			align-items: center;
+			display: inline-flex;
+			gap: 0.25em;
+		}
+
+		strong,
+		em {
+			display: contents;
 		}
 	}
 }
