@@ -58,12 +58,20 @@ const Edit = ( props ) => {
 		template: [ [ 'omniform/select-option' ] ],
 	} );
 
+	// Indent the option listing select-group blocks are found.
+	const hasNestedOptions = useSelect( ( select ) => {
+		const blocksSelectGroup = select( blockEditorStore ).getBlocks( clientId )
+			.filter( ( block ) => block.name === 'omniform/select-group' );
+		return !! blocksSelectGroup.length;
+	} );
+
 	return (
 		<div
 			{ ...blockProps }
 			className={ classNames( blockProps.className, 'omniform-field-select', {
 				[ `type-multiple` ]: isMultiple,
 				[ `field-required` ]: isRequired,
+				[ `options-nested` ]: hasNestedOptions,
 			} ) }
 		>
 			{ ( ! isLabelHidden || isSelected ) && (

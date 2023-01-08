@@ -1,8 +1,11 @@
 @import "~@wordpress/base-styles/variables";
 
 .wp-block-omniform-select-option {
-	margin-left: calc($icon-size + $grid-unit);
 	margin-block-start: 0.75em;
+
+	.options-nested & {
+		margin-left: calc($icon-size + $grid-unit);
+	}
 
 	.rich-text {
 		display: inline-block;
