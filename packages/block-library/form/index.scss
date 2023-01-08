@@ -3,6 +3,17 @@
 @import "~@wordpress/base-styles/breakpoints";
 @import "../shared/mixins";
 
+.wp-block-omniform-form {
+
+	&.is-selected .block-list-appender {
+
+		&,
+		> .block-editor-inserter {
+			pointer-events: all !important;
+		}
+	}
+}
+
 .block-editor-form__selection-modal {
 
 	.components-modal__frame {
