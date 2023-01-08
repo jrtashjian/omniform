@@ -43,10 +43,7 @@ const Edit = ( props ) => {
 		className: 'omniform-select-options-container',
 	}, {
 		allowedBlocks: [ 'omniform/select-option' ],
-		template: [
-			[ 'omniform/select-option' ],
-		],
-		renderAppender: false,
+		template: [ [ 'omniform/select-option' ] ],
 	} );
 
 	const registry = useRegistry();

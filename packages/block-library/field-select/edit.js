@@ -10,7 +10,6 @@ import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
 import {
 	BlockControls,
-	InnerBlocks,
 	RichText,
 	useBlockProps,
 	useInnerBlocksProps,
@@ -56,13 +55,7 @@ const Edit = ( props ) => {
 		className: 'omniform-select-options-container',
 	}, {
 		allowedBlocks: [ 'omniform/select-option', 'omniform/select-group' ],
-		template: [
-			[ 'omniform/select-option', { fieldLabel: 'Option One' } ],
-			[ 'omniform/select-option', { fieldLabel: 'Option Two' } ],
-			[ 'omniform/select-option', { fieldLabel: 'Option Three' } ],
-		],
-		__experimentalCaptureToolbars: true,
-		renderAppender: ( isSelected || hasSelectedInnerBlock ) && InnerBlocks.ButtonBlockAppender,
+		template: [ [ 'omniform/select-option' ] ],
 	} );
 
 	return (

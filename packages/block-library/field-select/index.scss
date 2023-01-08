@@ -3,7 +3,6 @@
 .wp-block-omniform-field-select {
 
 	> .omniform-field-control {
-		max-height: 200px;
 		overflow: auto;
 
 		&.components-resizable-box__container {
@@ -18,7 +17,7 @@
 
 		> .omniform-select-options-container {
 			// 1px spacing so the is-selected box-shadow is not cutoff from overflow.
-			padding: 1px;
+			padding: 1px 1.25em 1px 1px;
 		}
 	}
 
@@ -26,21 +25,10 @@
 	&.omniform-field-select.is-selected .omniform-field-control,
 	&.omniform-field-select.has-child-selected .omniform-field-control,
 	&.omniform-field-select.type-multiple .omniform-field-control {
-
 		background-image: none !important;
 	}
 
 	&.type-multiple .omniform-field-control > .omniform-select-options-container > .wp-block:first-child {
 		margin-block-start: 0;
-	}
-
-	.block-list-appender {
-		position: unset;
-		padding: $grid-unit 0;
-		margin-block-start: 0.75em;
-	}
-
-	.block-editor-button-block-appender.components-button {
-		padding: $grid-unit;
 	}
 }
