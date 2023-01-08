@@ -6,9 +6,13 @@ import { kebabCase } from 'lodash';
 /**
  * WordPress dependencies
  */
-import { RichText } from '@wordpress/block-editor';
-import { createBlock, getDefaultBlockName } from '@wordpress/blocks';
+import {
+	RichText,
+	store as blockEditorStore,
+} from '@wordpress/block-editor';
+import { cloneBlock, createBlock, getDefaultBlockName } from '@wordpress/blocks';
 import { useEntityProp } from '@wordpress/core-data';
+import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 
 const FormLabel = ( { originBlockProps, isGrouped, isOptionInput, isRadioInput } ) => {
@@ -20,6 +24,8 @@ const FormLabel = ( { originBlockProps, isGrouped, isOptionInput, isRadioInput }
 	const updateMetaRequiredLabel = ( newValue ) => {
 		setMeta( { ...meta, required_label: newValue } );
 	};
+
+	const { getBlock } = useSelect( blockEditorStore );
 
 	return (
 		<div className="omniform-field-label">
@@ -37,8 +43,7 @@ const FormLabel = ( { originBlockProps, isGrouped, isOptionInput, isRadioInput }
 					let block;
 
 					if ( isOriginal || value ) {
-						block = createBlock( originBlockProps.name, {
-							...originBlockProps.attributes,
+						block = cloneBlock( getBlock( originBlockProps.clientId ), {
 							fieldLabel: value,
 						} );
 					} else {
