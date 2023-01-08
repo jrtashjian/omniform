@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { registerBlockType } from '@wordpress/blocks';
+import { createBlock, registerBlockType } from '@wordpress/blocks';
 import { decodeEntities } from '@wordpress/html-entities';
 
 /**
@@ -38,4 +38,31 @@ registerBlockType( name, {
 	},
 	// Get block name from the option value.
 	__experimentalLabel: ( { fieldLabel } ) => fieldLabel && decodeEntities( fieldLabel ),
+
+	transforms: {
+		from: [
+			{
+				type: 'block',
+				isMultiBlock: true,
+				blocks: [ 'omniform/field-input' ],
+				isMatch: ( inputs ) => inputs.every( ( { fieldType } ) => fieldType === 'radio' ),
+				transform: ( options ) => createBlock( name, {},
+					options.map( ( { fieldLabel } ) =>
+						createBlock( 'omniform/select-option', { fieldLabel } )
+					)
+				),
+			},
+			{
+				type: 'block',
+				isMultiBlock: true,
+				blocks: [ 'omniform/field-input' ],
+				isMatch: ( inputs ) => inputs.every( ( { fieldType } ) => fieldType === 'checkbox' ),
+				transform: ( options ) => createBlock( name, { isMultiple: true },
+					options.map( ( { fieldLabel } ) =>
+						createBlock( 'omniform/select-option', { fieldLabel } )
+					)
+				),
+			},
+		],
+	},
 } );
