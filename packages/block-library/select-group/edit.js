@@ -14,7 +14,7 @@ import {
 import { __ } from '@wordpress/i18n';
 import { chevronDown, chevronRight } from '@wordpress/icons';
 import { createBlock } from '@wordpress/blocks';
-import { useSelect } from '@wordpress/data';
+import { useDispatch, useSelect, useRegistry } from '@wordpress/data';
 
 const Edit = ( props ) => {
 	const {
@@ -49,6 +49,41 @@ const Edit = ( props ) => {
 		renderAppender: false,
 	} );
 
+	const registry = useRegistry();
+
+	const {
+		getBlockRootClientId,
+		getBlockOrder,
+		getBlockIndex,
+	} = useSelect( blockEditorStore );
+
+	const {
+		replaceBlock,
+		moveBlocksToPosition,
+	} = useDispatch( blockEditorStore );
+
+	const onMerge = ( forward ) => {
+		if ( forward ) {
+			return mergeBlocks( forward );
+		}
+
+		const parentId = getBlockRootClientId( clientId );
+		const nextOptionIndex = getBlockIndex( clientId ) + 1;
+
+		registry.batch( () => {
+			// Move existing omniform/select-option blocks out of group.
+			moveBlocksToPosition(
+				getBlockOrder( clientId ),
+				clientId,
+				parentId,
+				nextOptionIndex
+			);
+
+			// Convert select-group to select-option.
+			replaceBlock( clientId, createBlock( 'omniform/select-option', attributes ) );
+		}, [] );
+	};
+
 	return (
 		<div { ...blockProps }>
 			<HStack alignment="left">
@@ -79,7 +114,7 @@ const Edit = ( props ) => {
 
 						return block;
 					} }
-					onMerge={ mergeBlocks }
+					onMerge={ onMerge }
 					onReplace={ onReplace }
 					onRemove={ onRemove }
 				/>
