@@ -46,6 +46,7 @@ const FormLabel = ( { originBlockProps, isGrouped, isOptionInput, isRadioInput }
 					if ( isOriginal || value ) {
 						block = cloneBlock( getBlock( originBlockProps.clientId ), {
 							fieldLabel: value,
+							fieldName: kebabCase( value.replace( /(<([^>]+)>)/gi, '' ) ),
 						} );
 					} else {
 						block = isGrouped && isOptionInput
