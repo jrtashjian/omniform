@@ -13,13 +13,15 @@
     "autoload": {
         "psr-4": {
             "OmniForm\\": "includes"
-        }
+        },
+        "classmap": [
+            "vendor_prefixed/"
+        ]
     },
     "require": {
         "illuminate/container": "^8.83"
     },
     "require-dev": {
-        "coenjacobs/mozart": "^0.7.1",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
         "johnpbloch/wordpress-core": "^6.1",
         "phpcompatibility/phpcompatibility-wp": "^2.1",
@@ -37,14 +39,6 @@
         },
         "sort-packages": true
     },
-    "extra": {
-        "mozart": {
-            "dep_namespace": "OmniForm\\Dependencies\\",
-            "dep_directory": "/includes/Dependencies/",
-            "classmap_directory": "/includes/classes/dependencies/",
-            "classmap_prefix": "OmniForm_"
-        }
-    },
     "scripts": {
         "lint": "phpcs --standard=phpcs.xml.dist",
         "format": "phpcbf --standard=phpcs.xml.dist --report-summary --report-source",
@@ -56,15 +50,12 @@
             "wp dist-archive ./",
             "@composer install"
         ],
-        "post-install-cmd": "composer mozart-compose",
-        "post-update-cmd": "composer mozart-compose",
-        "mozart-compose": [
-            "\"vendor/bin/mozart\" compose",
-            "composer dump-autoload --optimize",
-            "@php -r \"copy('https://raw.githubusercontent.com/php-fig/container/master/LICENSE', 'includes/Dependencies/Psr/Container/LICENSE');\"",
-            "find ./includes/Dependencies/Illuminate -type d ! -name Illuminate ! -name Contracts ! -name Container -exec rm -rf {} 2> /dev/null \\; || true",
-            "find ./includes/Dependencies/Psr -type d ! -name Psr ! -name Container -exec rm -rf {} 2> /dev/null \\; || true",
-            "rm -rf ./includes/classes"
+        "phpscoper": [
+            "rm -rf ./vendor ./vendor_prefixed",
+            "@composer install --no-autoloader --no-dev --prefer-dist",
+            "php-scoper add-prefix --prefix='OmniForm\\Dependencies' --output-dir=./vendor_prefixed --force",
+            "rm -rf ./vendor",
+            "@composer dump-autoload --optimize"
         ]
     }
 }

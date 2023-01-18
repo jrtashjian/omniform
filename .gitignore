@@ -7,8 +7,9 @@ _scratchpad
 
 npm-debug.log
 node_modules/
-vendor/
-build/
+/vendor/
+/vendor_prefixed/
+/build/
 
 phpunit/coverage/
 .phpunit.result.cache
