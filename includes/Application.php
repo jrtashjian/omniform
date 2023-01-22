@@ -7,12 +7,20 @@
 
 namespace OmniForm;
 
-use OmniForm\Dependencies\Illuminate\Container\Container;
+use OmniForm\Dependencies\League\Container\Container;
+use OmniForm\Dependencies\League\Container\DefinitionContainerInterface;
 
 /**
  * The Application class.
  */
 class Application extends Container {
+	/**
+	 * The current globally available container (if any).
+	 *
+	 * @var static
+	 */
+	protected static $instance;
+
 	/**
 	 * The plugin version.
 	 *
@@ -35,52 +43,26 @@ class Application extends Container {
 	protected $base_url;
 
 	/**
-	 * Indicates if the plugin has "booted".
+	 * Get the globally available instance of the container.
 	 *
-	 * @var bool
+	 * @return static
 	 */
-	protected $booted = false;
-
-	/**
-	 * All of the registered service providers.
-	 *
-	 * @var ServiceProvider[]
-	 */
-	protected $service_providers = array();
-
-	/**
-	 * All of the registered service providers.
-	 *
-	 * @var ServiceProvider[]
-	 */
-	protected $loaded_providers = array();
-
-	/**
-	 * Create a new Application instance.
-	 *
-	 * @param string|null $plugin_file The full path to the main plugin file.
-	 */
-	public function __construct( $plugin_file = null ) {
-		if ( $plugin_file ) {
-			$this->setBasePath( $plugin_file );
+	public static function getInstance() {
+		if ( \is_null( static::$instance ) ) {
+			static::$instance = new static();
 		}
-
-		$this->registerBaseBindings();
+		return static::$instance;
 	}
 
 	/**
-	 * Register the basic bindings into the container.
+	 * Set the shared instance of the container.
+	 *
+	 * @param  \OmniForm\Dependencies\League\Container\DefinitionContainerInterface|null $container The Dependency Injection Container
+	 *
+	 * @return \OmniForm\Dependencies\League\Container\DefinitionContainerInterface|static
 	 */
-	protected function registerBaseBindings() {
-		static::setInstance( $this );
-
-		// Set this instance as the 'app'.
-		$this->instance( 'app', $this );
-
-		// Alias parameter type hints so the 'app' instance is injected.
-		$this->alias( 'app', self::class );
-		$this->alias( 'app', Dependencies\Illuminate\Container\Container::class );
-		$this->alias( 'app', Dependencies\Psr\Container\ContainerInterface::class );
+	public static function setInstance( DefinitionContainerInterface $container = null ) {
+		return static::$instance = $container;
 	}
 
 	/**
@@ -122,147 +104,6 @@ class Application extends Container {
 	 */
 	public function baseUrl( $path = '' ) {
 		return rtrim( $this->base_url, '/' ) . ( '' !== $path ? '/' . ltrim( $path, '/' ) : '' );
-	}
-
-	/**
-	 * Register a service provider with the application.
-	 *
-	 * @param ServiceProvider|string $provider service provider.
-	 * @param bool                   $force force registration if already registered.
-	 *
-	 * @return ServiceProvider
-	 */
-	public function register( $provider, $force = false ) {
-		$registered = $this->getProvider( $provider );
-		if ( $registered && ! $force ) {
-			return $registered;
-		}
-
-		// If the given "provider" is a string, we will resolve it, passing in the
-		// application instance automatically for the developer. This is simply
-		// a more convenient way of specifying your service provider classes.
-		if ( is_string( $provider ) ) {
-			$provider = $this->resolveProvider( $provider );
-		}
-
-		$provider->register();
-
-		// If there are bindings / singletons set as properties on the provider we
-		// will spin through them and register them with the application, which
-		// serves as a convenience layer while registering a lot of bindings.
-		if ( property_exists( $provider, 'bindings' ) ) {
-			foreach ( $provider->bindings as $key => $value ) {
-				$this->bind( $key, $value );
-			}
-		}
-
-		if ( property_exists( $provider, 'singletons' ) ) {
-			foreach ( $provider->singletons as $key => $value ) {
-				$this->singleton( $key, $value );
-			}
-		}
-
-		$this->markAsRegistered( $provider );
-
-		// If the application has already booted, we will call this boot method on
-		// the provider class so it has an opportunity to do its boot logic and
-		// will be ready for any usage by this developer's application logic.
-		if ( $this->isBooted() ) {
-			$this->bootProvider( $provider );
-		}
-
-		return $provider;
-	}
-
-	/**
-	 * Resolve a service provider instance from the class name.
-	 *
-	 * @param string $provider Class name to resolve.
-	 *
-	 * @return ServiceProvider
-	 */
-	public function resolveProvider( $provider ) {
-		return new $provider( $this );
-	}
-
-	/**
-	 * Mark the given provider as registered.
-	 *
-	 * @param ServiceProvider|string $provider service provider.
-	 */
-	protected function markAsRegistered( $provider ) {
-		$this->service_providers[] = $provider;
-
-		$this->loaded_providers[ get_class( $provider ) ] = true;
-	}
-
-	/**
-	 * Determine if the application has booted.
-	 *
-	 * @return bool
-	 */
-	public function isBooted() {
-		return $this->booted;
-	}
-
-	/**
-	 * Boot the application's service providers.
-	 */
-	public function boot() {
-		if ( $this->isBooted() ) {
-			return;
-		}
-
-		array_walk(
-			$this->service_providers,
-			function( $p ) {
-				$this->bootProvider( $p );
-			}
-		);
-
-		$this->booted = true;
-	}
-
-	/**
-	 * Boot the given service provider.
-	 *
-	 * @param ServiceProvider $provider service provider.
-	 */
-	protected function bootProvider( ServiceProvider $provider ) {
-		if ( method_exists( $provider, 'boot' ) ) {
-			$this->call( array( $provider, 'boot' ) );
-		}
-	}
-
-	/**
-	 * Get the registered service provider instance if it exists.
-	 *
-	 * @param ServiceProvider|string $provider service provider.
-	 *
-	 * @return ServiceProvider|null
-	 */
-	public function getProvider( $provider ) {
-		return array_values( $this->getProviders( $provider ) )[0] ?? null;
-	}
-
-	/**
-	 * Get the registered service provider instances if any exist.
-	 *
-	 * @param ServiceProvider|string $provider service provider.
-	 *
-	 * @return array
-	 */
-	public function getProviders( $provider ) {
-		$name = is_string( $provider ) ? $provider : get_class( $provider );
-
-		$providers = array_filter(
-			$this->service_providers,
-			function( $value ) use ( $name ) {
-				return $value instanceof $name;
-			}
-		);
-
-		return $providers;
 	}
 
 	/**

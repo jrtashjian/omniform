@@ -41,7 +41,7 @@ require_once dirname( __FILE__ ) . '/vendor/autoload.php';
 /**
  * Create and retrieve the main application container instance.
  *
- * @return Application The application container.
+ * @return \OmniForm\Application The application container.
  */
 function omniform() {
 	return \OmniForm\Application::getInstance();
@@ -52,11 +52,8 @@ omniform()->setBasePath( __FILE__ );
 /**
  * Service Providers.
  */
-omniform()->register( \OmniForm\Plugin\PluginServiceProvider::class );
-omniform()->register( \OmniForm\BlockLibrary\BlockLibraryServiceProvider::class );
+// omniform()->register( \OmniForm\Plugin\PluginServiceProvider::class );
+// omniform()->register( \OmniForm\BlockLibrary\BlockLibraryServiceProvider::class );
 
 register_deactivation_hook( __FILE__, array( omniform(), 'deactivation' ) );
-
-// Boot the plugin.
-add_action( 'plugins_loaded', array( omniform(), 'boot' ) );
 add_action( 'plugins_loaded', array( omniform(), 'loadTextDomain' ) );
