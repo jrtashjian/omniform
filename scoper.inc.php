@@ -1,6 +1,10 @@
 <?php
-
-declare(strict_types=1);
+/**
+ * PHP-Scoper is a tool which essentially moves any body of code, including all
+ * dependencies such as vendor directories, to a new and distinct namespace.
+ *
+ * @package OmniForm
+ */
 
 use Isolated\Symfony\Component\Finder\Finder;
 
@@ -15,8 +19,8 @@ return array(
 	// The prefix configuration. If a non-null value is used, a random prefix
 	// will be generated instead.
 	//
-	// For more see: https://github.com/humbug/php-scoper/blob/master/docs/configuration.md#prefix
-	'prefix' => 'OmniForm\Dependencies',
+	// For more see: https://github.com/humbug/php-scoper/blob/master/docs/configuration.md#prefix.
+	'prefix'     => 'OmniForm\Dependencies',
 
 	// The base output directory for the prefixed files.
 	// This will be overridden by the 'output-dir' command line option if present.
@@ -26,27 +30,31 @@ return array(
 	// directory. You can however define which files should be scoped by defining a collection of Finders in the
 	// following configuration key.
 	//
-	// This configuration entry is completely ignored when using Box.
-	//
-	// For more see: https://github.com/humbug/php-scoper/blob/master/docs/configuration.md#finders-and-paths
-	'finders' => array(
-		Finder::create()->files()->in( 'vendor/illuminate' ),
-		Finder::create()->files()->in( 'vendor/psr' ),
-		// Finder::create()
-		// 	->files()
-		// 	->ignoreVCS(true)
-		// 	->notName('/.*\\.md|.*\\.dist|Makefile|composer\\.json|composer\\.lock/')
-		// 	->exclude([
-		// 		'doc',
-		// 		'test',
-		// 		'test_old',
-		// 		'tests',
-		// 		'Tests',
-		// 		'vendor-bin',
-		// 	])
-		// 	->in('vendor'),
-		// Finder::create()->append([
-		// 	'composer.json',
-		// ]),
+	// For more see: https://github.com/humbug/php-scoper/blob/master/docs/configuration.md#finders-and-paths.
+	'finders'    => array(
+		Finder::create()
+			->files()
+			->ignoreVCS( true )
+			->notName(
+				array(
+					'README.md',
+					'/.*\\.dist/',
+					'Makefile',
+					'composer.json',
+					'composer.lock',
+				)
+			)
+			->exclude(
+				array(
+					'doc',
+					'test',
+					'test_old',
+					'tests',
+					'Tests',
+					'vendor-bin',
+					'composer',
+				)
+			)
+			->in( 'vendor' ),
 	),
 );
