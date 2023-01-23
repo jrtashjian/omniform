@@ -25,7 +25,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 	public function provides( string $id ): bool {
 		$services = array();
 
-		return in_array( $id, $services );
+		return in_array( $id, $services, true );
 	}
 
 	/**

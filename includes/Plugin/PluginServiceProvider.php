@@ -26,7 +26,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			Form::class,
 		);
 
-		return in_array( $id, $services );
+		return in_array( $id, $services, true );
 	}
 
 	/**
