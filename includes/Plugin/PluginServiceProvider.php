@@ -14,34 +14,35 @@ use OmniForm\Dependencies\League\Container\ServiceProvider\BootableServiceProvid
  * The PluginServiceProvider class.
  */
 class PluginServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface {
-
 	/**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
+	 * Get the services provided by the provider.
+	 *
+	 * @param string $id The service to check.
+	 *
+	 * @return array
+	 */
 	public function provides( string $id ): bool {
 		$services = array(
-			Form::class
+			Form::class,
 		);
 
 		return in_array( $id, $services );
 	}
 
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
+	/**
+	 * Register any application services.
+	 *
+	 * @return void
+	 */
 	public function register(): void {
 		$this->getContainer()->add( Form::class );
 	}
 
 	/**
-     * Bootstrap any application services by hooking into WordPress with actions/filters.
-     *
-     * @return void
-     */
+	 * Bootstrap any application services by hooking into WordPress with actions/filters.
+	 *
+	 * @return void
+	 */
 	public function boot(): void {
 		add_action( 'init', array( $this, 'registerPostType' ) );
 		add_action( 'init', array( $this, 'filterBlockPatternsOnAdmin' ), PHP_INT_MAX );
@@ -169,7 +170,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				}
 
 				$form_id = (int) get_post_meta( $post_id, '_omniform_id', true );
-				$form = $this->getContainer()->get( Form::class )->getInstance( $form_id );
+				$form    = $this->getContainer()->get( Form::class )->getInstance( $form_id );
 
 				echo sprintf(
 					'<a href="%s" aria-label="%s">%s</a>',
@@ -192,7 +193,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				}
 
 				$form_id = (int) get_post_meta( $post_id, '_omniform_id', true );
-				$form = $this->getContainer()->get( Form::class )->getInstance( $form_id );
+				$form    = $this->getContainer()->get( Form::class )->getInstance( $form_id );
 
 				echo wp_kses_post( $form->response_text_content( $post_id ) );
 			},

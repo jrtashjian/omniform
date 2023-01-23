@@ -48,7 +48,7 @@ class Form {
 			return false;
 		}
 
-		$this->id = $_form->ID;
+		$this->id        = $_form->ID;
 		$this->post_data = $_form;
 
 		return $this;

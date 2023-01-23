@@ -16,29 +16,30 @@ use WP_Query;
  */
 class BlockLibraryServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface {
 	/**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
+	 * Get the services provided by the provider.
+	 *
+	 * @param string $id The service to check.
+	 *
+	 * @return array
+	 */
 	public function provides( string $id ): bool {
-		$services = array(
-		);
+		$services = array();
 
 		return in_array( $id, $services );
 	}
 
 	/**
-     * Register any application services.
-     *
-     * @return void
-     */
+	 * Register any application services.
+	 *
+	 * @return void
+	 */
 	public function register(): void {}
 
 	/**
-     * Bootstrap any application services by hooking into WordPress with actions/filters.
-     *
-     * @return void
-     */
+	 * Bootstrap any application services by hooking into WordPress with actions/filters.
+	 *
+	 * @return void
+	 */
 	public function boot(): void {
 		add_action( 'init', array( $this, 'registerBlocks' ) );
 		add_action( 'init', array( $this, 'registerPatterns' ) );
