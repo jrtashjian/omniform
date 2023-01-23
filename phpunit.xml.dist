@@ -10,7 +10,6 @@
 	<testsuites>
 		<testsuite name="OmniForm Test Suite">
 			<directory suffix=".php">./phpunit/</directory>
-			<exclude>./phpunit/test-sample.php</exclude>
 		</testsuite>
 	</testsuites>
 	<filter>
@@ -21,7 +20,8 @@
 				<directory suffix=".php">node_modules</directory>
 				<directory suffix=".php">phpunit</directory>
 				<directory suffix=".php">vendor</directory>
-				<directory suffix=".php">includes/Dependencies</directory>
+				<directory suffix=".php">vendor_prefixed</directory>
+				<file>scoper.inc.php</file>
 			</exclude>
 		</whitelist>
 	</filter>
