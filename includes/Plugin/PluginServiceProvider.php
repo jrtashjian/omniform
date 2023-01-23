@@ -35,7 +35,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->add( Form::class );
+		$this->getContainer()->addShared( Form::class );
 	}
 
 	/**
