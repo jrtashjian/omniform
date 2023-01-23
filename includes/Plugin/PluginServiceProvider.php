@@ -7,17 +7,42 @@
 
 namespace OmniForm\Plugin;
 
-use OmniForm\ServiceProvider;
+use OmniForm\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use OmniForm\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
 
 /**
  * The PluginServiceProvider class.
  */
-class PluginServiceProvider extends ServiceProvider {
+class PluginServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface {
 
 	/**
-	 * This method will be used for hooking into WordPress with actions/filters.
-	 */
-	public function boot() {
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+	public function provides( string $id ): bool {
+		$services = array(
+			Form::class
+		);
+
+		return in_array( $id, $services );
+	}
+
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+	public function register(): void {
+		$this->getContainer()->add( Form::class );
+	}
+
+	/**
+     * Bootstrap any application services by hooking into WordPress with actions/filters.
+     *
+     * @return void
+     */
+	public function boot(): void {
 		add_action( 'init', array( $this, 'registerPostType' ) );
 		add_action( 'init', array( $this, 'filterBlockPatternsOnAdmin' ), PHP_INT_MAX );
 		add_action( 'rest_api_init', array( $this, 'filterBlockPatternsOnRestApi' ), PHP_INT_MAX );
@@ -144,7 +169,7 @@ class PluginServiceProvider extends ServiceProvider {
 				}
 
 				$form_id = (int) get_post_meta( $post_id, '_omniform_id', true );
-				$form    = Form::getInstance( $form_id );
+				$form = $this->getContainer()->get( Form::class )->getInstance( $form_id );
 
 				echo sprintf(
 					'<a href="%s" aria-label="%s">%s</a>',
@@ -167,7 +192,7 @@ class PluginServiceProvider extends ServiceProvider {
 				}
 
 				$form_id = (int) get_post_meta( $post_id, '_omniform_id', true );
-				$form    = Form::getInstance( $form_id );
+				$form = $this->getContainer()->get( Form::class )->getInstance( $form_id );
 
 				echo wp_kses_post( $form->response_text_content( $post_id ) );
 			},
@@ -315,11 +340,6 @@ class PluginServiceProvider extends ServiceProvider {
 			},
 		);
 	}
-
-	/**
-	 * Register any application services.
-	 */
-	public function register() {}
 
 	/**
 	 * Register post type

@@ -36,7 +36,7 @@ class Form {
 	 *
 	 * @return Form|false Form object, false otherwise.
 	 */
-	public static function getInstance( $form_id ) {
+	public function getInstance( $form_id ) {
 		$form_id = (int) $form_id;
 		if ( ! $form_id ) {
 			return false;
@@ -48,35 +48,10 @@ class Form {
 			return false;
 		}
 
-		omniform()->singleton(
-			self::class,
-			function ( $app ) use ( $_form ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
-				return new Form( $_form );
-			}
-		);
+		$this->id = $_form->ID;
+		$this->post_data = $_form;
 
-		return omniform()->get( self::class );
-	}
-
-	/**
-	 * Constructor.
-	 *
-	 * @param WP_Post|null $post Post object.
-	 */
-	public function __construct( $post = null ) {
-		if ( $post ) {
-			$this->id        = $post->ID;
-			$this->post_data = $post;
-		}
-	}
-
-	/**
-	 * Set the form's ID.
-	 *
-	 * @param number $id The form's ID.
-	 */
-	public function setId( $id ) {
-		$this->id = $id;
+		return $this;
 	}
 
 	/**

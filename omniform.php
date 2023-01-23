@@ -52,7 +52,7 @@ omniform()->setBasePath( __FILE__ );
 /**
  * Service Providers.
  */
-// omniform()->register( \OmniForm\Plugin\PluginServiceProvider::class );
+omniform()->addServiceProvider( new \OmniForm\Plugin\PluginServiceProvider() );
 // omniform()->register( \OmniForm\BlockLibrary\BlockLibraryServiceProvider::class );
 
 register_deactivation_hook( __FILE__, array( omniform(), 'deactivation' ) );
