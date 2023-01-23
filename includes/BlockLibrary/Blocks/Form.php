@@ -30,7 +30,7 @@ class Form extends BaseBlock {
 		}
 
 		// Setup the Form object.
-		$form = \OmniForm\Plugin\Form::getInstance( $entity_id );
+		$form = omniform()->get( \OmniForm\Plugin\Form::class )->getInstance( $entity_id );
 
 		if ( ! $form || ! $form->isPublished() || $form->isPrivate() ) {
 			return '';

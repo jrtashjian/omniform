@@ -7,17 +7,39 @@
 
 namespace OmniForm\BlockLibrary;
 
-use OmniForm\ServiceProvider;
+use OmniForm\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use OmniForm\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
 use WP_Query;
 
 /**
  * The BlockLibraryServiceProvider class.
  */
-class BlockLibraryServiceProvider extends ServiceProvider {
+class BlockLibraryServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface {
 	/**
-	 * This method will be used for hooking into WordPress with actions/filters.
-	 */
-	public function boot() {
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+	public function provides( string $id ): bool {
+		$services = array(
+		);
+
+		return in_array( $id, $services );
+	}
+
+	/**
+     * Register any application services.
+     *
+     * @return void
+     */
+	public function register(): void {}
+
+	/**
+     * Bootstrap any application services by hooking into WordPress with actions/filters.
+     *
+     * @return void
+     */
+	public function boot(): void {
 		add_action( 'init', array( $this, 'registerBlocks' ) );
 		add_action( 'init', array( $this, 'registerPatterns' ) );
 		add_filter( 'block_categories_all', array( $this, 'registerCategories' ) );
@@ -39,7 +61,7 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 		);
 
 		foreach ( $blocks as $block ) {
-			$block_object = $this->app->make( $block );
+			$block_object = new $block();
 
 			$variations = array();
 
@@ -359,9 +381,4 @@ class BlockLibraryServiceProvider extends ServiceProvider {
 
 		return $block_categories;
 	}
-
-	/**
-	 * Enqueue required scripts and styles.
-	 */
-	public function register() {}
 }
