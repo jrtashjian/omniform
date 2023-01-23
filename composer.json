@@ -19,7 +19,8 @@
         ]
     },
     "require": {
-        "league/container": "^4.2"
+        "league/container": "^4.2",
+        "respect/validation": "^2.2"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
