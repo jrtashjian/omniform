@@ -57,12 +57,13 @@ class Application extends Container {
 	/**
 	 * Set the shared instance of the container.
 	 *
-	 * @param  \OmniForm\Dependencies\League\Container\DefinitionContainerInterface|null $container The Dependency Injection Container
+	 * @param  \OmniForm\Dependencies\League\Container\DefinitionContainerInterface|null $container The Dependency Injection Container.
 	 *
 	 * @return \OmniForm\Dependencies\League\Container\DefinitionContainerInterface|static
 	 */
 	public static function setInstance( DefinitionContainerInterface $container = null ) {
-		return static::$instance = $container;
+		static::$instance = $container;
+		return static::$instance;
 	}
 
 	/**
