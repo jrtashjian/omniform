@@ -36,6 +36,22 @@ class CoreTest extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Test the container's singleton.
+	 */
+	public function test_core_singleton() {
+		$application = Application::setInstance( new Application() );
+
+		$this->assertSame( $application, Application::getInstance() );
+
+		Application::setInstance( null );
+
+		$application2 = Application::getInstance();
+
+		$this->assertInstanceOf( Application::class, $application2 );
+		$this->assertNotSame( $application, $application2 );
+	}
+
+	/**
 	 * Test the correct path bindings are generated.
 	 */
 	public function test_core_register_path_bindings() {
