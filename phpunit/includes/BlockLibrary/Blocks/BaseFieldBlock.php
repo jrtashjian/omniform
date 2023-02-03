@@ -26,6 +26,8 @@ class BaseFieldBlockTest extends \WP_UnitTestCase {
 				'uses_context'    => array( 'omniform/fieldGroupName' ),
 			)
 		);
+
+		omniform()->addServiceProvider( new \OmniForm\Plugin\PluginServiceProvider() );
 	}
 
 	/**
