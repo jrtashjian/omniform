@@ -49,7 +49,7 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 	 * @return \WP_REST_Response|\WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function create_response( \WP_REST_Request $request ) {
-		$form = \OmniForm\Plugin\Form::getInstance( $request->get_param( 'id' ) );
+		$form = omniform()->get( \OmniForm\Plugin\Form::class )->getInstance( $request->get_param( 'id' ) );
 
 		if ( ! $form ) {
 			return new \WP_Error(
