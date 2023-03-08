@@ -16,13 +16,6 @@ abstract class BaseFieldBlock extends BaseBlock {
 	use HasColors;
 
 	/**
-	 * The Form.
-	 *
-	 * @var \OmniForm\Plugin\Form
-	 */
-	protected $form;
-
-	/**
 	 * Renders the block on the server.
 	 *
 	 * @return string Returns the block content.
@@ -31,10 +24,6 @@ abstract class BaseFieldBlock extends BaseBlock {
 		if ( empty( $this->getBlockAttribute( 'fieldLabel' ) ) ) {
 			return '';
 		}
-
-		// Use the Form object.
-		$this->form = omniform()->get( \OmniForm\Plugin\Form::class );
-		$this->form->addField( $this );
 
 		$attributes = get_block_wrapper_attributes(
 			array( 'class' => implode( ' ', $this->getDefaultClasses() ) )
@@ -108,7 +97,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 * @return string
 	 */
 	protected function renderLabel() {
-		$form_id = $this->form->getId() ?? $this->getBlockContext( 'postId' );
+		$form_id = $this->getBlockContext( 'postId' );
 
 		$allowed_html = array(
 			'strong' => array(),

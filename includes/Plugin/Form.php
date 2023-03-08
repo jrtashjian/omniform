@@ -8,6 +8,8 @@
 namespace OmniForm\Plugin;
 
 use OmniForm\BlockLibrary\Blocks\BaseFieldBlock;
+use OmniForm\BlockLibrary\Blocks\SelectGroup;
+use OmniForm\BlockLibrary\Blocks\SelectOption;
 
 /**
  * The Form class.
@@ -105,24 +107,57 @@ class Form {
 	 * @param BaseFieldBlock $field The parsed field block.
 	 */
 	public function addField( BaseFieldBlock $field ) {
-		$data = array(
-			'control_name'  => $field->getControlName(),
-			'control_label' => $field->isGrouped()
-				? $field->getFieldGroupName()
-				: $field->getBlockAttribute( 'fieldLabel' ),
-			'is_required'   => $field->isRequired(),
+		$rules = array(
+			'is_required' => $field->isRequired(),
 		);
 
-		$control_name = str_replace( array( '[', ']' ), array( '.', '' ), $field->getControlName() );
+		$control_name = implode(
+			'.',
+			array_filter(
+				array(
+					$field->getFieldGroupName(),
+					$field->isGrouped() && in_array( $field->getBlockAttribute( 'fieldType' ), array( 'radio', 'checkbox' ), true )
+						? null
+						: $field->getFieldName(),
+				)
+			)
+		);
 
-		$this->fields[ $control_name ] = $data;
+		$this->fields[ $control_name ] = $rules;
 	}
 
 	/**
 	 * Parses blocks out of the form's `post_content`.
 	 */
 	protected function registerFields() {
+		add_filter( 'render_block', array( $this, 'hookRenderBlock' ), 10, 3 );
 		do_blocks( $this->getContent() );
+		remove_filter( 'render_block', array( $this, 'hookRenderBlock' ), 10, 3 );
+	}
+
+	/**
+	 * Filters the content of a single block .
+	 *
+	 * @param string   $block_content The block content .
+	 * @param array    $parsed_block The full block, including name and attributes .
+	 * @param WP_Block $wp_block The block instance.
+	 */
+	public function hookRenderBlock( $block_content, $parsed_block, $wp_block ) {
+		if ( empty( $wp_block->block_type->render_callback ) || ! is_array( $wp_block->block_type->render_callback ) ) {
+			return $block_content;
+		}
+
+		if (
+			! $wp_block->block_type->render_callback[0] instanceof BaseFieldBlock ||
+			$wp_block->block_type->render_callback[0] instanceof SelectGroup ||
+			$wp_block->block_type->render_callback[0] instanceof SelectOption
+		) {
+			return $block_content;
+		}
+
+		$this->addField( $wp_block->block_type->render_callback[0] );
+
+		return $block_content;
 	}
 
 	/**
@@ -182,7 +217,7 @@ class Form {
 			$value     = array_key_exists( $key, $response_data ) ? $response_data[ $key ] : '';
 			$message[] = sprintf(
 				'<strong>%s:</strong> %s',
-				esc_attr( $def['control_label'] ),
+				esc_attr( $key ),
 				esc_attr( $value )
 			);
 		}
