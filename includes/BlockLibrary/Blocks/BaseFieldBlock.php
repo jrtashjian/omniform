@@ -133,9 +133,11 @@ abstract class BaseFieldBlock extends BaseBlock {
 			);
 		}
 
-		$classnames = array(
-			'omniform-field-label',
-			! empty( $this->getBlockAttribute( 'isLabelHidden' ) ) ? 'screen-reader-text' : null,
+		$classnames = array_filter(
+			array(
+				'omniform-field-label',
+				! empty( $this->getBlockAttribute( 'isLabelHidden' ) ) ? 'screen-reader-text' : null,
+			)
 		);
 
 		return sprintf(
