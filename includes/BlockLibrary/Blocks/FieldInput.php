@@ -120,9 +120,9 @@ class FieldInput extends BaseFieldBlock {
 	 */
 	public function getControlValue() {
 		switch ( $this->getBlockAttribute( 'fieldType' ) ) {
-			// Checboxes should always be boolean.
+			// Checkboxes default to boolean. However, when transforming from a select field we want the option name to be the value.
 			case 'checkbox':
-				return true;
+				return parent::getControlValue() ?? true;
 			// Radios are always grouped so value is its name.
 			case 'radio':
 				return $this->getFieldName();

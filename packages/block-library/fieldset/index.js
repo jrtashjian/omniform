@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { kebabCase } from 'lodash';
+
+/**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
@@ -77,6 +82,7 @@ registerBlockType( name, {
 						options.map( ( label ) => createBlock( 'omniform/field-input', {
 							fieldType: isMultiple ? 'checkbox' : 'radio',
 							fieldLabel: label,
+							fieldValue: kebabCase( label ),
 						} ) )
 					);
 				},
