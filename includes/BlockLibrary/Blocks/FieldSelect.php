@@ -18,7 +18,7 @@ class FieldSelect extends BaseFieldBlock {
 	 */
 	public function renderControl() {
 		$placeholder_option = '';
-		if (  ! $this->getBlockAttribute( 'isMultiple' ) ) {
+		if ( ! $this->getBlockAttribute( 'isMultiple' ) ) {
 			$placeholder_option = sprintf(
 				'<option value="">%s</option>',
 				esc_attr( $this->getBlockAttribute( 'fieldPlaceholder' ) )
@@ -43,8 +43,8 @@ class FieldSelect extends BaseFieldBlock {
 				$this->getBlockAttribute( 'isMultiple' ) ? 'multiple' : '',
 
 				$this->getBlockAttribute( 'height' ) && $this->getBlockAttribute( 'isMultiple' )
-				? $this->getElementAttribute( 'style', 'height:' . $this->getBlockAttribute( 'height' ) . 'px' )
-				: null,
+					? $this->getElementAttribute( 'style', 'height:' . $this->getBlockAttribute( 'height' ) . 'px' )
+					: null,
 			),
 			parent::getControlAttributes()
 		);
