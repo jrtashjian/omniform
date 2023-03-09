@@ -28,21 +28,9 @@ class SelectOption extends BaseFieldBlock {
 	 * @return string Returns the block content.
 	 */
 	public function renderControl() {
-		// $target = $this->injestion->formValue(
-		// 	array(
-		// 		$this->getBlockContext( 'omniform/fieldGroupName' ),
-		// 		$this->getBlockContext( 'omniform/fieldSelectName' ),
-		// 	)
-		// );
-
-		// $is_selected = is_array( $target )
-		// 	? in_array( $this->getFieldName(), $target, true )
-		// 	: $this->getFieldName() === $target;
-
 		$attributes = array_filter(
 			array(
 				$this->getElementAttribute( 'value', $this->getFieldName() ),
-				// $is_selected ? 'selected' : null,
 			)
 		);
 

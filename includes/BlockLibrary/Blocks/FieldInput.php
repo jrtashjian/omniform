@@ -76,29 +76,6 @@ class FieldInput extends BaseFieldBlock {
 	}
 
 	/**
-	 * Determine if the checkbox or radio input has been selected.
-	 *
-	 * @return bool
-	 */
-	protected function isSelected() {
-		if ( ! $this->isCheckedInput() ) {
-			return false;
-		}
-
-		// $submitted_value = $this->injestion->formValue(
-		// 	array(
-		// 		$this->getBlockContext( 'omniform/fieldGroupName' ),
-		// 		'radio' === $this->getBlockAttribute( 'fieldType' ) ? '' : $this->getFieldName(),
-		// 	)
-		// );
-		$submitted_value = null;
-
-		return 'radio' === $this->getBlockAttribute( 'fieldType' )
-			? $this->getFieldName() === $submitted_value
-			: ! empty( $submitted_value );
-	}
-
-	/**
 	 * The form control's name attribute.
 	 *
 	 * @return string
@@ -154,7 +131,6 @@ class FieldInput extends BaseFieldBlock {
 			array(
 				$this->getElementAttribute( 'placeholder', $this->getBlockAttribute( 'fieldPlaceholder' ) ),
 				$this->getElementAttribute( 'value', $this->getControlValue() ),
-				$this->isSelected() ? 'checked' : '',
 			),
 			parent::getControlAttributes()
 		);

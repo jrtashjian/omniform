@@ -20,6 +20,13 @@ abstract class BaseBlock implements FormBlockInterface {
 	protected $attributes = array();
 
 	/**
+	 * The rendered block output (InnerBlocks).
+	 *
+	 * @var string
+	 */
+	protected $content = '';
+
+	/**
 	 * The parsed instance of a block.
 	 *
 	 * @var \WP_Block

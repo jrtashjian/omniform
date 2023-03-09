@@ -144,7 +144,7 @@ class Form {
 	 * @param array    $parsed_block The full block, including name and attributes .
 	 * @param WP_Block $wp_block The block instance.
 	 */
-	public function hookRenderBlock( $block_content, $parsed_block, $wp_block ) {
+	public function hookRenderBlock( $block_content, $parsed_block, $wp_block ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
 		if ( empty( $wp_block->block_type->render_callback ) || ! is_array( $wp_block->block_type->render_callback ) ) {
 			return $block_content;
 		}
@@ -218,7 +218,7 @@ class Form {
 			$value     = implode( ',', (array) $response_data->get( $key, '' ) );
 			$message[] = sprintf(
 				'<strong>%s:</strong> %s',
-				esc_attr( $key ), // esc_attr( $def['control_label'] ),
+				esc_attr( $key ),
 				esc_attr( $value )
 			);
 		}

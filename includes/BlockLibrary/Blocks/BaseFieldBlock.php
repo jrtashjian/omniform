@@ -143,7 +143,6 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 * @return string
 	 */
 	protected function renderFieldError() {
-		// $errors = $this->injestion->fieldError( $this->getFieldName() );
 		$errors = false;
 		return empty( $errors ) ? '' : sprintf(
 			'<p class="omniform-field-support" style="color:red;">%s</p>',
@@ -191,17 +190,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 * @return string
 	 */
 	public function getControlValue() {
-		// $submitted_value = $this->injestion->formValue(
-		// array(
-		// $this->getBlockContext( 'omniform/fieldGroupName' ),
-		// $this->getFieldName(),
-		// )
-		// );
-		$submitted_value = null;
-
-		return empty( $submitted_value )
-			? $this->getBlockAttribute( 'fieldValue' )
-			: $submitted_value;
+		return $this->getBlockAttribute( 'fieldValue' );
 	}
 
 	/**
