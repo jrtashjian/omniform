@@ -108,7 +108,9 @@ class Form {
 	 */
 	public function addField( BaseFieldBlock $field ) {
 		$rules = array(
-			'is_required' => $field->isRequired(),
+			'control_name'  => $field->getControlName(),
+			'control_label' => $field->getFieldName(),
+			'is_required'   => $field->isRequired(),
 		);
 
 		$control_name = implode(
@@ -170,17 +172,16 @@ class Form {
 
 		$this->registerFields();
 
-		$params_flattened = $this->flatten( $request->get_params() );
+		$request_params = new \OmniForm\Dependencies\Dflydev\DotAccessData\Data( $request->get_params() );
 
 		foreach ( $this->fields as $key => $def ) {
 			if (
 				! empty( $def['is_required'] ) &&
-				( ! array_key_exists( $key, $params_flattened ) || empty( $params_flattened[ $key ] ) )
+				( ! $request_params->has( $key ) || empty( $request_params->get( $key ) ) )
 			) {
 				$errors[] = array(
-					'message'       => 'This fields is required',
-					'control_name'  => esc_attr( $def['control_name'] ),
-					'control_label' => esc_attr( $def['control_label'] ),
+					'message'      => 'This field is required.',
+					'control_name' => esc_attr( $def['control_name'] ),
 				);
 			}
 		}
@@ -211,13 +212,13 @@ class Form {
 
 		$message = array();
 
-		$response_data = $this->flatten( json_decode( $_response->post_content, true ) );
+		$response_data = new \OmniForm\Dependencies\Dflydev\DotAccessData\Data( json_decode( $_response->post_content, true ) );
 
 		foreach ( $this->fields as $key => $def ) {
-			$value     = array_key_exists( $key, $response_data ) ? $response_data[ $key ] : '';
+			$value     = implode( ',', (array) $response_data->get( $key, '' ) );
 			$message[] = sprintf(
 				'<strong>%s:</strong> %s',
-				esc_attr( $key ),
+				esc_attr( $key ), // esc_attr( $def['control_label'] ),
 				esc_attr( $value )
 			);
 		}
@@ -248,10 +249,10 @@ class Form {
 
 		$message = array();
 
-		$response_data = $this->flatten( json_decode( $_response->post_content, true ) );
+		$response_data = new \OmniForm\Dependencies\Dflydev\DotAccessData\Data( json_decode( $_response->post_content, true ) );
 
 		foreach ( $this->fields as $key => $def ) {
-			$value     = array_key_exists( $key, $response_data ) ? $response_data[ $key ] : '';
+			$value     = implode( ',', (array) $response_data->get( $key, '' ) );
 			$message[] = $def['control_label'] . ': ' . $value;
 		}
 
@@ -263,29 +264,5 @@ class Form {
 		$message[] = 'Form URL: ' . get_post_meta( $response_id, '_wp_http_referer', true );
 
 		return implode( "\n", $message );
-	}
-
-	/**
-	 * Flatten a multi-dimensional associative array with dots.
-	 *
-	 * @see https://github.com/laravel/framework/blob/8.x/src/Illuminate/Collections/Arr.php#L102-L122
-	 *
-	 * @param  iterable $array The array to flatten.
-	 * @param  string   $prepend The existing chain of parents.
-	 *
-	 * @return array
-	 */
-	public function flatten( $array, $prepend = '' ) {
-		$results = array();
-
-		foreach ( $array as $key => $value ) {
-			if ( is_array( $value ) && ! empty( $value ) ) {
-				$results = array_merge( $results, $this->flatten( $value, $prepend . $key . '.' ) );
-			} else {
-				$results[ $prepend . $key ] = $value;
-			}
-		}
-
-		return $results;
 	}
 }

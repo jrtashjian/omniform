@@ -19,6 +19,7 @@
         ]
     },
     "require": {
+        "dflydev/dot-access-data": "^3.0",
         "league/container": "^4.2",
         "respect/validation": "^2.2"
     },
