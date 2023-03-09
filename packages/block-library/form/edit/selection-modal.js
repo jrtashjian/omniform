@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __experimentalBlockPatternsList as BlockPatternsList } from '@wordpress/block-editor';
-import { createBlock, parse } from '@wordpress/blocks';
+import { createBlock } from '@wordpress/blocks';
 import { __experimentalHStack as HStack } from '@wordpress/components';
 import { useAsyncList } from '@wordpress/compose';
 import { useCallback, useMemo } from '@wordpress/element';
@@ -24,7 +24,7 @@ export default function FormSelectionModal( {
 			return {
 				name: form.slug,
 				title: form.title.raw,
-				blocks: createBlock( 'omniform/form', { ref: form.id } ), // parse( form.content.raw ),
+				blocks: createBlock( 'omniform/form', { ref: form.id } ),
 				viewportWidth: 640,
 				form,
 			};
