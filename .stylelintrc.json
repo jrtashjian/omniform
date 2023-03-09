@@ -1,6 +1,8 @@
 {
 	"extends": "@wordpress/stylelint-config/scss",
 	"rules": {
+		"function-url-quotes": "always",
+		"no-descending-specificity": null,
 		"selector-class-pattern": null
 	}
 }

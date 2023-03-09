@@ -5,7 +5,7 @@
 		"analyze-bundles": "npm run build -- --webpack-bundle-analyzer",
 		"build": "wp-scripts build --webpack-src-dir=packages",
 		"dev": "wp-scripts start --webpack-src-dir=packages",
-		"lint-css": "wp-scripts lint-style",
+		"lint-css": "wp-scripts lint-style -f verbose",
 		"lint-js": "wp-scripts lint-js",
 		"lint-php": "wp-env run composer run-script lint",
 		"packages-update": "wp-scripts packages-update --dist-tag=wp-6.1",

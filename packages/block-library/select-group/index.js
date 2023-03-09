@@ -13,7 +13,6 @@ import Edit from './edit';
 import Save from './save';
 import { selectGroup } from '../shared/icons';
 
-import './style.scss';
 import './index.scss';
 
 const { name } = json;

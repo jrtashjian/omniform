@@ -13,7 +13,6 @@ import Edit from './edit';
 import transforms from './transforms';
 import { selectOption } from '../shared/icons';
 
-import './style.scss';
 import './index.scss';
 
 const { name } = json;
