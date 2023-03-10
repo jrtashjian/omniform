@@ -28,13 +28,13 @@ export default function FormInspectorControls( {
 					help={ __( 'This name will not be visible to viewers and is only for identifying the form.', 'omniform' ) }
 				/>
 				<Button
-					variant="link"
-					href={ addQueryArgs( 'edit.php', {
-						post_type: RESPONSE_POST_TYPE,
-						omniform_id: formId,
+					variant="primary"
+					href={ addQueryArgs( 'post.php', {
+						action: 'edit',
+						post: formId,
 					} ) }
 				>
-					{ __( 'View Submitted Responses', 'omniform' ) }
+					{ __( 'View in Form Editor', 'omniform' ) }
 				</Button>
 			</PanelBody>
 		</InspectorControls>
