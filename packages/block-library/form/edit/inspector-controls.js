@@ -6,6 +6,7 @@ import { useEntityProp } from '@wordpress/core-data';
 import { Button, PanelBody, TextControl } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
 import { addQueryArgs } from '@wordpress/url';
+import { commentContent } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -20,6 +21,17 @@ export default function FormInspectorControls( {
 
 	return isEntityAvailable && (
 		<InspectorControls>
+			<PanelBody className="omniform-view-responses__panel">
+				<Button
+					icon={ commentContent }
+					href={ addQueryArgs( 'edit.php', {
+						post_type: RESPONSE_POST_TYPE,
+						omniform_id: formId,
+					} ) }
+				>
+					{ __( 'View responses', 'omniform' ) }
+				</Button>
+			</PanelBody>
 			<PanelBody title={ __( 'Form Settings', 'omniform' ) }>
 				<TextControl
 					label={ __( 'Name', 'omniform' ) }

@@ -14,6 +14,28 @@
 	}
 }
 
+.components-panel__body.is-opened.omniform-view-responses__panel {
+	padding: 0;
+	height: $grid-unit-60;
+
+	.components-button {
+		padding: $grid-unit-20;
+		width: 100%;
+		height: 100%;
+		font-weight: 600;
+
+		&:hover,
+		&:active {
+			background: $gray-100;
+		}
+
+		&:focus {
+			box-shadow: inset 0 0 0 var(--wp-admin-border-width-focus) var(--wp-admin-theme-color);
+			border-radius: 0;
+		}
+	}
+}
+
 .block-editor-form__selection-modal {
 
 	.components-modal__frame {
