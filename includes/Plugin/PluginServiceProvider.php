@@ -500,7 +500,10 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 
 		$url_parts = wp_parse_url( $_SERVER['HTTP_REFERER'] );
 
-		if ( '/wp-admin/post.php' !== $url_parts['path'] ) {
+		if (
+			'/wp-admin/post.php' !== $url_parts['path'] &&
+			'/wp-admin/post-new.php' !== $url_parts['path']
+		) {
 			return;
 		}
 
@@ -513,12 +516,16 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		}
 
 		if (
-			empty( $query_args['post'] ) // phpcs:ignore WordPress.Security.NonceVerification
+			empty( $query_args['post'] ) &&
+			empty( $query_args['post_type'] )
 		) {
 			return;
 		}
 
-		if ( 'omniform' !== get_post_type( (int) $query_args['post'] ) ) {
+		if (
+			'omniform' !== get_post_type( (int) $query_args['post'] ) &&
+			'omniform' !== $query_args['post_type']
+		) {
 			return;
 		}
 
