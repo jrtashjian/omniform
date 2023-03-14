@@ -41,9 +41,38 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 	 * @return void
 	 */
 	public function boot(): void {
+		add_action( 'omniform_activate', array( $this, 'activation' ) );
 		add_action( 'init', array( $this, 'registerBlocks' ) );
 		add_action( 'init', array( $this, 'registerPatterns' ) );
 		add_filter( 'block_categories_all', array( $this, 'registerCategories' ) );
+	}
+
+	/**
+	 * Create the default forms.
+	 */
+	public function activation() {
+		$existing_forms = get_posts(
+			array(
+				'post_status' => 'any',
+				'post_type'   => 'omniform',
+			)
+		);
+
+		if ( ! empty( $existing_forms ) ) {
+			return;
+		}
+
+		foreach ( $this->getBlockPatterns() as $form ) {
+			wp_insert_post(
+				array(
+					'post_type'    => 'omniform',
+					'post_status'  => 'draft',
+					'post_name'    => $form['name'],
+					'post_title'   => $form['title'],
+					'post_content' => $form['content'],
+				)
+			);
+		}
 	}
 
 	/**
