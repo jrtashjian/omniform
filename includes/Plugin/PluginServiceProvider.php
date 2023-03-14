@@ -392,6 +392,12 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					'delete_published_posts' => 'delete_published_posts',
 					'edit_others_posts'      => 'edit_others_posts',
 					'delete_others_posts'    => 'delete_others_posts',
+
+					'delete_posts'           => 'delete_posts',
+					'read_private_posts'     => 'read_private_posts',
+					'edit_post'              => 'edit_post',
+					'delete_post'            => 'delete_post',
+					'read_post'              => 'read_post',
 				),
 				'map_meta_cap'          => true,
 				'supports'              => array(
