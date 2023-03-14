@@ -43,17 +43,14 @@ export default function FormSelectionModal( {
 	return (
 		<div className="block-library-form__selection-content">
 			{ hasForms && (
-				<div>
-					<h2>{ __( 'Existing forms', 'omniform' ) }</h2>
-					<BlockPatternsList
-						blockPatterns={ filteredForms }
-						shownPatterns={ shownForms }
-						onClickPattern={ ( pattern ) => {
-							onFormSelect( pattern.form );
-						} }
-						orientation="horizontal"
-					/>
-				</div>
+				<BlockPatternsList
+					blockPatterns={ filteredForms }
+					shownPatterns={ shownForms }
+					onClickPattern={ ( pattern ) => {
+						onFormSelect( pattern.form );
+					} }
+					orientation="horizontal"
+				/>
 			) }
 
 			{ ! hasForms && (

@@ -38,6 +38,10 @@
 
 .block-editor-form__selection-modal {
 
+	.block-library-form__selection-content {
+		padding-top: $grid-unit-20;
+	}
+
 	.components-modal__frame {
 
 		@include break-small() {
