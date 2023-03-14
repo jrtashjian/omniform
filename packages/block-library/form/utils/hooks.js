@@ -22,18 +22,15 @@ import { POST_TYPE } from '../../shared/constants';
 export function useAlternativeForms( excludedId ) {
 	const { forms = [], isResolving } = useSelect( ( select ) => {
 		const { getEntityRecords, isResolving: _isResolving } = select( coreStore );
-		const query = { per_page: -1 };
+		const queryPublished = { per_page: -1, status: 'publish' };
+		const queryDrafts = { per_page: -1, status: 'draft' };
+
 		return {
-			forms: getEntityRecords(
-				'postType',
-				POST_TYPE,
-				query
-			),
-			isLoading: _isResolving( 'getEntityRecords', [
-				'postType',
-				POST_TYPE,
-				query,
-			] ),
+			forms: [
+				...getEntityRecords( 'postType', POST_TYPE, queryPublished ) ?? [],
+				...getEntityRecords( 'postType', POST_TYPE, queryDrafts ) ?? [],
+			],
+			isLoading: _isResolving( 'getEntityRecords', [ 'postType', POST_TYPE, queryPublished ] ) || _isResolving( 'getEntityRecords', [ 'postType', POST_TYPE, queryDrafts ] ),
 		};
 	}, [] );
 
