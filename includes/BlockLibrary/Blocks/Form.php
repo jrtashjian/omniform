@@ -33,7 +33,16 @@ class Form extends BaseBlock {
 		$form = omniform()->get( \OmniForm\Plugin\Form::class )->getInstance( $entity_id );
 
 		if ( ! $form || ! $form->isPublished() || $form->isPrivate() ) {
-			return '';
+			// Display notice for logged in editors, render nothing for visitors.
+			return current_user_can( 'edit_post', $form->getId() )
+				? sprintf(
+					'<p style="color:var(--wp--preset--color--vivid-red,#cf2e2e);">%s<br/><a href="%s">%s</a></p>',
+					/* translators: %s: Form title. */
+					esc_html( sprintf( __( 'You must publish the "%s" form for visitors to see it.', 'omniform' ), $form->getTitle() ) ),
+					esc_url( admin_url( sprintf( 'post.php?post=%d&action=edit', $form->getId() ) ) ),
+					esc_html( __( 'Edit the form', 'omniform' ) )
+				)
+				: '';
 		}
 
 		if ( ! is_admin() ) {
