@@ -169,7 +169,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 			'postTypes'     => array( 'omniform' ),
 			'blockTypes'    => array( 'omniform/form' ),
 			'categories'    => array( 'quickstart' ),
-			'viewportWidth' => 640,
+			'viewportWidth' => 768,
 		);
 
 		foreach ( $this->getBlockPatterns() as $pattern ) {

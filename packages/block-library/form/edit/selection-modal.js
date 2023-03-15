@@ -25,7 +25,7 @@ export default function FormSelectionModal( {
 				name: form.slug,
 				title: form.title.raw,
 				blocks: createBlock( 'omniform/form', { ref: form.id } ),
-				viewportWidth: 640,
+				viewportWidth: 768,
 				form,
 			};
 		} );
