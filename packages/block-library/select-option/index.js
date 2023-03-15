@@ -20,11 +20,6 @@ const { name } = json;
 registerBlockType( name, {
 	edit: Edit,
 	icon: { foreground: '#D92E83', src: selectOption },
-	example: {
-		attributes: {
-			fieldLabel: __( 'Example input', 'omniform' ),
-		},
-	},
 	transforms,
 	merge: ( attributes, attributesToMerge ) => {
 		return {

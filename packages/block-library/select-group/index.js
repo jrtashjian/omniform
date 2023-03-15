@@ -21,11 +21,6 @@ registerBlockType( name, {
 	edit: Edit,
 	save: Save,
 	icon: { foreground: '#D92E83', src: selectGroup },
-	example: {
-		attributes: {
-			fieldLabel: __( 'Example input', 'omniform' ),
-		},
-	},
 	merge: ( attributes, attributesToMerge ) => {
 		return {
 			fieldLabel:
