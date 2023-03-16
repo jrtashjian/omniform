@@ -107,7 +107,7 @@ const variations = [
 		icon: { foreground: '#D92E83', src: fieldHidden },
 		title: __( 'Current User ID', 'omniform' ),
 		description: __( 'A hidden field with the current user\'s ID', 'omniform' ),
-		attributes: { fieldType: 'hidden', isRequired: false, fieldValue: '{{get_current_user_id}}', fieldPlaceholder: undefined },
+		attributes: { fieldType: 'hidden', fieldLabel: __( 'current_user_id', 'omniform' ), isRequired: false, fieldValue: '{{get_current_user_id}}', fieldPlaceholder: undefined },
 	},
 	{
 		name: 'field-hidden',

@@ -529,8 +529,8 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		}
 
 		if (
-			'omniform' !== get_post_type( (int) $query_args['post'] ) &&
-			'omniform' !== $query_args['post_type']
+			( key_exists( 'post', $query_args ) && 'omniform' !== get_post_type( (int) $query_args['post'] ) ) &&
+			( key_exists( 'post_type', $query_args ) && 'omniform' !== $query_args['post_type'] )
 		) {
 			return;
 		}

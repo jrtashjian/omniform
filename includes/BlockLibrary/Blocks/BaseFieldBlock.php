@@ -21,7 +21,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 * @return string Returns the block content.
 	 */
 	public function render() {
-		if ( empty( $this->getBlockAttribute( 'fieldLabel' ) ) ) {
+		if ( empty( $this->getFieldLabel() ) ) {
 			return '';
 		}
 
@@ -37,6 +37,15 @@ abstract class BaseFieldBlock extends BaseBlock {
 	}
 
 	/**
+	 * Get the fieldLabel.
+	 *
+	 * @return string
+	 */
+	public function getFieldLabel() {
+		return $this->getBlockAttribute( 'fieldLabel' );
+	}
+
+	/**
 	 * Get the sanitized fieldName key. Fallback to fieldLabel.
 	 *
 	 * @return string
@@ -44,7 +53,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 	public function getFieldName() {
 		$field_name = $this->getBlockAttribute( 'fieldName' );
 		return empty( $field_name )
-			? sanitize_title( $this->getBlockAttribute( 'fieldLabel' ) )
+			? sanitize_title( $this->getFieldLabel() )
 			: sanitize_title( $field_name );
 	}
 
