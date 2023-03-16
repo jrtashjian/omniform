@@ -10,6 +10,8 @@ namespace OmniForm\Plugin;
 use OmniForm\BlockLibrary\Blocks\BaseFieldBlock;
 use OmniForm\BlockLibrary\Blocks\SelectGroup;
 use OmniForm\BlockLibrary\Blocks\SelectOption;
+use OmniForm\Dependencies\Respect\Validation;
+use OmniForm\Dependencies\Respect\Validation\Exceptions\ValidationException;
 
 /**
  * The Form class.
@@ -107,10 +109,12 @@ class Form {
 	 * @param BaseFieldBlock $field The parsed field block.
 	 */
 	public function addField( BaseFieldBlock $field ) {
-		$rules = array(
-			'control_name'  => $field->getControlName(),
-			'control_label' => $field->getFieldName(),
-			'is_required'   => $field->isRequired(),
+		$validation_rules = new Validation\Rules\AllOf(
+			...array_filter(
+				array(
+					$field->isRequired() ? new Validation\Rules\NotEmpty() : null,
+				)
+			)
 		);
 
 		$control_name = implode(
@@ -125,7 +129,7 @@ class Form {
 			)
 		);
 
-		$this->fields[ $control_name ] = $rules;
+		$this->fields[ $control_name ] = $validation_rules->setName( $field->getFieldLabel() );
 	}
 
 	/**
@@ -174,15 +178,11 @@ class Form {
 
 		$request_params = new \OmniForm\Dependencies\Dflydev\DotAccessData\Data( $request->get_params() );
 
-		foreach ( $this->fields as $key => $def ) {
-			if (
-				! empty( $def['is_required'] ) &&
-				( ! $request_params->has( $key ) || empty( $request_params->get( $key ) ) )
-			) {
-				$errors[] = array(
-					'message'      => 'This field is required.',
-					'control_name' => esc_attr( $def['control_name'] ),
-				);
+		foreach ( $this->fields as $key => $validator ) {
+			try {
+				$validator->check( $request_params->get( $key ) );
+			} catch ( ValidationException $exception ) {
+				$errors[] = $exception->getMessage();
 			}
 		}
 
