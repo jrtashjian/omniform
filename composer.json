@@ -16,6 +16,9 @@
         },
         "classmap": [
             "vendor_prefixed/"
+        ],
+        "files": [
+            "vendor_prefixed/respect/stringifier/src/stringify.php"
         ]
     },
     "require": {
