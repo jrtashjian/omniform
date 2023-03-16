@@ -11,7 +11,6 @@ use OmniForm\BlockLibrary\Blocks\BaseFieldBlock;
 use OmniForm\BlockLibrary\Blocks\SelectGroup;
 use OmniForm\BlockLibrary\Blocks\SelectOption;
 use OmniForm\Dependencies\Respect\Validation;
-use OmniForm\Dependencies\Respect\Validation\Exceptions\ValidationException;
 
 /**
  * The Form class.
@@ -31,7 +30,12 @@ class Form {
 	 */
 	protected $post_data;
 
-	protected $fields = array();
+	/**
+	 * Validator object.
+	 *
+	 * @var Validation\Validator
+	 */
+	protected $validator;
 
 	/**
 	 * Retrieve Form instance.
@@ -129,7 +133,7 @@ class Form {
 			)
 		);
 
-		$this->fields[ $control_name ] = $validation_rules->setName( $field->getFieldLabel() );
+		$this->validator->addRule( new Validation\Rules\Key( $control_name, $validation_rules ) );
 	}
 
 	/**
@@ -172,21 +176,16 @@ class Form {
 	 * @param \WP_REST_Request $request Full details about the request.
 	 */
 	public function validate( \WP_REST_Request $request ) {
-		$errors = array();
+		$this->validator = new Validation\Validator();
+		$request_params = new \OmniForm\Dependencies\Dflydev\DotAccessData\Data( $request->get_params() );
 
 		$this->registerFields();
 
-		$request_params = new \OmniForm\Dependencies\Dflydev\DotAccessData\Data( $request->get_params() );
-
-		foreach ( $this->fields as $key => $validator ) {
-			try {
-				$validator->check( $request_params->get( $key ) );
-			} catch ( ValidationException $exception ) {
-				$errors[] = $exception->getMessage();
-			}
+		try {
+			$this->validator->assert( $request_params->export() );
+		} catch ( Validation\Exceptions\NestedValidationException $exception ) {
+			return $exception->getMessages();
 		}
-
-		return $errors;
 	}
 
 	/**
