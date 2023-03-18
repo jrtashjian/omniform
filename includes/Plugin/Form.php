@@ -59,6 +59,8 @@ class Form {
 		$this->id        = $_form->ID;
 		$this->post_data = $_form;
 
+		$this->validator = new Validation\Validator();
+
 		return $this;
 	}
 
@@ -121,19 +123,32 @@ class Form {
 			)
 		);
 
-		$control_name = implode(
-			'.',
-			array_filter(
-				array(
-					$field->getFieldGroupName(),
-					$field->isGrouped() && in_array( $field->getBlockAttribute( 'fieldType' ), array( 'radio', 'checkbox' ), true )
-						? null
-						: $field->getFieldName(),
-				)
+		$control_name_parts = array_filter(
+			array(
+				$field->getFieldGroupName(),
+				$field->isGrouped() && in_array( $field->getBlockAttribute( 'fieldType' ), array( 'radio', 'checkbox' ), true )
+					? null
+					: $field->getFieldName(),
 			)
 		);
 
-		$this->validator->addRule( new Validation\Rules\Key( $control_name, $validation_rules ) );
+		$control_name = implode( '.', $control_name_parts );
+
+		$rule = new Validation\Rules\Key( $control_name, $validation_rules );
+
+		// Ensure rules are properly nested for grouped fields.
+		if ( count( $control_name_parts ) > 1 ) {
+			$rule = new Validation\Rules\Key(
+				$control_name_parts[0],
+				new Validation\Rules\Key( $control_name_parts[1], $validation_rules )
+			);
+		}
+
+		$this->validator->addRule( $rule );
+
+		$this->fields[ $control_name ] = $field->isGrouped() && in_array( $field->getBlockAttribute( 'fieldType' ), array( 'radio', 'checkbox' ), true )
+			? $field->getFieldGroupName()
+			: $field->getFieldLabel();
 	}
 
 	/**
@@ -176,7 +191,6 @@ class Form {
 	 * @param \WP_REST_Request $request Full details about the request.
 	 */
 	public function validate( \WP_REST_Request $request ) {
-		$this->validator = new Validation\Validator();
 		$request_params = new \OmniForm\Dependencies\Dflydev\DotAccessData\Data( $request->get_params() );
 
 		$this->registerFields();
