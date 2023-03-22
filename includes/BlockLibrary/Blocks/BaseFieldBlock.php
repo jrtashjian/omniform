@@ -69,6 +69,17 @@ abstract class BaseFieldBlock extends BaseBlock {
 	}
 
 	/**
+	 * Get the sanitized omniform/fieldGroup key.
+	 *
+	 * @return string
+	 */
+	public function getFieldGroupLabel() {
+		return $this->isGrouped()
+			? $this->getBlockContext( 'omniform/fieldGroupLabel' )
+			: $this->getFieldGroupName();
+	}
+
+	/**
 	 * Get the default classes to be applied to the block wrapper.
 	 *
 	 * @return array

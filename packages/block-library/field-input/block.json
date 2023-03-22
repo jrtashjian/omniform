@@ -37,7 +37,8 @@
 	"usesContext": [
 		"postId",
 		"postType",
-		"omniform/fieldGroupName"
+		"omniform/fieldGroupName",
+		"omniform/fieldGroupLabel"
 	],
 	"editorScript": "file:index.js",
 	"editorStyle": "file:index.css",

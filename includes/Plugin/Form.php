@@ -147,7 +147,7 @@ class Form {
 		$this->validator->addRule( $rule );
 
 		$this->fields[ $control_name ] = $field->isGrouped() && in_array( $field->getBlockAttribute( 'fieldType' ), array( 'radio', 'checkbox' ), true )
-			? $field->getFieldGroupName()
+			? $field->getFieldGroupLabel()
 			: $field->getFieldLabel();
 	}
 
