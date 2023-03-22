@@ -205,10 +205,9 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					return;
 				}
 
-				$form_id = (int) get_post_meta( $post_id, '_omniform_id', true );
-				$form    = $this->getContainer()->get( Form::class )->getInstance( $form_id );
-
-				echo wp_kses_post( $form->response_text_content( $post_id ) );
+				echo wp_kses_post(
+					$this->getContainer()->get( Form::class )->response_text_content( $post_id )
+				);
 			},
 			10,
 			2

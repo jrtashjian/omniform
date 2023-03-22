@@ -91,6 +91,8 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 					'_omniform_id'      => $form->getId(),
 					'_omniform_user_ip' => $_SERVER['REMOTE_ADDR'],
 					'_wp_http_referer'  => $request->get_param( '_wp_http_referer' ),
+
+					'_omniform_fields' => wp_json_encode( $form->getFields() ),
 				),
 			),
 			true

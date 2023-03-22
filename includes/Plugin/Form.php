@@ -10,6 +10,7 @@ namespace OmniForm\Plugin;
 use OmniForm\BlockLibrary\Blocks\BaseFieldBlock;
 use OmniForm\BlockLibrary\Blocks\SelectGroup;
 use OmniForm\BlockLibrary\Blocks\SelectOption;
+use OmniForm\Dependencies\Dflydev\DotAccessData;
 use OmniForm\Dependencies\Respect\Validation;
 
 /**
@@ -36,6 +37,8 @@ class Form {
 	 * @var Validation\Validator
 	 */
 	protected $validator;
+
+	protected $fields = array();
 
 	/**
 	 * Retrieve Form instance.
@@ -153,6 +156,10 @@ class Form {
 			: $field->getFieldLabel();
 	}
 
+	public function getFields() {
+		return $this->fields;
+	}
+
 	/**
 	 * Parses blocks out of the form's `post_content`.
 	 */
@@ -205,13 +212,13 @@ class Form {
 	}
 
 	/**
-	 * Response to text content.
+	 * Get the response data.
 	 *
 	 * @param int $response_id Submission ID.
 	 *
-	 * @return string|false The message, false otherwise.
+	 * @return array|false The message, false otherwise.
 	 */
-	public function response_text_content( $response_id ) {
+	public function getResponseData( $response_id ) {
 		$response_id = (int) $response_id;
 		if ( ! $response_id ) {
 			return false;
@@ -223,18 +230,47 @@ class Form {
 			return false;
 		}
 
-		$this->registerFields();
+		$response_data = new \OmniForm\Dependencies\Dflydev\DotAccessData\Data(
+			json_decode( $_response->post_content, true )
+		);
 
-		$message = array();
+		$fields = array_combine(
+			array_keys( $this->flatten( $response_data->export() ) ),
+			array_keys( $this->flatten( $response_data->export() ) )
+		);
 
-		$response_data = new \OmniForm\Dependencies\Dflydev\DotAccessData\Data( json_decode( $_response->post_content, true ) );
+		$fields_meta = get_post_meta( $response_id, '_omniform_fields', true );
+		if ( $fields_meta ) {
+			$fields = json_decode( $fields_meta, true );
+		}
 
-		foreach ( $this->fields as $key => $def ) {
-			$value     = implode( ',', (array) $response_data->get( $key, '' ) );
+		return array(
+			'response' => $_response,
+			'content'  => $response_data,
+			'fields'   => $fields,
+		);
+	}
+
+
+	/**
+	 * Response to text content.
+	 *
+	 * @param int $response_id Submission ID.
+	 *
+	 * @return string|false The message, false otherwise.
+	 */
+	public function response_text_content( $response_id ) {
+		$response_data = $this->getResponseData( $response_id );
+		if ( empty( $response_data ) ) {
+			return false;
+		}
+
+		foreach ( $response_data['fields'] as $name => $label ) {
+			$value     = implode( ', ', (array) $response_data['content']->get( $name, '' ) );
 			$message[] = sprintf(
 				'<strong>%s:</strong> %s',
-				esc_attr( $key ),
-				esc_attr( $value )
+				esc_html( $label ),
+				esc_html( $value )
 			);
 		}
 
@@ -249,35 +285,42 @@ class Form {
 	 * @return string|false The message, false otherwise.
 	 */
 	public function response_email_message( $response_id ) {
-		$response_id = (int) $response_id;
-		if ( ! $response_id ) {
+		$response_data = $this->getResponseData( $response_id );
+		if ( empty( $response_data ) ) {
 			return false;
 		}
-
-		$_response = get_post( $response_id );
-
-		if ( ! $_response || 'omniform_response' !== $_response->post_type ) {
-			return false;
-		}
-
-		$this->registerFields();
 
 		$message = array();
 
-		$response_data = new \OmniForm\Dependencies\Dflydev\DotAccessData\Data( json_decode( $_response->post_content, true ) );
-
-		foreach ( $this->fields as $key => $def ) {
-			$value     = implode( ',', (array) $response_data->get( $key, '' ) );
-			$message[] = $def['control_label'] . ': ' . $value;
+		foreach ( $this->fields as $name => $label ) {
+			$value     = implode( ', ', (array) $response_data['content']->get( $name, '' ) );
+			$message[] = $label . ': ' . $value;
 		}
 
 		$message[] = '';
 		$message[] = '---';
 		$message[] = sprintf( 'This email was sent to notify you of a response made through the contact form on %s.', get_bloginfo( 'url' ) );
-		$message[] = 'Time: ' . $_response->post_date;
+		$message[] = 'Time: ' . $response_data['response']->post_date;
 		$message[] = 'IP Address: ' . $_SERVER['REMOTE_ADDR'];
 		$message[] = 'Form URL: ' . get_post_meta( $response_id, '_wp_http_referer', true );
 
 		return implode( "\n", $message );
 	}
+
+	// https://github.com/dflydev/dflydev-dot-access-data/issues/16#issuecomment-699638023
+	private function flatten( array $data, string $path_prefix = '' ) {
+		$ret = array();
+
+		foreach ( $data as $key => $value ) {
+			$full_key = ltrim( $path_prefix . '.' . $key, '.' );
+			if ( is_array( $value ) && DotAccessData\Util::isAssoc( $value ) ) {
+				$ret += $this->flatten( $value, $full_key );
+			} else {
+				$ret[ $full_key ] = $value;
+			}
+		}
+
+		return $ret;
+	}
+
 }
