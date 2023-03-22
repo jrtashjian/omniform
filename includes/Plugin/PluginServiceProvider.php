@@ -173,6 +173,18 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				$form_id = (int) get_post_meta( $post_id, '_omniform_id', true );
 				$form    = $this->getContainer()->get( Form::class )->getInstance( $form_id );
 
+				if ( ! $form ) {
+					echo esc_html(
+						sprintf(
+							/* translators: %d: Form ID. */
+							__( 'Form ID &#8220;%d&#8221; has been removed.', 'omniform' ),
+							$form_id
+						)
+					);
+
+					return;
+				}
+
 				echo sprintf(
 					'<a href="%s" aria-label="%s">%s</a>',
 					esc_url( admin_url( sprintf( 'post.php?post=%d&action=edit', $form->getId() ) ) ),

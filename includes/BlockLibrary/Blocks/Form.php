@@ -32,7 +32,18 @@ class Form extends BaseBlock {
 		// Setup the Form object.
 		$form = omniform()->get( \OmniForm\Plugin\Form::class )->getInstance( $entity_id );
 
-		if ( ! $form || ! $form->isPublished() || $form->isPrivate() ) {
+		if ( ! $form ) {
+			// Display notice for logged in editors, render nothing for visitors.
+			return current_user_can( 'edit_posts' )
+				? sprintf(
+					'<p style="color:var(--wp--preset--color--vivid-red,#cf2e2e);">%s</p>',
+					/* translators: %d: Form ID. */
+					esc_html( sprintf( __( 'Form ID &#8220;%d&#8221; has been removed.', 'omniform' ), $entity_id ) )
+				)
+				: '';
+		}
+
+		if ( ! $form->isPublished() || $form->isPrivate() ) {
 			// Display notice for logged in editors, render nothing for visitors.
 			return current_user_can( 'edit_post', $form->getId() )
 				? sprintf(
