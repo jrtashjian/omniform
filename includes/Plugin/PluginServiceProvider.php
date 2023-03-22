@@ -47,6 +47,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		add_action( 'init', array( $this, 'registerPostType' ) );
 		add_action( 'init', array( $this, 'filterBlockPatternsOnAdmin' ), PHP_INT_MAX );
 		add_action( 'rest_api_init', array( $this, 'filterBlockPatternsOnRestApi' ), PHP_INT_MAX );
+		add_filter( 'the_content', array( $this, 'renderSingularTemplate' ) );
 
 		// Add custom columns to CPT.
 		add_filter(
@@ -465,6 +466,17 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				),
 			)
 		);
+	}
+
+	/**
+	 * Filter the_content on singular forms to render the form block.
+	 *
+	 * @param string $content The post content.
+	 */
+	public function renderSingularTemplate( $content ) {
+		return ( ! is_singular( 'omniform' ) || ! is_main_query() )
+			? $content
+			: do_blocks( '<!-- wp:omniform/form {"ref":' . get_the_ID() . '} /-->' );
 	}
 
 	/**
