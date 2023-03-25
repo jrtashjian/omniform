@@ -17,13 +17,14 @@ import {
 const Edit = ( {
 	attributes,
 	setAttributes,
+	__unstableLayoutClassNames: layoutClassNames,
 } ) => {
 	const {
 		fieldLabel,
 		fieldName,
 	} = attributes;
 
-	const blockProps = useBlockProps();
+	const blockProps = useBlockProps( { className: layoutClassNames } );
 
 	const innerBlockProps = useInnerBlocksProps();
 

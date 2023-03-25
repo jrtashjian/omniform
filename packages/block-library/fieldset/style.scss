@@ -19,4 +19,8 @@
 	legend.omniform-field-label {
 		display: contents;
 	}
+
+	&.is-layout-flow > .omniform-field-label + .wp-block-omniform-field-input {
+		margin-block-start: 0.5em !important;
+	}
 }
