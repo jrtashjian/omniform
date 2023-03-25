@@ -4,7 +4,9 @@
 	"description": "Package description.",
 	"author": "JR Tashjian",
 	"license": "GPL-2.0-only",
-	"keywords": [ "wordpress" ],
+	"keywords": [
+		"wordpress"
+	],
 	"homepage": "https://github.com/jrtashjian/omniform/tree/HEAD/packages/plugin/README.md",
 	"repository": {
 		"type": "git",
@@ -17,11 +19,11 @@
 	"main": "build/index.js",
 	"module": "build-module/index.js",
 	"dependencies": {
-		"@wordpress/components": "^21.0.6",
-		"@wordpress/dom-ready": "^3.17.1",
-		"@wordpress/element": "^4.15.1",
-		"@wordpress/i18n": "^4.17.1",
-		"@wordpress/interface": "^4.16.6",
-		"@wordpress/plugins": "^4.15.2"
+		"@wordpress/components": "^23.3.6",
+		"@wordpress/dom-ready": "^3.26.1",
+		"@wordpress/element": "^5.3.2",
+		"@wordpress/i18n": "^4.26.1",
+		"@wordpress/interface": "^5.3.7",
+		"@wordpress/plugins": "^5.3.3"
 	}
 }
