@@ -1,12 +1,17 @@
 /**
+ * External dependencies
+ */
+import { kebabCase } from 'lodash';
+
+/**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import {
 	PanelBody,
-	__experimentalToggleGroupControl as ToggleGroupControl,
-	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
+	TextControl,
+	ToggleControl,
 } from '@wordpress/components';
 
 export default function FieldInspectorControls( {
@@ -19,7 +24,6 @@ export default function FieldInspectorControls( {
 		setAttributes,
 	} = originBlockProps;
 
-	const onRequiredChange = ( enable ) => setAttributes( { isRequired: enable } );
 	const onLabelHiddenChange = ( enable ) => setAttributes( {
 		isLabelHidden: enable,
 		fieldPlaceholder: enable ? attributes.fieldLabel : '',
@@ -30,40 +34,44 @@ export default function FieldInspectorControls( {
 			<PanelBody title={ __( 'Field Settings', 'omniform' ) }>
 
 				{ showRequiredControl && (
-					<ToggleGroupControl
-						label={ __( 'Required field?', 'omniform' ) }
-						value={ !! attributes.isRequired }
-						onChange={ onRequiredChange }
-						isBlock
-					>
-						<ToggleGroupControlOption
-							value={ false }
-							label={ __( 'Optional', 'omniform' ) }
-						/>
-						<ToggleGroupControlOption
-							value={ true }
-							label={ __( 'Required', 'omniform' ) }
-						/>
-					</ToggleGroupControl>
+					<ToggleControl
+						label={ __( 'Required for submission', 'omniform' ) }
+						checked={ attributes.isRequired }
+						onChange={ () => {
+							setAttributes( { isRequired: ! attributes.isRequired } );
+						} }
+					/>
 				) }
 
 				{ showLabelControl && (
-					<ToggleGroupControl
-						label={ __( 'Hide the label?', 'omniform' ) }
-						value={ !! attributes.isLabelHidden }
-						onChange={ onLabelHiddenChange }
-						isBlock
-					>
-						<ToggleGroupControlOption
-							value={ false }
-							label={ __( 'Shown', 'omniform' ) }
-						/>
-						<ToggleGroupControlOption
-							value={ true }
-							label={ __( 'Hidden', 'omniform' ) }
-						/>
-					</ToggleGroupControl>
+					<ToggleControl
+						label={ __( 'Hidden label', 'omniform' ) }
+						checked={ attributes.isLabelHidden }
+						onChange={ () => {
+							onLabelHiddenChange( ! attributes.isLabelHidden );
+						} }
+					/>
 				) }
+
+				<TextControl
+					label={ __( 'Field Name', 'omniform' ) }
+					value={ attributes.fieldName }
+					onChange={ ( newFieldName ) => {
+						setAttributes( {
+							fieldName: kebabCase( newFieldName ? newFieldName : attributes.fieldLabel ),
+						} );
+					} }
+					help={ __( 'The fieldName.', 'omniform' ) }
+				/>
+
+				<TextControl
+					label={ __( 'Field Value', 'omniform' ) }
+					value={ attributes.fieldValue }
+					onChange={ ( fieldValue ) => {
+						setAttributes( { fieldValue } );
+					} }
+					help={ __( 'The fieldValue.', 'omniform' ) }
+				/>
 
 			</PanelBody>
 		</InspectorControls>
