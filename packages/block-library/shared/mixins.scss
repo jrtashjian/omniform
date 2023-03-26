@@ -87,12 +87,9 @@ $dark-theme-border-hover: rgba(255, 255, 255, 0.75);
 	.omniform-field-required,
 	legend.omniform-field-label {
 
-		&,
-		.rich-text {
-			align-items: center;
-			display: inline-flex;
-			gap: 0.25em;
-		}
+		align-items: center;
+		display: inline-flex;
+		gap: 0.25em;
 
 		strong,
 		em {
