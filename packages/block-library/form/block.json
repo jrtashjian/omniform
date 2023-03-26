@@ -32,10 +32,7 @@
 		},
 		"__experimentalBorder": true,
 		"__experimentalLayout": {
-			"allowEditing": false,
-			"default": {
-				"type": "default"
-			}
+			"allowEditing": false
 		}
 	},
 	"usesContext": [
