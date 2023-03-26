@@ -75,9 +75,7 @@ const Edit = ( props ) => {
 					className="omniform-field-control"
 					aria-label={ __( 'Placeholder text for text input.', 'omniform' ) }
 					placeholder={
-						( fieldPlaceholder || fieldValue || ! isSelected )
-							? undefined
-							: richTextPlaceholder
+						( isSelected || fieldPlaceholder ) ? richTextPlaceholder : undefined
 					}
 					value={ isHiddenInput ? fieldValue : fieldPlaceholder }
 					onChange={ richTextOnChange }
