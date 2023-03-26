@@ -8,6 +8,7 @@
 namespace OmniForm\BlockLibrary\Blocks;
 
 use OmniForm\BlockLibrary\Blocks\Traits\HasColors;
+use OmniForm\Plugin\Form;
 
 /**
  * The BaseFieldBlock block class.
@@ -117,7 +118,7 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 * @return string
 	 */
 	protected function renderLabel() {
-		$form_id = $this->getBlockContext( 'postId' );
+		$form_id = omniform()->get( Form::class )->getId() ?? $this->getBlockContext( 'postId' );
 
 		$allowed_html = array(
 			'strong' => array(),
