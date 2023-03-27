@@ -12,11 +12,15 @@
 		},
 		"fieldName": {
 			"type": "string"
+		},
+		"isRequired": {
+			"type": "boolean"
 		}
 	},
 	"providesContext": {
 		"omniform/fieldGroupName": "fieldName",
-		"omniform/fieldGroupLabel": "fieldLabel"
+		"omniform/fieldGroupLabel": "fieldLabel",
+		"omniform/fieldGroupRequired": "isRequired"
 	},
 	"supports": {
 		"html": false,

@@ -38,7 +38,8 @@
 		"postId",
 		"postType",
 		"omniform/fieldGroupName",
-		"omniform/fieldGroupLabel"
+		"omniform/fieldGroupLabel",
+		"omniform/fieldGroupRequired"
 	],
 	"editorScript": "file:index.js",
 	"editorStyle": "file:index.css",

@@ -109,7 +109,9 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 * @return bool
 	 */
 	public function isRequired() {
-		return ! empty( $this->getBlockAttribute( 'isRequired' ) );
+		return null === $this->getBlockAttribute( 'isRequired' )
+			? $this->getBlockContext( 'omniform/fieldGroupRequired' )
+			: $this->getBlockAttribute( 'isRequired' );
 	}
 
 	/**
