@@ -33,7 +33,11 @@ export default function FieldInspectorControls( {
 				{ showRequiredControl && (
 					<ToggleControl
 						label={ __( 'Required for submission', 'omniform' ) }
-						checked={ attributes.isRequired || context[ 'omniform/fieldGroupRequired' ] }
+						checked={
+							typeof attributes.isRequired === 'undefined'
+								? context[ 'omniform/fieldGroupRequired' ]
+								: attributes.isRequired
+						}
 						onChange={ () => {
 							setAttributes( { isRequired: ! attributes.isRequired } );
 						} }
