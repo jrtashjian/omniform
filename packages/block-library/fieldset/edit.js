@@ -11,7 +11,13 @@ import {
 	RichText,
 	useBlockProps,
 	useInnerBlocksProps,
+	InspectorControls,
 } from '@wordpress/block-editor';
+import {
+	PanelBody,
+	TextControl,
+	ToggleControl,
+} from '@wordpress/components';
 import { cleanForSlug } from '@wordpress/url';
 
 const Edit = ( {
@@ -47,6 +53,31 @@ const Edit = ( {
 				allowedFormats={ [ 'core/bold', 'core/italic', 'core/image' ] }
 			/>
 			{ innerBlockProps.children }
+
+			<InspectorControls>
+				<PanelBody title={ __( 'Group Settings', 'omniform' ) }>
+					<ToggleControl
+						label={ __( 'Required for submission', 'omniform' ) }
+						checked={ attributes.isRequired }
+						onChange={ () => {
+							setAttributes( { isRequired: ! attributes.isRequired } );
+						} }
+						help={ __( 'Set default \'required\' state for all fields in the group.', 'omniform' ) }
+					/>
+
+					<TextControl
+						label={ __( 'Name', 'omniform' ) }
+						value={ fieldName }
+						onChange={ ( newFieldName ) => {
+							setAttributes( { fieldName: newFieldName } );
+						} }
+						onBlur={ () => {
+							setAttributes( { fieldName: cleanForSlug( fieldName ) } );
+						} }
+						help={ __( 'Name of the fieldset. Defaults to the fieldset\'s label.', 'omniform' ) }
+					/>
+				</PanelBody>
+			</InspectorControls>
 		</div>
 	);
 };

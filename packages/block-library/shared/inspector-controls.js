@@ -36,6 +36,7 @@ export default function FieldInspectorControls( {
 						onChange={ () => {
 							setAttributes( { isRequired: ! attributes.isRequired } );
 						} }
+						help={ __( 'A value is required or must be check for the form to be submittable.', 'omniform' ) }
 					/>
 				) }
 
@@ -46,11 +47,12 @@ export default function FieldInspectorControls( {
 						onChange={ () => {
 							onLabelHiddenChange( ! attributes.isLabelHidden );
 						} }
+						help={ __( 'Make the label hidden from view but still accessible.', 'omniform' ) }
 					/>
 				) }
 
 				<TextControl
-					label={ __( 'Field Name', 'omniform' ) }
+					label={ __( 'Name', 'omniform' ) }
 					value={ attributes.fieldName }
 					onChange={ ( fieldName ) => {
 						setAttributes( { fieldName } );
@@ -58,16 +60,16 @@ export default function FieldInspectorControls( {
 					onBlur={ () => {
 						setAttributes( { fieldName: cleanForSlug( attributes.fieldName ) } );
 					} }
-					help={ __( 'The fieldName.', 'omniform' ) }
+					help={ __( 'Name of the form control. Defaults to the input\'s label.', 'omniform' ) }
 				/>
 
 				<TextControl
-					label={ __( 'Field Value', 'omniform' ) }
+					label={ __( 'Value', 'omniform' ) }
 					value={ attributes.fieldValue }
 					onChange={ ( fieldValue ) => {
 						setAttributes( { fieldValue } );
 					} }
-					help={ __( 'The fieldValue.', 'omniform' ) }
+					help={ __( 'The initial value of the control.', 'omniform' ) }
 				/>
 
 			</PanelBody>
