@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import { kebabCase } from 'lodash';
-
-/**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
@@ -13,6 +8,7 @@ import {
 	TextControl,
 	ToggleControl,
 } from '@wordpress/components';
+import { cleanForSlug } from '@wordpress/url';
 
 export default function FieldInspectorControls( {
 	originBlockProps,
@@ -56,10 +52,11 @@ export default function FieldInspectorControls( {
 				<TextControl
 					label={ __( 'Field Name', 'omniform' ) }
 					value={ attributes.fieldName }
-					onChange={ ( newFieldName ) => {
-						setAttributes( {
-							fieldName: kebabCase( newFieldName ? newFieldName : attributes.fieldLabel ),
-						} );
+					onChange={ ( fieldName ) => {
+						setAttributes( { fieldName } );
+					} }
+					onBlur={ () => {
+						setAttributes( { fieldName: cleanForSlug( attributes.fieldName ) } );
 					} }
 					help={ __( 'The fieldName.', 'omniform' ) }
 				/>
