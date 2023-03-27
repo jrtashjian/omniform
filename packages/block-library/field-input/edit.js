@@ -124,7 +124,7 @@ const Edit = ( props ) => {
 
 			<FieldInspectorControls
 				originBlockProps={ props }
-				showRequiredControl
+				showRequiredControl={ ! isHiddenInput }
 				showLabelControl={ ! ( isOptionInput || isHiddenInput ) }
 			/>
 		</div>
