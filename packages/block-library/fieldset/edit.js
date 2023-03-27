@@ -19,16 +19,28 @@ import {
 	ToggleControl,
 } from '@wordpress/components';
 import { cleanForSlug } from '@wordpress/url';
+import { useEntityProp } from '@wordpress/core-data';
 
 const Edit = ( {
 	attributes,
 	setAttributes,
+	context,
 	__unstableLayoutClassNames: layoutClassNames,
 } ) => {
 	const {
 		fieldLabel,
 		fieldName,
+		isRequired,
 	} = attributes;
+
+	const { postId: contextPostId, postType: contextPostType } = context;
+
+	const [ meta, setMeta ] = useEntityProp( 'postType', contextPostType, 'meta', contextPostId );
+
+	const metaRequiredLabel = meta?.required_label;
+	const updateMetaRequiredLabel = ( newValue ) => {
+		setMeta( { ...meta, required_label: newValue } );
+	};
 
 	const blockProps = useBlockProps( { className: layoutClassNames } );
 
@@ -39,19 +51,34 @@ const Edit = ( {
 			{ ...blockProps }
 			className={ classNames( blockProps.className, 'omniform-fieldset' ) }
 		>
-			<RichText
-				className="omniform-field-label"
-				aria-label={ __( 'Legend text', 'omniform' ) }
-				placeholder={ __( 'Enter a title to the field…', 'omniform' ) }
-				multiple={ false }
-				value={ fieldLabel }
-				onChange={ ( html ) => ! fieldName || fieldName === cleanForSlug( fieldLabel.replace( /(<([^>]+)>)/gi, '' ) )
-					? setAttributes( { fieldLabel: html, fieldName: cleanForSlug( html.replace( /(<([^>]+)>)/gi, '' ) ) } )
-					: setAttributes( { fieldLabel: html } )
-				}
-				withoutInteractiveFormatting
-				allowedFormats={ [ 'core/bold', 'core/italic', 'core/image' ] }
-			/>
+			<div className="omniform-field-label">
+				<RichText
+					identifier="fieldsetLabel"
+					aria-label={ __( 'Legend text', 'omniform' ) }
+					placeholder={ __( 'Enter a title to the field…', 'omniform' ) }
+					multiple={ false }
+					value={ fieldLabel }
+					onChange={ ( html ) => ! fieldName || fieldName === cleanForSlug( fieldLabel.replace( /(<([^>]+)>)/gi, '' ) )
+						? setAttributes( { fieldLabel: html, fieldName: cleanForSlug( html.replace( /(<([^>]+)>)/gi, '' ) ) } )
+						: setAttributes( { fieldLabel: html } )
+					}
+					withoutInteractiveFormatting
+					allowedFormats={ [ 'core/bold', 'core/italic', 'core/image' ] }
+				/>
+				{ isRequired && (
+					<RichText
+						identifier="requiredLabel"
+						tagName="span"
+						className="omniform-field-required"
+						placeholder={ __( 'Enter a required field label…', 'omniform' ) }
+						value={ metaRequiredLabel }
+						onChange={ updateMetaRequiredLabel }
+						withoutInteractiveFormatting
+						allowedFormats={ [ 'core/bold', 'core/italic', 'core/image' ] }
+					/>
+				) }
+			</div>
+
 			{ innerBlockProps.children }
 
 			<InspectorControls>
