@@ -2,7 +2,6 @@
  * External dependencies
  */
 import classNames from 'classnames';
-import { kebabCase } from 'lodash';
 
 /**
  * WordPress dependencies
@@ -13,6 +12,7 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 } from '@wordpress/block-editor';
+import { cleanForSlug } from '@wordpress/url';
 
 const Edit = ( {
 	attributes,
@@ -39,8 +39,8 @@ const Edit = ( {
 				placeholder={ __( 'Enter a title to the field…', 'omniform' ) }
 				multiple={ false }
 				value={ fieldLabel }
-				onChange={ ( html ) => ! fieldName || fieldName === kebabCase( fieldLabel.replace( /(<([^>]+)>)/gi, '' ) )
-					? setAttributes( { fieldLabel: html, fieldName: kebabCase( html.replace( /(<([^>]+)>)/gi, '' ) ) } )
+				onChange={ ( html ) => ! fieldName || fieldName === cleanForSlug( fieldLabel.replace( /(<([^>]+)>)/gi, '' ) )
+					? setAttributes( { fieldLabel: html, fieldName: cleanForSlug( html.replace( /(<([^>]+)>)/gi, '' ) ) } )
 					: setAttributes( { fieldLabel: html } )
 				}
 				withoutInteractiveFormatting

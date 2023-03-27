@@ -1,14 +1,10 @@
 /**
- * External dependencies
- */
-import { kebabCase } from 'lodash';
-
-/**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
 import { createBlock, registerBlockType } from '@wordpress/blocks';
 import { decodeEntities } from '@wordpress/html-entities';
+import { cleanForSlug } from '@wordpress/url';
 
 /**
  * Internal dependencies
@@ -82,7 +78,7 @@ registerBlockType( name, {
 						options.map( ( label ) => createBlock( 'omniform/field-input', {
 							fieldType: isMultiple ? 'checkbox' : 'radio',
 							fieldLabel: label,
-							fieldValue: kebabCase( label ),
+							fieldValue: cleanForSlug( label ),
 						} ) )
 					);
 				},

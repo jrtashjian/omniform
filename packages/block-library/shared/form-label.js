@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import { kebabCase } from 'lodash';
-
-/**
  * WordPress dependencies
  */
 import {
@@ -14,6 +9,7 @@ import { cloneBlock, createBlock, getDefaultBlockName } from '@wordpress/blocks'
 import { useEntityProp } from '@wordpress/core-data';
 import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
+import { cleanForSlug } from '@wordpress/url';
 
 const FormLabel = ( { originBlockProps, isGrouped, isOptionInput, isRadioInput } ) => {
 	const { postId: contextPostId, postType: contextPostType } = originBlockProps.context;
@@ -33,8 +29,8 @@ const FormLabel = ( { originBlockProps, isGrouped, isOptionInput, isRadioInput }
 				identifier="fieldLabel"
 				placeholder={ __( 'Enter a label for the field…', 'omniform' ) }
 				value={ originBlockProps.attributes.fieldLabel }
-				onChange={ ( html ) => ! originBlockProps.attributes.fieldName || originBlockProps.attributes.fieldName === kebabCase( originBlockProps.attributes.fieldLabel )
-					? originBlockProps.setAttributes( { fieldLabel: html, fieldName: kebabCase( html.replace( /(<([^>]+)>)/gi, '' ) ) } )
+				onChange={ ( html ) => ! originBlockProps.attributes.fieldName || originBlockProps.attributes.fieldName === cleanForSlug( originBlockProps.attributes.fieldLabel )
+					? originBlockProps.setAttributes( { fieldLabel: html, fieldName: cleanForSlug( html.replace( /(<([^>]+)>)/gi, '' ) ) } )
 					: originBlockProps.setAttributes( { fieldLabel: html } )
 				}
 				withoutInteractiveFormatting
@@ -46,7 +42,7 @@ const FormLabel = ( { originBlockProps, isGrouped, isOptionInput, isRadioInput }
 					if ( isOriginal || value ) {
 						block = cloneBlock( getBlock( originBlockProps.clientId ), {
 							fieldLabel: value,
-							fieldName: kebabCase( value.replace( /(<([^>]+)>)/gi, '' ) ),
+							fieldName: cleanForSlug( value.replace( /(<([^>]+)>)/gi, '' ) ),
 						} );
 					} else {
 						block = isGrouped && isOptionInput
