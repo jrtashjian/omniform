@@ -18,7 +18,6 @@ export default function FieldInspectorControls( {
 	const {
 		attributes,
 		setAttributes,
-		context,
 	} = originBlockProps;
 
 	const onLabelHiddenChange = ( enable ) => setAttributes( {
@@ -33,11 +32,7 @@ export default function FieldInspectorControls( {
 				{ showRequiredControl && (
 					<ToggleControl
 						label={ __( 'Required for submission', 'omniform' ) }
-						checked={
-							typeof attributes.isRequired === 'undefined'
-								? context[ 'omniform/fieldGroupRequired' ]
-								: attributes.isRequired
-						}
+						checked={ attributes.isRequired }
 						onChange={ () => {
 							setAttributes( { isRequired: ! attributes.isRequired } );
 						} }

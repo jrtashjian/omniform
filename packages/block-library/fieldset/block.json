@@ -19,8 +19,7 @@
 	},
 	"providesContext": {
 		"omniform/fieldGroupName": "fieldName",
-		"omniform/fieldGroupLabel": "fieldLabel",
-		"omniform/fieldGroupRequired": "isRequired"
+		"omniform/fieldGroupLabel": "fieldLabel"
 	},
 	"supports": {
 		"html": false,

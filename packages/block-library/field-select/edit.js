@@ -35,7 +35,6 @@ const Edit = ( props ) => {
 		setAttributes,
 		isSelected,
 		clientId,
-		context,
 	} = props;
 	const {
 		fieldPlaceholder,
@@ -132,11 +131,7 @@ const Edit = ( props ) => {
 				<ToolbarGroup>
 					<ToolbarButton
 						icon={ Required }
-						isActive={
-							typeof isRequired === 'undefined'
-								? context[ 'omniform/fieldGroupRequired' ]
-								: isRequired
-						}
+						isActive={ isRequired }
 						label={ __( 'Required field', 'omniform' ) }
 						onClick={ () => setAttributes( { isRequired: ! isRequired } ) }
 					/>
