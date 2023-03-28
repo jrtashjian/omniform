@@ -12,6 +12,7 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 	InspectorControls,
+	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
@@ -20,8 +21,10 @@ import {
 } from '@wordpress/components';
 import { cleanForSlug } from '@wordpress/url';
 import { useEntityProp } from '@wordpress/core-data';
+import { useSelect, useDispatch } from '@wordpress/data';
 
 const Edit = ( {
+	clientId,
 	attributes,
 	setAttributes,
 	context,
@@ -45,6 +48,22 @@ const Edit = ( {
 	const blockProps = useBlockProps( { className: layoutClassNames } );
 
 	const innerBlockProps = useInnerBlocksProps();
+
+	// Update all child field blocks with a new required setting.
+	const { updateBlockAttributes } = useDispatch( blockEditorStore );
+	const { getBlockOrder } = useSelect( ( select ) => select( blockEditorStore ), [] );
+
+	const updateRequired = ( newIsRequired ) => {
+		setAttributes( { isRequired: newIsRequired } );
+
+		// Update all child field Blocks to match.
+		const innerBlockClientIds = getBlockOrder( clientId );
+		innerBlockClientIds.forEach( ( innerBlockClientId ) => {
+			updateBlockAttributes( innerBlockClientId, {
+				isRequired: newIsRequired,
+			} );
+		} );
+	};
 
 	return (
 		<div
@@ -87,7 +106,7 @@ const Edit = ( {
 						label={ __( 'Required for submission', 'omniform' ) }
 						checked={ attributes.isRequired }
 						onChange={ () => {
-							setAttributes( { isRequired: ! attributes.isRequired } );
+							updateRequired( ! attributes.isRequired );
 						} }
 						help={ __( 'Set default \'required\' state for all fields in the group.', 'omniform' ) }
 					/>
