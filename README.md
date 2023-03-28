@@ -1,6 +1,6 @@
 # OmniForm
 
-The Form Builder for the Block Editor
+OmniForm is a powerful WordPress plugin that allows you to create and manage forms within your WordPress site.
 
 ## Installation
 

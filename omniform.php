@@ -1,10 +1,10 @@
 <?php
 /**
  * Plugin Name: OmniForm
- * Plugin URI: https://omniformwp.com
- * Description: OmniForm Plugin Description.
+ * Plugin URI: https://omniform.io
+ * Description: OmniForm is a powerful WordPress plugin that allows you to create and manage forms within your WordPress site.
  * Version: 1.0.0
- * Requires at least: 6.0
+ * Requires at least: 6.2
  * Requires PHP: 7.4
  * Author: JR Tashjian
  * Author URI: https://jrtashjian.com
