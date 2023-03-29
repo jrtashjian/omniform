@@ -19,7 +19,7 @@ class FieldTextarea extends BaseFieldBlock {
 	 */
 	public function renderControl() {
 		return sprintf(
-			'<textarea class="omniform-field-control" %s>%s</textarea>',
+			'<textarea %s>%s</textarea>',
 			trim( implode( ' ', $this->getControlAttributes() ) ),
 			esc_textarea( $this->getControlValue() )
 		);

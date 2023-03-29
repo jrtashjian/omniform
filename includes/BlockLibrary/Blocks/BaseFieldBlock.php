@@ -26,8 +26,29 @@ abstract class BaseFieldBlock extends BaseBlock {
 			return '';
 		}
 
-		$attributes = get_block_wrapper_attributes(
-			array( 'class' => implode( ' ', $this->getDefaultClasses() ) )
+		// Remove block supports classes and styles from wrapper. We'll add them to the control.
+		$attributes = \WP_Block_Supports::get_instance()->apply_block_supports();
+
+		$attributes['class'] = array_diff(
+			explode( ' ', $attributes['class'] ),
+			explode( ' ', $this->getSupportsClasses() ),
+		);
+
+		$attributes['class'][] = implode( ' ', $this->getDefaultClasses() );
+
+		if ( key_exists( 'style', $attributes ) ) {
+			$attributes['style'] = array_diff(
+				explode( ' ', $attributes['style'] ),
+				explode( ' ', $this->getSupportsStyles() ),
+			);
+		}
+
+		$attributes = implode(
+			' ',
+			array(
+				key_exists( 'class', $attributes ) ? $this->getElementAttribute( 'class', $attributes['class'] ) : '',
+				key_exists( 'style', $attributes ) ? $this->getElementAttribute( 'style', $attributes['style'] ) : '',
+			),
 		);
 
 		return sprintf(
@@ -181,6 +202,8 @@ abstract class BaseFieldBlock extends BaseBlock {
 			array(
 				$this->getElementAttribute( 'id', sanitize_title( $this->getFieldName() ) ),
 				$this->getElementAttribute( 'name', $this->getControlName() ),
+				$this->getElementAttribute( 'class', $this->getSupportsClasses() . ' omniform-field-control' ),
+				$this->getElementAttribute( 'style', $this->getSupportsStyles() ),
 				$this->isRequired() ? 'required' : '',
 			)
 		);
@@ -212,6 +235,38 @@ abstract class BaseFieldBlock extends BaseBlock {
 	 */
 	public function getControlValue() {
 		return $this->getBlockAttribute( 'fieldValue' );
+	}
+
+	protected function getSupports() {
+		return array_filter(
+			array(
+				'colors'  => wp_apply_colors_support( $this->instance->block_type, $this->attributes ),
+				'border'  => wp_apply_border_support( $this->instance->block_type, $this->attributes ),
+				'spacing' => wp_apply_spacing_support( $this->instance->block_type, $this->attributes ),
+			)
+		);
+	}
+
+	protected function getSupportsClasses() {
+		$supports = array_filter(
+			$this->getSupports(),
+			function( $support ) {
+				return ! empty( $support['class'] );
+			}
+		);
+
+		return implode( ' ', wp_list_pluck( $supports, 'class' ) );
+	}
+
+	protected function getSupportsStyles() {
+		$supports = array_filter(
+			$this->getSupports(),
+			function( $support ) {
+				return ! empty( $support['style'] );
+			}
+		);
+
+		return implode( ' ', wp_list_pluck( $supports, 'style' ) );
 	}
 
 	/**

@@ -34,7 +34,7 @@ class FieldInput extends BaseFieldBlock {
 	 */
 	public function renderControl() {
 		return sprintf(
-			'<input class="omniform-field-control" type="%s" %s />',
+			'<input type="%s" %s />',
 			esc_attr( $this->getBlockAttribute( 'fieldType' ) ),
 			trim( implode( ' ', $this->getControlAttributes() ) )
 		);
