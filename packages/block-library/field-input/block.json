@@ -1,5 +1,5 @@
 {
-	"$schema": "https://json.schemastore.org/block.json",
+	"$schema": "https://raw.githubusercontent.com/WordPress/gutenberg/wp/6.2/schemas/json/block.json",
 	"apiVersion": 2,
 	"name": "omniform/field-input",
 	"category": "omniform-control-simple",
@@ -32,7 +32,15 @@
 	},
 	"supports": {
 		"html": false,
-		"__experimentalSelector": ".wp-block-omniform-field-input .omniform-field-control"
+		"color": {
+			"text": true,
+			"background": true
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"__experimentalBorder": true
 	},
 	"usesContext": [
 		"postId",

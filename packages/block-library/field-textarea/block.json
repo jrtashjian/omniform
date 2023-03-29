@@ -1,5 +1,5 @@
 {
-	"$schema": "https://json.schemastore.org/block.json",
+	"$schema": "https://raw.githubusercontent.com/WordPress/gutenberg/wp/6.2/schemas/json/block.json",
 	"apiVersion": 2,
 	"name": "omniform/field-textarea",
 	"category": "omniform-control-simple",
@@ -32,6 +32,11 @@
 	},
 	"supports": {
 		"html": false,
+		"color": {
+			"text": true,
+			"background": true
+		},
+		"__experimentalBorder": true,
 		"__experimentalSelector": ".wp-block-omniform-field-textarea .omniform-field-control"
 	},
 	"usesContext": [
