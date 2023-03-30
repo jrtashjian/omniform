@@ -57,7 +57,7 @@ $dark-theme-border-hover: rgba(255, 255, 255, 0.75);
 	*,
 	*::before {
 		transition-duration: 0.1s;
-		transition-property: background-color, border-color, box-shadow, color, opacity;
+		transition-property: background-color, border-color, box-shadow, color, opacity, outline, outline-offset;
 		transition-timing-function: ease-in-out;
 	}
 
@@ -105,12 +105,12 @@ $dark-theme-border-hover: rgba(255, 255, 255, 0.75);
 		appearance: none;
 		background-color: var(--omniform--color--base);
 		border-radius: 0.25em;
-		border: 1px solid var(--omniform--color--border);
+		border-width: 1px;
+		border-style: solid;
+		border-color: currentcolor;
 		box-sizing: border-box;
 		display: block;
-		// font-size: var(--wp--preset--font-size--normal, 16px);
 		font-size: inherit;
-		// line-height: 1.5;
 		line-height: inherit;
 		max-width: none;
 		padding: 0.5em 0.75em;
@@ -118,10 +118,13 @@ $dark-theme-border-hover: rgba(255, 255, 255, 0.75);
 		width: 100%;
 		color: var(--omniform--color--contrast);
 
+		outline: 2px solid transparent;
+		outline-offset: 0;
+
 		&:focus {
-			outline: 0;
-			box-shadow: 0 0 0 2px #{$base-color}, 0 0 0 4px #{$focus-color};
-			border-color: var(--omniform--color--base);
+			outline: 2px solid currentcolor;
+			outline-offset: 2px;
+			border-color: transparent;
 		}
 	}
 
