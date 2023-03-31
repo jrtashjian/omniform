@@ -115,11 +115,10 @@ $dark-theme-border-hover: rgba(255, 255, 255, 0.75);
 		max-width: none;
 		padding: 0.5em 0.75em;
 		margin: 0;
-		width: 100%;
 		color: var(--omniform--color--contrast);
 
-		outline: 2px solid transparent;
-		outline-offset: 0;
+		outline: 0 solid transparent;
+		outline-offset: -2px;
 
 		&:focus {
 			outline: 2px solid currentcolor;
