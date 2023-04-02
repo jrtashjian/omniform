@@ -9,7 +9,6 @@ import {
 } from '@wordpress/block-editor';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { cloneBlock, createBlock } from '@wordpress/blocks';
-import { cleanForSlug } from '@wordpress/url';
 
 const Edit = ( {
 	attributes: { fieldPlaceholder, fieldType, fieldValue },
@@ -20,16 +19,11 @@ const Edit = ( {
 	const {
 		getBlock,
 		getBlockRootClientId,
-		getPreviousBlockClientId,
-		getNextBlockClientId,
 	} = useSelect( blockEditorStore );
 
 	const {
-		mergeBlocks,
 		replaceBlocks,
 		selectBlock,
-		removeBlock,
-		updateBlockAttributes,
 	} = useDispatch( blockEditorStore );
 
 	const isTextInput = [ 'text', 'email', 'url', 'number', 'month', 'password', 'search', 'tel', 'week', 'hidden' ].includes( fieldType );
