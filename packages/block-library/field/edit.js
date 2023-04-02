@@ -22,7 +22,6 @@ const Edit = ( {
 
 	const innerBlockOptions = {
 		__experimentalCaptureToolbars: true,
-		templateInsertUpdatesSelection: true,
 		templateLock: 'insert',
 		template: [
 			[ 'omniform/label' ],
