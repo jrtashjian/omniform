@@ -31,7 +31,10 @@
 		"spacing": {
 			"margin": true,
 			"padding": true,
-			"blockGap": true
+			"blockGap": true,
+			"__experimentalDefaultControls": {
+				"blockGap": true
+			}
 		},
 		"__experimentalBorder": true,
 		"__experimentalLayout": {

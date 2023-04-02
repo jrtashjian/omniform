@@ -26,7 +26,6 @@
 			"background": true
 		},
 		"spacing": {
-			"margin": true,
 			"padding": true
 		},
 		"__experimentalBorder": true

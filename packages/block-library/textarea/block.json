@@ -13,10 +13,6 @@
 		},
 		"fieldValue": {
 			"type": "string"
-		},
-		"height": {
-			"type": "integer",
-			"default": 230
 		}
 	},
 	"supports": {
@@ -26,8 +22,13 @@
 			"background": true
 		},
 		"spacing": {
-			"margin": true,
 			"padding": true
+		},
+		"dimensions": {
+			"minHeight": true,
+			"__experimentalDefaultControls": {
+				"minHeight": true
+			}
 		},
 		"__experimentalBorder": true
 	},
