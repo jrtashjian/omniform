@@ -132,4 +132,10 @@ $dark-theme-border-hover: rgba(255, 255, 255, 0.75);
 		outline: 2px solid currentcolor !important;
 		outline-offset: 2px;
 	}
+
+	.editor-styles-wrapper &:hover,
+	.editor-styles-wrapper &:focus {
+		outline: unset !important;
+		outline-offset: unset !important;
+	}
 }
