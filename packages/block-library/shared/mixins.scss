@@ -98,36 +98,38 @@ $dark-theme-border-hover: rgba(255, 255, 255, 0.75);
 	}
 }
 
+// Base styles for all fields controls.
 @mixin field-control {
+	appearance: none;
+	background-color: #{$base-color};
+	border-radius: 0.25em;
+	border-width: 1px;
+	border-style: solid;
+	border-color: currentcolor;
+	box-sizing: border-box;
+	box-shadow: none;
+	display: block;
+	font-size: inherit;
+	line-height: inherit;
+	max-width: none;
+	padding: 0.5em 0.75em;
+	margin: 0;
+	color: #{$contrast-color};
 
-	.omniform-field-control,
-	input[type="file"] {
-		appearance: none;
-		background-color: var(--omniform--color--base);
-		border-radius: 0.25em;
-		border-width: 1px;
-		border-style: solid;
-		border-color: currentcolor;
-		box-sizing: border-box;
-		display: block;
-		font-size: inherit;
-		line-height: inherit;
-		max-width: none;
-		padding: 0.5em 0.75em;
-		margin: 0;
-		color: var(--omniform--color--contrast);
+	transition-duration: 0.1s;
+	transition-property: border-color, outline, outline-offset;
+	transition-timing-function: ease-in-out;
 
-		outline: 0 solid transparent;
-		outline-offset: -2px;
+	outline: 0 solid transparent;
+	outline-offset: -2px;
 
-		&:focus {
-			outline: 2px solid currentcolor;
-			outline-offset: 2px;
-			border-color: transparent;
-		}
+	&:hover {
+		outline: 1px solid currentcolor !important;
+		outline-offset: 2px;
 	}
 
-	&:hover .omniform-field-control:not(:focus) {
-		border-color: var(--omniform--color--border-hover);
+	&:focus {
+		outline: 2px solid currentcolor !important;
+		outline-offset: 2px;
 	}
 }
