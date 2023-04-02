@@ -6,6 +6,7 @@
 	"title": "Textarea",
 	"description": "A Textarea",
 	"textdomain": "omniform",
+	"parent": [ "omniform/field" ],
 	"attributes": {
 		"fieldPlaceholder": {
 			"type": "string"
