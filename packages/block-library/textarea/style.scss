@@ -1,0 +1,33 @@
+@import "../shared/mixins";
+
+.editor-styles-wrapper .wp-block-omniform-textarea,
+.wp-block-omniform-textarea {
+	appearance: none;
+	background-color: #{$base-color};
+	border-radius: 0.25em;
+	border-width: 1px;
+	border-style: solid;
+	border-color: currentcolor;
+	box-sizing: border-box;
+	display: block;
+	font-size: inherit;
+	line-height: inherit;
+	max-width: none;
+	padding: 0.5em 0.75em;
+	margin: 0;
+	color: #{$contrast-color};
+
+	transition-duration: 0.1s;
+	transition-property: border-color, outline, outline-offset;
+	transition-timing-function: ease-in-out;
+
+	outline: 0 solid transparent;
+	outline-offset: -2px;
+
+	&:focus {
+		outline: 2px solid currentcolor !important;
+		outline-offset: 2px;
+		border-color: transparent;
+		box-shadow: none;
+	}
+}

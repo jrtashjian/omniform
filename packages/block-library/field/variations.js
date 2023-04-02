@@ -12,6 +12,7 @@ import {
 	fieldTel,
 	fieldTime,
 	fieldUrl,
+	fieldTextarea,
 } from '../shared/icons';
 
 /**
@@ -163,6 +164,25 @@ const variations = [
 		description: __( 'A field for collecting a week formatted date.', 'omniform' ),
 		example: inputTextExample( 'week' ),
 		innerBlocks: inputTextExample( 'week' ).innerBlocks,
+	},
+	{
+		name: 'field-textarea',
+		icon: { src: fieldTextarea },
+		title: __( 'Textarea', 'omniform' ),
+		description: __( 'A field for collecting a week formatted date.', 'omniform' ),
+		example: {
+			attributes: {
+				fieldLabel: __( 'Field Label', 'omniform' ),
+			},
+			innerBlocks: [
+				{ name: 'omniform/label' },
+				{ name: 'omniform/textarea' },
+			],
+		},
+		innerBlocks: [
+			{ name: 'omniform/label' },
+			{ name: 'omniform/textarea' },
+		],
 	},
 ];
 
