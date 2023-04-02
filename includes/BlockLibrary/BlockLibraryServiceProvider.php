@@ -102,6 +102,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 		$blocks = array(
 			Blocks\Form::class,
 			Blocks\Field::class,
+			Blocks\Label::class,
 			Blocks\Button::class,
 			Blocks\FieldInput::class,
 			Blocks\FieldSelect::class,

@@ -1,0 +1,16 @@
+.wp-block-omniform-label {
+	font-size: inherit;
+	align-items: center;
+	display: inline-flex;
+	flex-wrap: wrap;
+	gap: 0.25em;
+
+	strong,
+	em {
+		display: contents;
+	}
+
+	.omniform-field-required {
+		color: var(--wp--preset--color--vivid-red, "#cf2e2e");
+	}
+}
