@@ -9,6 +9,20 @@ export const form = (
 	</SVG>
 );
 
+export const field = (
+	<SVG viewBox="0 0 24 24">
+		<Path fill="#D92E83" fillRule="evenodd" d="M4 11a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2H4Zm16 2H4v2h16v-2Z" clipRule="evenodd" />
+		<Path fill="#D92E83" d="M2 7h8v2H2V7Z" />
+	</SVG>
+
+);
+
+export const label = (
+	<SVG viewBox="0 0 24 24">
+		<Path fill="#D92E83" d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16ZM16 17H5V7h11l3.55 5L16 17Z" />
+	</SVG>
+);
+
 export const fieldInput = (
 	<SVG viewBox="0 0 24 24">
 		<Path fill="#D92E83" d="M14 11H6v2h8v-2Z" />
