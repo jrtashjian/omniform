@@ -1,0 +1,45 @@
+{
+	"$schema": "https://raw.githubusercontent.com/WordPress/gutenberg/wp/6.2/schemas/json/block.json",
+	"apiVersion": 2,
+	"name": "omniform/input",
+	"category": "omniform-control-simple",
+	"title": "Field Input",
+	"description": "A simple form input field.",
+	"textdomain": "omniform",
+	"parent": [ "omniform/field" ],
+	"attributes": {
+		"fieldType": {
+			"type": "string",
+			"default": "text"
+		},
+		"fieldPlaceholder": {
+			"type": "string"
+		},
+		"fieldValue": {
+			"type": "string"
+		}
+	},
+	"supports": {
+		"html": false,
+		"color": {
+			"text": true,
+			"background": true
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"__experimentalBorder": true
+	},
+	"usesContext": [
+		"postId",
+		"postType",
+		"omniform/fieldGroupName",
+		"omniform/fieldGroupLabel",
+		"omniform/fieldLabel",
+		"omniform/fieldName",
+		"omniform/isRequired"
+	],
+	"editorScript": "file:index.js",
+	"style": "file:style-index.css"
+}
