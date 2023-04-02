@@ -100,14 +100,15 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 	 */
 	public function registerBlocks() {
 		$blocks = array(
+			Blocks\Form::class,
+			Blocks\Field::class,
 			Blocks\Button::class,
 			Blocks\FieldInput::class,
 			Blocks\FieldSelect::class,
-			Blocks\SelectOption::class,
-			Blocks\SelectGroup::class,
-			Blocks\FieldTextarea::class,
-			Blocks\Form::class,
 			Blocks\Fieldset::class,
+			Blocks\FieldTextarea::class,
+			Blocks\SelectGroup::class,
+			Blocks\SelectOption::class,
 		);
 
 		foreach ( $blocks as $block ) {
