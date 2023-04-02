@@ -11,7 +11,7 @@ import { useSelect, useDispatch } from '@wordpress/data';
 import { cloneBlock, createBlock } from '@wordpress/blocks';
 
 const Edit = ( {
-	attributes: { fieldPlaceholder, fieldType, fieldValue },
+	attributes: { fieldPlaceholder, fieldType },
 	setAttributes,
 	clientId,
 	isSelected,
@@ -28,23 +28,15 @@ const Edit = ( {
 
 	const isTextInput = [ 'text', 'email', 'url', 'number', 'month', 'password', 'search', 'tel', 'week', 'hidden' ].includes( fieldType );
 	const isOptionInput = [ 'checkbox', 'radio' ].includes( fieldType );
-	const isHiddenInput = fieldType === 'hidden';
-
-	const richTextPlaceholder = isHiddenInput
-		? __( 'Enter a value…', 'omniform' )
-		: __( 'Enter a placeholder…', 'omniform' );
-	const richTextOnChange = ( html ) => isHiddenInput
-		? setAttributes( { fieldValue: html } )
-		: setAttributes( { fieldPlaceholder: html } );
 
 	/**
 	 * Handles splitting the parent field block.
 	 *
-	 * @param {string}  value      The value of the field label.
+	 * @param {string}  _value     The value of the field label.
 	 * @param {boolean} isOriginal Whether the field label is the original.
 	 * @return {Object} The new block.
 	 */
-	const onSplit = ( value, isOriginal ) => {
+	const onSplit = ( _value, isOriginal ) => {
 		let block;
 
 		const rootClientId = getBlockRootClientId( clientId );
@@ -131,10 +123,10 @@ const Edit = ( {
 				identifier="fieldControl"
 				aria-label={ __( 'Placeholder text for text input.', 'omniform' ) }
 				placeholder={
-					( isSelected || fieldPlaceholder ) ? richTextPlaceholder : undefined
+					( isSelected || fieldPlaceholder ) ? __( 'Enter a placeholder…', 'omniform' ) : undefined
 				}
-				value={ isHiddenInput ? fieldValue : fieldPlaceholder }
-				onChange={ richTextOnChange }
+				value={ fieldPlaceholder }
+				onChange={ ( html ) => setAttributes( { fieldPlaceholder: html } ) }
 				withoutInteractiveFormatting
 				allowedFormats={ [] }
 
@@ -149,11 +141,7 @@ const Edit = ( {
 	}
 
 	return (
-		<input
-			type={ fieldType }
-			disabled
-			{ ...blockProps }
-		/>
+		<input type={ fieldType } { ...blockProps } disabled />
 	);
 };
 
