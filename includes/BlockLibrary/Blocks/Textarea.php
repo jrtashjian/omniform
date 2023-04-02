@@ -18,7 +18,7 @@ class Textarea extends BaseBlock {
 	 */
 	protected function render() {
 		return sprintf(
-			'<textarea name="%1$s" %2$s>%s</textarea>',
+			'<textarea id="%1$s" name="%1$s" %2$s>%3$s</textarea>',
 			$this->getBlockContext( 'omniform/fieldName' ),
 			get_block_wrapper_attributes(),
 			''
