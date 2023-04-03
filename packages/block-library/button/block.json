@@ -19,23 +19,17 @@
 		},
 		"buttonValue": {
 			"type": "string"
-		},
-		"backgroundColor": {
-			"type": "string"
-		},
-		"textColor": {
-			"type": "string"
 		}
 	},
 	"supports": {
-		"align": true,
 		"html": false,
 		"color": {
-			"gradients": true,
-			"__experimentalDefaultControls": {
-				"background": true,
-				"text": true
-			}
+			"text": true,
+			"background": true
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true
 		},
 		"__experimentalBorder": true,
 		"__experimentalSelector": ".wp-block-omniform-button .wp-element-button"
