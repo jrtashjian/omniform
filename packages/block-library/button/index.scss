@@ -1,5 +1,9 @@
 .wp-block-omniform-button {
 
+	.wp-element-button span {
+		margin-left: -0.5em;
+	}
+
 	&:focus,
 	.wp-element-button:focus {
 		outline: none;
