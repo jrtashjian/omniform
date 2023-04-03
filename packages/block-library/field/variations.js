@@ -13,6 +13,7 @@ import {
 	fieldTime,
 	fieldUrl,
 	fieldTextarea,
+	fieldSelect,
 } from '../shared/icons';
 
 /**
@@ -176,12 +177,62 @@ const variations = [
 			},
 			innerBlocks: [
 				{ name: 'omniform/label' },
-				{ name: 'omniform/textarea' },
+				{
+					name: 'omniform/textarea',
+					attributes: { style: { dimensions: { minHeight: '230px' } } },
+				},
 			],
 		},
 		innerBlocks: [
 			{ name: 'omniform/label' },
-			{ name: 'omniform/textarea' },
+			{
+				name: 'omniform/textarea',
+				attributes: { style: { dimensions: { minHeight: '230px' } } },
+			},
+		],
+	},
+	{
+		name: 'field-select',
+		icon: { src: fieldSelect },
+		title: __( 'Select', 'omniform' ),
+		description: __( 'A field with multiple options where a single choice can be made.', 'omniform' ),
+		example: {
+			attributes: {
+				fieldLabel: __( 'Field Label', 'omniform' ),
+			},
+			innerBlocks: [
+				{ name: 'omniform/label' },
+				{ name: 'omniform/select' },
+			],
+		},
+		innerBlocks: [
+			{ name: 'omniform/label' },
+			{ name: 'omniform/select' },
+		],
+	},
+	{
+		name: 'field-select-multiple',
+		icon: { src: fieldSelect },
+		title: __( 'Select Multiple', 'omniform' ),
+		description: __( 'A field with multiple options where multiple choices can be made.', 'omniform' ),
+		example: {
+			attributes: {
+				fieldLabel: __( 'Field Label', 'omniform' ),
+			},
+			innerBlocks: [
+				{ name: 'omniform/label' },
+				{
+					name: 'omniform/select',
+					attributes: { isMultiple: true, style: { dimensions: { minHeight: '230px' } } },
+				},
+			],
+		},
+		innerBlocks: [
+			{ name: 'omniform/label' },
+			{
+				name: 'omniform/select',
+				attributes: { isMultiple: true, style: { dimensions: { minHeight: '230px' } } },
+			},
 		],
 	},
 ];

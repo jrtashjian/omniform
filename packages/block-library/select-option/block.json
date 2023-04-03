@@ -6,8 +6,7 @@
 	"title": "Option",
 	"description": "A choice within a Select block that can be selected.",
 	"textdomain": "omniform",
-	"parent": [ "omniform/field-select", "omniform/select-group" ],
-	"ancestor": [ "omniform/field-select", "omniform/select-group" ],
+	"parent": [ "omniform/select", "omniform/select-group" ],
 	"attributes": {
 		"fieldLabel": {
 			"type": "string"

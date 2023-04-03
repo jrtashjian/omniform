@@ -105,6 +105,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 			Blocks\Label::class,
 			Blocks\Input::class,
 			Blocks\Textarea::class,
+			Blocks\Select::class,
 			Blocks\Button::class,
 			Blocks\FieldInput::class,
 			Blocks\FieldSelect::class,

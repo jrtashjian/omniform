@@ -1,0 +1,51 @@
+{
+	"$schema": "https://raw.githubusercontent.com/WordPress/gutenberg/wp/6.2/schemas/json/block.json",
+	"apiVersion": 2,
+	"name": "omniform/select",
+	"category": "omniform-control-simple",
+	"title": "Select",
+	"description": "A Select",
+	"textdomain": "omniform",
+	"attributes": {
+		"fieldPlaceholder": {
+			"type": "string"
+		},
+		"isMultiple": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"supports": {
+		"html": false,
+		"color": {
+			"text": true,
+			"background": true
+		},
+		"spacing": {
+			"padding": true
+		},
+		"dimensions": {
+			"minHeight": true,
+			"__experimentalDefaultControls": {
+				"minHeight": true
+			}
+		},
+		"__experimentalBorder": true
+	},
+	"usesContext": [
+		"postId",
+		"postType",
+		"omniform/fieldGroupName",
+		"omniform/fieldGroupLabel",
+		"omniform/fieldLabel",
+		"omniform/fieldName",
+		"omniform/isRequired"
+	],
+	"styles": [
+		{ "name": "light", "label": "Light", "isDefault": true },
+		{ "name": "dark", "label": "Dark" }
+	],
+	"editorScript": "file:index.js",
+	"editorStyle": "file:index.css",
+	"style": "file:style-index.css"
+}

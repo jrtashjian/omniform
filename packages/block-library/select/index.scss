@@ -1,0 +1,13 @@
+.wp-block-omniform-select {
+
+
+	&.is-selected,
+	&.has-child-selected,
+	&.type-multiple {
+		background-image: none !important;
+	}
+
+	&.type-multiple > .omniform-select-options-container > .wp-block:first-child {
+		margin-block-start: 0;
+	}
+}
