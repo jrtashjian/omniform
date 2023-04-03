@@ -123,11 +123,6 @@ $dark-theme-border-hover: rgba(255, 255, 255, 0.75);
 	outline: 0 solid transparent;
 	outline-offset: -2px;
 
-	&:hover {
-		outline: 1px solid currentcolor !important;
-		outline-offset: 2px;
-	}
-
 	&:focus {
 		outline: 2px solid currentcolor !important;
 		outline-offset: 2px;
