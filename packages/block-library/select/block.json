@@ -42,8 +42,7 @@
 		"omniform/isRequired"
 	],
 	"styles": [
-		{ "name": "light", "label": "Light", "isDefault": true },
-		{ "name": "dark", "label": "Dark" }
+		{ "name": "inverted", "label": "Inverted" }
 	],
 	"editorScript": "file:index.js",
 	"editorStyle": "file:index.css",

@@ -133,4 +133,9 @@ $dark-theme-border-hover: rgba(255, 255, 255, 0.75);
 		outline: unset !important;
 		outline-offset: unset !important;
 	}
+
+	&.is-style-inverted {
+		color: #{$base-color};
+		background-color: #{$contrast-color};
+	}
 }
