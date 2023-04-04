@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import classNames from 'classnames';
-
-/**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
@@ -24,18 +19,12 @@ import { useEntityProp } from '@wordpress/core-data';
 import { useSelect, useDispatch } from '@wordpress/data';
 
 const Edit = ( {
-	clientId,
-	attributes,
+	attributes: { fieldLabel, fieldName, isRequired },
 	setAttributes,
+	clientId,
 	context,
-	__unstableLayoutClassNames: layoutClassNames,
 } ) => {
-	const {
-		fieldLabel,
-		fieldName,
-		isRequired,
-	} = attributes;
-
+	// Manage the required label.
 	const { postId: contextPostId, postType: contextPostType } = context;
 
 	const [ meta, setMeta ] = useEntityProp( 'postType', contextPostType, 'meta', contextPostId );
@@ -45,8 +34,7 @@ const Edit = ( {
 		setMeta( { ...meta, required_label: newValue } );
 	};
 
-	const blockProps = useBlockProps( { className: layoutClassNames } );
-
+	const blockProps = useBlockProps();
 	const innerBlockProps = useInnerBlocksProps();
 
 	// Update all child field blocks with a new required setting.
@@ -66,10 +54,7 @@ const Edit = ( {
 	};
 
 	return (
-		<div
-			{ ...blockProps }
-			className={ classNames( blockProps.className, 'omniform-fieldset' ) }
-		>
+		<div { ...blockProps } >
 			<div className="omniform-field-label">
 				<RichText
 					identifier="fieldsetLabel"
@@ -98,15 +83,17 @@ const Edit = ( {
 				) }
 			</div>
 
-			{ innerBlockProps.children }
+			<div { ...innerBlockProps } />
 
 			<InspectorControls>
-				<PanelBody title={ __( 'Group Settings', 'omniform' ) }>
+				<PanelBody title={ __( 'Fieldset Settings', 'omniform' ) }>
+
 					<ToggleControl
 						label={ __( 'Required for submission', 'omniform' ) }
-						checked={ attributes.isRequired }
+						checked={ isRequired }
 						onChange={ () => {
-							updateRequired( ! attributes.isRequired );
+							updateRequired( ! isRequired );
+							// setAttributes( { isRequired: ! isRequired } );
 						} }
 						help={ __( 'Set default \'required\' state for all fields in the group.', 'omniform' ) }
 					/>
@@ -118,10 +105,11 @@ const Edit = ( {
 							setAttributes( { fieldName: newFieldName } );
 						} }
 						onBlur={ () => {
-							setAttributes( { fieldName: cleanForSlug( fieldName ) } );
+							setAttributes( { fieldName: cleanForSlug( ( fieldName || fieldLabel ).replace( /(<([^>]+)>)/gi, '' ) ) } );
 						} }
-						help={ __( 'Name of the fieldset. Defaults to the fieldset\'s label.', 'omniform' ) }
+						help={ __( 'Name of the fieldset. Defaults to the fieldset\s label.', 'omniform' ) }
 					/>
+
 				</PanelBody>
 			</InspectorControls>
 		</div>
