@@ -40,16 +40,32 @@ const Edit = ( {
 		template: [ [ 'omniform/select-option' ] ],
 	} );
 
+	// Set max height to min height if block is not selected. This is the default behavior of the minHeight on <select> elements.
+	// If the block is selected, it should be allowed to expand to show all options.
+	const maxHeight = ( isSelected || hasSelectedInnerBlock ) ? undefined : ( blockProps.style.minHeight || '230px' );
+
 	if ( isMultiple ) {
 		return (
-			<div { ...blockProps }>
+			<div
+				{ ...blockProps }
+				style={ {
+					...blockProps.style,
+					maxHeight,
+				} }
+			>
 				<div { ...innerBlockProps } />
 			</div>
 		);
 	}
 
 	return (
-		<div { ...blockProps }>
+		<div
+			{ ...blockProps }
+			style={ {
+				...blockProps.style,
+				maxHeight,
+			} }
+		>
 			{ ! isMultiple && (
 				<RichText
 					identifier="fieldControl"
