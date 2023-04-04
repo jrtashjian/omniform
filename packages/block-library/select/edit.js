@@ -40,9 +40,9 @@ const Edit = ( {
 		template: [ [ 'omniform/select-option' ] ],
 	} );
 
-	// Set max height to min height if block is not selected. This is the default behavior of the minHeight on <select> elements.
+	// Set height to min height if block is not selected. This is the default behavior of the minHeight on <select> elements.
 	// If the block is selected, it should be allowed to expand to show all options.
-	const maxHeight = ( isSelected || hasSelectedInnerBlock ) ? undefined : ( blockProps.style.minHeight || '230px' );
+	const height = ( isSelected || hasSelectedInnerBlock ) ? undefined : ( blockProps.style.minHeight || '230px' );
 
 	if ( isMultiple ) {
 		return (
@@ -50,7 +50,7 @@ const Edit = ( {
 				{ ...blockProps }
 				style={ {
 					...blockProps.style,
-					maxHeight,
+					height,
 				} }
 			>
 				<div { ...innerBlockProps } />
@@ -63,7 +63,7 @@ const Edit = ( {
 			{ ...blockProps }
 			style={ {
 				...blockProps.style,
-				maxHeight,
+				height,
 			} }
 		>
 			{ ! isMultiple && (
