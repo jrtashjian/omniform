@@ -26,9 +26,17 @@ const Edit = ( {
 		[ clientId ]
 	);
 
+	// Indent the option listing select-group blocks are found.
+	const hasNestedOptions = useSelect( ( select ) => {
+		const blocksSelectGroup = select( blockEditorStore ).getBlocks( clientId )
+			.filter( ( block ) => block.name === 'omniform/select-group' );
+		return !! blocksSelectGroup.length;
+	} );
+
 	const blockProps = useBlockProps( {
 		className: classNames( {
 			[ `type-multiple` ]: isMultiple,
+			[ `options-nested` ]: hasNestedOptions,
 		} ),
 	} );
 
