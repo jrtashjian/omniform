@@ -17,11 +17,17 @@ class Textarea extends BaseBlock {
 	 * @return string
 	 */
 	protected function render() {
+		$extra_attributes = array_filter(
+			array(
+				'id'   => sanitize_title( $this->getBlockContext( 'omniform/fieldName' ) ),
+				'name' => sanitize_title( $this->getBlockContext( 'omniform/fieldName' ) ),
+			)
+		);
+
 		return sprintf(
-			'<textarea id="%1$s" name="%1$s" %2$s>%3$s</textarea>',
-			$this->getBlockContext( 'omniform/fieldName' ),
-			get_block_wrapper_attributes(),
-			''
+			'<textarea %s>%s</textarea>',
+			get_block_wrapper_attributes( $extra_attributes ),
+			$this->getBlockAttribute( 'fieldPlaceholder' )
 		);
 	}
 }
