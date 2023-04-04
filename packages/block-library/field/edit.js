@@ -53,7 +53,7 @@ const Edit = ( {
 							setAttributes( { fieldName: newFieldName } );
 						} }
 						onBlur={ () => {
-							setAttributes( { fieldName: cleanForSlug( fieldName || fieldLabel ) } );
+							setAttributes( { fieldName: cleanForSlug( ( fieldName || fieldLabel ).replace( /(<([^>]+)>)/gi, '' ) ) } );
 						} }
 						help={ __( 'Name of the form control. Defaults to the label.', 'omniform' ) }
 					/>
