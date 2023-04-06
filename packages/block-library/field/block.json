@@ -20,7 +20,7 @@
 	"providesContext": {
 		"omniform/fieldLabel": "fieldLabel",
 		"omniform/fieldName": "fieldName",
-		"omniform/isRequired": "isRequired"
+		"omniform/fieldIsRequired": "isRequired"
 	},
 	"supports": {
 		"html": false,
@@ -52,7 +52,8 @@
 		"postId",
 		"postType",
 		"omniform/fieldGroupName",
-		"omniform/fieldGroupLabel"
+		"omniform/fieldGroupLabel",
+		"omniform/fieldGroupIsRequired"
 	],
 	"editorScript": "file:index.js",
 	"style": "file:style-index.css"

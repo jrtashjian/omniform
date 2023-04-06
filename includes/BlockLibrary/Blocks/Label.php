@@ -36,7 +36,7 @@ class Label extends BaseBlock {
 
 		$label_required = null;
 
-		if ( $this->getBlockContext( 'omniform/isRequired' ) ) {
+		if ( $this->getBlockContext( 'omniform/fieldIsRequired' ) ) {
 			$label_required = sprintf(
 				'<span class="omniform-field-required">%s</span>',
 				wp_kses( get_post_meta( $form_id, 'required_label', true ), $allowed_html )

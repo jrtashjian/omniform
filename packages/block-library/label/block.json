@@ -6,7 +6,9 @@
 	"title": "Form Label",
 	"description": "A label for a single field in a form.",
 	"textdomain": "omniform",
-	"parent": [ "omniform/field" ],
+	"parent": [
+		"omniform/field"
+	],
 	"attributes": {
 		"fieldLabel": {
 			"type": "string",
@@ -31,9 +33,10 @@
 		"postType",
 		"omniform/fieldGroupName",
 		"omniform/fieldGroupLabel",
+		"omniform/fieldGroupIsRequired",
 		"omniform/fieldLabel",
 		"omniform/fieldName",
-		"omniform/isRequired"
+		"omniform/fieldIsRequired"
 	],
 	"editorScript": "file:index.js",
 	"style": "file:style-index.css"

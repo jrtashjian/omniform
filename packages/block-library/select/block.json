@@ -37,12 +37,16 @@
 		"postType",
 		"omniform/fieldGroupName",
 		"omniform/fieldGroupLabel",
+		"omniform/fieldGroupIsRequired",
 		"omniform/fieldLabel",
 		"omniform/fieldName",
-		"omniform/isRequired"
+		"omniform/fieldIsRequired"
 	],
 	"styles": [
-		{ "name": "inverted", "label": "Inverted" }
+		{
+			"name": "inverted",
+			"label": "Inverted"
+		}
 	],
 	"editorScript": "file:index.js",
 	"editorStyle": "file:index.css",

@@ -6,7 +6,9 @@
 	"title": "Field Input",
 	"description": "A simple form input field.",
 	"textdomain": "omniform",
-	"parent": [ "omniform/field" ],
+	"parent": [
+		"omniform/field"
+	],
 	"attributes": {
 		"fieldType": {
 			"type": "string",
@@ -35,12 +37,16 @@
 		"postType",
 		"omniform/fieldGroupName",
 		"omniform/fieldGroupLabel",
+		"omniform/fieldGroupIsRequired",
 		"omniform/fieldLabel",
 		"omniform/fieldName",
-		"omniform/isRequired"
+		"omniform/fieldIsRequired"
 	],
 	"styles": [
-		{ "name": "inverted", "label": "Inverted" }
+		{
+			"name": "inverted",
+			"label": "Inverted"
+		}
 	],
 	"editorScript": "file:index.js",
 	"style": "file:style-index.css"

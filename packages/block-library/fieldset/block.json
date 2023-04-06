@@ -20,7 +20,7 @@
 	"providesContext": {
 		"omniform/fieldGroupName": "fieldName",
 		"omniform/fieldGroupLabel": "fieldLabel",
-		"omniform/fieldGroupRequired": "isRequired"
+		"omniform/fieldGroupIsRequired": "isRequired"
 	},
 	"supports": {
 		"html": false,

@@ -6,7 +6,10 @@
 	"title": "Option",
 	"description": "A choice within a Select block that can be selected.",
 	"textdomain": "omniform",
-	"parent": [ "omniform/select", "omniform/select-group" ],
+	"parent": [
+		"omniform/select",
+		"omniform/select-group"
+	],
 	"attributes": {
 		"fieldLabel": {
 			"type": "string"
@@ -15,8 +18,6 @@
 	"supports": {
 		"html": false
 	},
-	"usesContext": [ "omniform/fieldSelectName", "omniform/fieldGroupName" ],
 	"editorScript": "file:index.js",
-	"editorStyle": "file:index.css",
-	"style": "file:style-index.css"
+	"editorStyle": "file:index.css"
 }

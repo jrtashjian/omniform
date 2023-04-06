@@ -6,7 +6,9 @@
 	"title": "Option Group",
 	"description": "Organize Option blocks that have a shared label into a group.",
 	"textdomain": "omniform",
-	"parent": [ "omniform/select" ],
+	"parent": [
+		"omniform/select"
+	],
 	"attributes": {
 		"fieldLabel": {
 			"type": "string"
@@ -16,6 +18,5 @@
 		"html": false
 	},
 	"editorScript": "file:index.js",
-	"editorStyle": "file:index.css",
-	"style": "file:style-index.css"
+	"editorStyle": "file:index.css"
 }

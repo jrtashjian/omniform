@@ -221,7 +221,7 @@ const Edit = ( {
 				onMerge={ onMerge }
 			/>
 
-			{ context[ 'omniform/isRequired' ] && (
+			{ context[ 'omniform/fieldIsRequired' ] && (
 				<RichText
 					identifier="requiredLabel"
 					className="omniform-field-required"
