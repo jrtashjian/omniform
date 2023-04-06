@@ -21,11 +21,39 @@ class Label extends BaseBlock {
 			return '';
 		}
 
+		$form_id = omniform()->get( \OmniForm\Plugin\Form::class )->getId() ?? $this->getBlockContext( 'postId' );
+
+		$allowed_html = array(
+			'strong' => array(),
+			'em'     => array(),
+			'img'    => array(
+				'class' => true,
+				'style' => true,
+				'src'   => true,
+				'alt'   => true,
+			),
+		);
+
+		$label_required = null;
+
+		if ( $this->getBlockContext( 'omniform/isRequired' ) ) {
+			$label_required = sprintf(
+				'<span class="omniform-field-required">%s</span>',
+				wp_kses( get_post_meta( $form_id, 'required_label', true ), $allowed_html )
+			);
+		}
+
+		$extra_attributes = array_filter(
+			array(
+				'class' => $this->getBlockAttribute( 'isHidden' ) ? 'screen-reader-text' : null,
+			)
+		);
+
 		return sprintf(
 			'<label for="%s" %s>%s</label>',
-			$this->getBlockContext( 'omniform/fieldName' ),
-			get_block_wrapper_attributes(),
-			$this->getBlockContext( 'omniform/fieldLabel' )
+			esc_attr( $this->getBlockContext( 'omniform/fieldName' ) ),
+			get_block_wrapper_attributes( $extra_attributes ),
+			wp_kses( $this->getBlockContext( 'omniform/fieldLabel' ), $allowed_html ) . $label_required
 		);
 	}
 }

@@ -28,11 +28,17 @@ class Fieldset extends BaseBlock {
 		$allowed_html = array(
 			'strong' => array(),
 			'em'     => array(),
+			'img'    => array(
+				'class' => true,
+				'style' => true,
+				'src'   => true,
+				'alt'   => true,
+			),
 		);
 
 		$label_required = null;
 
-		if ( $this->getBlockAttribute( 'isRequired' ) ) {
+		if ( $this->getBlockContext( 'isRequired' ) ) {
 			$label_required = sprintf(
 				'<span class="omniform-field-required">%s</span>',
 				wp_kses( get_post_meta( $form_id, 'required_label', true ), $allowed_html )

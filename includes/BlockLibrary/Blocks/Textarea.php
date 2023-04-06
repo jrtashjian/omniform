@@ -20,7 +20,7 @@ class Textarea extends BaseControlBlock {
 		return sprintf(
 			'<textarea %s>%s</textarea>',
 			get_block_wrapper_attributes( $this->getExtraWrapperAttributes() ),
-			$this->getBlockAttribute( 'fieldPlaceholder' )
+			esc_textarea( $this->getBlockAttribute( 'fieldPlaceholder' ) )
 		);
 	}
 }
