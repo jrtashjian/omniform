@@ -7,7 +7,7 @@
 
 namespace OmniForm\Plugin;
 
-use OmniForm\BlockLibrary\Blocks\BaseFieldBlock;
+use OmniForm\BlockLibrary\Blocks\BaseControlBlock;
 use OmniForm\BlockLibrary\Blocks\SelectGroup;
 use OmniForm\BlockLibrary\Blocks\SelectOption;
 use OmniForm\Dependencies\Dflydev\DotAccessData;
@@ -115,9 +115,9 @@ class Form {
 	/**
 	 * Add a parsed field block to the form for processing.
 	 *
-	 * @param BaseFieldBlock $field The parsed field block.
+	 * @param BaseControlBlock $field The parsed field block.
 	 */
-	public function addField( BaseFieldBlock $field ) {
+	public function addField( BaseControlBlock $field ) {
 		$validation_rules = new Validation\Rules\AllOf(
 			...array_filter(
 				array(
@@ -182,7 +182,7 @@ class Form {
 		}
 
 		if (
-			! $wp_block->block_type->render_callback[0] instanceof BaseFieldBlock ||
+			! $wp_block->block_type->render_callback[0] instanceof BaseControlBlock ||
 			$wp_block->block_type->render_callback[0] instanceof SelectGroup ||
 			$wp_block->block_type->render_callback[0] instanceof SelectOption
 		) {
