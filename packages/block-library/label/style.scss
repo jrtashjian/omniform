@@ -1,5 +1,7 @@
 .wp-block-omniform-label,
-.wp-block-omniform-label > * {
+.wp-block-omniform-label > *,
+label.wp-block-omniform-label,
+label.wp-block-omniform-label > * {
 	font-size: inherit;
 	align-items: center;
 	display: inline-flex;

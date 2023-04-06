@@ -1,6 +1,7 @@
 @import "../shared/mixins";
 
-.wp-block-omniform-input {
+.wp-block-omniform-input,
+input.wp-block-omniform-input {
 
 	@include field-control;
 
