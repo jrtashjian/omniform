@@ -239,9 +239,9 @@ class Form {
 			array_keys( $this->flatten( $response_data->export() ) )
 		);
 
-		$fields_meta = get_post_meta( $response_id, '_omniform_fields', true );
-		if ( $fields_meta ) {
-			$fields = json_decode( $fields_meta, true );
+		$fields_meta = json_decode( get_post_meta( $response_id, '_omniform_fields', true ), true );
+		if ( ! empty( $fields_meta ) ) {
+			$fields = $fields_meta;
 		}
 
 		return array(
