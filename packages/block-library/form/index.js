@@ -19,7 +19,6 @@ import edit from './edit';
 import { POST_TYPE } from '../shared/constants';
 import { form } from '../shared/icons';
 
-import './style.scss';
 import './index.scss';
 
 const { name } = json;

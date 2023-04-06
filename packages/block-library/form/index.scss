@@ -1,18 +1,6 @@
 @import "~@wordpress/base-styles/variables";
 @import "~@wordpress/base-styles/mixins";
 @import "~@wordpress/base-styles/breakpoints";
-@import "../shared/mixins";
-
-.wp-block-omniform-form {
-
-	&.is-selected .block-list-appender {
-
-		&,
-		> .block-editor-inserter {
-			pointer-events: all !important;
-		}
-	}
-}
 
 .components-panel__body.is-opened.omniform-view-responses__panel {
 	padding: 0;
@@ -64,8 +52,6 @@
 	.block-editor-iframe__body.post-type-omniform .block-editor-block-list__layout.is-root-container,
 	.block-editor-block-list__layout.is-root-container .wp-block-omniform-form {
 
-		@include defaults;
-
 		padding: var(--wp--style--block-gap, var(--global--spacing-vertical, 1.5em));
 
 		> * {
@@ -76,10 +62,6 @@
 		> * + * {
 			margin-block-start: var(--wp--style--block-gap, var(--global--spacing-vertical, 1.5em));
 			margin-block-end: 0;
-		}
-
-		.omniform-field-control {
-			border-width: 2px;
 		}
 	}
 }

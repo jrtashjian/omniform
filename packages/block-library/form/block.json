@@ -13,39 +13,21 @@
 	},
 	"supports": {
 		"anchor": true,
-		"align": [ "full", "wide" ],
+		"align": [
+			"full",
+			"wide"
+		],
 		"html": false,
 		"reusable": false,
-		"color": {
-			"background": true,
-			"text": true,
-			"link": true,
-			"gradients": true
-		},
-		"spacing": {
-			"margin": [ "top", "bottom" ],
-			"padding": true,
-			"blockGap": true,
-			"__experimentalDefaultControls": {
-				"blockGap": true
-			}
-		},
-		"__experimentalBorder": true,
 		"__experimentalLayout": {
 			"allowEditing": false
 		}
 	},
 	"usesContext": [
 		"postId",
-		"postType",
-		"omniform/fieldGroupName"
-	],
-	"styles": [
-		{ "name": "default", "label": "Default", "isDefault": true },
-		{ "name": "inverted", "label": "Inverted" }
+		"postType"
 	],
 	"editorScript": "file:index.js",
 	"editorStyle": "file:index.css",
-	"style": "file:style-index.css",
 	"viewScript": "file:view.js"
 }
