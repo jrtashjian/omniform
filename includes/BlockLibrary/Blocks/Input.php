@@ -17,11 +17,17 @@ class Input extends BaseBlock {
 	 * @return string
 	 */
 	protected function render() {
+		$extra_attributes = array_filter(
+			array(
+				'id'   => sanitize_title( $this->getBlockContext( 'omniform/fieldName' ) ),
+				'name' => sanitize_title( $this->getBlockContext( 'omniform/fieldName' ) ),
+				'type' => $this->getBlockAttribute( 'fieldType' ),
+			)
+		);
+
 		return sprintf(
-			'<input type="%1$s" id="%2$s" name="%2$s" %3$s />',
-			$this->getBlockAttribute( 'fieldType' ),
-			$this->getBlockContext( 'omniform/fieldName' ),
-			get_block_wrapper_attributes(),
+			'<input %s />',
+			get_block_wrapper_attributes( $extra_attributes )
 		);
 	}
 }
