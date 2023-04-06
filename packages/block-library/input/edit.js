@@ -141,7 +141,7 @@ const Edit = ( {
 	}
 
 	return (
-		<input type={ fieldType } { ...blockProps } disabled />
+		<input type={ fieldType } { ...blockProps } readOnly />
 	);
 };
 
