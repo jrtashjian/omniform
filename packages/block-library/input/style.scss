@@ -1,7 +1,8 @@
 @import "../shared/mixins";
 
 .wp-block-omniform-input,
-input.wp-block-omniform-input {
+input[class="wp-block-omniform-input"]:read-write,
+input[class="wp-block-omniform-input"]:read-only {
 
 	@include field-control;
 

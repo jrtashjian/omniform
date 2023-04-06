@@ -1,7 +1,8 @@
 @import "../shared/mixins";
 
 .wp-block-omniform-textarea,
-textarea.wp-block-omniform-textarea {
+textarea[class="wp-block-omniform-textarea"]:read-write,
+textarea[class="wp-block-omniform-textarea"]:read-only {
 
 	@include field-control;
 }
