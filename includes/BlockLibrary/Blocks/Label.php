@@ -17,6 +17,10 @@ class Label extends BaseBlock {
 	 * @return string
 	 */
 	protected function render() {
+		if ( empty( $this->getBlockContext( 'omniform/fieldLabel' ) ) ) {
+			return '';
+		}
+
 		return sprintf(
 			'<label for="%s" %s>%s</label>',
 			$this->getBlockContext( 'omniform/fieldName' ),
