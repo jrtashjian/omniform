@@ -10,23 +10,16 @@ namespace OmniForm\BlockLibrary\Blocks;
 /**
  * The Textarea block class.
  */
-class Textarea extends BaseBlock {
+class Textarea extends BaseControlBlock {
 	/**
-	 * Renders the block on the server.
+	 * Renders the form control.
 	 *
 	 * @return string
 	 */
-	protected function render() {
-		$extra_attributes = array_filter(
-			array(
-				'id'   => sanitize_title( $this->getBlockContext( 'omniform/fieldName' ) ),
-				'name' => sanitize_title( $this->getBlockContext( 'omniform/fieldName' ) ),
-			)
-		);
-
+	public function renderControl() {
 		return sprintf(
 			'<textarea %s>%s</textarea>',
-			get_block_wrapper_attributes( $extra_attributes ),
+			get_block_wrapper_attributes( $this->getExtraWrapperAttributes() ),
 			$this->getBlockAttribute( 'fieldPlaceholder' )
 		);
 	}
