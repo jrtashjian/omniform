@@ -10,34 +10,21 @@ namespace OmniForm\BlockLibrary\Blocks;
 /**
  * The SelectOption block class.
  */
-class SelectOption extends BaseFieldBlock {
+class SelectOption extends BaseBlock {
 	/**
 	 * Renders the block on the server.
 	 *
 	 * @return string Returns the block content.
 	 */
 	public function render() {
-		return empty( $this->getBlockAttribute( 'fieldLabel' ) )
-			? ''
-			: $this->renderControl();
-	}
-
-	/**
-	 * Renders the block on the server.
-	 *
-	 * @return string Returns the block content.
-	 */
-	public function renderControl() {
-		$attributes = array_filter(
-			array(
-				$this->getElementAttribute( 'value', $this->getFieldName() ),
-			)
-		);
+		if ( empty( $this->getBlockAttribute( 'fieldLabel' ) ) ) {
+			return '';
+		}
 
 		return sprintf(
-			'<option %s>%s</option>',
-			trim( implode( ' ', $attributes ) ),
-			esc_attr( $this->getBlockAttribute( 'fieldLabel' ) )
+			'<option value="%s">%s</option>',
+			esc_attr( sanitize_title( $this->getBlockAttribute( 'fieldLabel' ) ) ),
+			esc_attr( $this->getBlockAttribute( 'fieldLabel' ) ),
 		);
 	}
 }
