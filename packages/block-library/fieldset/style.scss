@@ -19,7 +19,8 @@
 		display: contents;
 	}
 
-	&.is-layout-flow > .omniform-field-label + .wp-block-omniform-field-input {
+	.block-editor-block-list__layout > .wp-block-omniform-field:first-child,
+	&.is-layout-flow > .omniform-field-label + .wp-block-omniform-field {
 		margin-block-start: 0.5em !important;
 	}
 }

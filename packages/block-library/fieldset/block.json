@@ -31,11 +31,15 @@
 		"spacing": {
 			"margin": true,
 			"padding": true,
+			"blockGap": true,
 			"__experimentalDefaultControls": {
 				"blockGap": true
 			}
 		},
-		"__experimentalBorder": true
+		"__experimentalBorder": true,
+		"__experimentalLayout": {
+			"allowEditing": false
+		}
 	},
 	"usesContext": [
 		"postId",
