@@ -8,9 +8,10 @@
 return array(
 	'title'   => __( 'RSVP', 'omniform' ),
 	'content' => '
-		<!-- wp:group {"style":{"spacing":{"blockGap":"var:preset|spacing|30"}},"layout":{"type":"flex","orientation":"vertical","justifyContent":"center"}} -->
+		<!-- wp:group {"layout":{"type":"constrained"}} -->
+		<div class="wp-block-group"><!-- wp:group {"style":{"spacing":{"blockGap":"var:preset|spacing|30"}},"layout":{"type":"flex","orientation":"vertical","justifyContent":"center"}} -->
 		<div class="wp-block-group"><!-- wp:heading {"textAlign":"center"} -->
-		<h2 class="has-text-align-center">Are You Attending?</h2>
+		<h2 class="wp-block-heading has-text-align-center">Are You Attending?</h2>
 		<!-- /wp:heading -->
 
 		<!-- wp:paragraph {"align":"center"} -->
@@ -18,22 +19,43 @@ return array(
 		<!-- /wp:paragraph --></div>
 		<!-- /wp:group -->
 
-		<!-- wp:omniform/field-input {"fieldPlaceholder":"","fieldLabel":"Name","fieldName":"name","isRequired":false} /-->
+		<!-- wp:omniform/field {"fieldLabel":"Name","fieldName":"name"} -->
+		<!-- wp:omniform/label /-->
 
-		<!-- wp:omniform/field-input {"fieldType":"email","fieldPlceholder":"","fieldLabel":"E-Mail","fieldName":"e-mail","isRequired":false} /-->
+		<!-- wp:omniform/input /-->
+		<!-- /wp:omniform/field -->
 
-		<!-- wp:omniform/fieldset {"fieldLabel":"Attending?","fieldName":"attending","style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"},"blockGap":"0"}}} -->
+		<!-- wp:omniform/field {"fieldLabel":"E-mail","fieldName":"e-mail"} -->
+		<!-- wp:omniform/label /-->
+
+		<!-- wp:omniform/input {"fieldType":"email"} /-->
+		<!-- /wp:omniform/field -->
+
+		<!-- wp:omniform/fieldset {"fieldLabel":"Attending?","fieldName":"attending"} -->
 		<!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|30","bottom":"var:preset|spacing|30"}}},"layout":{"type":"flex","flexWrap":"nowrap"}} -->
-		<div class="wp-block-group" style="padding-top:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--30)"><!-- wp:omniform/field-input {"fieldType":"radio","fieldLabel":"Joyfully accepts","fieldName":"joyfully-accepts"} /-->
+		<div class="wp-block-group" style="padding-top:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--30)"><!-- wp:omniform/field {"fieldLabel":"Joyfully accepts","fieldName":"joyfully-accepts","layout":{"type":"flex","orientation":"horizontal","justifyContent":"left"}} -->
+		<!-- wp:omniform/input {"fieldType":"radio"} /-->
 
-		<!-- wp:omniform/field-input {"fieldType":"radio","fieldLabel":"Regretfully declines","fieldName":"regretfully-declines"} /--></div>
+		<!-- wp:omniform/label /-->
+		<!-- /wp:omniform/field -->
+
+		<!-- wp:omniform/field {"fieldLabel":"Regretfully declines","fieldName":"regretfully-declines","layout":{"type":"flex","orientation":"horizontal","justifyContent":"left"}} -->
+		<!-- wp:omniform/input {"fieldType":"radio"} /-->
+
+		<!-- wp:omniform/label /-->
+		<!-- /wp:omniform/field --></div>
 		<!-- /wp:group -->
 		<!-- /wp:omniform/fieldset -->
 
-		<!-- wp:omniform/field-input {"fieldType":"number","fieldPlaceholder":"","fieldLabel":"Number of persons","fieldName":"number-of-persons","isRequired":false} /-->
+		<!-- wp:omniform/field {"fieldLabel":"Number of persons","fieldName":"number-of-persons"} -->
+		<!-- wp:omniform/label /-->
+
+		<!-- wp:omniform/input {"fieldType":"number"} /-->
+		<!-- /wp:omniform/field -->
 
 		<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"center"}} -->
 		<div class="wp-block-group"><!-- wp:omniform/button {"buttonType":"submit","buttonLabel":"Confirm"} /--></div>
+		<!-- /wp:group --></div>
 		<!-- /wp:group -->
 	',
 );

@@ -8,18 +8,28 @@
 return array(
 	'title'   => __( 'Contact', 'omniform' ),
 	'content' => '
-		<!-- wp:heading -->
-		<h2>' . __( 'Contact Us', 'omniform' ) . '</h2>
+		<!-- wp:group {"layout":{"type":"constrained"}} -->
+		<div class="wp-block-group"><!-- wp:heading -->
+		<h2 class="wp-block-heading">Contact Us</h2>
 		<!-- /wp:heading -->
 
 		<!-- wp:paragraph -->
-		<p>' . __( 'If you have any questions or comments, or if you\'d like to work with me or collaborate on a project, please don\'t hesitate to get in touch. I look forward to hearing from you!', 'omniform' ) . '</p>
+		<p>If you have any questions or comments, or if you\'d like to work with me or collaborate on a project, please don\'t hesitate to get in touch. I look forward to hearing from you!</p>
 		<!-- /wp:paragraph -->
 
-		<!-- wp:omniform/field-input {"fieldType":"email","fieldLabel":"' . __( 'Your email address', 'omniform' ) . '","fieldName":"your-email-address","isRequired":false} /-->
+		<!-- wp:omniform/field {"fieldLabel":"Your email address","fieldName":"your-email-address"} -->
+		<!-- wp:omniform/label /-->
 
-		<!-- wp:omniform/field-textarea {"fieldLabel":"Your message","fieldName":"' . __( 'your-message', 'omniform' ) . '","isRequired":false} /-->
+		<!-- wp:omniform/input /-->
+		<!-- /wp:omniform/field -->
 
-		<!-- wp:omniform/button {"buttonType":"submit","buttonLabel":"' . __( 'Send Message', 'omniform' ) . '"} /-->
+		<!-- wp:omniform/field {"fieldLabel":"Your message","fieldName":"your-message"} -->
+		<!-- wp:omniform/label /-->
+
+		<!-- wp:omniform/textarea {"style":{"dimensions":{"minHeight":"230px"}}} /-->
+		<!-- /wp:omniform/field -->
+
+		<!-- wp:omniform/button {"buttonType":"submit","buttonLabel":"Send Message"} /--></div>
+		<!-- /wp:group -->
 	',
 );
