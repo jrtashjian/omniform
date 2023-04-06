@@ -2,24 +2,18 @@
 
 .wp-block-omniform-button {
 
-	@include custom-properties;
-	@include defaults;
-
 	.wp-element-button {
 		align-items: center;
 		display: inline-flex;
 		gap: 0.5em;
 		word-break: normal;
 
+		@include focus-styles;
+
 		strong,
 		em {
 			display: contents;
 		}
-	}
-
-	.wp-element-button:focus {
-		outline: 0;
-		box-shadow: 0 0 0 2px #{$base-color}, 0 0 0 4px #{$focus-color};
 	}
 
 	&.is-style-outline > .wp-element-button {

@@ -12,43 +12,10 @@
  * 2. --wp--preset--color--foreground
  * 3. --wp--preset--color--black
  * 4. #000
- *
- * ACCENT:
- * 1. --wp--custom--color--accent
- * 2. $contrast-color (or $base-color if style is inverted)
  */
 
 $base-color: var(--wp--preset--color--base, var(--wp--preset--color--background, var(--wp--preset--color--white, #fff)));
 $contrast-color: var(--wp--preset--color--contrast, var(--wp--preset--color--foreground, var(--wp--preset--color--black, #000)));
-
-$focus-color: var(--wp--custom--color--accent, #{$contrast-color});
-
-$light-theme-border: rgba(0, 0, 0, 0.25);
-$light-theme-border-hover: rgba(0, 0, 0, 0.75);
-
-$dark-theme-border: rgba(255, 255, 255, 0.25);
-$dark-theme-border-hover: rgba(255, 255, 255, 0.75);
-
-@mixin custom-properties {
-	--omniform--color--base: #{$base-color};
-	--omniform--color--contrast: #{$contrast-color};
-	--omniform--color--accent: var(--wp--custom--color--accent, #{$contrast-color});
-
-	--omniform--color--border: #{$light-theme-border};
-	--omniform--color--border-hover: #{$light-theme-border-hover};
-
-	body.is-dark-theme & {
-		--omniform--color--border: #{$dark-theme-border};
-		--omniform--color--border-hover: #{$dark-theme-border-hover};
-	}
-
-	.is-style-inverted &,
-	body.is-dark-theme .is-style-inverted & {
-		--omniform--color--base: #{$contrast-color};
-		--omniform--color--contrast: #{$base-color};
-		--omniform--color--accent: var(--wp--custom--color--accent, #{$base-color});
-	}
-}
 
 @mixin defaults {
 	// font-size: var(--wp--preset--font-size--normal, 16px);
@@ -98,24 +65,8 @@ $dark-theme-border-hover: rgba(255, 255, 255, 0.75);
 	}
 }
 
-// Base styles for all fields controls.
-@mixin field-control {
-	appearance: none;
-	background-color: #{$base-color};
-	border-radius: 0.25em;
-	border-width: 1px;
-	border-style: solid;
-	border-color: currentcolor;
-	box-sizing: border-box;
+@mixin focus-styles {
 	box-shadow: none;
-	display: block;
-	font-size: inherit;
-	line-height: inherit;
-	max-width: none;
-	padding: 0.5em 0.75em;
-	margin: 0;
-	color: #{$contrast-color};
-
 	transition-duration: 0.1s;
 	transition-property: border-color, outline, outline-offset;
 	transition-timing-function: ease-in-out;
@@ -128,11 +79,30 @@ $dark-theme-border-hover: rgba(255, 255, 255, 0.75);
 		outline-offset: 2px;
 	}
 
-	.editor-styles-wrapper &:hover,
 	.editor-styles-wrapper &:focus {
 		outline: unset !important;
 		outline-offset: unset !important;
 	}
+}
+
+// Base styles for all fields controls.
+@mixin field-control {
+	appearance: none;
+	background-color: #{$base-color};
+	border-radius: 0.25em;
+	border-width: 1px;
+	border-style: solid;
+	border-color: currentcolor;
+	box-sizing: border-box;
+	display: block;
+	font-size: inherit;
+	line-height: inherit;
+	max-width: none;
+	padding: 0.5em 0.75em;
+	margin: 0;
+	color: #{$contrast-color};
+
+	@include focus-styles;
 
 	&.is-style-inverted {
 		color: #{$base-color};
