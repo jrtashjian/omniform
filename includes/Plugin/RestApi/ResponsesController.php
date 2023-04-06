@@ -76,7 +76,7 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 		$response_data = array_filter(
 			$request->get_params(),
 			function( $key ) {
-				return ! in_array( $key, array( 'id', 'rest_route', 'wp_rest', '_wp_http_referer', '_omniform_redirect' ), true );
+				return ! in_array( $key, array( 'id', 'rest_route', 'wp_rest', '_locale', '_wp_http_referer', '_omniform_redirect' ), true );
 			},
 			ARRAY_FILTER_USE_KEY
 		);
@@ -92,7 +92,7 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 					'_omniform_user_ip' => $_SERVER['REMOTE_ADDR'],
 					'_wp_http_referer'  => $request->get_param( '_wp_http_referer' ),
 
-					'_omniform_fields' => wp_json_encode( $form->getFields() ),
+					'_omniform_fields'  => wp_json_encode( $form->getFields() ),
 				),
 			),
 			true
