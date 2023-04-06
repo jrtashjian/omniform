@@ -13,8 +13,6 @@ use OmniForm\BlockLibrary\Blocks\Traits\HasColors;
  * The Button block class.
  */
 class Button extends BaseBlock {
-	use HasColors;
-
 	/**
 	 * Renders the block on the server.
 	 *
