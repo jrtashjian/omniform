@@ -182,6 +182,7 @@ class Form {
 					)
 				)
 			);
+			$validation_rules->setName( $block->getFieldLabel() );
 
 			$rule = new Validation\Rules\Key( $flat_control_name, $validation_rules );
 
