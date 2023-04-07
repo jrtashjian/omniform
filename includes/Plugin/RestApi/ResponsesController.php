@@ -76,7 +76,7 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 		$response_data = array_filter(
 			$request->get_params(),
 			function( $key ) {
-				return ! in_array( $key, array( 'id', 'rest_route', 'wp_rest', '_locale', '_wp_http_referer', '_omniform_redirect' ), true );
+				return ! in_array( $key, array( 'id', 'rest_route', 'wp_rest', '_locale', '_wp_http_referer' ), true );
 			},
 			ARRAY_FILTER_USE_KEY
 		);
@@ -115,11 +115,6 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 		// Incremement form responses.
 		$response_count = get_post_meta( $form->getId(), '_omniform_responses', true );
 		update_post_meta( $form->getId(), '_omniform_responses', (int) $response_count + 1 );
-
-		if ( $request->has_param( '_omniform_redirect' ) ) {
-			wp_safe_redirect( add_query_arg( 'success', true, $request->get_param( '_omniform_redirect' ) ) );
-			exit;
-		}
 
 		$response = array(
 			'status'  => 201,
