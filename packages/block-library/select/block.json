@@ -6,6 +6,9 @@
 	"title": "Select",
 	"description": "A Select",
 	"textdomain": "omniform",
+	"parent": [
+		"omniform/field"
+	],
 	"attributes": {
 		"fieldPlaceholder": {
 			"type": "string"
