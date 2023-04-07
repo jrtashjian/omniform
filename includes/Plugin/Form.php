@@ -8,8 +8,7 @@
 namespace OmniForm\Plugin;
 
 use OmniForm\BlockLibrary\Blocks\BaseControlBlock;
-use OmniForm\BlockLibrary\Blocks\SelectGroup;
-use OmniForm\BlockLibrary\Blocks\SelectOption;
+use OmniForm\BlockLibrary\Blocks\Fieldset;
 use OmniForm\Dependencies\Dflydev\DotAccessData;
 use OmniForm\Dependencies\Respect\Validation;
 
@@ -38,7 +37,19 @@ class Form {
 	 */
 	protected $validator;
 
+	/**
+	 * The form's fields.
+	 *
+	 * @var array
+	 */
 	protected $fields = array();
+
+	/**
+	 * The form's field groups.
+	 *
+	 * @var array
+	 */
+	protected $groups = array();
 
 	/**
 	 * Retrieve Form instance.
@@ -113,51 +124,21 @@ class Form {
 	}
 
 	/**
-	 * Add a parsed field block to the form for processing.
+	 * The form's fields.
 	 *
-	 * @param BaseControlBlock $field The parsed field block.
+	 * @return array
 	 */
-	public function addField( BaseControlBlock $field ) {
-		$validation_rules = new Validation\Rules\AllOf(
-			...array_filter(
-				array(
-					$field->isRequired() ? new Validation\Rules\NotEmpty() : null,
-				)
-			)
-		);
-
-		$control_name_parts = array_filter(
-			array(
-				$field->getFieldGroupName(),
-				$field->isGrouped() && in_array( $field->getBlockAttribute( 'fieldType' ), array( 'radio', 'checkbox' ), true )
-					? null
-					: $field->getFieldName(),
-			)
-		);
-
-		$control_name = implode( '.', $control_name_parts );
-
-		$rule = new Validation\Rules\Key( $control_name, $validation_rules );
-
-		// Ensure rules are properly nested for grouped fields.
-		if ( count( $control_name_parts ) > 1 ) {
-			$rule = new Validation\Rules\Key(
-				$control_name_parts[0],
-				new Validation\Rules\Key( $control_name_parts[1], $validation_rules )
-			);
-		}
-
-		if ( $field->isRequired() ) {
-			$this->validator->addRule( $rule );
-		}
-
-		$this->fields[ $control_name ] = $field->isGrouped() && in_array( $field->getBlockAttribute( 'fieldType' ), array( 'radio', 'checkbox' ), true )
-			? $field->getFieldGroupLabel()
-			: $field->getFieldLabel();
-	}
-
 	public function getFields() {
 		return $this->fields;
+	}
+
+	/**
+	 * The form's field groups.
+	 *
+	 * @return array
+	 */
+	public function getGroups() {
+		return $this->groups;
 	}
 
 	/**
@@ -170,10 +151,11 @@ class Form {
 	}
 
 	/**
-	 * Filters the content of a single block .
+	 * Filters the content of a single block. This is used to parse the form's
+	 * blocks and add them to the form's fields for processing.
 	 *
-	 * @param string   $block_content The block content .
-	 * @param array    $parsed_block The full block, including name and attributes .
+	 * @param string   $block_content The block content.
+	 * @param array    $parsed_block The full block, including name and attributes.
 	 * @param WP_Block $wp_block The block instance.
 	 */
 	public function hookRenderBlock( $block_content, $parsed_block, $wp_block ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
@@ -181,15 +163,44 @@ class Form {
 			return $block_content;
 		}
 
-		if (
-			! $wp_block->block_type->render_callback[0] instanceof BaseControlBlock ||
-			$wp_block->block_type->render_callback[0] instanceof SelectGroup ||
-			$wp_block->block_type->render_callback[0] instanceof SelectOption
-		) {
-			return $block_content;
+		$block = $wp_block->block_type->render_callback[0];
+
+		// If the block is a fieldset, add it to the list of groups.
+		if ( $block instanceof Fieldset ) {
+			$this->groups[ $block->getFieldGroupName() ] = $block->getFieldGroupLabel();
 		}
 
-		$this->addField( $wp_block->block_type->render_callback[0] );
+		// If the block is a control, add it to the list of fields.
+		if ( $block instanceof BaseControlBlock ) {
+			$control_name_parts = $block->getControlNameParts();
+			$flat_control_name  = implode( '.', $control_name_parts );
+
+			$validation_rules = new Validation\Rules\AllOf(
+				...array_filter(
+					array(
+						$block->isRequired() ? new Validation\Rules\NotEmpty() : null,
+					)
+				)
+			);
+
+			$rule = new Validation\Rules\Key( $flat_control_name, $validation_rules );
+
+			// Ensure rules are properly nested for grouped fields.
+			if ( count( $control_name_parts ) > 1 ) {
+				$rule = new Validation\Rules\Key(
+					$control_name_parts[0],
+					new Validation\Rules\Key( $control_name_parts[1], $validation_rules )
+				);
+			}
+
+			if ( $block->isRequired() ) {
+				$this->validator->addRule( $rule );
+			}
+
+			$this->fields[ $flat_control_name ] = $block->isGrouped() && in_array( $block->getBlockAttribute( 'fieldType' ), array( 'radio', 'checkbox' ), true )
+				? $block->getFieldGroupLabel()
+				: $block->getFieldLabel();
+		}
 
 		return $block_content;
 	}
@@ -230,18 +241,17 @@ class Form {
 			return false;
 		}
 
-		$response_data = new \OmniForm\Dependencies\Dflydev\DotAccessData\Data(
-			json_decode( $_response->post_content, true )
-		);
+		$_data = json_decode( $_response->post_content, true );
+
+		$response_data = new \OmniForm\Dependencies\Dflydev\DotAccessData\Data( $_data['response'] ?? $_data );
 
 		$fields = array_combine(
 			array_keys( $this->flatten( $response_data->export() ) ),
 			array_keys( $this->flatten( $response_data->export() ) )
 		);
 
-		$fields_meta = json_decode( get_post_meta( $response_id, '_omniform_fields', true ), true );
-		if ( ! empty( $fields_meta ) ) {
-			$fields = $fields_meta;
+		if ( ! empty( $_data['fields'] ) ) {
+			$fields = $_data['fields'];
 		}
 
 		return array(
