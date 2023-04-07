@@ -90,12 +90,12 @@ abstract class BaseControlBlock extends BaseBlock {
 	}
 
 	/**
-	 * Gets the control's name attribute.
+	 * Gets the control's name parts.
 	 *
-	 * @return string
+	 * @return array
 	 */
-	public function getControlName() {
-		$parts = array_values(
+	public function getControlNameParts() {
+		return array_values(
 			array_filter(
 				array(
 					$this->getFieldGroupName(),
@@ -103,6 +103,15 @@ abstract class BaseControlBlock extends BaseBlock {
 				)
 			)
 		);
+	}
+
+	/**
+	 * Gets the control's name attribute.
+	 *
+	 * @return string
+	 */
+	public function getControlName() {
+		$parts = $this->getControlNameParts();
 
 		return 2 === count( $parts )
 			? sprintf( '%s[%s]', $parts[0], $parts[1] )

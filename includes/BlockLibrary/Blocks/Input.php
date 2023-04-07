@@ -75,13 +75,26 @@ class Input extends BaseControlBlock {
 	}
 
 	/**
+	 * Gets the control's name parts.
+	 *
+	 * @return array
+	 */
+	public function getControlNameParts() {
+		if ( in_array( $this->getBlockAttribute( 'fieldType' ), array( 'radio', 'checkbox' ), true ) && $this->isGrouped() ) {
+			return array( $this->getFieldGroupName() );
+		}
+
+		return parent::getControlNameParts();
+	}
+
+	/**
 	 * Gets the control's name attribute.
 	 *
 	 * @return string
 	 */
 	public function getControlName() {
-		if ( 'radio' === $this->getBlockAttribute( 'fieldType' ) && $this->isGrouped() ) {
-			return $this->getFieldGroupName();
+		if ( 'checkbox' === $this->getBlockAttribute( 'fieldType' ) && $this->isGrouped() ) {
+			return parent::getControlName() . '[]';
 		}
 
 		return parent::getControlName();

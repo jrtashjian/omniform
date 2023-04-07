@@ -23,7 +23,7 @@ class SelectOption extends BaseBlock {
 
 		return sprintf(
 			'<option value="%s">%s</option>',
-			esc_attr( sanitize_title( $this->getBlockAttribute( 'fieldLabel' ) ) ),
+			esc_attr( $this->getBlockAttribute( 'fieldLabel' ) ),
 			esc_attr( $this->getBlockAttribute( 'fieldLabel' ) ),
 		);
 	}

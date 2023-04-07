@@ -52,4 +52,22 @@ class Fieldset extends BaseBlock {
 			$this->content
 		);
 	}
+
+	/**
+	 * Gets the field group label.
+	 *
+	 * @return string|null
+	 */
+	public function getFieldGroupLabel() {
+		return $this->getBlockAttribute( 'fieldLabel' );
+	}
+
+	/**
+	 * Gets the field group name (sanitized).
+	 *
+	 * @return string|null
+	 */
+	public function getFieldGroupName() {
+		return sanitize_title( $this->getBlockAttribute( 'fieldName' ) ?? $this->getFieldGroupLabel() );
+	}
 }
