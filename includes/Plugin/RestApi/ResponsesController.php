@@ -84,15 +84,19 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 		$response_id = wp_insert_post(
 			array(
 				'post_title'   => wp_generate_uuid4(),
-				'post_content' => wp_json_encode( $response_data ),
+				'post_content' => wp_json_encode(
+					array(
+						'response' => $response_data,
+						'fields'   => $form->getFields(),
+						'groups'   => $form->getGroups(),
+					)
+				),
 				'post_type'    => 'omniform_response',
 				'post_status'  => 'publish',
 				'meta_input'   => array(
 					'_omniform_id'      => $form->getId(),
 					'_omniform_user_ip' => $_SERVER['REMOTE_ADDR'],
 					'_wp_http_referer'  => $request->get_param( '_wp_http_referer' ),
-
-					'_omniform_fields'  => wp_json_encode( $form->getFields() ),
 				),
 			),
 			true
