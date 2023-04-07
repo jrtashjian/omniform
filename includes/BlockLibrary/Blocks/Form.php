@@ -65,12 +65,15 @@ class Form extends BaseBlock {
 		$content     = do_blocks( $form->getContent() );
 		$nonce_field = wp_nonce_field( 'omniform', 'wp_rest', true, false );
 
+		$response_container = sprintf(
+			'<div class="omniform-response-container"></div>',
+		);
+
 		return sprintf(
-			'%s<form method="post" action="%s" %s>%s</form>',
-			empty( $_GET['success'] ) ? '' : '<p style="background-color:var(--wp--preset--color--vivid-green-cyan);padding:1rem 1.5rem;">Submitted!</p>',
+			'<form method="post" action="%s" %s>%s</form>',
 			esc_url( rest_url( 'omniform/v1/forms/' . $form->getId() . '/responses' ) ),
 			get_block_wrapper_attributes(),
-			$content . $nonce_field
+			$response_container . $content . $nonce_field
 		);
 	}
 }
