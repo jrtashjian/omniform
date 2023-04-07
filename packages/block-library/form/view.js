@@ -1,5 +1,6 @@
-/* global FormData */
-import { colord } from 'colord';
+/**
+ * WordPress dependencies
+ */
 import apiFetch from '@wordpress/api-fetch';
 
 ( function() {
@@ -34,14 +35,5 @@ import apiFetch from '@wordpress/api-fetch';
 
 		document.querySelectorAll( 'form.wp-block-omniform-form' )
 			.forEach( ( form ) => form.addEventListener( 'submit', formResponseHandler ) );
-
-		const isDark = ( elm ) => {
-			const context = document.defaultView.getComputedStyle( elm, null );
-			return colord( context.getPropertyValue( 'color' ) ).isDark();
-		};
-
-		document.querySelectorAll( 'body' ).forEach(
-			( elm ) => ! isDark( elm ) && elm.classList.add( 'is-dark-theme' )
-		);
 	} );
 }() );
