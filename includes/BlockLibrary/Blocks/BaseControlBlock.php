@@ -71,7 +71,7 @@ abstract class BaseControlBlock extends BaseBlock {
 	 * @return bool
 	 */
 	public function isRequired() {
-		return $this->getBlockAttribute( 'isRequired' ) ?? $this->getBlockContext( 'omniform/fieldIsRequired' );
+		return $this->getBlockContext( 'omniform/fieldGroupIsRequired' ) ?? $this->getBlockContext( 'omniform/fieldIsRequired' );
 	}
 
 	/**
