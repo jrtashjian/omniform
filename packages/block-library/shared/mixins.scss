@@ -75,7 +75,7 @@ $contrast-color: var(--wp--preset--color--contrast, var(--wp--preset--color--for
 	outline-offset: -2px;
 
 	&:focus {
-		outline: 2px solid currentcolor !important;
+		outline: 2px solid #{$contrast-color} !important;
 		outline-offset: 2px;
 	}
 
