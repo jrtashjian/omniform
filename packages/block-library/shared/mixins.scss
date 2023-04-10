@@ -10,12 +10,11 @@
  * CONTRAST:
  * 1. --wp--preset--color--contrast
  * 2. --wp--preset--color--foreground
- * 3. --wp--preset--color--black
- * 4. #000
+ * 3. currentColor
  */
 
 $base-color: var(--wp--preset--color--base, var(--wp--preset--color--background, var(--wp--preset--color--white, #fff)));
-$contrast-color: var(--wp--preset--color--contrast, var(--wp--preset--color--foreground, var(--wp--preset--color--black, #000)));
+$contrast-color: var(--wp--preset--color--contrast, var(--wp--preset--color--foreground, currentColor));
 
 @mixin defaults {
 	// font-size: var(--wp--preset--font-size--normal, 16px);
