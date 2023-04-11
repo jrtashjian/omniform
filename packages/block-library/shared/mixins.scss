@@ -16,29 +16,10 @@
 $base-color: var(--wp--preset--color--base, var(--wp--preset--color--background, var(--wp--preset--color--white, #fff)));
 $contrast-color: var(--wp--preset--color--contrast, var(--wp--preset--color--foreground, currentColor));
 
-@mixin defaults {
-	// font-size: var(--wp--preset--font-size--normal, 16px);
-	// line-height: 1.5;
-
-	*,
-	*::before {
-		transition-duration: 0.1s;
-		transition-property: background-color, border-color, box-shadow, color, opacity, outline, outline-offset;
-		transition-timing-function: ease-in-out;
-	}
-
-	*,
-	::before,
-	::after {
-		box-sizing: border-box;
-	}
-}
-
 @mixin field-label {
 
 	.omniform-field-label,
 	legend.omniform-field-label {
-		// font-size: var(--wp--preset--font-size--normal, 16px);
 		font-size: inherit;
 		margin: 0 0 0.5em;
 		padding: 0;
@@ -66,21 +47,25 @@ $contrast-color: var(--wp--preset--color--contrast, var(--wp--preset--color--for
 
 @mixin focus-styles {
 	box-shadow: none;
-	transition-duration: 0.1s;
-	transition-property: border-color, outline, outline-offset;
-	transition-timing-function: ease-in-out;
+
+	&,
+	&::before {
+		transition-duration: 0.1s;
+		transition-property: background-color, border-color, box-shadow, color, opacity, outline, outline-offset;
+		transition-timing-function: ease-in-out;
+	}
 
 	outline: 0 solid transparent;
 	outline-offset: -2px;
 
 	&:focus {
-		outline: 2px solid #{$contrast-color} !important;
+		outline: 2px solid #{$contrast-color};
 		outline-offset: 2px;
 	}
 
 	.editor-styles-wrapper &:focus {
-		outline: unset !important;
-		outline-offset: unset !important;
+		outline: unset;
+		outline-offset: unset;
 	}
 }
 
