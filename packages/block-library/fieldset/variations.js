@@ -7,7 +7,7 @@ const variations = [
 	{
 		name: 'fieldset-radios',
 		title: __( 'Multiple Choice', 'omniform' ),
-		description: __( '', 'omnigroup' ),
+		description: __( '', 'omniform' ),
 		attributes: {
 			fieldLabel: __( 'Multiple Choice', 'omniform' ),
 			fieldName: 'multiple-choice',
@@ -42,7 +42,7 @@ const variations = [
 	{
 		name: 'fieldset-name',
 		title: __( 'Full Name', 'omniform' ),
-		description: __( '', 'omnigroup' ),
+		description: __( '', 'omniform' ),
 		attributes: {
 			fieldLabel: __( 'Full Name', 'omniform' ),
 			fieldName: 'full-name',

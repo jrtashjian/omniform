@@ -8,7 +8,7 @@ const variations = [
 		// This is a default to improve variation transforms.
 		name: 'button',
 		title: __( 'Button', 'omniform' ),
-		description: __( '', 'omnigroup' ),
+		description: __( '', 'omniform' ),
 		attributes: {
 			buttonType: 'button',
 		},
@@ -17,7 +17,7 @@ const variations = [
 	{
 		name: 'button-submit',
 		title: __( 'Submit', 'omniform' ),
-		description: __( '', 'omnigroup' ),
+		description: __( '', 'omniform' ),
 		attributes: {
 			buttonType: 'submit',
 			buttonLabel: __( 'Submit', 'omniform' ),
@@ -26,7 +26,7 @@ const variations = [
 	{
 		name: 'button-reset',
 		title: __( 'Reset', 'omniform' ),
-		description: __( '', 'omnigroup' ),
+		description: __( '', 'omniform' ),
 		attributes: {
 			buttonType: 'reset',
 			buttonLabel: __( 'Reset', 'omniform' ),
