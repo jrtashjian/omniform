@@ -127,7 +127,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 
 		// Add responses quick link on CPT table list.
 		add_filter(
-			'page_row_actions',
+			'post_row_actions',
 			function( $actions, $post ) {
 				if ( 'omniform' !== $post->post_type ) {
 					return $actions;
@@ -151,13 +151,12 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		add_filter(
 			'manage_omniform_response_posts_columns',
 			function( $columns ) {
-				unset( $columns['title'] );
-				return array_merge(
-					$columns,
-					array(
-						'form'     => __( 'Form', 'omniform' ),
-						'formdata' => __( 'Form Data', 'omniform' ),
-					)
+				return array(
+					'cb'       => $columns['cb'],
+					'title'    => $columns['title'],
+					'form'     => __( 'Form', 'omniform' ),
+					'formdata' => __( 'Form Data', 'omniform' ),
+					'date'     => $columns['date'],
 				);
 			}
 		);
@@ -213,35 +212,17 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			2
 		);
 
-		// Hide row actions for Responses CPT.
-		add_filter(
-			'post_row_actions',
-			function( $actions, $post ) {
-				return 'omniform_response' === $post->post_type ? array() : $actions;
-			},
-			10,
-			2
+		// Remove default meta boxes.
+		add_action(
+			'add_meta_boxes_omniform_response',
+			function() {
+				remove_meta_box( 'submitdiv', 'omniform_response', 'side' );
+				remove_meta_box( 'postcustom', 'omniform_response', 'normal' );
+				remove_meta_box( 'slugdiv', 'omniform_response', 'normal' );
+			}
 		);
 
 		// Filter responses by form id.
-		add_action(
-			'restrict_manage_posts',
-			function( $post_type ) {
-				if ( 'omniform_response' !== $post_type ) {
-					return;
-				}
-
-				wp_dropdown_pages(
-					array(
-						'post_type'        => 'omniform',
-						'name'             => 'omniform_id',
-						'show_option_none' => 'All Forms',
-						'echo'             => true,
-						'selected'         => esc_attr( empty( $_GET['omniform_id'] ) ? 0 : (int) $_GET['omniform_id'] ),
-					)
-				);
-			},
-		);
 		add_filter(
 			'parse_query',
 			function( $query ) {
@@ -271,6 +252,21 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			}
 		);
 
+		// Render response data instead of the editor.
+		add_action(
+			'edit_form_after_editor',
+			function( $post ) {
+				if ( 'omniform_response' !== $post->post_type ) {
+					return;
+				}
+
+				echo wp_kses_post(
+					$this->getContainer()->get( Form::class )->response_text_content( $post->ID )
+				);
+			}
+		);
+
+		// Filter allowed blocks in the editor.
 		add_filter(
 			'allowed_block_types_all',
 			function( $allowed_block_types, $block_editor_context ) {
@@ -328,6 +324,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			2
 		);
 
+		// Control when blocks can be inserted.
 		add_filter(
 			'block_type_metadata',
 			function( $metadata ) {
