@@ -1,0 +1,32 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "omniform/captcha",
+	"category": "omniform-control-simple",
+	"title": "Captcha",
+	"description": "Captcha",
+	"textdomain": "omniform",
+	"attributes": {
+		"service": {
+			"type": "string",
+			"default": "recaptchav2",
+			"enum": [ "recaptchav2", "hcaptcha" ]
+		},
+		"theme": {
+			"type": "string",
+			"default": "light",
+			"enum": [ "light", "dark" ]
+		},
+		"size": {
+			"type": "string",
+			"default": "normal",
+			"enum": [ "normal", "compact" ]
+		}
+	},
+	"supports": {
+		"html": false,
+		"multiple": false
+	},
+	"editorScript": "file:index.js",
+	"editorStyle": "file:index.css"
+}

@@ -45,6 +45,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 */
 	public function boot(): void {
 		add_action( 'init', array( $this, 'registerPostType' ) );
+		add_action( 'init', array( $this, 'registerSettings' ) );
 		add_action( 'init', array( $this, 'filterBlockPatternsOnAdmin' ), PHP_INT_MAX );
 		add_action( 'rest_api_init', array( $this, 'filterBlockPatternsOnRestApi' ), PHP_INT_MAX );
 		add_filter( 'the_content', array( $this, 'renderSingularTemplate' ) );
@@ -288,6 +289,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 						'omniform/select',
 						'omniform/select-group',
 						'omniform/select-option',
+						'omniform/captcha',
 						'core/audio',
 						'core/block',
 						'core/code',
@@ -469,6 +471,59 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				'supports'              => array(
 					'custom-fields',
 				),
+			)
+		);
+	}
+
+	/**
+	 * Register the plugin settings.
+	 */
+	public function registerSettings() {
+		register_setting(
+			'omniform',
+			'omniform_hcaptcha_site_key',
+			array(
+				'type'              => 'string',
+				'description'       => __( 'The site key for hCaptcha.', 'omniform' ),
+				'sanitize_callback' => 'sanitize_text_field',
+				'show_in_rest'      => true,
+				'default'           => '',
+			)
+		);
+
+		register_setting(
+			'omniform',
+			'omniform_hcaptcha_secret_key',
+			array(
+				'type'              => 'string',
+				'description'       => __( 'The secret key for hCaptcha.', 'omniform' ),
+				'sanitize_callback' => 'sanitize_text_field',
+				'show_in_rest'      => true,
+				'default'           => '',
+			)
+		);
+
+		register_setting(
+			'omniform',
+			'omniform_recaptcha_site_key',
+			array(
+				'type'              => 'string',
+				'description'       => __( 'The site key for reCAPTCHA v2.', 'omniform' ),
+				'sanitize_callback' => 'sanitize_text_field',
+				'show_in_rest'      => true,
+				'default'           => '',
+			)
+		);
+
+		register_setting(
+			'omniform',
+			'omniform_recaptcha_secret_key',
+			array(
+				'type'              => 'string',
+				'description'       => __( 'The secret key for reCAPTCHA v2.', 'omniform' ),
+				'sanitize_callback' => 'sanitize_text_field',
+				'show_in_rest'      => true,
+				'default'           => '',
 			)
 		);
 	}
