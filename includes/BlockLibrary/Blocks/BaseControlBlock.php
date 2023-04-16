@@ -7,6 +7,8 @@
 
 namespace OmniForm\BlockLibrary\Blocks;
 
+use OmniForm\Dependencies\Respect\Validation;
+
 /**
  * The BaseControlBlock block class.
  */
@@ -116,6 +118,28 @@ abstract class BaseControlBlock extends BaseBlock {
 		return 2 === count( $parts )
 			? sprintf( '%s[%s]', $parts[0], $parts[1] )
 			: $parts[0];
+	}
+
+	/**
+	 * Get the validation rules for the field.
+	 *
+	 * @return array
+	 */
+	public function getValidationRules() {
+		return array_filter(
+			array(
+				$this->isRequired() ? new Validation\Rules\NotEmpty() : null,
+			)
+		);
+	}
+
+	/**
+	 * Does the field have validation rules?
+	 *
+	 * @return bool
+	 */
+	public function hasValidationRules() {
+		return ! empty( $this->getValidationRules() );
 	}
 
 	/**

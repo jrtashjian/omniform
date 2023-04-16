@@ -176,11 +176,7 @@ class Form {
 			$flat_control_name  = implode( '.', $control_name_parts );
 
 			$validation_rules = new Validation\Rules\AllOf(
-				...array_filter(
-					array(
-						$block->isRequired() ? new Validation\Rules\NotEmpty() : null,
-					)
-				)
+				...$block->getValidationRules()
 			);
 			$validation_rules->setName( $block->getFieldLabel() );
 
@@ -194,7 +190,7 @@ class Form {
 				);
 			}
 
-			if ( $block->isRequired() ) {
+			if ( $block->hasValidationRules() ) {
 				$this->validator->addRule( $rule );
 			}
 
