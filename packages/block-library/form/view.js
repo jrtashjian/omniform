@@ -2,21 +2,24 @@
  * WordPress dependencies
  */
 import apiFetch from '@wordpress/api-fetch';
+import { applyFilters } from '@wordpress/hooks';
 
 ( function() {
 	'use strict';
 
 	document.addEventListener( 'DOMContentLoaded', function() {
-		const formResponseHandler = ( event ) => {
+		const formResponseHandler = async ( event ) => {
 			event.preventDefault();
 
-			const formElement = event.target;
+			// Allow plugins to hook into the form submission.
+			const formElement = await applyFilters( 'omniform.prepareFormElementForSubmission', event.target );
+
 			const { action: url, method } = formElement;
 			const body = new FormData( formElement );
 
 			const messageContainer = event.target.querySelector( '.omniform-response-container' );
 
-			apiFetch( {
+			await apiFetch( {
 				url,
 				method,
 				body,
