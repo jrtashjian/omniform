@@ -479,53 +479,39 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 * Register the plugin settings.
 	 */
 	public function registerSettings() {
-		register_setting(
-			'omniform',
-			'omniform_hcaptcha_site_key',
-			array(
-				'type'              => 'string',
-				'description'       => __( 'The site key for hCaptcha.', 'omniform' ),
-				'sanitize_callback' => 'sanitize_text_field',
-				'show_in_rest'      => true,
-				'default'           => '',
-			)
+		$options = array(
+			'hcaptcha'    => 'hCaptcha',
+			'recaptchav2' => 'reCAPTCHA v2',
+			'recaptchav3' => 'reCAPTCHA v3',
 		);
 
-		register_setting(
-			'omniform',
-			'omniform_hcaptcha_secret_key',
-			array(
-				'type'              => 'string',
-				'description'       => __( 'The secret key for hCaptcha.', 'omniform' ),
-				'sanitize_callback' => 'sanitize_text_field',
-				'show_in_rest'      => true,
-				'default'           => '',
-			)
-		);
+		foreach ( $options as $option => $label ) {
+			register_setting(
+				'omniform',
+				'omniform_' . $option . '_site_key',
+				array(
+					'type'              => 'string',
+					/* translators: %s: The name of the captcha service. */
+					'description'       => sprintf( __( 'The site key for %s.', 'omniform' ), $label ),
+					'sanitize_callback' => 'sanitize_text_field',
+					'show_in_rest'      => true,
+					'default'           => '',
+				)
+			);
 
-		register_setting(
-			'omniform',
-			'omniform_recaptcha_site_key',
-			array(
-				'type'              => 'string',
-				'description'       => __( 'The site key for reCAPTCHA v2.', 'omniform' ),
-				'sanitize_callback' => 'sanitize_text_field',
-				'show_in_rest'      => true,
-				'default'           => '',
-			)
-		);
-
-		register_setting(
-			'omniform',
-			'omniform_recaptcha_secret_key',
-			array(
-				'type'              => 'string',
-				'description'       => __( 'The secret key for reCAPTCHA v2.', 'omniform' ),
-				'sanitize_callback' => 'sanitize_text_field',
-				'show_in_rest'      => true,
-				'default'           => '',
-			)
-		);
+			register_setting(
+				'omniform',
+				'omniform_' . $option . '_secret_key',
+				array(
+					'type'              => 'string',
+					/* translators: %s: The name of the captcha service. */
+					'description'       => sprintf( __( 'The secret key for %s.', 'omniform' ), $label ),
+					'sanitize_callback' => 'sanitize_text_field',
+					'show_in_rest'      => true,
+					'default'           => '',
+				)
+			);
+		}
 	}
 
 	/**
