@@ -10,7 +10,7 @@
 		"service": {
 			"type": "string",
 			"default": "recaptchav2",
-			"enum": [ "recaptchav2", "hcaptcha" ]
+			"enum": [ "recaptchav2", "recaptchav3", "hcaptcha" ]
 		},
 		"theme": {
 			"type": "string",
@@ -20,7 +20,7 @@
 		"size": {
 			"type": "string",
 			"default": "normal",
-			"enum": [ "normal", "compact" ]
+			"enum": [ "normal", "compact", "invisible" ]
 		}
 	},
 	"supports": {

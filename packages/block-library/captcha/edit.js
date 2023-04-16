@@ -66,8 +66,8 @@ const Edit = ( {
 		recaptcha: 'https://www.google.com/recaptcha/api.js',
 	};
 
-	const [ siteKey, setSiteKey ] = useEntityProp( 'root', 'site', `omniform_${ serviceSlug }_site_key` );
-	const [ secretKey, setSecretKey ] = useEntityProp( 'root', 'site', `omniform_${ serviceSlug }_secret_key` );
+	const [ siteKey, setSiteKey ] = useEntityProp( 'root', 'site', `omniform_${ service }_site_key` );
+	const [ secretKey, setSecretKey ] = useEntityProp( 'root', 'site', `omniform_${ service }_secret_key` );
 
 	useEffect( () => {
 		if ( ! siteKey ) {
