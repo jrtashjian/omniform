@@ -5,16 +5,6 @@ import { __ } from '@wordpress/i18n';
 
 const variations = [
 	{
-		// This is a default to improve variation transforms.
-		name: 'button',
-		title: __( 'Button', 'omniform' ),
-		description: __( '', 'omniform' ),
-		attributes: {
-			buttonType: 'button',
-		},
-		scope: [ 'transform' ],
-	},
-	{
 		name: 'button-submit',
 		title: __( 'Submit', 'omniform' ),
 		description: __( '', 'omniform' ),
@@ -22,6 +12,7 @@ const variations = [
 			buttonType: 'submit',
 			buttonLabel: __( 'Submit', 'omniform' ),
 		},
+		isDefault: true,
 	},
 	{
 		name: 'button-reset',
