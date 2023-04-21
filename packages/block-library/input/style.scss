@@ -2,7 +2,9 @@
 
 .wp-block-omniform-input,
 input[class="wp-block-omniform-input"]:read-write,
-input[class="wp-block-omniform-input"]:read-only {
+input[class="wp-block-omniform-input"]:read-only,
+input.wp-block-omniform-input.readonly,
+input.wp-block-omniform-input[readonly] {
 
 	@include field-control;
 

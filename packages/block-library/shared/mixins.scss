@@ -82,6 +82,7 @@ $contrast-color: var(--wp--preset--color--contrast, var(--wp--preset--color--for
 	font-size: inherit;
 	line-height: inherit;
 	max-width: none;
+	min-height: auto;
 	padding: 0.5em 0.75em;
 	margin: 0;
 	color: #{$contrast-color};
