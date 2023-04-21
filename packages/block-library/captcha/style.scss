@@ -1,0 +1,14 @@
+@import "~@wordpress/base-styles/variables";
+
+.wp-block-omniform-captcha {
+
+	&.h-captcha[data-size] {
+		width: auto;
+		height: auto;
+	}
+
+	iframe {
+		display: block;
+	}
+}
+

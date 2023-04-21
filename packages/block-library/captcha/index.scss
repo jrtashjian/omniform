@@ -1,0 +1,44 @@
+@import "~@wordpress/base-styles/variables";
+
+.wp-block-omniform-captcha {
+
+	iframe {
+		display: block;
+	}
+
+	&-placeholder {
+		padding: ($grid-unit-15 * 0.5) $grid-unit-10;
+		flex-direction: row;
+		align-items: flex-start;
+
+		&::before {
+			content: "";
+			display: block;
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			pointer-events: none;
+			border: $border-width dashed currentcolor;
+		}
+
+		&__indicator {
+			display: flex;
+			padding: 0 ($grid-unit-15 * 0.5) 0 0;
+			align-items: center;
+			justify-content: flex-start;
+			line-height: 0;
+			height: $button-size;
+
+			// Line up with the icon in the toolbar.
+			margin-left: $grid-unit-05;
+
+			svg {
+				margin-right: $grid-unit-05;
+				fill: currentcolor;
+			}
+		}
+	}
+}
+

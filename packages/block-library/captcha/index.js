@@ -10,6 +10,9 @@ import json from './block.json';
 import Edit from './edit';
 import variations from './variations';
 
+import './index.scss';
+import './style.scss';
+
 const { name } = json;
 
 registerBlockType( name, {

@@ -20,6 +20,7 @@ window.omniformCaptchaOnLoad = () => {
 			captchaWidgetId = window.hcaptcha.render( target, params );
 			break;
 		case 'recaptchav2':
+		case 'recaptchav3':
 			captchaWidgetId = window.grecaptcha.render( target, params );
 			break;
 	}

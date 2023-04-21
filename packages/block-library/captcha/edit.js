@@ -1,5 +1,3 @@
-/* global hcaptcha, grecaptcha */
-
 /**
  * WordPress dependencies
  */
@@ -10,11 +8,17 @@ import {
 } from '@wordpress/block-editor';
 import {
 	Disabled,
+	Icon,
 	PanelBody,
 	TextControl,
 } from '@wordpress/components';
-import { useEffect, useRef } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
 import { useEntityProp } from '@wordpress/core-data';
+
+/**
+ * Internal dependencies
+ */
+import { iconReCaptcha, iconHCaptcha } from '../shared/icons';
 
 const scripts = [];
 
@@ -69,6 +73,8 @@ const Edit = ( {
 	const [ siteKey, setSiteKey ] = useEntityProp( 'root', 'site', `omniform_${ service }_site_key` );
 	const [ secretKey, setSecretKey ] = useEntityProp( 'root', 'site', `omniform_${ service }_secret_key` );
 
+	const [ isLoaded, setIsLoaded ] = useState( false );
+
 	useEffect( () => {
 		if ( ! siteKey ) {
 			return;
@@ -78,14 +84,17 @@ const Edit = ( {
 
 		mountCaptchaScript( serviceSlug, serviceUrls[ serviceSlug ] )
 			.then( () => {
-				( 'hcaptcha' === service ? hcaptcha : grecaptcha ).render( wrapper, {
+				( 'hcaptcha' === service ? window.hcaptcha : window.grecaptcha ).render( wrapper, {
 					sitekey: siteKey,
 					theme,
 					size,
+					badge: 'inline',
 				} );
+				setIsLoaded( true );
 			} )
 			.catch( ( error ) => {
-				console.debug( { error } );
+				console.error( { error } );
+				setIsLoaded( false );
 			} );
 
 		container.current.appendChild( wrapper );
@@ -100,6 +109,14 @@ const Edit = ( {
 	return (
 		<>
 			<div { ...blockProps }>
+				{ ! isLoaded && (
+					<div className="wp-block-omniform-captcha-placeholder">
+						<div className="wp-block-omniform-captcha-placeholder__indicator">
+							<Icon icon={ 'hcaptcha' === service ? iconHCaptcha : iconReCaptcha } />
+							{ __( 'Captcha', 'omniform' ) }
+						</div>
+					</div>
+				) }
 				<Disabled>
 					<div ref={ container } />
 				</Disabled>
