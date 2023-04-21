@@ -73,6 +73,7 @@ const variations = [
 		description: __( 'A field for brief responses.', 'omniform' ),
 		example: inputTextExample( 'text', __( 'Short Text', 'omniform' ) ),
 		innerBlocks: inputTextExample( 'text' ).innerBlocks,
+		isDefault: true,
 	},
 	{
 		name: 'field-email',
