@@ -7,9 +7,12 @@
 	}
 
 	&-placeholder {
-		padding: ($grid-unit-15 * 0.5) $grid-unit-10;
+		display: flex;
+		padding: $grid-unit-15;
+		gap: $grid-unit-15;
 		flex-direction: row;
 		align-items: flex-start;
+		font-size: 1rem;
 
 		&::before {
 			content: "";
@@ -23,21 +26,9 @@
 			border: $border-width dashed currentcolor;
 		}
 
-		&__indicator {
-			display: flex;
-			padding: 0 ($grid-unit-15 * 0.5) 0 0;
-			align-items: center;
-			justify-content: flex-start;
-			line-height: 0;
-			height: $button-size;
-
-			// Line up with the icon in the toolbar.
-			margin-left: $grid-unit-05;
-
-			svg {
-				margin-right: $grid-unit-05;
-				fill: currentcolor;
-			}
+		svg {
+			fill: currentcolor;
+			flex-shrink: 0;
 		}
 	}
 }

@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import {
 	useBlockProps,
 	InspectorControls,
@@ -11,6 +11,9 @@ import {
 	Icon,
 	PanelBody,
 	TextControl,
+	__experimentalToggleGroupControl as ToggleGroupControl,
+	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
+	ExternalLink,
 } from '@wordpress/components';
 import { useEffect, useRef, useState } from '@wordpress/element';
 import { useEntityProp } from '@wordpress/core-data';
@@ -102,27 +105,66 @@ const Edit = ( {
 		return () => {
 			wrapper.remove();
 		};
-	}, [ siteKey, service, theme ] );
+	}, [ siteKey, service, theme, size ] );
 
 	const blockProps = useBlockProps();
+
+	const SetupInstructions = () => {
+		/* translators: 1: captcha service name */
+		let createDesc = __( 'To start using %s, you need to sign up for an API key pair for your site. The key pair consists of a site key and secret key.', 'omniform' );
+
+		switch ( service ) {
+			case 'hcaptcha':
+				createDesc = sprintf( createDesc, __( 'hCaptcha', 'omniform' ) );
+				break;
+			case 'recaptchav2':
+				createDesc = sprintf( createDesc, __( 'reCAPTCHA v2', 'omniform' ) );
+				break;
+			case 'recaptchav3':
+				createDesc = sprintf( createDesc, __( 'reCAPTCHA v3', 'omniform' ) );
+				break;
+		}
+
+		return (
+			<>
+				{ createDesc }
+				&nbsp;
+				<ExternalLink
+					href={
+						'hcaptcha' === service
+							? 'https://dashboard.hcaptcha.com/sites/new'
+							: 'https://www.google.com/recaptcha/admin/create'
+					}
+				>
+					{ __( 'Generate keys', 'omniform' ) }
+				</ExternalLink>
+			</>
+		);
+	};
 
 	return (
 		<>
 			<div { ...blockProps }>
-				{ ! isLoaded && (
+				{ ! ( isLoaded || siteKey ) && (
 					<div className="wp-block-omniform-captcha-placeholder">
-						<div className="wp-block-omniform-captcha-placeholder__indicator">
-							<Icon icon={ 'hcaptcha' === service ? iconHCaptcha : iconReCaptcha } />
-							{ __( 'Captcha', 'omniform' ) }
+						<Icon icon={ 'hcaptcha' === service ? iconHCaptcha : iconReCaptcha } size={ 36 } />
+						<div className="wp-block-omniform-captcha-placeholder__instructions">
+							<SetupInstructions />
 						</div>
 					</div>
 				) }
 				<Disabled>
-					<div ref={ container } />
+					<div
+						ref={ container }
+						id={ 'hcaptcha' === service ? 'hcapcha' : 'recaptcha' }
+						className={ 'hcaptcha' === service ? 'h-capcha' : 'g-recaptcha' }
+					/>
 				</Disabled>
 			</div>
 			<InspectorControls>
 				<PanelBody title={ __( 'Settings', 'omniform' ) }>
+
+					<p><SetupInstructions /></p>
 
 					<TextControl
 						label={ __( 'Site Key', 'omniform' ) }
@@ -135,6 +177,28 @@ const Edit = ( {
 						value={ secretKey }
 						onChange={ setSecretKey }
 					/>
+
+					<ToggleGroupControl
+						label={ __( 'Theme', 'omniform' ) }
+						value={ theme }
+						onChange={ ( value ) => setAttributes( { theme: value } ) }
+						isBlock
+					>
+						<ToggleGroupControlOption value="light" label={ __( 'Light', 'omniform' ) } />
+						<ToggleGroupControlOption value="dark" label={ __( 'Dark', 'omniform' ) } />
+					</ToggleGroupControl>
+
+					{ 'recaptchav3' !== service && (
+						<ToggleGroupControl
+							label={ __( 'Size', 'omniform' ) }
+							value={ size }
+							onChange={ ( value ) => setAttributes( { size: value } ) }
+							isBlock
+						>
+							<ToggleGroupControlOption value="normal" label={ __( 'Normal', 'omniform' ) } />
+							<ToggleGroupControlOption value="compact" label={ __( 'Compact', 'omniform' ) } />
+						</ToggleGroupControl>
+					) }
 
 				</PanelBody>
 			</InspectorControls>
