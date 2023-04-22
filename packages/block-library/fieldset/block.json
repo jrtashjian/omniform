@@ -2,8 +2,8 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 2,
 	"name": "omniform/fieldset",
-	"category": "omniform-control-group",
-	"title": "Field Group",
+	"category": "omniform-control-simple",
+	"title": "Fieldset",
 	"description": "Organize and group related controls.",
 	"textdomain": "omniform",
 	"attributes": {
