@@ -13,8 +13,7 @@ import { useSelect, useDispatch } from '@wordpress/data';
 import { cleanForSlug } from '@wordpress/url';
 
 const Edit = ( {
-	attributes: { fieldLabel, isHidden },
-	setAttributes,
+	attributes: { fieldLabel },
 	clientId,
 	context,
 } ) => {

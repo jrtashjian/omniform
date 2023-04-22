@@ -13,9 +13,6 @@
 		"fieldLabel": {
 			"type": "string",
 			"__experimentalRole": "content"
-		},
-		"isHidden": {
-			"type": "boolean"
 		}
 	},
 	"supports": {
