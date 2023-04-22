@@ -34,7 +34,7 @@ const mountCaptchaScript = ( id, src ) => {
 	const ONLOAD_FN_NAME = 'handleCaptchaOnLoad';
 
 	// If the script is already loaded, return the promise.
-	const scriptFound = scripts.find( ( found ) => found.type === id );
+	const scriptFound = scripts.find( ( found ) => found.id === id );
 	if ( document.getElementById( SCRIPT_ID ) && scriptFound ) {
 		return scriptFound.promise;
 	}
