@@ -229,9 +229,7 @@ const Edit = ( {
 					onChange={ updateMetaRequiredLabel }
 					withoutInteractiveFormatting
 					allowedFormats={ [ 'core/bold', 'core/italic', 'core/image' ] }
-					multiline={ false }
-					onSplit={ false }
-					onReplace={ false }
+					disableLineBreaks={ true }
 				/>
 			) }
 		</div>
