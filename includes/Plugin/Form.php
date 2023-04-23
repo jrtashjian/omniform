@@ -299,7 +299,7 @@ class Form {
 
 		$message = array();
 
-		foreach ( $this->fields as $name => $label ) {
+		foreach ( $response_data['fields'] as $name => $label ) {
 			$value     = implode( ', ', (array) $response_data['content']->get( $name, '' ) );
 			$message[] = $label . ': ' . $value;
 		}

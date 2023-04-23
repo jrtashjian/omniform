@@ -80,13 +80,12 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 		 */
 		$filtered_request_params = apply_filters( 'omniform_filtered_request_params', array( 'id', 'rest_route', 'wp_rest', '_locale', '_wp_http_referer' ) );
 
-		$response_data = array_filter(
-			$request->get_params(),
-			function( $key ) use ( $filtered_request_params ) {
-				return ! in_array( $key, $filtered_request_params, true );
-			},
-			ARRAY_FILTER_USE_KEY
-		);
+		$filter_callback = function( $key ) use ( $filtered_request_params ) {
+			return ! in_array( $key, $filtered_request_params, true );
+		};
+
+		$response_data = array_filter( $request->get_params(), $filter_callback, ARRAY_FILTER_USE_KEY );
+		$fields_data   = array_filter( $form->getFields(), $filter_callback, ARRAY_FILTER_USE_KEY );
 
 		$response_id = wp_insert_post(
 			array(
@@ -94,7 +93,7 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 				'post_content' => wp_json_encode(
 					array(
 						'response' => $response_data,
-						'fields'   => $form->getFields(),
+						'fields'   => $fields_data,
 						'groups'   => $form->getGroups(),
 					)
 				),
