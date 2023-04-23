@@ -113,7 +113,7 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 		}
 
 		wp_mail(
-			'test@example.com',
+			get_option( 'admin_email' ),
 			$form->getTitle() . ' Response',
 			$form->response_email_message( $response_id )
 		);
