@@ -1,0 +1,7 @@
+.wp-block-omniform-form {
+
+	.wp-block-group::before,
+	.wp-block-group::after {
+		content: none;
+	}
+}

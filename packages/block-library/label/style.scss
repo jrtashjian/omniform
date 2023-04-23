@@ -1,12 +1,13 @@
 .wp-block-omniform-label,
 .wp-block-omniform-label > *,
-label.wp-block-omniform-label,
+label.wp-block-omniform-label[for],
 label.wp-block-omniform-label > * {
 	font-size: inherit;
 	align-items: center;
 	display: inline-flex;
 	flex-wrap: wrap;
 	gap: 0.25em;
+	margin: 0;
 
 	.rich-text span {
 		margin-left: -0.25em;

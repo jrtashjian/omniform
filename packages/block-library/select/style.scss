@@ -9,6 +9,7 @@ select.wp-block-omniform-select {
 
 	&[multiple] {
 		height: 230px;
+		background-image: unset;
 	}
 
 	&:not([multiple]) {

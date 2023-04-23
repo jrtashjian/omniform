@@ -20,6 +20,7 @@ import { POST_TYPE } from '../shared/constants';
 import { form } from '../shared/icons';
 
 import './index.scss';
+import './style.scss';
 
 const { name } = json;
 

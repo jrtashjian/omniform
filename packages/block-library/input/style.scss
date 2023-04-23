@@ -4,7 +4,24 @@
 input[class="wp-block-omniform-input"]:read-write,
 input[class="wp-block-omniform-input"]:read-only,
 input.wp-block-omniform-input.readonly,
-input.wp-block-omniform-input[readonly] {
+input.wp-block-omniform-input[readonly],
+input[type="text"].wp-block-omniform-input,
+input[type="email"].wp-block-omniform-input,
+input[type="url"].wp-block-omniform-input,
+input[type="password"].wp-block-omniform-input,
+input[type="search"].wp-block-omniform-input,
+input[type="number"].wp-block-omniform-input,
+input[type="tel"].wp-block-omniform-input,
+input[type="date"].wp-block-omniform-input,
+input[type="month"].wp-block-omniform-input,
+input[type="week"].wp-block-omniform-input,
+input[type="time"].wp-block-omniform-input,
+input[type="datetime"].wp-block-omniform-input,
+input[type="datetime-local"].wp-block-omniform-input,
+input[type="color"] .wp-block-omniform-input,
+input[type="checkbox"].wp-block-omniform-input,
+input[type="checkbox"].wp-block-omniform-input:checked,
+input[type="radio"].wp-block-omniform-input:checked {
 
 	@include field-control;
 

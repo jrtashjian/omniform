@@ -4,8 +4,7 @@
  * BASE:
  * 1. --wp--preset--color--base
  * 2. --wp--preset--color--background
- * 3. --wp--preset--color--white
- * 4. #fff
+ * 3. transparent
  *
  * CONTRAST:
  * 1. --wp--preset--color--contrast
@@ -13,7 +12,7 @@
  * 3. currentColor
  */
 
-$base-color: var(--wp--preset--color--base, var(--wp--preset--color--background, var(--wp--preset--color--white, #fff)));
+$base-color: var(--wp--preset--color--base, var(--wp--preset--color--background, transparent));
 $contrast-color: var(--wp--preset--color--contrast, var(--wp--preset--color--foreground, currentColor));
 
 @mixin field-label {
