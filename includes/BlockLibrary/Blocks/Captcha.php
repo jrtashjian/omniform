@@ -15,6 +15,13 @@ use OmniForm\HCaptchaRule;
  */
 class Captcha extends BaseControlBlock {
 	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		add_filter( 'omniform_filtered_request_params', array( $this, 'filterRequestParams' ) );
+	}
+
+	/**
 	 * Renders the block on the server.
 	 *
 	 * @return string Returns the block content.
@@ -112,5 +119,19 @@ class Captcha extends BaseControlBlock {
 	public function renderControl() {
 		// Don't render a control for CAPTCHA.
 		return '';
+	}
+
+	/**
+	 * Filters the request params.
+	 *
+	 * @param array $filtered_request_params The filtered request params.
+	 *
+	 * @return array
+	 */
+	public function filterRequestParams( $filtered_request_params ) {
+		$filtered_request_params[] = 'g-recaptcha-response';
+		$filtered_request_params[] = 'h-captcha-response';
+
+		return $filtered_request_params;
 	}
 }
