@@ -28,7 +28,7 @@ class ReCaptchaV3Rule extends AbstractRule {
 		}
 
 		$response = wp_remote_post(
-			'https://hcaptcha.com/siteverify',
+			'https://www.google.com/recaptcha/api/siteverify',
 			array(
 				'body' => array(
 					'secret'   => $secret,

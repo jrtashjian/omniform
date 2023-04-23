@@ -9,6 +9,8 @@ namespace OmniForm\BlockLibrary\Blocks;
 
 use OmniForm\Dependencies\Respect\Validation;
 use OmniForm\HCaptchaRule;
+use OmniForm\ReCaptchaV2Rule;
+use OmniForm\ReCaptchaV3Rule;
 
 /**
  * The Captcha block class.
@@ -103,10 +105,22 @@ class Captcha extends BaseControlBlock {
 	 * @return array
 	 */
 	public function getValidationRules() {
+		switch ( $this->getBlockAttribute( 'service' ) ) {
+			case 'hcaptcha':
+				$rule = new HCaptchaRule();
+				break;
+			case 'recaptchav2':
+				$rule = new ReCaptchaV2Rule();
+				break;
+			case 'recaptchav3':
+				$rule = new ReCaptchaV3Rule();
+				break;
+		}
+
 		return array_filter(
 			array(
 				new Validation\Rules\NotEmpty(),
-				'hcaptcha' === $this->getBlockAttribute( 'service' ) ? new HCaptchaRule() : null,
+				$rule,
 			)
 		);
 	}
