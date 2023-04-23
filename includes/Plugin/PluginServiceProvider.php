@@ -50,6 +50,50 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		add_action( 'rest_api_init', array( $this, 'filterBlockPatternsOnRestApi' ), PHP_INT_MAX );
 		add_filter( 'the_content', array( $this, 'renderSingularTemplate' ) );
 
+		// Send email notification when a response is created.
+		add_action(
+			'omniform_response_created',
+			function( $response_id, $form ) {
+				wp_mail(
+					get_option( 'admin_email' ),
+					/* translators: %s: Form title */
+					sprintf( '%s Response', $form->getTitle() ),
+					$form->response_email_message( $response_id )
+				);
+			},
+			10,
+			2
+		);
+
+		// Increment form response count.
+		add_action(
+			'omniform_response_created',
+			function( $response_id, $form ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
+				// Incremement form responses.
+				$response_count = get_post_meta( $form->getId(), '_omniform_responses', true );
+				$response_count = $response_count ? $response_count : 0;
+
+				update_post_meta( $form->getId(), '_omniform_responses', (int) $response_count + 1 );
+			},
+			10,
+			2
+		);
+
+		// Increment form impression count.
+		add_action(
+			'omniform_form_render',
+			function( $form_id ) {
+				if ( is_admin() ) {
+					return;
+				}
+
+				$impressions = get_post_meta( $form_id, '_omniform_impressions', true );
+				$impressions = $impressions ? $impressions : 0;
+
+				update_post_meta( $form_id, '_omniform_impressions', $impressions + 1 );
+			}
+		);
+
 		// Add custom columns to CPT.
 		add_filter(
 			'manage_omniform_posts_columns',
