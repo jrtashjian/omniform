@@ -112,15 +112,13 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 			return rest_ensure_response( $response_id );
 		}
 
-		wp_mail(
-			get_option( 'admin_email' ),
-			$form->getTitle() . ' Response',
-			$form->response_email_message( $response_id )
-		);
-
-		// Incremement form responses.
-		$response_count = get_post_meta( $form->getId(), '_omniform_responses', true );
-		update_post_meta( $form->getId(), '_omniform_responses', (int) $response_count + 1 );
+		/**
+		 * Fires after a response has been created.
+		 *
+		 * @param int $response_id The response ID.
+		 * @param \OmniForm\Plugin\Form $form The form instance.
+		 */
+		do_action( 'omniform_response_created', $response_id, $form );
 
 		$response = array(
 			'status'  => 201,

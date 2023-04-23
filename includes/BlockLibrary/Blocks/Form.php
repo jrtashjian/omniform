@@ -56,18 +56,19 @@ class Form extends BaseBlock {
 				: '';
 		}
 
-		if ( ! is_admin() ) {
-			// Incremement form impressions.
-			$impressions = get_post_meta( $entity_id, '_omniform_impressions', true );
-			update_post_meta( $entity_id, '_omniform_impressions', (int) $impressions + 1 );
-		}
-
 		$content     = do_blocks( $form->getContent() );
 		$nonce_field = wp_nonce_field( 'omniform', 'wp_rest', true, false );
 
 		$response_container = sprintf(
 			'<div class="omniform-response-container"></div>',
 		);
+
+		/**
+		 * Fires when the form is rendered.
+		 *
+		 * @param int $form_id The form ID.
+		 */
+		do_action( 'omniform_form_render', $form->getId() );
 
 		return sprintf(
 			'<form method="post" action="%s" %s>%s</form>',
