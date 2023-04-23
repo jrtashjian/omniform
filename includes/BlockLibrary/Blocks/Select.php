@@ -24,10 +24,18 @@ class Select extends BaseControlBlock {
 			$block_attributes = preg_replace( '/min-height:([^;]+);/', '', $block_attributes );
 		}
 
+		$placeholder = '';
+		if ( $this->getBlockAttribute( 'fieldPlaceholder' ) ) {
+			$placeholder = sprintf(
+				'<option value="">%s</option>',
+				esc_attr( $this->getBlockAttribute( 'fieldPlaceholder' ) ),
+			);
+		}
+
 		return sprintf(
 			'<select %s>%s</select>',
 			$block_attributes,
-			$this->content
+			$placeholder . $this->content
 		);
 	}
 
