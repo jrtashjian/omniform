@@ -73,10 +73,17 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 			);
 		}
 
+		/**
+		 * Filter out the fields we don't want to save.
+		 *
+		 * @param string[] $filtered_request_params The filtered request params.
+		 */
+		$filtered_request_params = apply_filters( 'omniform_filtered_request_params', array( 'id', 'rest_route', 'wp_rest', '_locale', '_wp_http_referer' ) );
+
 		$response_data = array_filter(
 			$request->get_params(),
-			function( $key ) {
-				return ! in_array( $key, array( 'id', 'rest_route', 'wp_rest', '_locale', '_wp_http_referer' ), true );
+			function( $key ) use ( $filtered_request_params ) {
+				return ! in_array( $key, $filtered_request_params, true );
 			},
 			ARRAY_FILTER_USE_KEY
 		);
