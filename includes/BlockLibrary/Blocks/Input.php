@@ -34,6 +34,7 @@ class Input extends BaseControlBlock {
 				'placeholder' => $this->getBlockAttribute( 'fieldPlaceholder' ),
 				'type'        => $this->getBlockAttribute( 'fieldType' ),
 				'value'       => $this->getControlValue(),
+				'aria-label'  => esc_attr( wp_strip_all_tags( $this->getFieldLabel() ) ),
 			),
 			parent::getExtraWrapperAttributes()
 		);
