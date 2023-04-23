@@ -314,7 +314,16 @@ class Form {
 		return implode( "\n", $message );
 	}
 
-	// https://github.com/dflydev/dflydev-dot-access-data/issues/16#issuecomment-699638023
+	/**
+	 * Flatten an array.
+	 *
+	 * @link https://github.com/dflydev/dflydev-dot-access-data/issues/16#issuecomment-699638023
+	 *
+	 * @param array  $data The array to flatten.
+	 * @param string $path_prefix The path prefix.
+	 *
+	 * @return array The flattened array.
+	 */
 	private function flatten( array $data, string $path_prefix = '' ) {
 		$ret = array();
 

@@ -136,7 +136,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 						),
 						'scope'      => array( 'inserter', 'transform' ),
 						'example'    => array(
-							'attributes' => array(
+							'attributes'    => array(
 								'ref' => $post->ID,
 							),
 							'viewportWidth' => 768,

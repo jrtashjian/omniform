@@ -279,7 +279,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					return $query;
 				}
 
-				if ( empty( $_GET['omniform_id'] ) ) {
+				if ( empty( $_GET['omniform_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 					return $query;
 				}
 
@@ -288,7 +288,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					array(
 						array(
 							'key'   => '_omniform_id',
-							'value' => (int) $_GET['omniform_id'],
+							'value' => (int) $_GET['omniform_id'], // phpcs:ignore WordPress.Security.NonceVerification
 						),
 					)
 				);
@@ -585,7 +585,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			return;
 		}
 
-		if ( 'omniform' !== get_post_type( (int) $_GET['post'] ) ) {
+		if ( 'omniform' !== get_post_type( (int) $_GET['post'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			return;
 		}
 
