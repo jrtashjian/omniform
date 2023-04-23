@@ -52,7 +52,7 @@ const mountCaptchaScript = ( id, src ) => {
 
 		script.async = true;
 
-		script.onerror = ( event ) => reject( 'script-error' );
+		script.onerror = ( event ) => reject( __( 'Failed to load script:', 'omniform' ) + ' ' + src ); // eslint-disable-line no-unused-vars
 
 		document.head.appendChild( script );
 	} );
@@ -77,6 +77,7 @@ const Edit = ( {
 	const [ secretKey, setSecretKey ] = useEntityProp( 'root', 'site', `omniform_${ service }_secret_key` );
 
 	const [ isLoaded, setIsLoaded ] = useState( false );
+	const [ errorMsg, setErrorMsg ] = useState( null );
 
 	useEffect( () => {
 		if ( ! siteKey ) {
@@ -94,10 +95,11 @@ const Edit = ( {
 					badge: 'inline',
 				} );
 				setIsLoaded( true );
+				setErrorMsg( null );
 			} )
 			.catch( ( error ) => {
-				console.error( { error } );
 				setIsLoaded( false );
+				setErrorMsg( error );
 			} );
 
 		container.current.appendChild( wrapper );
@@ -145,11 +147,12 @@ const Edit = ( {
 	return (
 		<>
 			<div { ...blockProps }>
-				{ ! ( isLoaded || siteKey ) && (
+				{ ( errorMsg || ! ( isLoaded || siteKey ) ) && (
 					<div className="wp-block-omniform-captcha-placeholder">
 						<Icon icon={ 'hcaptcha' === service ? iconHCaptcha : iconReCaptcha } size={ 36 } />
 						<div className="wp-block-omniform-captcha-placeholder__instructions">
 							<SetupInstructions />
+							<div style={ { color: 'var(--wp--preset--color--vivid-red, "#cf2e2e")' } }>{ errorMsg }</div>
 						</div>
 					</div>
 				) }

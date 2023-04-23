@@ -50,7 +50,7 @@ export function useAlternativeForms( excludedId ) {
 export function useCreateFormFromBlocks( setAttributes ) {
 	const { saveEntityRecord } = useDispatch( coreStore );
 
-	return async ( blocks = [], title = __( 'Untitled Form', 'omniform' ), type = 'uncategorized' ) => {
+	return async ( blocks = [], title = __( 'Untitled Form', 'omniform' ), type = 'uncategorized' ) => { // eslint-disable-line no-unused-vars
 		const record = {
 			title,
 			content: serialize( blocks ),
