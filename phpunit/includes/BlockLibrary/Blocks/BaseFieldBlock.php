@@ -1,33 +1,38 @@
 <?php
 /**
- * Tests the BaseFieldBlock class.
+ * Tests the BaseControlBlock class.
  *
  * @package OmniForm
  */
 
 namespace OmniForm\Tests\BlockLibrary\Blocks;
 
-use OmniForm\BlockLibrary\Blocks\BaseFieldBlock;
+use OmniForm\BlockLibrary\Blocks\BaseControlBlock;
 
 /**
- * Tests the BaseFieldBlock class.
+ * Tests the BaseControlBlock class.
  */
-class BaseFieldBlockTest extends \WP_UnitTestCase {
+class BaseControlBlockTest extends \WP_UnitTestCase {
 	/**
 	 * Register the block to test against.
 	 */
 	public function set_up() {
-		$block_object = new BaseFieldBlockStub();
+		$block_object = new TextControlBlock();
 
 		register_block_type(
 			$block_object->blockTypeMetadata(),
 			array(
 				'render_callback' => array( $block_object, 'renderBlock' ),
-				'uses_context'    => array( 'omniform/fieldGroupName' ),
+				'uses_context'    => array(
+					'omniform/fieldGroupName',
+					'omniform/fieldGroupLabel',
+					'omniform/fieldGroupIsRequired',
+					'omniform/fieldLabel',
+					'omniform/fieldName',
+					'omniform/fieldIsRequired',
+				),
 			)
 		);
-
-		omniform()->addServiceProvider( new \OmniForm\Plugin\PluginServiceProvider() );
 	}
 
 	/**
@@ -35,12 +40,31 @@ class BaseFieldBlockTest extends \WP_UnitTestCase {
 	 *
 	 * @param array $attributes The block attributes.
 	 */
-	private function render_block_with_attributes( $attributes ) {
+	private function render_block_with_attributes( $attributes = array() ) {
 		return do_blocks(
-			sprintf(
-				'<!-- wp:omniform/base-field-block-stub %s -->',
-				wp_json_encode( $attributes )
+			serialize_block(
+				array(
+					'blockName'    => 'omniform/text-control-block',
+					'attrs'        => $attributes,
+					'innerContent' => array(),
+				)
 			)
+		);
+	}
+
+	/**
+	 * Helper method to apply a block context.
+	 *
+	 * @param string $context The block context to apply.
+	 * @param mixed  $value   The value to apply to the block context.
+	 */
+	private function apply_block_context( $context, $value ) {
+		add_filter(
+			'render_block_context',
+			function( $block_contexts ) use ( $context, $value ) {
+				$block_contexts[ $context ] = $value;
+				return $block_contexts;
+			}
 		);
 	}
 
@@ -48,79 +72,48 @@ class BaseFieldBlockTest extends \WP_UnitTestCase {
 	 * Make sure the block does not render markup if the fieldLabel attribute is empty.
 	 */
 	public function test_does_not_render_without_field_label() {
-		$this->assertEmpty(
-			$this->render_block_with_attributes( array( 'fieldLabel' => '' ) )
-		);
+		$this->assertEmpty( $this->render_block_with_attributes() );
 
-		$block = $this->render_block_with_attributes( array( 'fieldLabel' => 'test label' ) );
-
-		$this->assertNotEmpty( $block );
-		$this->assertEquals( '<div class="omniform-base-field-block-stub wp-block-omniform-base-field-block-stub"><label class="omniform-field-label " for="test-label">test label</label><div id="test-label" name="test-label" /></div>', $block );
+		$this->apply_block_context( 'omniform/fieldLabel', 'field label' );
+		$this->assertNotEmpty( $this->render_block_with_attributes() );
 	}
 
 	/**
-	 * Make sure the "field-required" class is included in the markup when isRequired is true.
+	 * Make sure the field label is used as the field name if the fieldName attribute is empty.
 	 */
-	public function test_field_is_required() {
-		$block = $this->render_block_with_attributes(
-			array(
-				'fieldLabel' => 'test label',
-				'isRequired' => true,
-			)
-		);
+	public function test_field_name() {
+		$this->apply_block_context( 'omniform/fieldLabel', 'field label' );
+		$this->assertStringContainsString( 'name="field-label"', $this->render_block_with_attributes() );
 
-		$this->assertStringContainsString( 'field-required', $block );
+		$this->apply_block_context( 'omniform/fieldName', 'field name' );
+		$this->assertStringContainsString( 'name="field-name"', $this->render_block_with_attributes() );
 	}
 
 	/**
-	 * Ensure the field is submitted as a child of the fieldset group.
+	 * Make sure the field label is used as the field name if the fieldName attribute is empty.
 	 */
-	public function test_field_is_group() {
-		add_filter(
-			'render_block_context',
-			function( $context ) {
-				$context['omniform/fieldGroupName'] = 'test-group';
-				return $context;
-			}
-		);
+	public function test_field_group_name() {
+		$this->apply_block_context( 'omniform/fieldLabel', 'field label' );
+		$this->apply_block_context( 'omniform/fieldName', 'field name' );
 
-		$block = $this->render_block_with_attributes( array( 'fieldLabel' => 'test label' ) );
+		$this->apply_block_context( 'omniform/fieldGroupLabel', 'field group label' );
+		$this->assertStringContainsString( 'name="field-group-label[field-name]"', $this->render_block_with_attributes() );
 
-		$this->assertStringContainsString( 'name="test-group[test-label]"', $block );
-	}
-
-	/**
-	 * Make sure the custom value is included in the markup when fieldValue is set.
-	 */
-	public function test_control_value() {
-		$block = $this->render_block_with_attributes(
-			array(
-				'fieldLabel' => 'test label',
-				'fieldValue' => 'test value',
-			)
-		);
-
-		$this->assertStringContainsString( 'value="test value"', $block );
+		$this->apply_block_context( 'omniform/fieldGroupName', 'field group name' );
+		$this->assertStringContainsString( 'name="field-group-name[field-name]"', $this->render_block_with_attributes() );
 	}
 }
 
 // phpcs:disable
-class BaseFieldBlockStub extends BaseFieldBlock {
+class TextControlBlock extends BaseControlBlock {
 	public function blockTypeMetadata() {
 		return 'omniform/' . $this->blockTypeName();
 	}
 
 	public function renderControl() {
-		$attributes = array_merge(
-			$this->getControlAttributes(),
-			array(
-				$this->getElementAttribute( 'value', $this->getControlValue() ),
-			),
-		);
-
 		return sprintf(
 			'<div %s />',
-			trim( implode( ' ', $attributes ) )
+			get_block_wrapper_attributes( $this->getExtraWrapperAttributes() )
 		);
 	}
 }

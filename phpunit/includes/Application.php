@@ -78,6 +78,18 @@ class CoreTest extends \WP_UnitTestCase {
 	}
 
 	/**
+	 * Test that the activation hook is called.
+	 */
+	public function test_activation_hook_is_called() {
+		$plugin_basename = plugin_basename( $this->plugin_file );
+
+		register_activation_hook( $plugin_basename, array( omniform(), 'activation' ) );
+		$this->assertTrue( has_filter( 'activate_' . $plugin_basename ) );
+
+		do_action( 'activate_' . $plugin_basename ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	}
+
+	/**
 	 * Test that the deactivation hook is called.
 	 */
 	public function test_deactivation_hook_is_called() {
