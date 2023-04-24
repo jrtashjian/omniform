@@ -1,3 +1,4 @@
+_scratchpad
 .*
 composer.json
 composer.lock
@@ -9,4 +10,5 @@ phpcs.xml.dist
 phpunit.xml.dist
 phpunit/
 README.md
+scoper.inc.php
 webpack.config.js
