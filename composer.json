@@ -48,7 +48,7 @@
         "lint": "phpcs --standard=phpcs.xml.dist",
         "format": "phpcbf --standard=phpcs.xml.dist --report-summary --report-source",
         "test": "phpunit",
-        "makepot": "wp i18n make-pot . --exclude=\"node_modules,vendor,vendor_prefixed\" --headers='{\"Last-Translator\":\"info@omniformwp.com\",\"Language-Team\":\"info@omniformwp.com\",\"Report-Msgid-Bugs-To\":\"https://omniformwp.com/contact\"}'",
+        "makepot": "wp i18n make-pot . --exclude=\"node_modules,vendor,vendor_prefixed\" --headers='{\"Last-Translator\":\"info@omniform.io\",\"Language-Team\":\"info@omniform.io\",\"Report-Msgid-Bugs-To\":\"https://omniform.io/contact\"}'",
         "build-release": [
             "rm -r ./vendor",
             "@composer dump-autoload",
