@@ -3,13 +3,13 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OmniForm 1.0.0\n"
-"Report-Msgid-Bugs-To: https://omniformwp.com/contact\n"
-"Last-Translator: info@omniformwp.com\n"
-"Language-Team: info@omniformwp.com\n"
+"Report-Msgid-Bugs-To: https://omniform.io/contact\n"
+"Last-Translator: info@omniform.io\n"
+"Language-Team: info@omniform.io\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-03-09T06:50:56+00:00\n"
+"POT-Creation-Date: 2023-04-24T02:14:53+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: omniform\n"
@@ -17,18 +17,18 @@ msgstr ""
 #. Plugin Name of the plugin
 #. translators: accessibility text for the footer landmark region.
 #: build/block-library/form/index.js:1
-#: build/plugin/index.js:15
+#: build/plugin/index.js:13
 #: packages/block-library/form/edit/index.js:87
 #: packages/plugin/components/app/index.js:26
 msgid "OmniForm"
 msgstr ""
 
 #. Plugin URI of the plugin
-msgid "https://omniformwp.com"
+msgid "https://omniform.io"
 msgstr ""
 
 #. Description of the plugin
-msgid "OmniForm Plugin Description."
+msgid "OmniForm is a powerful WordPress plugin that allows you to create and manage forms within your WordPress site."
 msgstr ""
 
 #. Author of the plugin
@@ -39,182 +39,229 @@ msgstr ""
 msgid "https://jrtashjian.com"
 msgstr ""
 
-#: includes/BlockLibrary/BlockLibraryServiceProvider.php:113
-#: includes/BlockLibrary/BlockLibraryServiceProvider.php:367
+#: includes/BlockLibrary/BlockLibraryServiceProvider.php:167
+msgid "Quick Start"
+msgstr ""
+
+#: includes/BlockLibrary/BlockLibraryServiceProvider.php:168
+msgid "Common form templates to get you started quickly."
+msgstr ""
+
+#: includes/BlockLibrary/BlockLibraryServiceProvider.php:199
 msgid "Forms"
 msgstr ""
 
-#: includes/BlockLibrary/BlockLibraryServiceProvider.php:127
-msgid "Contact"
-msgstr ""
-
-#: includes/BlockLibrary/BlockLibraryServiceProvider.php:150
-msgid "Newsletter Signup"
-msgstr ""
-
-#: includes/BlockLibrary/BlockLibraryServiceProvider.php:183
-msgid "RSVP"
-msgstr ""
-
-#: includes/BlockLibrary/BlockLibraryServiceProvider.php:220
-msgid "Membership Registration"
-msgstr ""
-
-#: includes/BlockLibrary/BlockLibraryServiceProvider.php:269
-msgid "Appointment"
-msgstr ""
-
-#: includes/BlockLibrary/BlockLibraryServiceProvider.php:312
-msgid "Feedback"
-msgstr ""
-
-#: includes/BlockLibrary/BlockLibraryServiceProvider.php:373
+#: includes/BlockLibrary/BlockLibraryServiceProvider.php:205
 msgid "Simple Controls"
 msgstr ""
 
-#: includes/BlockLibrary/BlockLibraryServiceProvider.php:379
+#: includes/BlockLibrary/BlockLibraryServiceProvider.php:211
 msgid "Grouped Controls"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:61
-#: includes/Plugin/PluginServiceProvider.php:140
+#: includes/BlockLibrary/BlockPatterns/appointment.php:9
+msgid "Appointment"
+msgstr ""
+
+#: includes/BlockLibrary/BlockPatterns/contact.php:9
+msgid "Contact"
+msgstr ""
+
+#: includes/BlockLibrary/BlockPatterns/feedback.php:9
+msgid "Feedback"
+msgstr ""
+
+#: includes/BlockLibrary/BlockPatterns/newsletter.php:9
+msgid "Newsletter"
+msgstr ""
+
+#: includes/BlockLibrary/BlockPatterns/registration.php:9
+msgid "Membership Registration"
+msgstr ""
+
+#: includes/BlockLibrary/BlockPatterns/rsvp.php:9
+msgid "RSVP"
+msgstr ""
+
+#: includes/BlockLibrary/Blocks/Captcha.php:74
+#: build/block-library/captcha/index.js:1
+#: build/block-library/captcha/index.js:3
+#: packages/block-library/captcha/edit.js:120
+#: packages/block-library/captcha/variations.js:30
+msgid "hCaptcha"
+msgstr ""
+
+#: includes/BlockLibrary/Blocks/Captcha.php:75
+#: includes/BlockLibrary/Blocks/Captcha.php:76
+msgid "reCAPTCHA"
+msgstr ""
+
+#. translators: %d: Form ID.
+#: includes/BlockLibrary/Blocks/Form.php:41
+#: includes/Plugin/PluginServiceProvider.php:224
+msgid "Form ID &#8220;%d&#8221; has been removed."
+msgstr ""
+
+#. translators: %s: Form title.
+#: includes/BlockLibrary/Blocks/Form.php:52
+msgid "You must publish the \"%s\" form for visitors to see it."
+msgstr ""
+
+#: includes/BlockLibrary/Blocks/Form.php:54
+msgid "Edit the form"
+msgstr ""
+
+#: includes/Plugin/PluginServiceProvider.php:107
+#: includes/Plugin/PluginServiceProvider.php:186
 msgid "Responses"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:62
+#: includes/Plugin/PluginServiceProvider.php:108
 msgid "Impressions"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:63
+#: includes/Plugin/PluginServiceProvider.php:109
 msgid "Conversion Rate"
 msgstr ""
 
 #. translators: %s: Form title.
-#: includes/Plugin/PluginServiceProvider.php:139
-#: includes/Plugin/PluginServiceProvider.php:179
+#: includes/Plugin/PluginServiceProvider.php:185
+#: includes/Plugin/PluginServiceProvider.php:236
 msgid "View &#8220;%s&#8221; responses"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:157
+#: includes/Plugin/PluginServiceProvider.php:202
 msgid "Form"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:158
+#: includes/Plugin/PluginServiceProvider.php:203
 msgid "Form Data"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:353
+#: includes/Plugin/PluginServiceProvider.php:413
 msgctxt "post type general name"
 msgid "OmniForm"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:354
+#: includes/Plugin/PluginServiceProvider.php:414
 msgctxt "post type singular name"
 msgid "OmniForm"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:355
+#: includes/Plugin/PluginServiceProvider.php:415
 msgctxt "Form"
 msgid "Create a Form"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:356
-#: includes/Plugin/PluginServiceProvider.php:357
+#: includes/Plugin/PluginServiceProvider.php:416
+#: includes/Plugin/PluginServiceProvider.php:417
 msgid "Create a Form"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:358
+#: includes/Plugin/PluginServiceProvider.php:418
 msgid "Edit Form"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:359
+#: includes/Plugin/PluginServiceProvider.php:419
 msgid "View Form"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:360
+#: includes/Plugin/PluginServiceProvider.php:420
 msgid "All Forms"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:361
+#: includes/Plugin/PluginServiceProvider.php:421
 msgid "Search Forms"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:362
+#: includes/Plugin/PluginServiceProvider.php:422
 msgid "No forms found."
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:363
+#: includes/Plugin/PluginServiceProvider.php:423
 msgid "No forms found in Trash."
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:364
+#: includes/Plugin/PluginServiceProvider.php:424
 msgid "Filter form list"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:365
+#: includes/Plugin/PluginServiceProvider.php:425
 msgid "Form list navigation"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:366
+#: includes/Plugin/PluginServiceProvider.php:426
 msgid "Form list"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:367
+#: includes/Plugin/PluginServiceProvider.php:427
 msgid "Form published."
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:368
+#: includes/Plugin/PluginServiceProvider.php:428
 msgid "Form published privately."
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:369
+#: includes/Plugin/PluginServiceProvider.php:429
 msgid "Form reverted to draft."
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:370
+#: includes/Plugin/PluginServiceProvider.php:430
 msgid "Form scheduled."
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:371
+#: includes/Plugin/PluginServiceProvider.php:431
 msgid "Form updated."
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:422
+#: includes/Plugin/PluginServiceProvider.php:481
 msgctxt "post type general name"
 msgid "Responses"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:423
+#: includes/Plugin/PluginServiceProvider.php:482
 msgctxt "post type singular name"
 msgid "Response"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:424
+#: includes/Plugin/PluginServiceProvider.php:483
+#: build/block-library/form/index.js:1
+#: packages/block-library/form/edit/inspector-controls.js:32
 msgid "View responses"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:425
+#: includes/Plugin/PluginServiceProvider.php:484
 msgid "Edit response"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:426
+#: includes/Plugin/PluginServiceProvider.php:485
 msgid "Filter responses list"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:427
+#: includes/Plugin/PluginServiceProvider.php:486
 msgid "No responses found in Trash."
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:428
+#: includes/Plugin/PluginServiceProvider.php:487
 msgid "No responses found."
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:429
+#: includes/Plugin/PluginServiceProvider.php:488
 msgid "Search responses"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:430
+#: includes/Plugin/PluginServiceProvider.php:489
 msgid "View response"
+msgstr ""
+
+#. translators: %s: The name of the captcha service.
+#: includes/Plugin/PluginServiceProvider.php:538
+msgid "The site key for %s."
+msgstr ""
+
+#. translators: %s: The name of the captcha service.
+#: includes/Plugin/PluginServiceProvider.php:551
+msgid "The secret key for %s."
 msgstr ""
 
 #: includes/Plugin/RestApi/ResponsesController.php:57
@@ -222,19 +269,14 @@ msgid "The requested form was not found."
 msgstr ""
 
 #: build/block-library/button/index.js:1
-#: packages/block-library/button/variations.js:10
-msgid "Button"
+#: packages/block-library/button/variations.js:9
+#: packages/block-library/button/variations.js:13
+msgid "Submit"
 msgstr ""
 
 #: build/block-library/button/index.js:1
 #: packages/block-library/button/variations.js:19
 #: packages/block-library/button/variations.js:23
-msgid "Submit"
-msgstr ""
-
-#: build/block-library/button/index.js:1
-#: packages/block-library/button/variations.js:28
-#: packages/block-library/button/variations.js:32
 msgid "Reset"
 msgstr ""
 
@@ -248,326 +290,474 @@ msgstr ""
 msgid "Add text…"
 msgstr ""
 
-#: build/block-library/field-input/index.js:1
-#: build/block-library/field-select/index.js:1
-#: build/block-library/field-textarea/index.js:1
-#: packages/block-library/shared/form-label.js:34
-msgid "Enter a label for the field…"
+#: build/block-library/captcha/index.js:1
+#: build/block-library/captcha/index.js:3
+#: packages/block-library/captcha/edit.js:123
+#: packages/block-library/captcha/variations.js:15
+msgid "reCAPTCHA v2"
 msgstr ""
 
-#: build/block-library/field-input/index.js:1
-#: build/block-library/field-select/index.js:1
-#: build/block-library/field-textarea/index.js:1
-#: packages/block-library/shared/form-label.js:72
-msgid "Enter a required field label…"
+#: build/block-library/captcha/index.js:1
+#: packages/block-library/captcha/variations.js:16
+#: packages/block-library/captcha/variations.js:31
+msgid "Verify requests with a challenge"
 msgstr ""
 
-#: build/block-library/field-input/index.js:1
-#: build/block-library/field-select/index.js:1
-#: build/block-library/field-textarea/index.js:1
-#: packages/block-library/shared/inspector-controls.js:30
-msgid "Field Settings"
+#: build/block-library/captcha/index.js:1
+#: build/block-library/captcha/index.js:3
+#: packages/block-library/captcha/edit.js:126
+#: packages/block-library/captcha/variations.js:23
+msgid "reCAPTCHA v3"
 msgstr ""
 
-#: build/block-library/field-input/index.js:1
-#: build/block-library/field-select/index.js:1
-#: build/block-library/field-textarea/index.js:1
-#: packages/block-library/shared/inspector-controls.js:34
-msgid "Required field?"
+#: build/block-library/captcha/index.js:1
+#: packages/block-library/captcha/variations.js:24
+msgid "Verify requests with a score"
 msgstr ""
 
-#: build/block-library/field-input/index.js:1
-#: build/block-library/field-select/index.js:1
-#: build/block-library/field-textarea/index.js:1
-#: packages/block-library/shared/inspector-controls.js:41
-msgid "Optional"
+#: build/block-library/captcha/index.js:1
+#: packages/block-library/captcha/edit.js:55
+msgid "Failed to load script:"
 msgstr ""
 
-#: build/block-library/field-input/index.js:1
-#: build/block-library/field-select/index.js:1
-#: build/block-library/field-textarea/index.js:1
-#: packages/block-library/shared/inspector-controls.js:45
-msgid "Required"
+#. translators: 1: captcha service name
+#: build/block-library/captcha/index.js:3
+#: packages/block-library/captcha/edit.js:116
+msgid "To start using %s, you need to sign up for an API key pair for your site. The key pair consists of a site key and secret key."
 msgstr ""
 
-#: build/block-library/field-input/index.js:1
-#: build/block-library/field-select/index.js:1
-#: build/block-library/field-textarea/index.js:1
-#: packages/block-library/shared/inspector-controls.js:52
-msgid "Hide the label?"
+#: build/block-library/captcha/index.js:3
+#: packages/block-library/captcha/edit.js:141
+msgid "Generate keys"
 msgstr ""
 
-#: build/block-library/field-input/index.js:1
-#: build/block-library/field-select/index.js:1
-#: build/block-library/field-textarea/index.js:1
-#: packages/block-library/shared/inspector-controls.js:59
-msgid "Shown"
+#: build/block-library/captcha/index.js:3
+#: packages/block-library/captcha/edit.js:168
+msgid "Settings"
 msgstr ""
 
-#: build/block-library/field-input/index.js:1
-#: build/block-library/field-select/index.js:1
-#: build/block-library/field-textarea/index.js:1
-#: packages/block-library/field-input/variations.js:115
-#: packages/block-library/shared/inspector-controls.js:63
-msgid "Hidden"
+#: build/block-library/captcha/index.js:3
+#: packages/block-library/captcha/edit.js:173
+msgid "Site Key"
 msgstr ""
 
-#: build/block-library/field-input/index.js:1
-#: packages/block-library/field-input/variations.js:23
+#: build/block-library/captcha/index.js:3
+#: packages/block-library/captcha/edit.js:179
+msgid "Secret Key"
+msgstr ""
+
+#: build/block-library/captcha/index.js:3
+#: packages/block-library/captcha/edit.js:185
+msgid "Theme"
+msgstr ""
+
+#: build/block-library/captcha/index.js:3
+#: packages/block-library/captcha/edit.js:190
+msgid "Light"
+msgstr ""
+
+#: build/block-library/captcha/index.js:3
+#: packages/block-library/captcha/edit.js:191
+msgid "Dark"
+msgstr ""
+
+#: build/block-library/captcha/index.js:3
+#: packages/block-library/captcha/edit.js:196
+msgid "Size"
+msgstr ""
+
+#: build/block-library/captcha/index.js:3
+#: packages/block-library/captcha/edit.js:201
+msgid "Normal"
+msgstr ""
+
+#: build/block-library/captcha/index.js:3
+#: packages/block-library/captcha/edit.js:202
+msgid "Compact"
+msgstr ""
+
+#: build/block-library/field/index.js:1
+#: build/block-library/label/index.js:1
+#: packages/block-library/field/index.js:28
+#: packages/block-library/field/variations.js:28
+#: packages/block-library/field/variations.js:52
+#: packages/block-library/label/index.js:23
+msgid "Field Label"
+msgstr ""
+
+#: build/block-library/field/index.js:1
+#: build/block-library/input/index.js:1
+#: packages/block-library/field/variations.js:72
+#: packages/block-library/input/variations.js:22
+msgid "Text"
+msgstr ""
+
+#: build/block-library/field/index.js:1
+#: build/block-library/input/index.js:1
+#: packages/block-library/field/variations.js:73
+#: packages/block-library/input/variations.js:23
+msgid "A field for brief responses."
+msgstr ""
+
+#: build/block-library/field/index.js:1
+#: packages/block-library/field/variations.js:74
 msgid "Short Text"
 msgstr ""
 
-#: build/block-library/field-input/index.js:1
-#: packages/block-library/field-input/variations.js:31
+#: build/block-library/field/index.js:1
+#: build/block-library/input/index.js:1
+#: packages/block-library/field/variations.js:81
+#: packages/block-library/input/variations.js:30
 msgid "Email"
 msgstr ""
 
-#: build/block-library/field-input/index.js:1
-#: packages/block-library/field-input/variations.js:38
+#: build/block-library/field/index.js:1
+#: build/block-library/input/index.js:1
+#: packages/block-library/field/variations.js:82
+#: packages/block-library/input/variations.js:31
+msgid "A field for collecting an email address."
+msgstr ""
+
+#: build/block-library/field/index.js:1
+#: packages/block-library/field/variations.js:83
+msgid "Email Address"
+msgstr ""
+
+#: build/block-library/field/index.js:1
+#: build/block-library/input/index.js:1
+#: packages/block-library/field/variations.js:89
+#: packages/block-library/field/variations.js:91
+#: packages/block-library/input/variations.js:37
 msgid "URL"
 msgstr ""
 
-#: build/block-library/field-input/index.js:1
-#: packages/block-library/field-input/variations.js:45
+#: build/block-library/field/index.js:1
+#: build/block-library/input/index.js:1
+#: packages/block-library/field/variations.js:90
+#: packages/block-library/input/variations.js:38
+msgid "A field for collecting a website address or URL."
+msgstr ""
+
+#: build/block-library/field/index.js:1
+#: build/block-library/input/index.js:1
+#: packages/block-library/field/variations.js:97
+#: packages/block-library/field/variations.js:99
+#: packages/block-library/input/variations.js:44
 msgid "Number"
 msgstr ""
 
-#: build/block-library/field-input/index.js:1
-#: packages/block-library/field-input/variations.js:52
+#: build/block-library/field/index.js:1
+#: build/block-library/input/index.js:1
+#: packages/block-library/field/variations.js:98
+#: packages/block-library/input/variations.js:45
+msgid "A field for collecting a numerical value."
+msgstr ""
+
+#: build/block-library/field/index.js:1
+#: build/block-library/input/index.js:1
+#: packages/block-library/field/variations.js:105
+#: packages/block-library/field/variations.js:110
+#: packages/block-library/input/variations.js:51
 msgid "Checkbox"
 msgstr ""
 
-#: build/block-library/field-input/index.js:1
-#: packages/block-library/field-input/variations.js:59
+#: build/block-library/field/index.js:1
+#: build/block-library/input/index.js:1
+#: packages/block-library/field/variations.js:106
+#: packages/block-library/input/variations.js:52
+msgid "A field that allows for multiple options and choices."
+msgstr ""
+
+#: build/block-library/field/index.js:1
+#: build/block-library/input/index.js:1
+#: packages/block-library/field/variations.js:116
+#: packages/block-library/field/variations.js:121
+#: packages/block-library/input/variations.js:58
 msgid "Radio"
 msgstr ""
 
-#: build/block-library/field-input/index.js:1
-#: packages/block-library/field-input/variations.js:66
+#: build/block-library/field/index.js:1
+#: build/block-library/input/index.js:1
+#: packages/block-library/field/variations.js:117
+#: packages/block-library/input/variations.js:59
+msgid "A field that can be grouped, from which a single choice can be made."
+msgstr ""
+
+#: build/block-library/field/index.js:1
+#: build/block-library/input/index.js:1
+#: packages/block-library/field/variations.js:127
+#: packages/block-library/field/variations.js:129
+#: packages/block-library/field/variations.js:137
+#: packages/block-library/input/variations.js:65
 msgid "Date"
 msgstr ""
 
-#: build/block-library/field-input/index.js:1
-#: packages/block-library/field-input/variations.js:73
+#: build/block-library/field/index.js:1
+#: build/block-library/input/index.js:1
+#: packages/block-library/field/variations.js:128
+#: packages/block-library/input/variations.js:66
+msgid "A field for collecting a formatted date."
+msgstr ""
+
+#: build/block-library/field/index.js:1
+#: build/block-library/input/index.js:1
+#: packages/block-library/field/variations.js:135
+#: packages/block-library/input/variations.js:72
 msgid "Datetime"
 msgstr ""
 
-#: build/block-library/field-input/index.js:1
-#: packages/block-library/field-input/variations.js:80
+#: build/block-library/field/index.js:1
+#: build/block-library/input/index.js:1
+#: packages/block-library/field/variations.js:136
+#: packages/block-library/input/variations.js:73
+msgid "A field for collecting a localized date and time."
+msgstr ""
+
+#: build/block-library/field/index.js:1
+#: build/block-library/input/index.js:1
+#: packages/block-library/field/variations.js:143
+#: packages/block-library/field/variations.js:145
+#: packages/block-library/input/variations.js:79
 msgid "Month"
 msgstr ""
 
-#: build/block-library/field-input/index.js:1
-#: packages/block-library/field-input/variations.js:87
+#: build/block-library/field/index.js:1
+#: build/block-library/input/index.js:1
+#: packages/block-library/field/variations.js:144
+#: packages/block-library/input/variations.js:80
+msgid "A field for collecting a month formatted date."
+msgstr ""
+
+#: build/block-library/field/index.js:1
+#: build/block-library/input/index.js:1
+#: packages/block-library/field/variations.js:151
+#: packages/block-library/input/variations.js:86
 msgid "Phone"
 msgstr ""
 
-#: build/block-library/field-input/index.js:1
-#: packages/block-library/field-input/variations.js:94
+#: build/block-library/field/index.js:1
+#: build/block-library/input/index.js:1
+#: packages/block-library/field/variations.js:152
+#: packages/block-library/input/variations.js:87
+msgid "A field for collecting a telephone number."
+msgstr ""
+
+#: build/block-library/field/index.js:1
+#: packages/block-library/field/variations.js:153
+msgid "Phone Number"
+msgstr ""
+
+#: build/block-library/field/index.js:1
+#: build/block-library/input/index.js:1
+#: packages/block-library/field/variations.js:159
+#: packages/block-library/field/variations.js:161
+#: packages/block-library/input/variations.js:93
 msgid "Time"
 msgstr ""
 
-#: build/block-library/field-input/index.js:1
-#: packages/block-library/field-input/variations.js:101
+#: build/block-library/field/index.js:1
+#: build/block-library/input/index.js:1
+#: packages/block-library/field/variations.js:160
+#: packages/block-library/input/variations.js:94
+msgid "A field for collecting a formatted time."
+msgstr ""
+
+#: build/block-library/field/index.js:1
+#: build/block-library/input/index.js:1
+#: packages/block-library/field/variations.js:167
+#: packages/block-library/field/variations.js:169
+#: packages/block-library/input/variations.js:100
 msgid "Week"
 msgstr ""
 
-#: build/block-library/field-input/index.js:1
-#: packages/block-library/field-input/variations.js:108
-msgid "Current User ID"
+#: build/block-library/field/index.js:1
+#: build/block-library/input/index.js:1
+#: packages/block-library/field/variations.js:168
+#: packages/block-library/field/variations.js:176
+#: packages/block-library/input/variations.js:101
+msgid "A field for collecting a week formatted date."
 msgstr ""
 
-#: build/block-library/field-input/index.js:1
-#: packages/block-library/field-input/variations.js:109
-msgid "A hidden field with the current user's ID"
+#: build/block-library/field/index.js:1
+#: packages/block-library/field/variations.js:175
+msgid "Textarea"
 msgstr ""
 
-#: build/block-library/field-input/index.js:1
-#: packages/block-library/field-input/variations.js:116
-msgid "A field that is not displayed."
+#: build/block-library/field/index.js:1
+#: packages/block-library/field/variations.js:179
+msgid "Long Text"
 msgstr ""
 
-#: build/block-library/field-input/index.js:1
-#: packages/block-library/field-input/edit.js:48
-msgid "Enter a value…"
-msgstr ""
-
-#: build/block-library/field-input/index.js:1
-#: build/block-library/field-select/index.js:1
-#: build/block-library/field-textarea/index.js:1
-#: packages/block-library/field-input/edit.js:49
-#: packages/block-library/field-select/edit.js:104
-#: packages/block-library/field-textarea/edit.js:69
-msgid "Enter a placeholder…"
-msgstr ""
-
-#: build/block-library/field-input/index.js:1
-#: build/block-library/field-textarea/index.js:1
-#: packages/block-library/field-input/edit.js:76
-#: packages/block-library/field-textarea/edit.js:65
-msgid "Placeholder text for text input."
-msgstr ""
-
-#: build/block-library/field-input/index.js:1
-#: build/block-library/field-select/index.js:1
-#: build/block-library/field-textarea/index.js:1
-#: packages/block-library/field-input/edit.js:120
-#: packages/block-library/field-select/edit.js:135
-#: packages/block-library/field-textarea/edit.js:84
-msgid "Required field"
-msgstr ""
-
-#: build/block-library/field-input/index.js:1
-#: build/block-library/field-select/index.js:1
-#: build/block-library/field-textarea/index.js:1
-#: build/block-library/select-group/index.js:1
-#: build/block-library/select-option/index.js:1
-#: packages/block-library/field-input/index.js:27
-#: packages/block-library/field-select/index.js:28
-#: packages/block-library/field-textarea/index.js:25
-#: packages/block-library/select-group/index.js:27
-#: packages/block-library/select-option/index.js:26
-msgid "Example input"
-msgstr ""
-
-#: build/block-library/field-select/index.js:1
-#: packages/block-library/field-select/variations.js:10
+#: build/block-library/field/index.js:1
+#: build/block-library/select/index.js:1
+#: packages/block-library/field/variations.js:200
+#: packages/block-library/select/variations.js:10
 msgid "Select"
 msgstr ""
 
-#: build/block-library/field-select/index.js:1
-#: packages/block-library/field-select/variations.js:17
+#: build/block-library/field/index.js:1
+#: build/block-library/select/index.js:1
+#: packages/block-library/field/variations.js:201
+#: packages/block-library/select/variations.js:11
+msgid "A field with multiple options where a single choice can be made."
+msgstr ""
+
+#: build/block-library/field/index.js:1
+#: packages/block-library/field/variations.js:204
+msgid "Single Select"
+msgstr ""
+
+#: build/block-library/field/index.js:1
+#: build/block-library/select/index.js:1
+#: packages/block-library/field/variations.js:219
+#: packages/block-library/select/variations.js:17
 msgid "Select Multiple"
 msgstr ""
 
-#: build/block-library/field-select/index.js:1
-#: build/block-library/select-group/index.js:1
-#: build/block-library/select-option/index.js:1
-#: packages/block-library/field-select/edit.js:100
-#: packages/block-library/select-group/edit.js:94
-#: packages/block-library/select-option/edit.js:32
-msgid "Help text"
+#: build/block-library/field/index.js:1
+#: build/block-library/select/index.js:1
+#: packages/block-library/field/variations.js:220
+#: packages/block-library/select/variations.js:18
+msgid "A field with multiple options where multiple choices can be made."
 msgstr ""
 
-#: build/block-library/fieldset/index.js:1
-#: packages/block-library/fieldset/variations.js:9
-#: packages/block-library/fieldset/variations.js:12
-msgid "Multiple Choice"
+#: build/block-library/field/index.js:1
+#: packages/block-library/field/variations.js:223
+msgid "Multi-Select"
 msgstr ""
 
+#: build/block-library/field/index.js:1
 #: build/block-library/fieldset/index.js:1
-#: packages/block-library/fieldset/index.js:40
+#: packages/block-library/field/variations.js:231
+#: packages/block-library/fieldset/index.js:33
 #: packages/block-library/fieldset/variations.js:19
 msgid "Option One"
 msgstr ""
 
+#: build/block-library/field/index.js:1
 #: build/block-library/fieldset/index.js:1
-#: packages/block-library/fieldset/index.js:47
+#: packages/block-library/field/variations.js:232
+#: packages/block-library/fieldset/index.js:44
 #: packages/block-library/fieldset/variations.js:27
 msgid "Option Two"
 msgstr ""
 
+#: build/block-library/field/index.js:1
 #: build/block-library/fieldset/index.js:1
-#: packages/block-library/fieldset/index.js:54
+#: packages/block-library/field/variations.js:233
+#: packages/block-library/fieldset/index.js:55
 #: packages/block-library/fieldset/variations.js:35
 msgid "Option Three"
 msgstr ""
 
+#: build/block-library/field/index.js:1
+#: packages/block-library/field/edit.js:118
+#: packages/block-library/shared/inspector-controls.js:30
+msgid "Field Settings"
+msgstr ""
+
+#: build/block-library/field/index.js:1
 #: build/block-library/fieldset/index.js:1
-#: packages/block-library/fieldset/variations.js:44
-#: packages/block-library/fieldset/variations.js:47
-msgid "Full Name"
+#: packages/block-library/field/edit.js:121
+#: packages/block-library/fieldset/edit.js:92
+#: packages/block-library/shared/inspector-controls.js:34
+msgid "Required for submission"
+msgstr ""
+
+#: build/block-library/field/index.js:1
+#: packages/block-library/field/edit.js:126
+#: packages/block-library/shared/inspector-controls.js:39
+msgid "A value is required or must be check for the form to be submittable."
+msgstr ""
+
+#: build/block-library/field/index.js:1
+#: packages/block-library/field/edit.js:131
+#: packages/block-library/shared/inspector-controls.js:45
+msgid "Hidden label"
+msgstr ""
+
+#: build/block-library/field/index.js:1
+#: packages/block-library/field/edit.js:134
+msgid "Hiding the field's label"
+msgstr ""
+
+#: build/block-library/field/index.js:1
+#: packages/block-library/field/edit.js:140
+msgid "Label"
+msgstr ""
+
+#: build/block-library/field/index.js:1
+#: packages/block-library/field/edit.js:143
+msgid "Label for the form control."
+msgstr ""
+
+#: build/block-library/field/index.js:1
+#: build/block-library/fieldset/index.js:1
+#: build/block-library/form/index.js:1
+#: packages/block-library/field/edit.js:148
+#: packages/block-library/fieldset/edit.js:102
+#: packages/block-library/form/edit/create-form-modal/index.js:81
+#: packages/block-library/form/edit/inspector-controls.js:37
+#: packages/block-library/shared/inspector-controls.js:55
+msgid "Name"
+msgstr ""
+
+#: build/block-library/field/index.js:1
+#: packages/block-library/field/edit.js:156
+msgid "Name of the form control. Defaults to the label."
 msgstr ""
 
 #: build/block-library/fieldset/index.js:1
-#: packages/block-library/fieldset/variations.js:53
-msgid "Title"
-msgstr ""
-
-#: build/block-library/fieldset/index.js:1
-#: packages/block-library/fieldset/variations.js:57
-msgid "Mr."
-msgstr ""
-
-#: build/block-library/fieldset/index.js:1
-#: packages/block-library/fieldset/variations.js:58
-msgid "Mrs."
-msgstr ""
-
-#: build/block-library/fieldset/index.js:1
-#: packages/block-library/fieldset/variations.js:59
-msgid "Miss"
-msgstr ""
-
-#: build/block-library/fieldset/index.js:1
-#: packages/block-library/fieldset/variations.js:60
-msgid "Ms."
-msgstr ""
-
-#: build/block-library/fieldset/index.js:1
-#: packages/block-library/fieldset/variations.js:61
-msgid "Dr."
-msgstr ""
-
-#: build/block-library/fieldset/index.js:1
-#: packages/block-library/fieldset/variations.js:62
-msgid "Prof."
-msgstr ""
-
-#: build/block-library/fieldset/index.js:1
-#: packages/block-library/fieldset/variations.js:63
-msgid "Rev."
-msgstr ""
-
-#: build/block-library/fieldset/index.js:1
-#: packages/block-library/fieldset/variations.js:64
-msgid "Hon."
-msgstr ""
-
-#: build/block-library/fieldset/index.js:1
-#: packages/block-library/fieldset/variations.js:71
-msgid "First Name"
-msgstr ""
-
-#: build/block-library/fieldset/index.js:1
-#: packages/block-library/fieldset/variations.js:79
-msgid "Last Name"
-msgstr ""
-
-#: build/block-library/fieldset/index.js:1
-#: packages/block-library/fieldset/edit.js:37
+#: packages/block-library/fieldset/edit.js:61
 msgid "Legend text"
 msgstr ""
 
 #: build/block-library/fieldset/index.js:1
-#: packages/block-library/fieldset/edit.js:38
+#: packages/block-library/fieldset/edit.js:62
 msgid "Enter a title to the field…"
 msgstr ""
 
 #: build/block-library/fieldset/index.js:1
-#: packages/block-library/fieldset/index.js:34
+#: build/block-library/label/index.js:1
+#: packages/block-library/fieldset/edit.js:77
+#: packages/block-library/label/edit.js:227
+#: packages/block-library/shared/form-label.js:68
+msgid "Enter a required field label…"
+msgstr ""
+
+#: build/block-library/fieldset/index.js:1
+#: packages/block-library/fieldset/edit.js:89
+msgid "Fieldset Settings"
+msgstr ""
+
+#: build/block-library/fieldset/index.js:1
+#: packages/block-library/fieldset/edit.js:98
+msgid "Set default 'required' state for all fields in the group."
+msgstr ""
+
+#: build/block-library/fieldset/index.js:1
+#: packages/block-library/fieldset/edit.js:110
+msgid "Name of the fieldset. Defaults to the fieldsets label."
+msgstr ""
+
+#: build/block-library/fieldset/index.js:1
+#: packages/block-library/fieldset/index.js:28
 msgid "Field Group"
 msgstr ""
 
 #: build/block-library/form/index.js:1
-#: packages/block-library/form/edit/inspector-controls.js:23
+#: packages/block-library/form/edit/inspector-controls.js:35
 msgid "Form Settings"
 msgstr ""
 
 #: build/block-library/form/index.js:1
-#: packages/block-library/form/edit/create-form-modal/index.js:81
-#: packages/block-library/form/edit/inspector-controls.js:25
-msgid "Name"
-msgstr ""
-
-#: build/block-library/form/index.js:1
-#: packages/block-library/form/edit/inspector-controls.js:28
+#: packages/block-library/form/edit/inspector-controls.js:40
 msgid "This name will not be visible to viewers and is only for identifying the form."
 msgstr ""
 
 #: build/block-library/form/index.js:1
-#: packages/block-library/form/edit/inspector-controls.js:37
-msgid "View Submitted Responses"
+#: packages/block-library/form/edit/inspector-controls.js:49
+msgid "View in Form Editor"
 msgstr ""
 
 #: build/block-library/form/index.js:1
@@ -634,7 +824,7 @@ msgid "Create"
 msgstr ""
 
 #: build/block-library/form/index.js:1
-#: packages/block-library/form/utils/hooks.js:56
+#: packages/block-library/form/utils/hooks.js:53
 msgid "Untitled Form"
 msgstr ""
 
@@ -674,12 +864,7 @@ msgid "Title is not defined"
 msgstr ""
 
 #: build/block-library/form/index.js:1
-#: packages/block-library/form/edit/selection-modal.js:47
-msgid "Existing forms"
-msgstr ""
-
-#: build/block-library/form/index.js:1
-#: packages/block-library/form/edit/selection-modal.js:61
+#: packages/block-library/form/edit/selection-modal.js:58
 msgid "No results found."
 msgstr ""
 
@@ -703,6 +888,37 @@ msgstr ""
 msgid "Choose a Form"
 msgstr ""
 
+#: build/block-library/input/index.js:1
+#: build/block-library/select/index.js:1
+#: build/block-library/textarea/index.js:1
+#: packages/block-library/input/edit.js:124
+#: packages/block-library/select/edit.js:80
+#: packages/block-library/textarea/edit.js:21
+msgid "Placeholder text for text input."
+msgstr ""
+
+#: build/block-library/input/index.js:1
+#: build/block-library/select/index.js:1
+#: build/block-library/textarea/index.js:1
+#: packages/block-library/input/edit.js:126
+#: packages/block-library/select/edit.js:84
+#: packages/block-library/textarea/edit.js:25
+msgid "Enter a placeholder…"
+msgstr ""
+
+#: build/block-library/label/index.js:1
+#: packages/block-library/label/edit.js:212
+#: packages/block-library/shared/form-label.js:30
+msgid "Enter a label for the field…"
+msgstr ""
+
+#: build/block-library/select-group/index.js:1
+#: build/block-library/select-option/index.js:1
+#: packages/block-library/select-group/edit.js:94
+#: packages/block-library/select-option/edit.js:32
+msgid "Help text"
+msgstr ""
+
 #: build/block-library/select-group/index.js:1
 #: build/block-library/select-option/index.js:1
 #: packages/block-library/select-group/edit.js:95
@@ -710,9 +926,79 @@ msgstr ""
 msgid "Write the option text…"
 msgstr ""
 
-#: build/plugin/index.js:15
+#: build/plugin/index.js:13
 #: packages/plugin/components/app/index.js:29
 msgid "Initial Settings"
+msgstr ""
+
+#: packages/block-library/fieldset/variations.js:9
+#: packages/block-library/fieldset/variations.js:12
+msgid "Multiple Choice"
+msgstr ""
+
+#: packages/block-library/fieldset/variations.js:44
+#: packages/block-library/fieldset/variations.js:47
+msgid "Full Name"
+msgstr ""
+
+#: packages/block-library/fieldset/variations.js:53
+msgid "Title"
+msgstr ""
+
+#: packages/block-library/fieldset/variations.js:57
+msgid "Mr."
+msgstr ""
+
+#: packages/block-library/fieldset/variations.js:58
+msgid "Mrs."
+msgstr ""
+
+#: packages/block-library/fieldset/variations.js:59
+msgid "Miss"
+msgstr ""
+
+#: packages/block-library/fieldset/variations.js:60
+msgid "Ms."
+msgstr ""
+
+#: packages/block-library/fieldset/variations.js:61
+msgid "Dr."
+msgstr ""
+
+#: packages/block-library/fieldset/variations.js:62
+msgid "Prof."
+msgstr ""
+
+#: packages/block-library/fieldset/variations.js:63
+msgid "Rev."
+msgstr ""
+
+#: packages/block-library/fieldset/variations.js:64
+msgid "Hon."
+msgstr ""
+
+#: packages/block-library/fieldset/variations.js:71
+msgid "First Name"
+msgstr ""
+
+#: packages/block-library/fieldset/variations.js:79
+msgid "Last Name"
+msgstr ""
+
+#: packages/block-library/shared/inspector-controls.js:50
+msgid "Make the label hidden from view but still accessible."
+msgstr ""
+
+#: packages/block-library/shared/inspector-controls.js:63
+msgid "Name of the form control. Defaults to the input's label."
+msgstr ""
+
+#: packages/block-library/shared/inspector-controls.js:67
+msgid "Value"
+msgstr ""
+
+#: packages/block-library/shared/inspector-controls.js:72
+msgid "The initial value of the control."
 msgstr ""
 
 #: build/block-library/button/block.json
@@ -739,46 +1025,34 @@ msgctxt "block style label"
 msgid "Outline"
 msgstr ""
 
-#: build/block-library/field-input/block.json
-#: packages/block-library/field-input/block.json
+#: build/block-library/captcha/block.json
+#: packages/block-library/captcha/block.json
 msgctxt "block title"
-msgid "Short Text"
+msgid "Captcha"
 msgstr ""
 
-#: build/block-library/field-input/block.json
-#: packages/block-library/field-input/block.json
+#: build/block-library/captcha/block.json
+#: packages/block-library/captcha/block.json
 msgctxt "block description"
-msgid "A text field for brief responses."
+msgid "Captcha"
 msgstr ""
 
-#: build/block-library/field-select/block.json
-#: packages/block-library/field-select/block.json
+#: build/block-library/field/block.json
+#: packages/block-library/field/block.json
 msgctxt "block title"
-msgid "Select"
+msgid "Form field"
 msgstr ""
 
-#: build/block-library/field-select/block.json
-#: packages/block-library/field-select/block.json
+#: build/block-library/field/block.json
+#: packages/block-library/field/block.json
 msgctxt "block description"
-msgid "A field with multiple options where a single choice can be made."
-msgstr ""
-
-#: build/block-library/field-textarea/block.json
-#: packages/block-library/field-textarea/block.json
-msgctxt "block title"
-msgid "Long Text"
-msgstr ""
-
-#: build/block-library/field-textarea/block.json
-#: packages/block-library/field-textarea/block.json
-msgctxt "block description"
-msgid "A text field for long responses."
+msgid "A form field."
 msgstr ""
 
 #: build/block-library/fieldset/block.json
 #: packages/block-library/fieldset/block.json
 msgctxt "block title"
-msgid "Field Group"
+msgid "Fieldset"
 msgstr ""
 
 #: build/block-library/fieldset/block.json
@@ -799,16 +1073,38 @@ msgctxt "block description"
 msgid "Easily create professional forms for your website"
 msgstr ""
 
-#: build/block-library/form/block.json
-#: packages/block-library/form/block.json
-msgctxt "block style label"
-msgid "Default"
+#: build/block-library/input/block.json
+#: packages/block-library/input/block.json
+msgctxt "block title"
+msgid "Field Input"
 msgstr ""
 
-#: build/block-library/form/block.json
-#: packages/block-library/form/block.json
+#: build/block-library/input/block.json
+#: packages/block-library/input/block.json
+msgctxt "block description"
+msgid "A simple form input field."
+msgstr ""
+
+#: build/block-library/input/block.json
+#: build/block-library/select/block.json
+#: build/block-library/textarea/block.json
+#: packages/block-library/input/block.json
+#: packages/block-library/select/block.json
+#: packages/block-library/textarea/block.json
 msgctxt "block style label"
 msgid "Inverted"
+msgstr ""
+
+#: build/block-library/label/block.json
+#: packages/block-library/label/block.json
+msgctxt "block title"
+msgid "Form Label"
+msgstr ""
+
+#: build/block-library/label/block.json
+#: packages/block-library/label/block.json
+msgctxt "block description"
+msgid "A label for a single field in a form."
 msgstr ""
 
 #: build/block-library/select-group/block.json
@@ -833,4 +1129,28 @@ msgstr ""
 #: packages/block-library/select-option/block.json
 msgctxt "block description"
 msgid "A choice within a Select block that can be selected."
+msgstr ""
+
+#: build/block-library/select/block.json
+#: packages/block-library/select/block.json
+msgctxt "block title"
+msgid "Select"
+msgstr ""
+
+#: build/block-library/select/block.json
+#: packages/block-library/select/block.json
+msgctxt "block description"
+msgid "A Select"
+msgstr ""
+
+#: build/block-library/textarea/block.json
+#: packages/block-library/textarea/block.json
+msgctxt "block title"
+msgid "Textarea"
+msgstr ""
+
+#: build/block-library/textarea/block.json
+#: packages/block-library/textarea/block.json
+msgctxt "block description"
+msgid "A Textarea"
 msgstr ""
