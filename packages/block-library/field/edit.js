@@ -39,7 +39,7 @@ const Edit = ( {
 				labelBlock: _labelBlock,
 				inputBlock: _inputBlock,
 				hasLabel: !! _labelBlock,
-				canHideLabel: ! ( [ 'checkbox', 'radio' ].includes( _inputBlock.attributes?.fieldType ) || _inputBlock.attributes?.isMultiple ),
+				canHideLabel: _inputBlock && ! ( [ 'checkbox', 'radio' ].includes( _inputBlock.attributes?.fieldType ) || _inputBlock.attributes?.isMultiple ),
 			};
 		},
 		[ clientId ]
