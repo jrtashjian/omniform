@@ -6,7 +6,7 @@
 	"title": "Field Input",
 	"description": "A simple form input field.",
 	"textdomain": "omniform",
-	"parent": [
+	"ancestor": [
 		"omniform/field"
 	],
 	"attributes": {

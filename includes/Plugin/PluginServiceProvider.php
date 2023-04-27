@@ -321,9 +321,6 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				) {
 					return array(
 						'omniform/button',
-						'omniform/field-input',
-						'omniform/field-select',
-						'omniform/field-textarea',
 						'omniform/fieldset',
 						'omniform/form',
 						'omniform/field',
@@ -347,20 +344,16 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 						'core/image',
 						'core/list-item',
 						'core/list',
-						'core/media-text',
 						'core/missing',
 						'core/paragraph',
 						'core/pattern',
 						'core/preformatted',
-						'core/pullquote',
-						'core/quote',
 						'core/separator',
 						'core/site-logo',
 						'core/site-tagline',
 						'core/site-title',
 						'core/spacer',
 						'core/table',
-						'core/verse',
 						'core/video',
 					);
 				}
@@ -389,9 +382,19 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					return $metadata;
 				}
 
+				$skip = array(
+					'omniform/form',
+					'omniform/input',
+					'omniform/label',
+					'omniform/select',
+					'omniform/textarea',
+					'omniform/select-option',
+					'omniform/select-group',
+				);
+
 				if (
 					str_starts_with( $metadata['name'], 'omniform' ) &&
-					! in_array( $metadata['name'], array( 'omniform/form', 'omniform/select-option', 'omniform/select-group' ), true )
+					! in_array( $metadata['name'], $skip, true )
 				) {
 					$metadata['ancestor'] = array( 'omniform/form' );
 					return $metadata;

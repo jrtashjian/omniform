@@ -6,7 +6,7 @@
 	"title": "Select",
 	"description": "A Select",
 	"textdomain": "omniform",
-	"parent": [
+	"ancestor": [
 		"omniform/field"
 	],
 	"attributes": {

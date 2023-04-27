@@ -6,7 +6,7 @@
 	"title": "Form Label",
 	"description": "A label for a single field in a form.",
 	"textdomain": "omniform",
-	"parent": [
+	"ancestor": [
 		"omniform/field"
 	],
 	"attributes": {

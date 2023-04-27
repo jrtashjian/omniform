@@ -9,6 +9,9 @@
 	"parent": [
 		"omniform/select"
 	],
+	"ancestor": [
+		"omniform/field"
+	],
 	"attributes": {
 		"fieldLabel": {
 			"type": "string"
