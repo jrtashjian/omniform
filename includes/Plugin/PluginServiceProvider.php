@@ -47,7 +47,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		add_action( 'init', array( $this, 'registerPostType' ) );
 		add_action( 'init', array( $this, 'registerSettings' ) );
 		add_action( 'init', array( $this, 'filterBlockPatternsOnAdmin' ), PHP_INT_MAX );
-		add_action( 'rest_api_init', array( $this, 'filterBlockPatternsOnRestApi' ), PHP_INT_MAX );
+		// add_action( 'rest_api_init', array( $this, 'filterBlockPatternsOnRestApi' ), PHP_INT_MAX );
 		add_filter( 'the_content', array( $this, 'renderSingularTemplate' ) );
 
 		// Send email notification when a response is created.
