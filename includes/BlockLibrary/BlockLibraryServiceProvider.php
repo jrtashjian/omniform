@@ -162,9 +162,9 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 	 */
 	public function registerPatterns() {
 		register_block_pattern_category(
-			'quickstart',
+			'omniform',
 			array(
-				'label'       => __( 'Quick Start', 'omniform' ),
+				'label'       => __( 'Omniform', 'omniform' ),
 				'description' => __( 'Common form templates to get you started quickly.', 'omniform' ),
 			)
 		);
@@ -172,7 +172,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 		$pattern_defaults = array(
 			'postTypes'     => array( 'omniform' ),
 			'blockTypes'    => array( 'omniform/form' ),
-			'categories'    => array( 'quickstart' ),
+			'categories'    => array( 'omniform' ),
 			'viewportWidth' => 768,
 		);
 
