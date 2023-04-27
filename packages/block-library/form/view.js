@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
 import { applyFilters } from '@wordpress/hooks';
 
@@ -25,14 +26,25 @@ import { applyFilters } from '@wordpress/hooks';
 				body,
 			} ).then( () => {
 				messageContainer.innerHTML = '';
-				messageContainer.append( createParagraph( 'Thank you for signing up!' ) );
+				messageContainer.append( createParagraph( __( 'Success! Your submission has been completed.', 'omniform' ) ) );
+
+				// Show the success message.
+				messageContainer.style.display = 'block';
+				messageContainer.style.borderLeftColor = 'var(--wp--preset--color--vivid-green-cyan,#00d084)';
 
 				// Reset the form.
 				event.target.reset();
 			} ).catch( ( error ) => {
 				messageContainer.innerHTML = '';
-				messageContainer.append( createParagraph( 'Something went wrong...' ) );
-				messageContainer.append( createUnorderedList( Object.values( error.invalid_fields ) ) );
+				messageContainer.append( createParagraph( __( 'Unfortunately, your submission was not successful. Please ensure all fields are correctly filled out and try again.', 'omniform' ) ) );
+
+				if ( error.invalid_fields ) {
+					messageContainer.append( createUnorderedList( Object.values( error.invalid_fields ) ) );
+				}
+
+				// Show the error message.
+				messageContainer.style.display = 'block';
+				messageContainer.style.borderLeftColor = 'var(--wp--preset--color--vivid-red,#cf2e2e)';
 			} );
 		};
 

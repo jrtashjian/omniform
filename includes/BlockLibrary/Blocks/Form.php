@@ -60,7 +60,7 @@ class Form extends BaseBlock {
 		$nonce_field = wp_nonce_field( 'omniform', 'wp_rest', true, false );
 
 		$response_container = sprintf(
-			'<div class="omniform-response-container"></div>',
+			'<div class="omniform-response-container wp-block-group is-layout-flow" style="display:none;border-left-width:6px;padding-top:0.5em;padding-right:1.5em;padding-bottom:0.5em;padding-left:1.5em"></div>',
 		);
 
 		/**
