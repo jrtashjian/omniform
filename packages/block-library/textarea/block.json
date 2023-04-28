@@ -44,12 +44,6 @@
 		"omniform/fieldName",
 		"omniform/fieldIsRequired"
 	],
-	"styles": [
-		{
-			"name": "inverted",
-			"label": "Inverted"
-		}
-	],
 	"editorScript": "file:index.js",
 	"style": "file:style-index.css"
 }
