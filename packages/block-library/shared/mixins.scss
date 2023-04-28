@@ -62,6 +62,10 @@ $contrast-color: var(--wp--preset--color--contrast, var(--wp--preset--color--for
 		outline-offset: 2px;
 	}
 
+	&:not(.has-custom-border):focus {
+		border-color: transparent;
+	}
+
 	.editor-styles-wrapper &:focus {
 		outline: unset;
 		outline-offset: unset;

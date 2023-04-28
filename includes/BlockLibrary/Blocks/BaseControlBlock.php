@@ -82,11 +82,16 @@ abstract class BaseControlBlock extends BaseBlock {
 	 * @return array
 	 */
 	public function getExtraWrapperAttributes() {
+		$new_attributes = \WP_Block_Supports::get_instance()->apply_block_supports();
+		// Check if the block has a custom border. If it does, we don't want to hide it on focus.
+		$has_custom_border = key_exists( 'style', $new_attributes ) && strpos( $new_attributes['style'], 'border-width' ) !== false;
+
 		return array_filter(
 			array(
 				'id'       => $this->getFieldName(),
 				'name'     => $this->getControlName(),
 				'required' => $this->isRequired(),
+				'class'    => $has_custom_border ? 'has-custom-border' : '',
 			)
 		);
 	}
