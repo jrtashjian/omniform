@@ -131,7 +131,7 @@ const Edit = ( {
 							label={ __( 'Hidden label', 'omniform' ) }
 							checked={ ! hasLabel }
 							onChange={ toggleLabel }
-							help={ __( 'Hiding the field\'s label', 'omniform' ) }
+							help={ __( 'Hide the field\'s label, current label becomes the field\'s placeholder.', 'omniform' ) }
 						/>
 					) }
 
