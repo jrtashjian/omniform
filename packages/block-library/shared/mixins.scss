@@ -69,6 +69,7 @@ $contrast-color: var(--wp--preset--color--contrast, var(--wp--preset--color--for
 	.editor-styles-wrapper &:focus {
 		outline: unset;
 		outline-offset: unset;
+		border-color: unset;
 	}
 }
 
