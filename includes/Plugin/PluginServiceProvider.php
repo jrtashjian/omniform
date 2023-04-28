@@ -47,7 +47,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		add_action( 'init', array( $this, 'registerPostType' ) );
 		add_action( 'init', array( $this, 'registerSettings' ) );
 		add_action( 'init', array( $this, 'filterBlockPatternsOnAdmin' ), PHP_INT_MAX );
-		// add_action( 'rest_api_init', array( $this, 'filterBlockPatternsOnRestApi' ), PHP_INT_MAX );
+		add_action( 'rest_api_init', array( $this, 'filterBlockPatternsOnRestApi' ), PHP_INT_MAX );
 		add_filter( 'the_content', array( $this, 'renderSingularTemplate' ) );
 
 		// Send email notification when a response is created.
@@ -609,32 +609,17 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		}
 
 		$url_parts = wp_parse_url( $_SERVER['HTTP_REFERER'] );
+		parse_str( $url_parts['query'], $query_args );
+
+		$is_edit_post   = '/wp-admin/post.php' === $url_parts['path'];
+		$is_create_post = '/wp-admin/post-new.php' === $url_parts['path'];
 
 		if (
-			'/wp-admin/post.php' !== $url_parts['path'] &&
-			'/wp-admin/post-new.php' !== $url_parts['path']
-		) {
-			return;
-		}
-
-		$query_args      = array();
-		$query_arg_parts = explode( '&', $url_parts['query'] );
-
-		foreach ( $query_arg_parts as $arg ) {
-			$arg_parts                   = explode( '=', $arg );
-			$query_args[ $arg_parts[0] ] = $arg_parts[1];
-		}
-
-		if (
-			empty( $query_args['post'] ) &&
-			empty( $query_args['post_type'] )
-		) {
-			return;
-		}
-
-		if (
-			( key_exists( 'post', $query_args ) && 'omniform' !== get_post_type( (int) $query_args['post'] ) ) &&
-			( key_exists( 'post_type', $query_args ) && 'omniform' !== $query_args['post_type'] )
+			// Only filter block patterns on edit and create post screens.
+			( ! $is_edit_post && ! $is_create_post ) ||
+			// Only filter block patterns for the omniform CPT.
+			( $is_create_post && 'omniform' !== $query_args['post_type'] ) ||
+			( $is_edit_post && 'omniform' !== get_post_type( (int) $query_args['post'] ) )
 		) {
 			return;
 		}
