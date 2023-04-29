@@ -22,7 +22,7 @@ class BaseControlBlockTest extends \WP_UnitTestCase {
 		register_block_type(
 			$block_object->block_type_metadata(),
 			array(
-				'render_callback' => array( $block_object, 'renderBlock' ),
+				'render_callback' => array( $block_object, 'render_block' ),
 				'uses_context'    => array(
 					'omniform/fieldGroupName',
 					'omniform/fieldGroupLabel',
