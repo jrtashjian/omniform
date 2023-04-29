@@ -150,7 +150,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 			register_block_type(
 				$block_object->block_type_metadata(),
 				array(
-					'render_callback' => array( $block_object, 'renderBlock' ),
+					'render_callback' => array( $block_object, 'render_block' ),
 					'variations'      => $variations,
 				)
 			);
