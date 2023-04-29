@@ -17,7 +17,7 @@ interface FormBlockInterface {
 	 *
 	 * @return string path to the JSON file with metadata definition for the block.
 	 */
-	public function blockTypeMetadata();
+	public function block_type_metadata();
 
 	/**
 	 * Renders the block on the server.
@@ -28,5 +28,5 @@ interface FormBlockInterface {
 	 *
 	 * @return string Returns the block content.
 	 */
-	public function renderBlock( $attributes, $content, $block );
+	public function render_block( $attributes, $content, $block );
 }

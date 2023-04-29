@@ -19,7 +19,7 @@ abstract class BaseControlBlock extends BaseBlock {
 	 * @return string Returns the block content.
 	 */
 	public function render() {
-		return $this->getFieldLabel() ? $this->renderControl() : '';
+		return $this->get_field_label() ? $this->render_control() : '';
 	}
 
 	/**
@@ -27,8 +27,8 @@ abstract class BaseControlBlock extends BaseBlock {
 	 *
 	 * @return string|null
 	 */
-	public function getFieldLabel() {
-		return $this->getBlockContext( 'omniform/fieldLabel' );
+	public function get_field_label() {
+		return $this->get_block_context( 'omniform/fieldLabel' );
 	}
 
 	/**
@@ -36,8 +36,8 @@ abstract class BaseControlBlock extends BaseBlock {
 	 *
 	 * @return string|null
 	 */
-	public function getFieldName() {
-		return sanitize_title( $this->getBlockContext( 'omniform/fieldName' ) ?? $this->getFieldLabel() );
+	public function get_field_name() {
+		return sanitize_title( $this->get_block_context( 'omniform/fieldName' ) ?? $this->get_field_label() );
 	}
 
 	/**
@@ -45,8 +45,8 @@ abstract class BaseControlBlock extends BaseBlock {
 	 *
 	 * @return string|null
 	 */
-	public function getFieldGroupLabel() {
-		return $this->getBlockContext( 'omniform/fieldGroupLabel' );
+	public function get_field_group_label() {
+		return $this->get_block_context( 'omniform/fieldGroupLabel' );
 	}
 
 	/**
@@ -54,8 +54,8 @@ abstract class BaseControlBlock extends BaseBlock {
 	 *
 	 * @return string|null
 	 */
-	public function getFieldGroupName() {
-		return sanitize_title( $this->getBlockContext( 'omniform/fieldGroupName' ) ?? $this->getFieldGroupLabel() );
+	public function get_field_group_name() {
+		return sanitize_title( $this->get_block_context( 'omniform/fieldGroupName' ) ?? $this->get_field_group_label() );
 	}
 
 	/**
@@ -63,8 +63,8 @@ abstract class BaseControlBlock extends BaseBlock {
 	 *
 	 * @return bool
 	 */
-	public function isGrouped() {
-		return ! empty( $this->getFieldGroupName() );
+	public function is_grouped() {
+		return ! empty( $this->get_field_group_name() );
 	}
 
 	/**
@@ -72,8 +72,8 @@ abstract class BaseControlBlock extends BaseBlock {
 	 *
 	 * @return bool
 	 */
-	public function isRequired() {
-		return $this->getBlockContext( 'omniform/fieldGroupIsRequired' ) ?? $this->getBlockContext( 'omniform/fieldIsRequired' );
+	public function is_required() {
+		return $this->get_block_context( 'omniform/fieldGroupIsRequired' ) ?? $this->get_block_context( 'omniform/fieldIsRequired' );
 	}
 
 	/**
@@ -81,16 +81,16 @@ abstract class BaseControlBlock extends BaseBlock {
 	 *
 	 * @return array
 	 */
-	public function getExtraWrapperAttributes() {
+	public function get_extra_wrapper_attributes() {
 		$new_attributes = \WP_Block_Supports::get_instance()->apply_block_supports();
 		// Check if the block has a custom border. If it does, we don't want to hide it on focus.
 		$has_custom_border = key_exists( 'style', $new_attributes ) && strpos( $new_attributes['style'], 'border-width' ) !== false;
 
 		return array_filter(
 			array(
-				'id'       => $this->getFieldName(),
-				'name'     => $this->getControlName(),
-				'required' => $this->isRequired(),
+				'id'       => $this->get_field_name(),
+				'name'     => $this->get_control_name(),
+				'required' => $this->is_required(),
 				'class'    => $has_custom_border ? 'has-custom-border' : '',
 			)
 		);
@@ -101,12 +101,12 @@ abstract class BaseControlBlock extends BaseBlock {
 	 *
 	 * @return array
 	 */
-	public function getControlNameParts() {
+	public function get_control_name_parts() {
 		return array_values(
 			array_filter(
 				array(
-					$this->getFieldGroupName(),
-					$this->getFieldName(),
+					$this->get_field_group_name(),
+					$this->get_field_name(),
 				)
 			)
 		);
@@ -117,8 +117,8 @@ abstract class BaseControlBlock extends BaseBlock {
 	 *
 	 * @return string
 	 */
-	public function getControlName() {
-		$parts = $this->getControlNameParts();
+	public function get_control_name() {
+		$parts = $this->get_control_name_parts();
 
 		return 2 === count( $parts )
 			? sprintf( '%s[%s]', $parts[0], $parts[1] )
@@ -130,10 +130,10 @@ abstract class BaseControlBlock extends BaseBlock {
 	 *
 	 * @return array
 	 */
-	public function getValidationRules() {
+	public function get_validation_rules() {
 		return array_filter(
 			array(
-				$this->isRequired() ? new Validation\Rules\NotEmpty() : null,
+				$this->is_required() ? new Validation\Rules\NotEmpty() : null,
 			)
 		);
 	}
@@ -143,8 +143,8 @@ abstract class BaseControlBlock extends BaseBlock {
 	 *
 	 * @return bool
 	 */
-	public function hasValidationRules() {
-		return ! empty( $this->getValidationRules() );
+	public function has_validation_rules() {
+		return ! empty( $this->get_validation_rules() );
 	}
 
 	/**
@@ -152,5 +152,5 @@ abstract class BaseControlBlock extends BaseBlock {
 	 *
 	 * @return string
 	 */
-	abstract public function renderControl();
+	abstract public function render_control();
 }

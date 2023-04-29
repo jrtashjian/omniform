@@ -16,10 +16,10 @@ class Input extends BaseControlBlock {
 	 *
 	 * @return string
 	 */
-	public function renderControl() {
+	public function render_control() {
 		return sprintf(
 			'<input %s />',
-			get_block_wrapper_attributes( $this->getExtraWrapperAttributes() )
+			get_block_wrapper_attributes( $this->get_extra_wrapper_attributes() )
 		);
 	}
 
@@ -28,15 +28,15 @@ class Input extends BaseControlBlock {
 	 *
 	 * @return array
 	 */
-	public function getExtraWrapperAttributes() {
+	public function get_extra_wrapper_attributes() {
 		$extra_attributes = wp_parse_args(
 			array(
-				'placeholder' => $this->getBlockAttribute( 'fieldPlaceholder' ),
-				'type'        => $this->getBlockAttribute( 'fieldType' ),
-				'value'       => $this->getControlValue(),
-				'aria-label'  => esc_attr( wp_strip_all_tags( $this->getFieldLabel() ) ),
+				'placeholder' => $this->get_block_attribute( 'fieldPlaceholder' ),
+				'type'        => $this->get_block_attribute( 'fieldType' ),
+				'value'       => $this->get_control_value(),
+				'aria-label'  => esc_attr( wp_strip_all_tags( $this->get_field_label() ) ),
 			),
-			parent::getExtraWrapperAttributes()
+			parent::get_extra_wrapper_attributes()
 		);
 
 		return array_filter( $extra_attributes );
@@ -47,18 +47,18 @@ class Input extends BaseControlBlock {
 	 *
 	 * @return string
 	 */
-	public function getControlValue() {
-		if ( $this->getBlockAttribute( 'fieldValue' ) ) {
-			return $this->getBlockAttribute( 'fieldValue' );
+	public function get_control_value() {
+		if ( $this->get_block_attribute( 'fieldValue' ) ) {
+			return $this->get_block_attribute( 'fieldValue' );
 		}
 
-		switch ( $this->getBlockAttribute( 'fieldType' ) ) {
+		switch ( $this->get_block_attribute( 'fieldType' ) ) {
 			// Checkboxes default to boolean. However, when transforming from a select field we want the option name to be the value.
 			case 'checkbox':
-				return $this->getFieldLabel();
+				return $this->get_field_label();
 			// Radios are always grouped so value is its name.
 			case 'radio':
-				return $this->getFieldLabel();
+				return $this->get_field_label();
 			// Date and time inputs need a default vaule to display properly on iOS.
 			case 'date':
 				return gmdate( 'Y-m-d' );
@@ -80,12 +80,12 @@ class Input extends BaseControlBlock {
 	 *
 	 * @return array
 	 */
-	public function getControlNameParts() {
-		if ( in_array( $this->getBlockAttribute( 'fieldType' ), array( 'radio', 'checkbox' ), true ) && $this->isGrouped() ) {
-			return array( $this->getFieldGroupName() );
+	public function get_control_name_parts() {
+		if ( in_array( $this->get_block_attribute( 'fieldType' ), array( 'radio', 'checkbox' ), true ) && $this->is_grouped() ) {
+			return array( $this->get_field_group_name() );
 		}
 
-		return parent::getControlNameParts();
+		return parent::get_control_name_parts();
 	}
 
 	/**
@@ -93,11 +93,11 @@ class Input extends BaseControlBlock {
 	 *
 	 * @return string
 	 */
-	public function getControlName() {
-		if ( 'checkbox' === $this->getBlockAttribute( 'fieldType' ) && $this->isGrouped() ) {
-			return parent::getControlName() . '[]';
+	public function get_control_name() {
+		if ( 'checkbox' === $this->get_block_attribute( 'fieldType' ) && $this->is_grouped() ) {
+			return parent::get_control_name() . '[]';
 		}
 
-		return parent::getControlName();
+		return parent::get_control_name();
 	}
 }

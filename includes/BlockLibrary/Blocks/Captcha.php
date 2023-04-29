@@ -20,7 +20,7 @@ class Captcha extends BaseControlBlock {
 	 * Constructor.
 	 */
 	public function __construct() {
-		add_filter( 'omniform_filtered_request_params', array( $this, 'filterRequestParams' ) );
+		add_filter( 'omniform_filtered_request_params', array( $this, 'filter_request_params' ) );
 	}
 
 	/**
@@ -29,9 +29,9 @@ class Captcha extends BaseControlBlock {
 	 * @return string Returns the block content.
 	 */
 	public function render() {
-		$service = $this->getBlockAttribute( 'service' );
-		$theme   = $this->getBlockAttribute( 'theme' );
-		$size    = $this->getBlockAttribute( 'size' );
+		$service = $this->get_block_attribute( 'service' );
+		$theme   = $this->get_block_attribute( 'theme' );
+		$size    = $this->get_block_attribute( 'size' );
 
 		$site_key = get_option( 'omniform_' . $service . '_site_key' );
 
@@ -53,8 +53,8 @@ class Captcha extends BaseControlBlock {
 			'<div %s></div>',
 			get_block_wrapper_attributes(
 				array(
-					'id'           => 'hcaptcha' === $this->getBlockAttribute( 'service' ) ? 'hcaptcha' : 'recaptcha',
-					'class'        => 'hcaptcha' === $this->getBlockAttribute( 'service' ) ? 'h-captcha' : 'g-recaptcha',
+					'id'           => 'hcaptcha' === $this->get_block_attribute( 'service' ) ? 'hcaptcha' : 'recaptcha',
+					'class'        => 'hcaptcha' === $this->get_block_attribute( 'service' ) ? 'h-captcha' : 'g-recaptcha',
 					'data-service' => $service,
 					'data-sitekey' => $site_key,
 					'data-theme'   => $theme,
@@ -69,14 +69,14 @@ class Captcha extends BaseControlBlock {
 	 *
 	 * @return string|null
 	 */
-	public function getFieldLabel() {
+	public function get_field_label() {
 		$service_labels = array(
 			'hcaptcha'    => __( 'hCaptcha', 'omniform' ),
 			'recaptchav2' => __( 'reCAPTCHA', 'omniform' ),
 			'recaptchav3' => __( 'reCAPTCHA', 'omniform' ),
 		);
 
-		return $service_labels[ $this->getBlockAttribute( 'service' ) ];
+		return $service_labels[ $this->get_block_attribute( 'service' ) ];
 	}
 
 	/**
@@ -84,8 +84,8 @@ class Captcha extends BaseControlBlock {
 	 *
 	 * @return string|null
 	 */
-	public function getFieldName() {
-		return 'hcaptcha' === $this->getBlockAttribute( 'service' )
+	public function get_field_name() {
+		return 'hcaptcha' === $this->get_block_attribute( 'service' )
 		? 'h-captcha-response'
 		: 'g-recaptcha-response';
 	}
@@ -95,7 +95,7 @@ class Captcha extends BaseControlBlock {
 	 *
 	 * @return string|null
 	 */
-	public function getFieldGroupName() {
+	public function get_field_group_name() {
 		return null;
 	}
 
@@ -104,8 +104,8 @@ class Captcha extends BaseControlBlock {
 	 *
 	 * @return array
 	 */
-	public function getValidationRules() {
-		switch ( $this->getBlockAttribute( 'service' ) ) {
+	public function get_validation_rules() {
+		switch ( $this->get_block_attribute( 'service' ) ) {
 			case 'hcaptcha':
 				$rule = new HCaptchaRule();
 				break;
@@ -130,7 +130,7 @@ class Captcha extends BaseControlBlock {
 	 *
 	 * @return string
 	 */
-	public function renderControl() {
+	public function render_control() {
 		// Don't render a control for CAPTCHA.
 		return '';
 	}
@@ -142,7 +142,7 @@ class Captcha extends BaseControlBlock {
 	 *
 	 * @return array
 	 */
-	public function filterRequestParams( $filtered_request_params ) {
+	public function filter_request_params( $filtered_request_params ) {
 		$filtered_request_params[] = 'g-recaptcha-response';
 		$filtered_request_params[] = 'h-captcha-response';
 

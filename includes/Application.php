@@ -47,7 +47,7 @@ class Application extends Container {
 	 *
 	 * @return static
 	 */
-	public static function getInstance() {
+	public static function get_instance() {
 		if ( \is_null( static::$instance ) ) {
 			static::$instance = new static();
 		}
@@ -61,7 +61,7 @@ class Application extends Container {
 	 *
 	 * @return \OmniForm\Dependencies\League\Container\DefinitionContainerInterface|static
 	 */
-	public static function setInstance( DefinitionContainerInterface $container = null ) {
+	public static function set_instance( DefinitionContainerInterface $container = null ) {
 		static::$instance = $container;
 		return static::$instance;
 	}
@@ -80,7 +80,7 @@ class Application extends Container {
 	 *
 	 * @param string $plugin_file The full path to the main plugin file.
 	 */
-	public function setBasePath( $plugin_file ) {
+	public function set_base_path( $plugin_file ) {
 		$this->base_path = plugin_dir_path( $plugin_file );
 		$this->base_url  = plugin_dir_url( $plugin_file );
 	}
@@ -92,7 +92,7 @@ class Application extends Container {
 	 *
 	 * @return string
 	 */
-	public function basePath( $path = '' ) {
+	public function base_path( $path = '' ) {
 		return rtrim( $this->base_path, DIRECTORY_SEPARATOR ) . ( '' !== $path ? DIRECTORY_SEPARATOR . ltrim( $path, DIRECTORY_SEPARATOR ) : '' );
 	}
 
@@ -103,7 +103,7 @@ class Application extends Container {
 	 *
 	 * @return string
 	 */
-	public function baseUrl( $path = '' ) {
+	public function base_url( $path = '' ) {
 		return rtrim( $this->base_url, '/' ) . ( '' !== $path ? '/' . ltrim( $path, '/' ) : '' );
 	}
 
@@ -125,7 +125,7 @@ class Application extends Container {
 	/**
 	 * Load language files.
 	 */
-	public function loadTextDomain() {
-		load_plugin_textdomain( 'omniform', false, $this->basePath( 'languages' ) );
+	public function load_text_domain() {
+		load_plugin_textdomain( 'omniform', false, $this->base_path( 'languages' ) );
 	}
 }

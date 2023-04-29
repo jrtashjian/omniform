@@ -16,19 +16,19 @@ class Select extends BaseControlBlock {
 	 *
 	 * @return string
 	 */
-	public function renderControl() {
+	public function render_control() {
 		// Remove minHeight attribute so it doesn't get added to the wrapper element if not a multiple select.
-		$block_attributes = get_block_wrapper_attributes( $this->getExtraWrapperAttributes() );
+		$block_attributes = get_block_wrapper_attributes( $this->get_extra_wrapper_attributes() );
 
-		if ( ! $this->getBlockAttribute( 'isMultiple' ) ) {
+		if ( ! $this->get_block_attribute( 'isMultiple' ) ) {
 			$block_attributes = preg_replace( '/min-height:([^;]+);/', '', $block_attributes );
 		}
 
 		$placeholder = '';
-		if ( $this->getBlockAttribute( 'fieldPlaceholder' ) ) {
+		if ( $this->get_block_attribute( 'fieldPlaceholder' ) ) {
 			$placeholder = sprintf(
 				'<option value="">%s</option>',
-				esc_attr( $this->getBlockAttribute( 'fieldPlaceholder' ) ),
+				esc_attr( $this->get_block_attribute( 'fieldPlaceholder' ) ),
 			);
 		}
 
@@ -44,13 +44,13 @@ class Select extends BaseControlBlock {
 	 *
 	 * @return array
 	 */
-	public function getExtraWrapperAttributes() {
+	public function get_extra_wrapper_attributes() {
 		$extra_attributes = wp_parse_args(
 			array(
-				'multiple' => $this->getBlockAttribute( 'isMultiple' ),
-				'style'    => $this->getElementHeight(),
+				'multiple' => $this->get_block_attribute( 'isMultiple' ),
+				'style'    => $this->get_element_height(),
 			),
-			parent::getExtraWrapperAttributes()
+			parent::get_extra_wrapper_attributes()
 		);
 
 		return array_filter( $extra_attributes );
@@ -61,10 +61,10 @@ class Select extends BaseControlBlock {
 	 *
 	 * @return string
 	 */
-	public function getControlName() {
-		return $this->getBlockAttribute( 'isMultiple' )
-			? parent::getControlName() . '[]'
-			: parent::getControlName();
+	public function get_control_name() {
+		return $this->get_block_attribute( 'isMultiple' )
+			? parent::get_control_name() . '[]'
+			: parent::get_control_name();
 	}
 
 	/**
@@ -72,11 +72,11 @@ class Select extends BaseControlBlock {
 	 *
 	 * @return string|false
 	 */
-	private function getElementHeight() {
+	private function get_element_height() {
 		$attributes = \WP_Block_Supports::get_instance()->apply_block_supports();
 
 		if ( ! empty( $attributes ) && array_key_exists( 'style', $attributes ) ) {
-			if ( $this->getBlockAttribute( 'isMultiple' ) && preg_match( '/min-height:([^;]+);/', $attributes['style'], $matches ) ) {
+			if ( $this->get_block_attribute( 'isMultiple' ) && preg_match( '/min-height:([^;]+);/', $attributes['style'], $matches ) ) {
 				return sprintf( 'height: %s;', $matches[1] );
 			}
 		}

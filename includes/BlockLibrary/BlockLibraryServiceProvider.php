@@ -42,9 +42,9 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 	 */
 	public function boot(): void {
 		add_action( 'omniform_activate', array( $this, 'activation' ) );
-		add_action( 'init', array( $this, 'registerBlocks' ) );
-		add_action( 'init', array( $this, 'registerPatterns' ) );
-		add_filter( 'block_categories_all', array( $this, 'registerCategories' ) );
+		add_action( 'init', array( $this, 'register_blocks' ) );
+		add_action( 'init', array( $this, 'register_patterns' ) );
+		add_filter( 'block_categories_all', array( $this, 'register_categories' ) );
 	}
 
 	/**
@@ -62,7 +62,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 			return;
 		}
 
-		foreach ( $this->getBlockPatterns() as $form ) {
+		foreach ( $this->get_block_patterns() as $form ) {
 			wp_insert_post(
 				array(
 					'post_type'    => 'omniform',
@@ -80,7 +80,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 	 *
 	 * @return array
 	 */
-	private function getBlockPatterns() {
+	private function get_block_patterns() {
 		$patterns = glob( __DIR__ . '/BlockPatterns/*.php' );
 
 		return array_map(
@@ -98,7 +98,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 	/**
 	 * Register the blocks.
 	 */
-	public function registerBlocks() {
+	public function register_blocks() {
 		$blocks = array(
 			Blocks\Form::class,
 			Blocks\Field::class,
@@ -148,7 +148,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 			wp_reset_postdata();
 
 			register_block_type(
-				$block_object->blockTypeMetadata(),
+				$block_object->block_type_metadata(),
 				array(
 					'render_callback' => array( $block_object, 'renderBlock' ),
 					'variations'      => $variations,
@@ -160,7 +160,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 	/**
 	 * Registers the form block patterns.
 	 */
-	public function registerPatterns() {
+	public function register_patterns() {
 		register_block_pattern_category(
 			'omniform',
 			array(
@@ -175,7 +175,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 			'viewportWidth' => 768,
 		);
 
-		foreach ( $this->getBlockPatterns() as $pattern ) {
+		foreach ( $this->get_block_patterns() as $pattern ) {
 			register_block_pattern(
 				'omniform/' . $pattern['name'],
 				wp_parse_args(
@@ -191,7 +191,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 	 *
 	 * @param array[] $block_categories     Array of categories for block types.
 	 */
-	public function registerCategories( $block_categories ) {
+	public function register_categories( $block_categories ) {
 
 		$block_categories[] = array(
 			'slug'  => 'omniform',

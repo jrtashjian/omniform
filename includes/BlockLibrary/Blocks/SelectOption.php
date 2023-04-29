@@ -17,14 +17,14 @@ class SelectOption extends BaseBlock {
 	 * @return string Returns the block content.
 	 */
 	public function render() {
-		if ( empty( $this->getBlockAttribute( 'fieldLabel' ) ) ) {
+		if ( empty( $this->get_block_attribute( 'fieldLabel' ) ) ) {
 			return '';
 		}
 
 		return sprintf(
 			'<option value="%s">%s</option>',
-			esc_attr( $this->getBlockAttribute( 'fieldLabel' ) ),
-			esc_attr( $this->getBlockAttribute( 'fieldLabel' ) ),
+			esc_attr( $this->get_block_attribute( 'fieldLabel' ) ),
+			esc_attr( $this->get_block_attribute( 'fieldLabel' ) ),
 		);
 	}
 }

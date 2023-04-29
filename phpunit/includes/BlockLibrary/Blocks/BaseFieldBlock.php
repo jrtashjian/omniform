@@ -20,7 +20,7 @@ class BaseControlBlockTest extends \WP_UnitTestCase {
 		$block_object = new TextControlBlock();
 
 		register_block_type(
-			$block_object->blockTypeMetadata(),
+			$block_object->block_type_metadata(),
 			array(
 				'render_callback' => array( $block_object, 'renderBlock' ),
 				'uses_context'    => array(
@@ -106,14 +106,14 @@ class BaseControlBlockTest extends \WP_UnitTestCase {
 
 // phpcs:disable
 class TextControlBlock extends BaseControlBlock {
-	public function blockTypeMetadata() {
-		return 'omniform/' . $this->blockTypeName();
+	public function block_type_metadata() {
+		return 'omniform/' . $this->block_type_name();
 	}
 
-	public function renderControl() {
+	public function render_control() {
 		return sprintf(
 			'<div %s />',
-			get_block_wrapper_attributes( $this->getExtraWrapperAttributes() )
+			get_block_wrapper_attributes( $this->get_extra_wrapper_attributes() )
 		);
 	}
 }

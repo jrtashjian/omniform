@@ -44,11 +44,11 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 * @return void
 	 */
 	public function boot(): void {
-		add_action( 'init', array( $this, 'registerPostType' ) );
-		add_action( 'init', array( $this, 'registerSettings' ) );
-		add_action( 'init', array( $this, 'filterBlockPatternsOnAdmin' ), PHP_INT_MAX );
-		add_action( 'rest_api_init', array( $this, 'filterBlockPatternsOnRestApi' ), PHP_INT_MAX );
-		add_filter( 'the_content', array( $this, 'renderSingularTemplate' ) );
+		add_action( 'init', array( $this, 'register_post_type' ) );
+		add_action( 'init', array( $this, 'register_settings' ) );
+		add_action( 'init', array( $this, 'filter_block_patterns_on_admin' ), PHP_INT_MAX );
+		add_action( 'rest_api_init', array( $this, 'filter_block_patterns_on_rest_api' ), PHP_INT_MAX );
+		add_filter( 'the_content', array( $this, 'render_singular_template' ) );
 
 		// Send email notification when a response is created.
 		add_action(
@@ -57,7 +57,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				wp_mail(
 					get_option( 'admin_email' ),
 					/* translators: %s: Form title */
-					sprintf( '%s Response', $form->getTitle() ),
+					sprintf( '%s Response', $form->get_title() ),
 					$form->response_email_message( $response_id )
 				);
 			},
@@ -70,10 +70,10 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			'omniform_response_created',
 			function( $response_id, $form ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
 				// Incremement form responses.
-				$response_count = get_post_meta( $form->getId(), '_omniform_responses', true );
+				$response_count = get_post_meta( $form->get_id(), '_omniform_responses', true );
 				$response_count = $response_count ? $response_count : 0;
 
-				update_post_meta( $form->getId(), '_omniform_responses', (int) $response_count + 1 );
+				update_post_meta( $form->get_id(), '_omniform_responses', (int) $response_count + 1 );
 			},
 			10,
 			2
@@ -215,7 +215,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				}
 
 				$form_id = (int) get_post_meta( $post_id, '_omniform_id', true );
-				$form    = $this->getContainer()->get( Form::class )->getInstance( $form_id );
+				$form    = $this->getContainer()->get( Form::class )->get_instance( $form_id );
 
 				if ( ! $form ) {
 					echo esc_html(
@@ -231,10 +231,10 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 
 				echo sprintf(
 					'<a href="%s" aria-label="%s">%s</a>',
-					esc_url( admin_url( sprintf( 'post.php?post=%d&action=edit', $form->getId() ) ) ),
+					esc_url( admin_url( sprintf( 'post.php?post=%d&action=edit', $form->get_id() ) ) ),
 					/* translators: %s: Form title. */
-					esc_attr( sprintf( __( 'View &#8220;%s&#8221; responses', 'omniform' ), $form->getTitle() ) ),
-					esc_attr( $form->getTitle() ),
+					esc_attr( sprintf( __( 'View &#8220;%s&#8221; responses', 'omniform' ), $form->get_title() ) ),
+					esc_attr( $form->get_title() ),
 				);
 			},
 			10,
@@ -408,7 +408,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	/**
 	 * Register post type
 	 */
-	public function registerPostType() {
+	public function register_post_type() {
 		register_post_type(
 			'omniform',
 			array(
@@ -524,7 +524,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	/**
 	 * Register the plugin settings.
 	 */
-	public function registerSettings() {
+	public function register_settings() {
 		$options = array(
 			'hcaptcha'    => 'hCaptcha',
 			'recaptchav2' => 'reCAPTCHA v2',
@@ -565,7 +565,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 *
 	 * @param string $content The post content.
 	 */
-	public function renderSingularTemplate( $content ) {
+	public function render_singular_template( $content ) {
 		return ( ! is_singular( 'omniform' ) || ! is_main_query() )
 			? $content
 			: do_blocks( '<!-- wp:omniform/form {"ref":' . get_the_ID() . '} /-->' );
@@ -576,7 +576,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 *
 	 * Removes block patterns not specifically registered for the custom post type.
 	 */
-	public function filterBlockPatternsOnAdmin() {
+	public function filter_block_patterns_on_admin() {
 		if ( ! is_admin() ) {
 			return;
 		}
@@ -592,7 +592,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			return;
 		}
 
-		$this->filterBlockPatterns();
+		$this->filter_block_patterns();
 
 		// Prevent Block Directory.
 		remove_action( 'enqueue_block_editor_assets', 'wp_enqueue_editor_block_directory_assets' );
@@ -603,7 +603,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 *
 	 * Removes block patterns not specifically registered for the custom post type.
 	 */
-	public function filterBlockPatternsOnRestApi() {
+	public function filter_block_patterns_on_rest_api() {
 		if ( empty( $_SERVER['HTTP_REFERER'] ) ) {
 			return;
 		}
@@ -624,13 +624,13 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			return;
 		}
 
-		$this->filterBlockPatterns();
+		$this->filter_block_patterns();
 	}
 
 	/**
 	 * Removes block patterns not registered specifically for CPT.
 	 */
-	private function filterBlockPatterns() {
+	private function filter_block_patterns() {
 		// Prevent block patterns not explicitly registered for the custom post type.
 		add_filter( 'should_load_remote_block_patterns', '__return_false' );
 

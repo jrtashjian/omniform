@@ -7,8 +7,6 @@
 
 namespace OmniForm\BlockLibrary\Blocks;
 
-use OmniForm\BlockLibrary\Blocks\Traits\HasColors;
-
 /**
  * The Button block class.
  */
@@ -53,13 +51,13 @@ class Button extends BaseBlock {
 
 		return sprintf(
 			'<div %s><button type="%s" %s>%s</button></div>',
-			$this->getElementAttribute( 'class', $wrapper_attributes['class'] ),
+			$this->get_element_attribute( 'class', $wrapper_attributes['class'] ),
 			esc_attr( $this->attributes['buttonType'] ),
 			implode(
 				' ',
 				array(
-					$this->getElementAttribute( 'class', $button_attributes['class'] ),
-					$this->getElementAttribute( 'style', $button_attributes['style'] ),
+					$this->get_element_attribute( 'class', $button_attributes['class'] ),
+					$this->get_element_attribute( 'style', $button_attributes['style'] ),
 				)
 			),
 			wp_kses( $this->attributes['buttonLabel'], $allowed_html ),

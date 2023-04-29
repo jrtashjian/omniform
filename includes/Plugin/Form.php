@@ -58,7 +58,7 @@ class Form {
 	 *
 	 * @return Form|false Form object, false otherwise.
 	 */
-	public function getInstance( $form_id ) {
+	public function get_instance( $form_id ) {
 		$form_id = (int) $form_id;
 		if ( ! $form_id ) {
 			return false;
@@ -83,7 +83,7 @@ class Form {
 	 *
 	 * @return number
 	 */
-	public function getId() {
+	public function get_id() {
 		return $this->id;
 	}
 
@@ -92,7 +92,7 @@ class Form {
 	 *
 	 * @return bool
 	 */
-	public function isPublished() {
+	public function is_published() {
 		return 'publish' === $this->post_data->post_status;
 	}
 
@@ -101,7 +101,7 @@ class Form {
 	 *
 	 * @return bool
 	 */
-	public function isPrivate() {
+	public function is_private() {
 		return ! empty( $this->post_data->post_password );
 	}
 
@@ -110,7 +110,7 @@ class Form {
 	 *
 	 * @return string
 	 */
-	public function getTitle() {
+	public function get_title() {
 		return $this->post_data->post_title;
 	}
 
@@ -119,7 +119,7 @@ class Form {
 	 *
 	 * @return string
 	 */
-	public function getContent() {
+	public function get_content() {
 		return $this->post_data->post_content;
 	}
 
@@ -128,7 +128,7 @@ class Form {
 	 *
 	 * @return array
 	 */
-	public function getFields() {
+	public function get_fields() {
 		return $this->fields;
 	}
 
@@ -137,17 +137,17 @@ class Form {
 	 *
 	 * @return array
 	 */
-	public function getGroups() {
+	public function get_groups() {
 		return $this->groups;
 	}
 
 	/**
 	 * Parses blocks out of the form's `post_content`.
 	 */
-	protected function registerFields() {
-		add_filter( 'render_block', array( $this, 'hookRenderBlock' ), 10, 3 );
-		do_blocks( $this->getContent() );
-		remove_filter( 'render_block', array( $this, 'hookRenderBlock' ), 10, 3 );
+	protected function register_fields() {
+		add_filter( 'render_block', array( $this, 'hook_render_block' ), 10, 3 );
+		do_blocks( $this->get_content() );
+		remove_filter( 'render_block', array( $this, 'hook_render_block' ), 10, 3 );
 	}
 
 	/**
@@ -158,7 +158,7 @@ class Form {
 	 * @param array    $parsed_block The full block, including name and attributes.
 	 * @param WP_Block $wp_block The block instance.
 	 */
-	public function hookRenderBlock( $block_content, $parsed_block, $wp_block ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
+	public function hook_render_block( $block_content, $parsed_block, $wp_block ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
 		if ( empty( $wp_block->block_type->render_callback ) || ! is_array( $wp_block->block_type->render_callback ) ) {
 			return $block_content;
 		}
@@ -167,18 +167,18 @@ class Form {
 
 		// If the block is a fieldset, add it to the list of groups.
 		if ( $block instanceof Fieldset ) {
-			$this->groups[ $block->getFieldGroupName() ] = $block->getFieldGroupLabel();
+			$this->groups[ $block->get_field_group_name() ] = $block->get_field_group_label();
 		}
 
 		// If the block is a control, add it to the list of fields.
 		if ( $block instanceof BaseControlBlock ) {
-			$control_name_parts = $block->getControlNameParts();
+			$control_name_parts = $block->get_control_name_parts();
 			$flat_control_name  = implode( '.', $control_name_parts );
 
 			$validation_rules = new Validation\Rules\AllOf(
-				...$block->getValidationRules()
+				...$block->get_validation_rules()
 			);
-			$validation_rules->setName( $block->getFieldLabel() );
+			$validation_rules->setName( $block->get_field_label() );
 
 			$rule = new Validation\Rules\Key( $flat_control_name, $validation_rules );
 
@@ -190,13 +190,13 @@ class Form {
 				);
 			}
 
-			if ( $block->hasValidationRules() ) {
+			if ( $block->has_validation_rules() ) {
 				$this->validator->addRule( $rule );
 			}
 
-			$this->fields[ $flat_control_name ] = $block->isGrouped() && in_array( $block->getBlockAttribute( 'fieldType' ), array( 'radio', 'checkbox' ), true )
-				? $block->getFieldGroupLabel()
-				: $block->getFieldLabel();
+			$this->fields[ $flat_control_name ] = $block->is_grouped() && in_array( $block->get_block_attribute( 'fieldType' ), array( 'radio', 'checkbox' ), true )
+				? $block->get_field_group_label()
+				: $block->get_field_label();
 		}
 
 		return $block_content;
@@ -210,7 +210,7 @@ class Form {
 	public function validate( \WP_REST_Request $request ) {
 		$request_params = new \OmniForm\Dependencies\Dflydev\DotAccessData\Data( $request->get_params() );
 
-		$this->registerFields();
+		$this->register_fields();
 
 		try {
 			$this->validator->assert( $request_params->export() );
@@ -226,7 +226,7 @@ class Form {
 	 *
 	 * @return array|false The message, false otherwise.
 	 */
-	public function getResponseData( $response_id ) {
+	public function get_response_data( $response_id ) {
 		$response_id = (int) $response_id;
 		if ( ! $response_id ) {
 			return false;
@@ -267,7 +267,7 @@ class Form {
 	 * @return string|false The message, false otherwise.
 	 */
 	public function response_text_content( $response_id ) {
-		$response_data = $this->getResponseData( $response_id );
+		$response_data = $this->get_response_data( $response_id );
 		if ( empty( $response_data ) ) {
 			return false;
 		}
@@ -292,7 +292,7 @@ class Form {
 	 * @return string|false The message, false otherwise.
 	 */
 	public function response_email_message( $response_id ) {
-		$response_data = $this->getResponseData( $response_id );
+		$response_data = $this->get_response_data( $response_id );
 		if ( empty( $response_data ) ) {
 			return false;
 		}

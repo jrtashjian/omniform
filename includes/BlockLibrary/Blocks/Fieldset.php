@@ -19,11 +19,11 @@ class Fieldset extends BaseBlock {
 	 * @return string
 	 */
 	protected function render() {
-		if ( empty( $this->getBlockAttribute( 'fieldLabel' ) ) ) {
+		if ( empty( $this->get_block_attribute( 'fieldLabel' ) ) ) {
 			return '';
 		}
 
-		$form_id = omniform()->get( Form::class )->getId() ?? $this->getBlockContext( 'postId' );
+		$form_id = omniform()->get( Form::class )->getId() ?? $this->get_block_context( 'postId' );
 
 		$allowed_html = array(
 			'strong' => array(),
@@ -38,7 +38,7 @@ class Fieldset extends BaseBlock {
 
 		$label_required = null;
 
-		if ( $this->getBlockContext( 'isRequired' ) ) {
+		if ( $this->get_block_context( 'isRequired' ) ) {
 			$label_required = sprintf(
 				'<span class="omniform-field-required">%s</span>',
 				wp_kses( get_post_meta( $form_id, 'required_label', true ), $allowed_html )
@@ -48,7 +48,7 @@ class Fieldset extends BaseBlock {
 		return sprintf(
 			'<fieldset %s><legend class="omniform-field-label">%s</legend>%s</fieldset>',
 			get_block_wrapper_attributes(),
-			wp_kses( $this->getBlockAttribute( 'fieldLabel' ), $allowed_html ) . $label_required,
+			wp_kses( $this->get_block_attribute( 'fieldLabel' ), $allowed_html ) . $label_required,
 			$this->content
 		);
 	}
@@ -58,8 +58,8 @@ class Fieldset extends BaseBlock {
 	 *
 	 * @return string|null
 	 */
-	public function getFieldGroupLabel() {
-		return $this->getBlockAttribute( 'fieldLabel' );
+	public function get_field_group_label() {
+		return $this->get_block_attribute( 'fieldLabel' );
 	}
 
 	/**
@@ -67,7 +67,7 @@ class Fieldset extends BaseBlock {
 	 *
 	 * @return string|null
 	 */
-	public function getFieldGroupName() {
-		return sanitize_title( $this->getBlockAttribute( 'fieldName' ) ?? $this->getFieldGroupLabel() );
+	public function get_field_group_name() {
+		return sanitize_title( $this->get_block_attribute( 'fieldName' ) ?? $this->get_field_group_label() );
 	}
 }

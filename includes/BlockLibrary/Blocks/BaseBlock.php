@@ -38,8 +38,8 @@ abstract class BaseBlock implements FormBlockInterface {
 	 *
 	 * @return string path to the JSON file with metadata definition for the block.
 	 */
-	public function blockTypeMetadata() {
-		return omniform()->basePath( '/build/block-library/' . $this->blockTypeName() );
+	public function block_type_metadata() {
+		return omniform()->base_path( '/build/block-library/' . $this->block_type_name() );
 	}
 
 	/**
@@ -47,7 +47,7 @@ abstract class BaseBlock implements FormBlockInterface {
 	 *
 	 * @return string
 	 */
-	protected function blockTypeName() {
+	protected function block_type_name() {
 		$calling_class = substr( strrchr( static::class, '\\' ), 1 );
 		return strtolower( preg_replace( '/([A-Z])/', '-$0', lcfirst( $calling_class ) ) );
 	}
@@ -57,8 +57,8 @@ abstract class BaseBlock implements FormBlockInterface {
 	 *
 	 * @return string
 	 */
-	public function blockTypeClassname() {
-		return 'wp-block-omniform-' . $this->blockTypeName();
+	public function block_type_classname() {
+		return 'wp-block-omniform-' . $this->block_type_name();
 	}
 
 	/**
@@ -70,7 +70,7 @@ abstract class BaseBlock implements FormBlockInterface {
 	 *
 	 * @return string Returns the block content.
 	 */
-	public function renderBlock( $attributes, $content, $block ) {
+	public function render_block( $attributes, $content, $block ) {
 		$this->attributes = $attributes;
 		$this->content    = $content;
 		$this->instance   = $block;
@@ -85,7 +85,7 @@ abstract class BaseBlock implements FormBlockInterface {
 	 *
 	 * @return string
 	 */
-	public function getBlockAttribute( $key ) {
+	public function get_block_attribute( $key ) {
 		return array_key_exists( $key, $this->attributes )
 			? $this->attributes[ $key ]
 			: null;
@@ -98,7 +98,7 @@ abstract class BaseBlock implements FormBlockInterface {
 	 *
 	 * @return string
 	 */
-	public function getBlockContext( $key ) {
+	public function get_block_context( $key ) {
 		return property_exists( $this->instance, 'context' ) && array_key_exists( $key, $this->instance->context )
 			? $this->instance->context[ $key ]
 			: null;
@@ -112,7 +112,7 @@ abstract class BaseBlock implements FormBlockInterface {
 	 *
 	 * @return string
 	 */
-	public function getElementAttribute( $key, $value ) {
+	public function get_element_attribute( $key, $value ) {
 		if ( empty( $key ) || ! isset( $value ) ) {
 			return;
 		}

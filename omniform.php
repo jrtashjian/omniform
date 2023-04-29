@@ -44,10 +44,10 @@ require_once dirname( __FILE__ ) . '/vendor/autoload.php';
  * @return \OmniForm\Application The application container.
  */
 function omniform() {
-	return \OmniForm\Application::getInstance();
+	return \OmniForm\Application::get_instance();
 }
 
-omniform()->setBasePath( __FILE__ );
+omniform()->set_base_path( __FILE__ );
 
 /**
  * Service Providers.
@@ -57,4 +57,4 @@ omniform()->addServiceProvider( new \OmniForm\BlockLibrary\BlockLibraryServicePr
 
 register_activation_hook( __FILE__, array( omniform(), 'activation' ) );
 register_deactivation_hook( __FILE__, array( omniform(), 'deactivation' ) );
-add_action( 'plugins_loaded', array( omniform(), 'loadTextDomain' ) );
+add_action( 'plugins_loaded', array( omniform(), 'load_text_domain' ) );

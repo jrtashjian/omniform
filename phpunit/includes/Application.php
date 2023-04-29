@@ -39,13 +39,13 @@ class CoreTest extends \WP_UnitTestCase {
 	 * Test the container's singleton.
 	 */
 	public function test_core_singleton() {
-		$application = Application::setInstance( new Application() );
+		$application = Application::set_instance( new Application() );
 
-		$this->assertSame( $application, Application::getInstance() );
+		$this->assertSame( $application, Application::get_instance() );
 
-		Application::setInstance( null );
+		Application::set_instance( null );
 
-		$application2 = Application::getInstance();
+		$application2 = Application::get_instance();
 
 		$this->assertInstanceOf( Application::class, $application2 );
 		$this->assertNotSame( $application, $application2 );
@@ -57,13 +57,13 @@ class CoreTest extends \WP_UnitTestCase {
 	public function test_core_register_path_bindings() {
 		$application = new Application();
 
-		$this->assertEmpty( $application->basePath() );
-		$this->assertEmpty( $application->baseUrl() );
+		$this->assertEmpty( $application->base_path() );
+		$this->assertEmpty( $application->base_url() );
 
-		$application->setBasePath( $this->plugin_file );
+		$application->set_base_path( $this->plugin_file );
 
-		$this->assertEquals( $this->plugin_path, $application->basePath() );
-		$this->assertEquals( site_url( '/wp-content/plugins/' . basename( $this->plugin_path ) ), $application->baseUrl() );
+		$this->assertEquals( $this->plugin_path, $application->base_path() );
+		$this->assertEquals( site_url( '/wp-content/plugins/' . basename( $this->plugin_path ) ), $application->base_url() );
 	}
 
 	/**

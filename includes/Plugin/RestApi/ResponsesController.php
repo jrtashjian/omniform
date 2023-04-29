@@ -49,7 +49,7 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 	 * @return \WP_REST_Response|\WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function create_response( \WP_REST_Request $request ) {
-		$form = omniform()->get( \OmniForm\Plugin\Form::class )->getInstance( $request->get_param( 'id' ) );
+		$form = omniform()->get( \OmniForm\Plugin\Form::class )->get_instance( $request->get_param( 'id' ) );
 
 		if ( ! $form ) {
 			return new \WP_Error(
@@ -85,7 +85,7 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 		};
 
 		$response_data = array_filter( $request->get_params(), $filter_callback, ARRAY_FILTER_USE_KEY );
-		$fields_data   = array_filter( $form->getFields(), $filter_callback, ARRAY_FILTER_USE_KEY );
+		$fields_data   = array_filter( $form->get_fields(), $filter_callback, ARRAY_FILTER_USE_KEY );
 
 		$response_id = wp_insert_post(
 			array(
@@ -94,13 +94,13 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 					array(
 						'response' => $response_data,
 						'fields'   => $fields_data,
-						'groups'   => $form->getGroups(),
+						'groups'   => $form->get_groups(),
 					)
 				),
 				'post_type'    => 'omniform_response',
 				'post_status'  => 'publish',
 				'meta_input'   => array(
-					'_omniform_id'      => $form->getId(),
+					'_omniform_id'      => $form->get_id(),
 					'_omniform_user_ip' => $_SERVER['REMOTE_ADDR'],
 					'_wp_http_referer'  => $request->get_param( '_wp_http_referer' ),
 				),

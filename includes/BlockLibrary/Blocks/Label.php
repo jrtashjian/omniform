@@ -17,11 +17,11 @@ class Label extends BaseBlock {
 	 * @return string
 	 */
 	protected function render() {
-		if ( empty( $this->getBlockContext( 'omniform/fieldLabel' ) ) ) {
+		if ( empty( $this->get_block_context( 'omniform/fieldLabel' ) ) ) {
 			return '';
 		}
 
-		$form_id = omniform()->get( \OmniForm\Plugin\Form::class )->getId() ?? $this->getBlockContext( 'postId' );
+		$form_id = omniform()->get( \OmniForm\Plugin\Form::class )->get_id() ?? $this->get_block_context( 'postId' );
 
 		$allowed_html = array(
 			'strong' => array(),
@@ -36,7 +36,7 @@ class Label extends BaseBlock {
 
 		$label_required = null;
 
-		if ( $this->getBlockContext( 'omniform/fieldIsRequired' ) ) {
+		if ( $this->get_block_context( 'omniform/fieldIsRequired' ) ) {
 			$label_required = sprintf(
 				'<span class="omniform-field-required">%s</span>',
 				wp_kses( get_post_meta( $form_id, 'required_label', true ), $allowed_html )
@@ -45,15 +45,15 @@ class Label extends BaseBlock {
 
 		$extra_attributes = array_filter(
 			array(
-				'class' => $this->getBlockAttribute( 'isHidden' ) ? 'screen-reader-text' : null,
+				'class' => $this->get_block_attribute( 'isHidden' ) ? 'screen-reader-text' : null,
 			)
 		);
 
 		return sprintf(
 			'<label for="%s" %s>%s</label>',
-			esc_attr( $this->getBlockContext( 'omniform/fieldName' ) ),
+			esc_attr( $this->get_block_context( 'omniform/fieldName' ) ),
 			get_block_wrapper_attributes( $extra_attributes ),
-			wp_kses( $this->getBlockContext( 'omniform/fieldLabel' ), $allowed_html ) . $label_required
+			wp_kses( $this->get_block_context( 'omniform/fieldLabel' ), $allowed_html ) . $label_required
 		);
 	}
 }
