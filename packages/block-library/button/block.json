@@ -31,8 +31,7 @@
 			"margin": true,
 			"padding": true
 		},
-		"__experimentalBorder": true,
-		"__experimentalSelector": ".wp-block-omniform-button .wp-element-button"
+		"__experimentalBorder": true
 	},
 	"editorScript": "file:index.js",
 	"editorStyle": "file:index.css",

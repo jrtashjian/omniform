@@ -2,17 +2,16 @@
 
 .wp-block-omniform-button {
 
-	.wp-element-button {
-		align-items: center;
-		display: inline-flex;
-		gap: 0.5em;
-		word-break: normal;
+	align-items: center;
+	display: inline-flex;
+	gap: 0.5em;
+	word-break: normal;
+	box-sizing: border-box;
 
-		@include focus-styles;
+	@include focus-styles;
 
-		strong,
-		em {
-			display: contents;
-		}
+	strong,
+	em {
+		display: contents;
 	}
 }

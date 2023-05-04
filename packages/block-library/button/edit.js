@@ -11,8 +11,6 @@ import { createBlock, getDefaultBlockName } from '@wordpress/blocks';
 import {
 	RichText,
 	useBlockProps,
-	__experimentalUseBorderProps as useBorderProps,
-	__experimentalUseColorProps as useColorProps,
 	__experimentalGetElementClassName,
 } from '@wordpress/block-editor';
 
@@ -24,38 +22,21 @@ const Edit = ( {
 	clientId,
 } ) => {
 	const {
-		className,
 		buttonLabel,
 	} = attributes;
 
-	const borderProps = useBorderProps( attributes );
-	const colorProps = useColorProps( attributes );
-	const blockProps = useBlockProps();
+	const blockProps = useBlockProps( {
+		className: classnames(
+			__experimentalGetElementClassName( 'button' ),
+			'wp-block-button__link',
+		),
+	} );
 
 	return (
-		<div
-			{ ...blockProps }
-			// Prevent color supports on wrapper.
-			className={
-				blockProps.className
-					.replace( colorProps.className, '' )
-					.replace( borderProps.className, '' )
-			}
-			style={ null }
-		>
+		<div>
 			<RichText
+				{ ...blockProps }
 				identifier="buttonLabel"
-				className={ classnames(
-					className,
-					colorProps.className,
-					borderProps.className,
-					__experimentalGetElementClassName( 'button' ),
-					'wp-block-button__link',
-				) }
-				style={ {
-					...colorProps.style,
-					...borderProps.style,
-				} }
 				aria-label={ __( 'Button text', 'omniform' ) }
 				placeholder={ __( 'Add text…', 'omniform' ) }
 				value={ buttonLabel }
