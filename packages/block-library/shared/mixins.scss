@@ -36,6 +36,7 @@ $contrast-color: var(--wp--preset--color--contrast, var(--wp--preset--color--for
 		align-items: center;
 		display: inline-flex;
 		gap: 0.25em;
+		box-sizing: border-box;
 
 		strong,
 		em {
