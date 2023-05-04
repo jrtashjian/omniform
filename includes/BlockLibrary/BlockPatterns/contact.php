@@ -29,7 +29,9 @@ return array(
 		<!-- wp:omniform/textarea {"style":{"dimensions":{"minHeight":"230px"}}} /-->
 		<!-- /wp:omniform/field -->
 
-		<!-- wp:omniform/button {"buttonType":"submit","buttonLabel":"Send Message"} /--></div>
+		<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap"}} -->
+		<div class="wp-block-group"><!-- wp:omniform/button {"buttonType":"submit","buttonLabel":"Send Message"} /--></div>
+		<!-- /wp:group --></div>
 		<!-- /wp:group -->
 	',
 );

@@ -32,8 +32,8 @@ return array(
 		<!-- /wp:omniform/field -->
 
 		<!-- wp:omniform/fieldset {"fieldLabel":"Attending?","fieldName":"attending"} -->
-		<!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|30","bottom":"var:preset|spacing|30"}}},"layout":{"type":"flex","flexWrap":"nowrap"}} -->
-		<div class="wp-block-group" style="padding-top:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--30)"><!-- wp:omniform/field {"fieldLabel":"Joyfully accepts","fieldName":"joyfully-accepts","layout":{"type":"flex","orientation":"horizontal","justifyContent":"left"}} -->
+		<!-- wp:group {"style":{"spacing":{"padding":{"top":"0.75em","bottom":"0.75em"}}},"layout":{"type":"flex","flexWrap":"nowrap"}} -->
+		<div class="wp-block-group" style="padding-top:0.75em;padding-bottom:0.75em"><!-- wp:omniform/field {"fieldLabel":"Joyfully accepts","fieldName":"joyfully-accepts","layout":{"type":"flex","orientation":"horizontal","justifyContent":"left"}} -->
 		<!-- wp:omniform/input {"fieldType":"radio"} /-->
 
 		<!-- wp:omniform/label /-->

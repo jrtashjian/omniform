@@ -49,7 +49,7 @@ return array(
 		<!-- /wp:omniform/select -->
 		<!-- /wp:omniform/field -->
 
-		<!-- wp:omniform/fieldset {"fieldLabel":"Please rate our website","fieldName":"please-rate-our-website","style":{"spacing":{"blockGap":"var:preset|spacing|30"}}} -->
+		<!-- wp:omniform/fieldset {"fieldLabel":"Please rate our website","fieldName":"please-rate-our-website","style":{"spacing":{"blockGap":"0.75em"}}} -->
 		<!-- wp:omniform/field {"fieldLabel":"1 - Very Bad","fieldName":"1-very-bad","layout":{"type":"flex","orientation":"horizontal","justifyContent":"left"}} -->
 		<!-- wp:omniform/input {"fieldType":"radio"} /-->
 
@@ -87,7 +87,9 @@ return array(
 		<!-- wp:omniform/textarea {"style":{"dimensions":{"minHeight":"230px"}}} /-->
 		<!-- /wp:omniform/field -->
 
-		<!-- wp:omniform/button {"buttonType":"submit","buttonLabel":"Send Feedback"} /--></div>
+		<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap"}} -->
+		<div class="wp-block-group"><!-- wp:omniform/button {"buttonType":"submit","buttonLabel":"Send Feedback"} /--></div>
+		<!-- /wp:group --></div>
 		<!-- /wp:group -->
 	',
 );
