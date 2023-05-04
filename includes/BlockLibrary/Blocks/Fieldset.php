@@ -23,7 +23,7 @@ class Fieldset extends BaseBlock {
 			return '';
 		}
 
-		$form_id = omniform()->get( Form::class )->getId() ?? $this->get_block_context( 'postId' );
+		$form_id = omniform()->get( Form::class )->get_id() ?? $this->get_block_context( 'postId' );
 
 		$allowed_html = array(
 			'strong' => array(),
