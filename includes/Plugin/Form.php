@@ -277,7 +277,7 @@ class Form {
 			$message[] = sprintf(
 				'<strong>%s:</strong> %s',
 				esc_html( $label ),
-				esc_html( $value )
+				wp_kses( $value, array() )
 			);
 		}
 
@@ -301,7 +301,7 @@ class Form {
 
 		foreach ( $response_data['fields'] as $name => $label ) {
 			$value     = implode( ', ', (array) $response_data['content']->get( $name, '' ) );
-			$message[] = $label . ': ' . $value;
+			$message[] = $label . ': ' . wp_kses( $value, array() );
 		}
 
 		$message[] = '';
