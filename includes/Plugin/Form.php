@@ -311,7 +311,7 @@ class Form {
 		$message[] = 'IP Address: ' . $_SERVER['REMOTE_ADDR'];
 		$message[] = 'Form URL: ' . get_post_meta( $response_id, '_wp_http_referer', true );
 
-		return implode( "\n", $message );
+		return esc_html( implode( "\n", $message ) );
 	}
 
 	/**
