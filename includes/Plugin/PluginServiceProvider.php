@@ -609,7 +609,11 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		}
 
 		$url_parts = wp_parse_url( $_SERVER['HTTP_REFERER'] );
-		parse_str( $url_parts['query'], $query_args );
+
+		$query_args = array();
+		if ( ! empty( $url_parts['query'] ) ) {
+			parse_str( $url_parts['query'], $query_args );
+		}
 
 		$is_edit_post   = '/wp-admin/post.php' === $url_parts['path'];
 		$is_create_post = '/wp-admin/post-new.php' === $url_parts['path'];
