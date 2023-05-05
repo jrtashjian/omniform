@@ -105,27 +105,6 @@ abstract class BaseBlock implements FormBlockInterface {
 	}
 
 	/**
-	 * Generate element attributes and escape the attributes.
-	 *
-	 * @param string       $key The attribute key.
-	 * @param string|array $value The attribute value.
-	 *
-	 * @return string
-	 */
-	public function get_element_attribute( $key, $value ) {
-		if ( empty( $key ) || ! isset( $value ) ) {
-			return;
-		}
-
-		$value = is_array( $value ) ? $value : (array) $value;
-		return sprintf(
-			'%s="%s"',
-			esc_attr( $key ),
-			esc_attr( trim( implode( ' ', $value ) ) )
-		);
-	}
-
-	/**
 	 * Renders the block defined by the extending class.
 	 *
 	 * @return string

@@ -53,20 +53,6 @@ class BaseBlockTest extends \WP_UnitTestCase {
 		$this->assertEquals( $context['context']['one'], $block_type->get_block_context( 'one' ) );
 		$this->assertNull( $block_type->get_block_context( 'two' ) );
 	}
-
-	public function test_get_element_attribute() {
-		$block_type = new BaseBlockStub();
-
-		$this->assertEquals(
-			'id="one two three"',
-			$block_type->get_element_attribute( 'id', array( 'one', 'two', 'three' ) )
-		);
-		$this->assertEquals(
-			'id="one"',
-			$block_type->get_element_attribute( 'id', 'one' )
-		);
-		$this->assertNull( $block_type->get_element_attribute( 'id', null ) );
-	}
 }
 
 // phpcs:disable
