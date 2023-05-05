@@ -6,7 +6,11 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { iconReCaptcha, iconHCaptcha } from '../shared/icons';
+import {
+	iconReCaptcha,
+	iconHCaptcha,
+	iconTurnstile,
+} from '../shared/icons';
 
 const variations = [
 	{
@@ -14,7 +18,7 @@ const variations = [
 		icon: { src: iconReCaptcha },
 		title: __( 'reCAPTCHA v2', 'omniform' ),
 		description: __( 'Verify requests with a challenge', 'omniform' ),
-		attributes: { service: 'recaptchav2' },
+		attributes: { service: 'recaptchav2', size: 'normal' },
 		isDefault: true,
 	},
 	{
@@ -29,7 +33,14 @@ const variations = [
 		icon: { src: iconHCaptcha },
 		title: __( 'hCaptcha', 'omniform' ),
 		description: __( 'Verify requests with a challenge', 'omniform' ),
-		attributes: { service: 'hcaptcha' },
+		attributes: { service: 'hcaptcha', size: 'normal' },
+	},
+	{
+		name: 'captcha-turnstile',
+		icon: { src: iconTurnstile },
+		title: __( 'Turnstile', 'omniform' ),
+		description: __( 'Verify requests with a challenge', 'omniform' ),
+		attributes: { service: 'turnstile', size: 'normal' },
 	},
 ];
 
@@ -37,6 +48,10 @@ variations.forEach( ( variation ) => {
 	variation.isActive = ( blockAttributes, variationAttributes ) =>
 		blockAttributes.service ===
 		variationAttributes.service;
+
+	if ( ! variation.scope ) {
+		variation.scope = [ 'inserter', 'block', 'transform' ];
+	}
 } );
 
 export default variations;

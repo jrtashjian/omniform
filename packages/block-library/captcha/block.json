@@ -10,7 +10,7 @@
 		"service": {
 			"type": "string",
 			"default": "recaptchav2",
-			"enum": [ "recaptchav2", "recaptchav3", "hcaptcha" ]
+			"enum": [ "recaptchav2", "recaptchav3", "hcaptcha", "turnstile" ]
 		},
 		"theme": {
 			"type": "string",

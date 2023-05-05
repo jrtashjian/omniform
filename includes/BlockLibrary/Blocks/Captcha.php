@@ -35,15 +35,28 @@ class Captcha extends BaseControlBlock {
 
 		$site_key = get_option( 'omniform_' . $service . '_site_key' );
 
-		$service_urls = array(
-			'hcaptcha'    => 'https://js.hcaptcha.com/1/api.js?render=explicit&onload=omniformCaptchaOnLoad',
-			'recaptchav2' => 'https://www.google.com/recaptcha/api.js?render=explicit&onload=omniformCaptchaOnLoad',
-			'recaptchav3' => 'https://www.google.com/recaptcha/api.js?render=' . $site_key,
-		);
+		switch ( $this->get_block_attribute( 'service' ) ) {
+			case 'hcaptcha':
+				$service_url = 'https://js.hcaptcha.com/1/api.js?render=explicit&onload=omniformCaptchaOnLoad';
+				$classname   = 'h-captcha';
+				break;
+			case 'recaptchav2':
+				$service_url = 'https://www.google.com/recaptcha/api.js?render=explicit&onload=omniformCaptchaOnLoad';
+				$classname   = 'g-recaptcha';
+				break;
+			case 'recaptchav3':
+				$service_url = 'https://www.google.com/recaptcha/api.js?render=' . $site_key;
+				$classname   = 'g-recaptcha';
+				break;
+			case 'turnstile':
+				$service_url = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=omniformCaptchaOnLoad';
+				$classname   = 'cf-turnstile';
+				break;
+		}
 
 		wp_enqueue_script(
 			'omniform-' . $service,
-			$service_urls[ $service ],
+			$service_url,
 			array(),
 			omniform()->version(),
 			true
@@ -53,8 +66,7 @@ class Captcha extends BaseControlBlock {
 			'<div %s></div>',
 			get_block_wrapper_attributes(
 				array(
-					'id'           => 'hcaptcha' === $this->get_block_attribute( 'service' ) ? 'hcaptcha' : 'recaptcha',
-					'class'        => 'hcaptcha' === $this->get_block_attribute( 'service' ) ? 'h-captcha' : 'g-recaptcha',
+					'class'        => $classname,
 					'data-service' => $service,
 					'data-sitekey' => $site_key,
 					'data-theme'   => $theme,
@@ -74,6 +86,7 @@ class Captcha extends BaseControlBlock {
 			'hcaptcha'    => __( 'hCaptcha', 'omniform' ),
 			'recaptchav2' => __( 'reCAPTCHA', 'omniform' ),
 			'recaptchav3' => __( 'reCAPTCHA', 'omniform' ),
+			'turnstile'   => __( 'Turnstile', 'omniform' ),
 		);
 
 		return $service_labels[ $this->get_block_attribute( 'service' ) ];
@@ -85,9 +98,19 @@ class Captcha extends BaseControlBlock {
 	 * @return string|null
 	 */
 	public function get_field_name() {
-		return 'hcaptcha' === $this->get_block_attribute( 'service' )
-		? 'h-captcha-response'
-		: 'g-recaptcha-response';
+		switch ( $this->get_block_attribute( 'service' ) ) {
+			case 'hcaptcha':
+				$fieldname = 'h-captcha-response';
+				break;
+			case 'recaptchav2':
+			case 'recaptchav3':
+				$fieldname = 'g-recaptcha-response';
+				break;
+			case 'turnstile':
+				$fieldname = 'cf-turnstile-response';
+				break;
+		}
+		return $fieldname;
 	}
 
 	/**
@@ -145,6 +168,7 @@ class Captcha extends BaseControlBlock {
 	public function filter_request_params( $filtered_request_params ) {
 		$filtered_request_params[] = 'g-recaptcha-response';
 		$filtered_request_params[] = 'h-captcha-response';
+		$filtered_request_params[] = 'cf-turnstile-response';
 
 		return $filtered_request_params;
 	}

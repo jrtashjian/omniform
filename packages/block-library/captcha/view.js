@@ -23,6 +23,9 @@ window.omniformCaptchaOnLoad = () => {
 		case 'recaptchav3':
 			captchaWidgetId = window.grecaptcha.render( target, params );
 			break;
+		case 'turnstile':
+			captchaWidgetId = window.turnstile.render( target, params );
+			break;
 	}
 };
 
@@ -55,6 +58,11 @@ addFilter( 'omniform.prepareFormElementForSubmission', 'omniform/captcha/validat
 		await window.hcaptcha.execute( captchaWidgetId, { async: true } ).then( ( { response: token } ) => {
 			captchaResponse.value = token;
 		} );
+	}
+
+	// Turnstile
+	if ( 'turnstile' === target.dataset.service ) {
+		await window.turnstile.getResponse( captchaWidgetId );
 	}
 
 	return formElement;

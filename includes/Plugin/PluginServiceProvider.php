@@ -529,6 +529,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			'hcaptcha'    => 'hCaptcha',
 			'recaptchav2' => 'reCAPTCHA v2',
 			'recaptchav3' => 'reCAPTCHA v3',
+			'turnstile'   => 'Turnstile',
 		);
 
 		foreach ( $options as $option => $label ) {

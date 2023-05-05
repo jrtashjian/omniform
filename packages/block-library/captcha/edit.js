@@ -21,7 +21,11 @@ import { useEntityProp } from '@wordpress/core-data';
 /**
  * Internal dependencies
  */
-import { iconReCaptcha, iconHCaptcha } from '../shared/icons';
+import {
+	iconReCaptcha,
+	iconHCaptcha,
+	iconTurnstile,
+} from '../shared/icons';
 
 const scripts = [];
 
@@ -67,10 +71,43 @@ const Edit = ( {
 } ) => {
 	const container = useRef();
 
-	const serviceSlug = 'hcaptcha' === service ? 'hcaptcha' : 'recaptcha';
-	const serviceUrls = {
-		hcaptcha: 'https://js.hcaptcha.com/1/api.js',
-		recaptcha: 'https://www.google.com/recaptcha/api.js',
+	const services = {
+		hcaptcha: {
+			icon: iconHCaptcha,
+			label: __( 'hCaptcha', 'omniform' ),
+			scriptUrl: 'https://js.hcaptcha.com/1/api.js',
+			setupLink: 'https://dashboard.hcaptcha.com/sites/new',
+			elementId: 'hcaptcha',
+			elementClassName: 'h-captcha',
+			globalAccessor: 'hcaptcha',
+		},
+		recaptchav2: {
+			icon: iconReCaptcha,
+			label: __( 'reCAPTCHA v2', 'omniform' ),
+			scriptUrl: 'https://www.google.com/recaptcha/api.js',
+			setupLink: 'https://www.google.com/recaptcha/admin/create',
+			elementId: 'recaptcha',
+			elementClassName: 'g-recaptcha',
+			globalAccessor: 'grecaptcha',
+		},
+		recaptchav3: {
+			icon: iconReCaptcha,
+			label: __( 'reCAPTCHA v3', 'omniform' ),
+			scriptUrl: 'https://www.google.com/recaptcha/api.js',
+			setupLink: 'https://www.google.com/recaptcha/admin/create',
+			elementId: 'recaptcha',
+			elementClassName: 'g-recaptcha',
+			globalAccessor: 'grecaptcha',
+		},
+		turnstile: {
+			icon: iconTurnstile,
+			label: __( 'Turnstile', 'omniform' ),
+			scriptUrl: 'https://challenges.cloudflare.com/turnstile/v0/api.js',
+			setupLink: 'https://dash.cloudflare.com/?to=:/account/turnstile',
+			elementId: 'turnstile',
+			elementClassName: 'cf-turnstile',
+			globalAccessor: 'turnstile',
+		},
 	};
 
 	const [ siteKey, setSiteKey ] = useEntityProp( 'root', 'site', `omniform_${ service }_site_key` );
@@ -86,9 +123,9 @@ const Edit = ( {
 
 		const wrapper = document.createElement( 'div' );
 
-		mountCaptchaScript( serviceSlug, serviceUrls[ serviceSlug ] )
+		mountCaptchaScript( services[ service ].elementId, services[ service ].scriptUrl )
 			.then( () => {
-				( 'hcaptcha' === service ? window.hcaptcha : window.grecaptcha ).render( wrapper, {
+				window[ services[ service ].globalAccessor ].render( wrapper, {
 					sitekey: siteKey,
 					theme,
 					size,
@@ -99,7 +136,7 @@ const Edit = ( {
 			} )
 			.catch( ( error ) => {
 				setIsLoaded( false );
-				setErrorMsg( error );
+				setErrorMsg( error.message );
 			} );
 
 		container.current.appendChild( wrapper );
@@ -112,32 +149,15 @@ const Edit = ( {
 	const blockProps = useBlockProps();
 
 	const SetupInstructions = () => {
-		/* translators: 1: captcha service name */
-		let createDesc = __( 'To start using %s, you need to sign up for an API key pair for your site. The key pair consists of a site key and secret key.', 'omniform' );
-
-		switch ( service ) {
-			case 'hcaptcha':
-				createDesc = sprintf( createDesc, __( 'hCaptcha', 'omniform' ) );
-				break;
-			case 'recaptchav2':
-				createDesc = sprintf( createDesc, __( 'reCAPTCHA v2', 'omniform' ) );
-				break;
-			case 'recaptchav3':
-				createDesc = sprintf( createDesc, __( 'reCAPTCHA v3', 'omniform' ) );
-				break;
-		}
-
 		return (
 			<>
-				{ createDesc }
+				{ sprintf(
+					/* translators: 1: captcha service name */
+					__( 'To start using %s, you need to sign up for an API key pair for your site. The key pair consists of a site key and secret key.', 'omniform' ),
+					services[ service ].label
+				) }
 				&nbsp;
-				<ExternalLink
-					href={
-						'hcaptcha' === service
-							? 'https://dashboard.hcaptcha.com/sites/new'
-							: 'https://www.google.com/recaptcha/admin/create'
-					}
-				>
+				<ExternalLink href={ services[ service ].setupLink }>
 					{ __( 'Generate keys', 'omniform' ) }
 				</ExternalLink>
 			</>
@@ -149,7 +169,7 @@ const Edit = ( {
 			<div { ...blockProps }>
 				{ ( errorMsg || ! ( isLoaded || siteKey ) ) && (
 					<div className="wp-block-omniform-captcha-placeholder">
-						<Icon icon={ 'hcaptcha' === service ? iconHCaptcha : iconReCaptcha } size={ 36 } />
+						<Icon icon={ services[ service ].icon } size={ 36 } />
 						<div className="wp-block-omniform-captcha-placeholder__instructions">
 							<SetupInstructions />
 							<div style={ { color: 'var(--wp--preset--color--vivid-red, "#cf2e2e")' } }>{ errorMsg }</div>
@@ -159,8 +179,7 @@ const Edit = ( {
 				<Disabled>
 					<div
 						ref={ container }
-						id={ 'hcaptcha' === service ? 'hcapcha' : 'recaptcha' }
-						className={ 'hcaptcha' === service ? 'h-capcha' : 'g-recaptcha' }
+						className={ services[ service ].elementClassName }
 					/>
 				</Disabled>
 			</div>
@@ -173,12 +192,14 @@ const Edit = ( {
 						label={ __( 'Site Key', 'omniform' ) }
 						value={ siteKey }
 						onChange={ setSiteKey }
+						type="password"
 					/>
 
 					<TextControl
 						label={ __( 'Secret Key', 'omniform' ) }
 						value={ secretKey }
 						onChange={ setSecretKey }
+						type="password"
 					/>
 
 					<ToggleGroupControl
