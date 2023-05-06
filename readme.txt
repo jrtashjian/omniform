@@ -8,7 +8,7 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-OmniForm is a powerful WordPress plugin that allows you to create and manage forms within your WordPress site.
+Easily create and manage custom forms with the block editor, customizable fields, and form submission management for your website.
 
 == Description ==
 

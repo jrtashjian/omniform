@@ -2,7 +2,7 @@
 /**
  * Plugin Name: OmniForm
  * Plugin URI: https://omniform.io
- * Description: OmniForm is a powerful WordPress plugin that allows you to create and manage forms within your WordPress site.
+ * Description: Easily create and manage custom forms with the block editor, customizable fields, and form submission management for your website.
  * Version: 1.0.0
  * Requires at least: 6.2
  * Requires PHP: 7.4
@@ -11,7 +11,7 @@
  * Text Domain: omniform
  * Domain Path: /languages
  *
- * Copyright 2019-2022 OmniForm
+ * Copyright 2022-2023 OmniForm
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -57,4 +57,5 @@ omniform()->addServiceProvider( new \OmniForm\BlockLibrary\BlockLibraryServicePr
 
 register_activation_hook( __FILE__, array( omniform(), 'activation' ) );
 register_deactivation_hook( __FILE__, array( omniform(), 'deactivation' ) );
+
 add_action( 'plugins_loaded', array( omniform(), 'load_text_domain' ) );
