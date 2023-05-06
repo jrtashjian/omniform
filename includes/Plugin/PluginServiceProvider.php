@@ -44,6 +44,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 * @return void
 	 */
 	public function boot(): void {
+		add_action( 'admin_enqueue_scripts', array( $this, 'disable_admin_notices' ) );
 		add_action( 'init', array( $this, 'register_post_type' ) );
 		add_action( 'init', array( $this, 'register_settings' ) );
 		add_action( 'init', array( $this, 'filter_block_patterns_on_admin' ), PHP_INT_MAX );
@@ -559,6 +560,23 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				)
 			);
 		}
+	}
+
+	/**
+	 * Disable admin notices on omniform screens.
+	 */
+	public function disable_admin_notices() {
+		$current_screen = get_current_screen();
+
+		// Only disable notices on omniform screens.
+		if ( strpos( $current_screen->id, 'omniform' ) === false ) {
+			return;
+		}
+
+		// Prevent default hooks rendering content to the page.
+		remove_all_actions( 'admin_notices' );
+		remove_all_actions( 'all_admin_notices' );
+		// Add our own notices after this.
 	}
 
 	/**
