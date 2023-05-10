@@ -1,0 +1,40 @@
+name: Build release zip
+
+on:
+  workflow_run:
+    workflows: [Static Analysis]
+    types: [completed]
+
+jobs:
+
+  on-success:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Restore npm dependency cache
+        uses: ./.github/actions/restore-npm-cache
+
+      - name: Restore composer dependency cache
+        uses: ./.github/actions/restore-composer-cache
+
+      - name: Install npm dependencies and build scripts
+        run: |
+          npm install
+          npm run build
+
+      - name: Install php-scoper and composer dependencies
+        run: |
+          composer global require humbug/php-scoper
+          composer run phpscoper
+
+      - name: Generate zip
+        uses: 10up/action-wordpress-plugin-build-zip@stable
+
+
+  on-failure:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - run: echo 'The triggering workflow failed'
