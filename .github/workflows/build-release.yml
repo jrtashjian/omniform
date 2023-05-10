@@ -33,7 +33,7 @@ jobs:
         run: |
           composer global require wp-cli/wp-cli-bundle
           composer global require wp-cli/dist-archive-command
-          /home/runner/.config/composer/vendor/bin/wp dist-archive ./ ${{ github.event.repository.name }}
+          /home/runner/.composer/vendor/bin/wp dist-archive ./ ${{ github.event.repository.name }}
 
       - name: Unzip the archive (prevents double zip problem)
         id: unzip
