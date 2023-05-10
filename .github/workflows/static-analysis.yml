@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: .github/actions/restore-composer-cache
+      - uses: ./.github/actions/restore-composer-cache
       - run: composer install --no-autoloader
       - run: composer run lint
 
@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: .github/actions/restore-npm-cache
+      - uses: ./.github/actions/restore-npm-cache
       - run: npm install
       - run: npm run lint-js
 
@@ -29,6 +29,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: .github/actions/restore-npm-cache
+      - uses: ./.github/actions/restore-npm-cache
       - run: npm install
       - run: npm run lint-css
