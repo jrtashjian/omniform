@@ -58,7 +58,7 @@
         "phpscoper": [
             "rm -rf ./vendor ./vendor_prefixed",
             "@composer install --no-autoloader --no-dev --prefer-dist",
-            "php-scoper add-prefix --prefix='OmniForm\\Dependencies' --output-dir=./vendor_prefixed --force",
+            "php-scoper add-prefix --force",
             "rm -rf ./vendor",
             "@composer dump-autoload --optimize"
         ]
