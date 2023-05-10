@@ -16,18 +16,16 @@ jobs:
       - name: Restore npm dependency cache
         uses: ./.github/actions/restore-npm-cache
 
-      - name: Restore composer dependency cache
-        uses: ./.github/actions/restore-composer-cache
-
       - name: Install npm dependencies and build scripts
         run: |
           npm install
           npm run build
 
-      - name: Install php-scoper and composer dependencies
-        run: |
-          composer global require humbug/php-scoper
-          composer run phpscoper
+      - name: Install PHP-Scoper
+        run: wget -o /usr/local/bin/php-scoper https://github.com/humbug/php-scoper/releases/download/0.18.2/php-scoper.phar
+
+      - name: Install composer dependencies
+        run: composer run phpscoper
 
       - name: Generate zip
         uses: 10up/action-wordpress-plugin-build-zip@stable
