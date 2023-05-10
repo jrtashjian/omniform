@@ -31,6 +31,8 @@ jobs:
 
       - name: Generate zip
         uses: 10up/action-wordpress-plugin-build-zip@stable
+        env:
+          SLUG: omniform # needed until we're live in the plugin directory.
 
 
   on-failure:
