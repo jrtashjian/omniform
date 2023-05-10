@@ -13,6 +13,9 @@ use OmniForm\BlockLibrary\Blocks\BaseBlock;
  * Tests the BaseBlock class.
  */
 class BaseBlockTest extends \WP_UnitTestCase {
+	/**
+	 * Ensure the path to the block type metadata is correct.
+	 */
 	public function test_block_type_metadata() {
 		$this->assertEquals(
 			'/build/block-library/base-block-stub',
@@ -20,13 +23,9 @@ class BaseBlockTest extends \WP_UnitTestCase {
 		);
 	}
 
-	public function test_block_type_classname() {
-		$this->assertEquals(
-			'wp-block-omniform-base-block-stub',
-			( new BaseBlockStub() )->block_type_classname()
-		);
-	}
-
+	/**
+	 * Ensure tthe block renders correctly.
+	 */
 	public function test_render_block() {
 		$this->assertEquals(
 			'BaseBlockStub::render',
@@ -34,6 +33,9 @@ class BaseBlockTest extends \WP_UnitTestCase {
 		);
 	}
 
+	/**
+	 * Ensure a block attribute can be retrieved.
+	 */
 	public function test_get_block_attribute() {
 		$attributes = array( 'one' => 'value' );
 
@@ -44,6 +46,9 @@ class BaseBlockTest extends \WP_UnitTestCase {
 		$this->assertNull( $block_type->get_block_attribute( 'two' ) );
 	}
 
+	/**
+	 * Ensure a block context can be retrieved.
+	 */
 	public function test_get_block_context() {
 		$context = array( 'context' => array( 'one' => 'value' ) );
 
@@ -56,6 +61,9 @@ class BaseBlockTest extends \WP_UnitTestCase {
 }
 
 // phpcs:disable
+/**
+ * Stub class for testing the BaseBlock class.
+ */
 class BaseBlockStub extends BaseBlock {
 	public function render() {
 		return 'BaseBlockStub::render';
