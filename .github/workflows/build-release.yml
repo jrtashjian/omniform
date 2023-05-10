@@ -20,21 +20,23 @@ jobs:
         run: npm run build
 
       - name: Install PHP-Scoper
+        run: composer global require humbug/php-scoper
+
+      - name: Install WP CLI
         run: |
-          wget -O /usr/local/bin/php-scoper https://github.com/humbug/php-scoper/releases/download/0.18.2/php-scoper.phar
-          chmod +x /usr/local/bin/php-scoper
+          composer global require wp-cli/wp-cli-bundle
+          composer global require wp-cli/dist-archive-command
+
+      - name: Add Composer bin to PATH
+        run: echo "$HOME/.composer/vendor/bin/" >> $GITHUB_PATH
 
       - name: Install composer dependencies
         run: composer run phpscoper
 
       - name: Generate zip
-        run: |
-          composer global require wp-cli/wp-cli-bundle
-          composer global require wp-cli/dist-archive-command
-          /home/runner/.composer/vendor/bin/wp dist-archive ./ ${{ github.event.repository.name }}
+        run: wp dist-archive ./ ${{ github.event.repository.name }}
 
       - name: Unzip the archive (prevents double zip problem)
-        id: unzip
         run: unzip ${{ github.event.repository.name }}.zip -d zipfile
         shell: bash
 
@@ -44,12 +46,6 @@ jobs:
           name: ${{ github.event.repository.name }}
           path: zipfile
           retention-days: 5
-
-      # - name: Generate zip
-      #   uses: 10up/action-wordpress-plugin-build-zip@stable
-      #   env:
-      #     SLUG: omniform # needed until we're live in the plugin directory.
-
 
   on-failure:
     runs-on: ubuntu-latest
