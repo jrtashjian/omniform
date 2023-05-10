@@ -30,9 +30,27 @@ jobs:
         run: composer run phpscoper
 
       - name: Generate zip
-        uses: 10up/action-wordpress-plugin-build-zip@stable
-        env:
-          SLUG: omniform # needed until we're live in the plugin directory.
+        run: |
+          composer global require wp-cli/wp-cli-bundle
+          composer global require wp-cli/dist-archive-command
+          wp dist-archive ./ ${{ github.event.repository.name }}
+
+      - name: Unzip the archive (prevents double zip problem)
+        id: unzip
+        run: unzip ${{ github.event.repository.name }}.zip -d zipfile
+        shell: bash
+
+      - name: Upload the archive as an artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ github.event.repository.name }}
+          path: zipfile
+          retention-days: 5
+
+      # - name: Generate zip
+      #   uses: 10up/action-wordpress-plugin-build-zip@stable
+      #   env:
+      #     SLUG: omniform # needed until we're live in the plugin directory.
 
 
   on-failure:
