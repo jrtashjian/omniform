@@ -16,10 +16,8 @@ jobs:
       - name: Restore npm dependency cache
         uses: ./.github/actions/restore-npm-cache
 
-      - name: Install npm dependencies and build scripts
-        run: |
-          npm install
-          npm run build
+      - name: Build scripts
+        run: npm run build
 
       - name: Install PHP-Scoper
         run: |
