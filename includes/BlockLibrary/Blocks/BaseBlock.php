@@ -53,15 +53,6 @@ abstract class BaseBlock implements FormBlockInterface {
 	}
 
 	/**
-	 * The classname applied to the block wrapper.
-	 *
-	 * @return string
-	 */
-	public function block_type_classname() {
-		return 'wp-block-omniform-' . $this->block_type_name();
-	}
-
-	/**
 	 * Renders the block on the server.
 	 *
 	 * @param array     $attributes Block attributes.
