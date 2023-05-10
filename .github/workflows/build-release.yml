@@ -23,7 +23,7 @@ jobs:
 
       - name: Install PHP-Scoper
         run: |
-          wget -o /usr/local/bin/php-scoper https://github.com/humbug/php-scoper/releases/download/0.18.2/php-scoper.phar
+          wget -O /usr/local/bin/php-scoper https://github.com/humbug/php-scoper/releases/download/0.18.2/php-scoper.phar
           chmod +x /usr/local/bin/php-scoper
 
       - name: Install composer dependencies
