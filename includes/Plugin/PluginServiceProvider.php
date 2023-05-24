@@ -122,16 +122,24 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					return;
 				}
 
-				$percentage_num = new \NumberFormatter( 'en_US', \NumberFormatter::PERCENT );
-
 				$impressions = (int) get_post_meta( $post_id, '_omniform_impressions', true );
 				$responses   = (int) get_post_meta( $post_id, '_omniform_responses', true );
 
-				echo esc_attr(
-					empty( $impressions )
-						? $percentage_num->format( 0 )
-						: $percentage_num->format( $responses / $impressions )
-				);
+				if ( class_exists( '\NumberFormatter' ) ) {
+					$percentage_num = new \NumberFormatter( 'en_US', \NumberFormatter::PERCENT );
+
+					echo esc_attr(
+						empty( $impressions )
+							? $percentage_num->format( 0 )
+							: $percentage_num->format( $responses / $impressions )
+					);
+				} else {
+					echo esc_attr(
+						empty( $impressions )
+							? '0%'
+							: round( $responses / $impressions * 100 ) . '%'
+					);
+				}
 			},
 			10,
 			2
@@ -145,10 +153,14 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					return;
 				}
 
-				$human_readable = new \NumberFormatter( 'en_US', \NumberFormatter::PADDING_POSITION );
-				$responses      = (int) get_post_meta( $post_id, '_omniform_responses', true );
+				$responses = (int) get_post_meta( $post_id, '_omniform_responses', true );
 
-				echo esc_attr( $human_readable->format( $responses ) );
+				if ( class_exists( '\NumberFormatter' ) ) {
+					$human_readable = new \NumberFormatter( 'en_US', \NumberFormatter::PADDING_POSITION );
+					echo esc_attr( $human_readable->format( $responses ) );
+				} else {
+					echo esc_attr( number_format( $responses ) );
+				}
 			},
 			10,
 			2
@@ -162,10 +174,14 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					return;
 				}
 
-				$human_readable = new \NumberFormatter( 'en_US', \NumberFormatter::PADDING_POSITION );
-				$impressions    = (int) get_post_meta( $post_id, '_omniform_impressions', true );
+				$impressions = (int) get_post_meta( $post_id, '_omniform_impressions', true );
 
-				echo esc_attr( $human_readable->format( $impressions ) );
+				if ( class_exists( '\NumberFormatter' ) ) {
+					$human_readable = new \NumberFormatter( 'en_US', \NumberFormatter::PADDING_POSITION );
+					echo esc_attr( $human_readable->format( $impressions ) );
+				} else {
+					echo esc_attr( number_format( $impressions ) );
+				}
 			},
 			10,
 			2
