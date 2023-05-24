@@ -55,7 +55,7 @@ input[type="radio"].wp-block-omniform-input:checked {
 			height: auto;
 			width: auto;
 			margin: 0;
-			background-color: #{$contrast-color};
+			background-color: currentcolor;
 		}
 
 		&:checked::before {
