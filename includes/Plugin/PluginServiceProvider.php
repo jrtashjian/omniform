@@ -593,6 +593,27 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		remove_all_actions( 'admin_notices' );
 		remove_all_actions( 'all_admin_notices' );
 		// Add our own notices after this.
+
+		add_action( 'admin_notices', array( $this, 'render_newsletter_notice' ) );
+	}
+
+	/**
+	 * Render the newsletter notice.
+	 */
+	public function render_newsletter_notice() {
+		$current_screen = get_current_screen();
+
+		// Don't show the notice on response editor screens.
+		if ( 'omniform_response' === $current_screen->id ) {
+			return;
+		}
+
+		printf(
+			'<div class="notice notice-info"><p>%s <a href="%s" target="_blank">%s</a></p></div>',
+			esc_html__( 'Want to stay up to date with OmniForm news?', 'omniform' ),
+			esc_url( 'https://omniform.io/omniform/newsletter?utm_source=omniform&utm_medium=plugin&utm_content=admin_notice' ),
+			esc_html__( 'Sign up for our newsletter!', 'omniform' )
+		);
 	}
 
 	/**
