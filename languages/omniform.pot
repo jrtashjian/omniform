@@ -9,17 +9,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-04-24T02:14:53+00:00\n"
+"POT-Creation-Date: 2023-05-31T13:30:22+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: omniform\n"
 
 #. Plugin Name of the plugin
-#. translators: accessibility text for the footer landmark region.
 #: build/block-library/form/index.js:1
-#: build/plugin/index.js:13
 #: packages/block-library/form/edit/index.js:87
-#: packages/plugin/components/app/index.js:26
 msgid "OmniForm"
 msgstr ""
 
@@ -28,7 +25,7 @@ msgid "https://omniform.io"
 msgstr ""
 
 #. Description of the plugin
-msgid "OmniForm is a powerful WordPress plugin that allows you to create and manage forms within your WordPress site."
+msgid "Easily create and manage custom forms with the block editor, customizable fields, and form submission management for your website."
 msgstr ""
 
 #. Author of the plugin
@@ -40,22 +37,22 @@ msgid "https://jrtashjian.com"
 msgstr ""
 
 #: includes/BlockLibrary/BlockLibraryServiceProvider.php:167
-msgid "Quick Start"
+msgid "Omniform"
 msgstr ""
 
 #: includes/BlockLibrary/BlockLibraryServiceProvider.php:168
 msgid "Common form templates to get you started quickly."
 msgstr ""
 
-#: includes/BlockLibrary/BlockLibraryServiceProvider.php:199
+#: includes/BlockLibrary/BlockLibraryServiceProvider.php:198
 msgid "Forms"
 msgstr ""
 
-#: includes/BlockLibrary/BlockLibraryServiceProvider.php:205
+#: includes/BlockLibrary/BlockLibraryServiceProvider.php:204
 msgid "Simple Controls"
 msgstr ""
 
-#: includes/BlockLibrary/BlockLibraryServiceProvider.php:211
+#: includes/BlockLibrary/BlockLibraryServiceProvider.php:210
 msgid "Grouped Controls"
 msgstr ""
 
@@ -83,22 +80,28 @@ msgstr ""
 msgid "RSVP"
 msgstr ""
 
-#: includes/BlockLibrary/Blocks/Captcha.php:74
+#: includes/BlockLibrary/Blocks/Captcha.php:86
 #: build/block-library/captcha/index.js:1
-#: build/block-library/captcha/index.js:3
-#: packages/block-library/captcha/edit.js:120
-#: packages/block-library/captcha/variations.js:30
+#: packages/block-library/captcha/edit.js:77
+#: packages/block-library/captcha/variations.js:34
 msgid "hCaptcha"
 msgstr ""
 
-#: includes/BlockLibrary/Blocks/Captcha.php:75
-#: includes/BlockLibrary/Blocks/Captcha.php:76
+#: includes/BlockLibrary/Blocks/Captcha.php:87
+#: includes/BlockLibrary/Blocks/Captcha.php:88
 msgid "reCAPTCHA"
+msgstr ""
+
+#: includes/BlockLibrary/Blocks/Captcha.php:89
+#: build/block-library/captcha/index.js:1
+#: packages/block-library/captcha/edit.js:104
+#: packages/block-library/captcha/variations.js:41
+msgid "Turnstile"
 msgstr ""
 
 #. translators: %d: Form ID.
 #: includes/BlockLibrary/Blocks/Form.php:41
-#: includes/Plugin/PluginServiceProvider.php:224
+#: includes/Plugin/PluginServiceProvider.php:241
 msgid "Form ID &#8220;%d&#8221; has been removed."
 msgstr ""
 
@@ -111,157 +114,165 @@ msgstr ""
 msgid "Edit the form"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:107
-#: includes/Plugin/PluginServiceProvider.php:186
+#: includes/Plugin/PluginServiceProvider.php:108
+#: includes/Plugin/PluginServiceProvider.php:203
 msgid "Responses"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:108
+#: includes/Plugin/PluginServiceProvider.php:109
 msgid "Impressions"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:109
+#: includes/Plugin/PluginServiceProvider.php:110
 msgid "Conversion Rate"
 msgstr ""
 
 #. translators: %s: Form title.
-#: includes/Plugin/PluginServiceProvider.php:185
-#: includes/Plugin/PluginServiceProvider.php:236
+#: includes/Plugin/PluginServiceProvider.php:202
+#: includes/Plugin/PluginServiceProvider.php:253
 msgid "View &#8220;%s&#8221; responses"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:202
+#: includes/Plugin/PluginServiceProvider.php:219
 msgid "Form"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:203
+#: includes/Plugin/PluginServiceProvider.php:220
 msgid "Form Data"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:413
+#: includes/Plugin/PluginServiceProvider.php:433
 msgctxt "post type general name"
 msgid "OmniForm"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:414
+#: includes/Plugin/PluginServiceProvider.php:434
 msgctxt "post type singular name"
 msgid "OmniForm"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:415
+#: includes/Plugin/PluginServiceProvider.php:435
 msgctxt "Form"
 msgid "Create a Form"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:416
-#: includes/Plugin/PluginServiceProvider.php:417
+#: includes/Plugin/PluginServiceProvider.php:436
+#: includes/Plugin/PluginServiceProvider.php:437
 msgid "Create a Form"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:418
+#: includes/Plugin/PluginServiceProvider.php:438
 msgid "Edit Form"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:419
+#: includes/Plugin/PluginServiceProvider.php:439
 msgid "View Form"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:420
+#: includes/Plugin/PluginServiceProvider.php:440
 msgid "All Forms"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:421
+#: includes/Plugin/PluginServiceProvider.php:441
 msgid "Search Forms"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:422
+#: includes/Plugin/PluginServiceProvider.php:442
 msgid "No forms found."
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:423
+#: includes/Plugin/PluginServiceProvider.php:443
 msgid "No forms found in Trash."
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:424
+#: includes/Plugin/PluginServiceProvider.php:444
 msgid "Filter form list"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:425
+#: includes/Plugin/PluginServiceProvider.php:445
 msgid "Form list navigation"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:426
+#: includes/Plugin/PluginServiceProvider.php:446
 msgid "Form list"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:427
+#: includes/Plugin/PluginServiceProvider.php:447
 msgid "Form published."
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:428
+#: includes/Plugin/PluginServiceProvider.php:448
 msgid "Form published privately."
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:429
+#: includes/Plugin/PluginServiceProvider.php:449
 msgid "Form reverted to draft."
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:430
+#: includes/Plugin/PluginServiceProvider.php:450
 msgid "Form scheduled."
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:431
+#: includes/Plugin/PluginServiceProvider.php:451
 msgid "Form updated."
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:481
+#: includes/Plugin/PluginServiceProvider.php:501
 msgctxt "post type general name"
 msgid "Responses"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:482
+#: includes/Plugin/PluginServiceProvider.php:502
 msgctxt "post type singular name"
 msgid "Response"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:483
+#: includes/Plugin/PluginServiceProvider.php:503
 #: build/block-library/form/index.js:1
 #: packages/block-library/form/edit/inspector-controls.js:32
 msgid "View responses"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:484
+#: includes/Plugin/PluginServiceProvider.php:504
 msgid "Edit response"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:485
+#: includes/Plugin/PluginServiceProvider.php:505
 msgid "Filter responses list"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:486
+#: includes/Plugin/PluginServiceProvider.php:506
 msgid "No responses found in Trash."
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:487
+#: includes/Plugin/PluginServiceProvider.php:507
 msgid "No responses found."
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:488
+#: includes/Plugin/PluginServiceProvider.php:508
 msgid "Search responses"
 msgstr ""
 
-#: includes/Plugin/PluginServiceProvider.php:489
+#: includes/Plugin/PluginServiceProvider.php:509
 msgid "View response"
 msgstr ""
 
 #. translators: %s: The name of the captcha service.
-#: includes/Plugin/PluginServiceProvider.php:538
+#: includes/Plugin/PluginServiceProvider.php:559
 msgid "The site key for %s."
 msgstr ""
 
 #. translators: %s: The name of the captcha service.
-#: includes/Plugin/PluginServiceProvider.php:551
+#: includes/Plugin/PluginServiceProvider.php:572
 msgid "The secret key for %s."
+msgstr ""
+
+#: includes/Plugin/PluginServiceProvider.php:613
+msgid "Want to stay up to date with OmniForm news?"
+msgstr ""
+
+#: includes/Plugin/PluginServiceProvider.php:615
+msgid "Sign up for our newsletter!"
 msgstr ""
 
 #: includes/Plugin/RestApi/ResponsesController.php:57
@@ -281,98 +292,97 @@ msgid "Reset"
 msgstr ""
 
 #: build/block-library/button/index.js:1
-#: packages/block-library/button/edit.js:59
+#: packages/block-library/button/edit.js:40
 msgid "Button text"
 msgstr ""
 
 #: build/block-library/button/index.js:1
-#: packages/block-library/button/edit.js:60
+#: packages/block-library/button/edit.js:41
 msgid "Add text…"
 msgstr ""
 
 #: build/block-library/captcha/index.js:1
-#: build/block-library/captcha/index.js:3
-#: packages/block-library/captcha/edit.js:123
-#: packages/block-library/captcha/variations.js:15
+#: packages/block-library/captcha/edit.js:86
+#: packages/block-library/captcha/variations.js:19
 msgid "reCAPTCHA v2"
 msgstr ""
 
 #: build/block-library/captcha/index.js:1
-#: packages/block-library/captcha/variations.js:16
-#: packages/block-library/captcha/variations.js:31
+#: packages/block-library/captcha/variations.js:20
+#: packages/block-library/captcha/variations.js:35
+#: packages/block-library/captcha/variations.js:42
 msgid "Verify requests with a challenge"
 msgstr ""
 
 #: build/block-library/captcha/index.js:1
-#: build/block-library/captcha/index.js:3
-#: packages/block-library/captcha/edit.js:126
-#: packages/block-library/captcha/variations.js:23
+#: packages/block-library/captcha/edit.js:95
+#: packages/block-library/captcha/variations.js:27
 msgid "reCAPTCHA v3"
 msgstr ""
 
 #: build/block-library/captcha/index.js:1
-#: packages/block-library/captcha/variations.js:24
+#: packages/block-library/captcha/variations.js:28
 msgid "Verify requests with a score"
 msgstr ""
 
 #: build/block-library/captcha/index.js:1
-#: packages/block-library/captcha/edit.js:55
+#: packages/block-library/captcha/edit.js:59
 msgid "Failed to load script:"
 msgstr ""
 
 #. translators: 1: captcha service name
-#: build/block-library/captcha/index.js:3
-#: packages/block-library/captcha/edit.js:116
+#: build/block-library/captcha/index.js:2
+#: packages/block-library/captcha/edit.js:156
 msgid "To start using %s, you need to sign up for an API key pair for your site. The key pair consists of a site key and secret key."
 msgstr ""
 
-#: build/block-library/captcha/index.js:3
-#: packages/block-library/captcha/edit.js:141
+#: build/block-library/captcha/index.js:2
+#: packages/block-library/captcha/edit.js:161
 msgid "Generate keys"
 msgstr ""
 
-#: build/block-library/captcha/index.js:3
-#: packages/block-library/captcha/edit.js:168
+#: build/block-library/captcha/index.js:2
+#: packages/block-library/captcha/edit.js:187
 msgid "Settings"
 msgstr ""
 
-#: build/block-library/captcha/index.js:3
-#: packages/block-library/captcha/edit.js:173
+#: build/block-library/captcha/index.js:2
+#: packages/block-library/captcha/edit.js:192
 msgid "Site Key"
 msgstr ""
 
-#: build/block-library/captcha/index.js:3
-#: packages/block-library/captcha/edit.js:179
+#: build/block-library/captcha/index.js:2
+#: packages/block-library/captcha/edit.js:199
 msgid "Secret Key"
 msgstr ""
 
-#: build/block-library/captcha/index.js:3
-#: packages/block-library/captcha/edit.js:185
+#: build/block-library/captcha/index.js:2
+#: packages/block-library/captcha/edit.js:206
 msgid "Theme"
 msgstr ""
 
-#: build/block-library/captcha/index.js:3
-#: packages/block-library/captcha/edit.js:190
+#: build/block-library/captcha/index.js:2
+#: packages/block-library/captcha/edit.js:211
 msgid "Light"
 msgstr ""
 
-#: build/block-library/captcha/index.js:3
-#: packages/block-library/captcha/edit.js:191
+#: build/block-library/captcha/index.js:2
+#: packages/block-library/captcha/edit.js:212
 msgid "Dark"
 msgstr ""
 
-#: build/block-library/captcha/index.js:3
-#: packages/block-library/captcha/edit.js:196
+#: build/block-library/captcha/index.js:2
+#: packages/block-library/captcha/edit.js:217
 msgid "Size"
 msgstr ""
 
-#: build/block-library/captcha/index.js:3
-#: packages/block-library/captcha/edit.js:201
+#: build/block-library/captcha/index.js:2
+#: packages/block-library/captcha/edit.js:222
 msgid "Normal"
 msgstr ""
 
-#: build/block-library/captcha/index.js:3
-#: packages/block-library/captcha/edit.js:202
+#: build/block-library/captcha/index.js:2
+#: packages/block-library/captcha/edit.js:223
 msgid "Compact"
 msgstr ""
 
@@ -652,7 +662,6 @@ msgstr ""
 
 #: build/block-library/field/index.js:1
 #: packages/block-library/field/edit.js:118
-#: packages/block-library/shared/inspector-controls.js:30
 msgid "Field Settings"
 msgstr ""
 
@@ -660,25 +669,22 @@ msgstr ""
 #: build/block-library/fieldset/index.js:1
 #: packages/block-library/field/edit.js:121
 #: packages/block-library/fieldset/edit.js:92
-#: packages/block-library/shared/inspector-controls.js:34
 msgid "Required for submission"
 msgstr ""
 
 #: build/block-library/field/index.js:1
 #: packages/block-library/field/edit.js:126
-#: packages/block-library/shared/inspector-controls.js:39
 msgid "A value is required or must be check for the form to be submittable."
 msgstr ""
 
 #: build/block-library/field/index.js:1
 #: packages/block-library/field/edit.js:131
-#: packages/block-library/shared/inspector-controls.js:45
 msgid "Hidden label"
 msgstr ""
 
 #: build/block-library/field/index.js:1
 #: packages/block-library/field/edit.js:134
-msgid "Hiding the field's label"
+msgid "Hide the field's label, current label becomes the field's placeholder."
 msgstr ""
 
 #: build/block-library/field/index.js:1
@@ -698,7 +704,6 @@ msgstr ""
 #: packages/block-library/fieldset/edit.js:102
 #: packages/block-library/form/edit/create-form-modal/index.js:81
 #: packages/block-library/form/edit/inspector-controls.js:37
-#: packages/block-library/shared/inspector-controls.js:55
 msgid "Name"
 msgstr ""
 
@@ -721,7 +726,6 @@ msgstr ""
 #: build/block-library/label/index.js:1
 #: packages/block-library/fieldset/edit.js:77
 #: packages/block-library/label/edit.js:227
-#: packages/block-library/shared/form-label.js:68
 msgid "Enter a required field label…"
 msgstr ""
 
@@ -888,6 +892,16 @@ msgstr ""
 msgid "Choose a Form"
 msgstr ""
 
+#: build/block-library/form/view.js:1
+#: packages/block-library/form/view.js:29
+msgid "Success! Your submission has been completed."
+msgstr ""
+
+#: build/block-library/form/view.js:1
+#: packages/block-library/form/view.js:39
+msgid "Unfortunately, your submission was not successful. Please ensure all fields are correctly filled out and try again."
+msgstr ""
+
 #: build/block-library/input/index.js:1
 #: build/block-library/select/index.js:1
 #: build/block-library/textarea/index.js:1
@@ -908,7 +922,6 @@ msgstr ""
 
 #: build/block-library/label/index.js:1
 #: packages/block-library/label/edit.js:212
-#: packages/block-library/shared/form-label.js:30
 msgid "Enter a label for the field…"
 msgstr ""
 
@@ -924,11 +937,6 @@ msgstr ""
 #: packages/block-library/select-group/edit.js:95
 #: packages/block-library/select-option/edit.js:33
 msgid "Write the option text…"
-msgstr ""
-
-#: build/plugin/index.js:13
-#: packages/plugin/components/app/index.js:29
-msgid "Initial Settings"
 msgstr ""
 
 #: packages/block-library/fieldset/variations.js:9
@@ -985,22 +993,6 @@ msgstr ""
 msgid "Last Name"
 msgstr ""
 
-#: packages/block-library/shared/inspector-controls.js:50
-msgid "Make the label hidden from view but still accessible."
-msgstr ""
-
-#: packages/block-library/shared/inspector-controls.js:63
-msgid "Name of the form control. Defaults to the input's label."
-msgstr ""
-
-#: packages/block-library/shared/inspector-controls.js:67
-msgid "Value"
-msgstr ""
-
-#: packages/block-library/shared/inspector-controls.js:72
-msgid "The initial value of the control."
-msgstr ""
-
 #: build/block-library/button/block.json
 #: packages/block-library/button/block.json
 msgctxt "block title"
@@ -1011,18 +1003,6 @@ msgstr ""
 #: packages/block-library/button/block.json
 msgctxt "block description"
 msgid "A button for the form"
-msgstr ""
-
-#: build/block-library/button/block.json
-#: packages/block-library/button/block.json
-msgctxt "block style label"
-msgid "Fill"
-msgstr ""
-
-#: build/block-library/button/block.json
-#: packages/block-library/button/block.json
-msgctxt "block style label"
-msgid "Outline"
 msgstr ""
 
 #: build/block-library/captcha/block.json
@@ -1083,16 +1063,6 @@ msgstr ""
 #: packages/block-library/input/block.json
 msgctxt "block description"
 msgid "A simple form input field."
-msgstr ""
-
-#: build/block-library/input/block.json
-#: build/block-library/select/block.json
-#: build/block-library/textarea/block.json
-#: packages/block-library/input/block.json
-#: packages/block-library/select/block.json
-#: packages/block-library/textarea/block.json
-msgctxt "block style label"
-msgid "Inverted"
 msgstr ""
 
 #: build/block-library/label/block.json
