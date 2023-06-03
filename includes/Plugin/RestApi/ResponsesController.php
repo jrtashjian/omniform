@@ -99,6 +99,7 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 				),
 				'post_type'    => 'omniform_response',
 				'post_status'  => 'publish',
+				'post_parent'  => $form->get_id(),
 				'meta_input'   => array(
 					'_omniform_id'      => $form->get_id(),
 					'_omniform_user_ip' => $_SERVER['REMOTE_ADDR'],
