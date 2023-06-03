@@ -126,20 +126,13 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				$responses   = (int) get_post_meta( $post_id, '_omniform_responses', true );
 
 				if ( class_exists( '\NumberFormatter' ) ) {
-					$percentage_num = new \NumberFormatter( 'en_US', \NumberFormatter::PERCENT );
-
-					echo esc_attr(
-						empty( $impressions )
-							? $percentage_num->format( 0 )
-							: $percentage_num->format( $responses / $impressions )
-					);
+					$formatter = new \NumberFormatter( 'en_US', \NumberFormatter::PERCENT );
+					$formatted = $formatter->format( $responses / $impressions ?? 0 );
 				} else {
-					echo esc_attr(
-						empty( $impressions )
-							? '0%'
-							: round( $responses / $impressions * 100 ) . '%'
-					);
+					$formatted = $impressions ? round( $responses / $impressions * 100 ) . '%' : '0%';
 				}
+
+				echo esc_attr( $formatted );
 			},
 			10,
 			2
@@ -156,11 +149,13 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				$responses = (int) get_post_meta( $post_id, '_omniform_responses', true );
 
 				if ( class_exists( '\NumberFormatter' ) ) {
-					$human_readable = new \NumberFormatter( 'en_US', \NumberFormatter::PADDING_POSITION );
-					echo esc_attr( $human_readable->format( $responses ) );
+					$formatter = new \NumberFormatter( 'en_US', \NumberFormatter::PADDING_POSITION );
+					$formatted = $formatter->format( $responses );
 				} else {
-					echo esc_attr( number_format( $responses ) );
+					$formatted = number_format( $responses );
 				}
+
+				echo esc_attr( $formatted );
 			},
 			10,
 			2
@@ -177,11 +172,13 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				$impressions = (int) get_post_meta( $post_id, '_omniform_impressions', true );
 
 				if ( class_exists( '\NumberFormatter' ) ) {
-					$human_readable = new \NumberFormatter( 'en_US', \NumberFormatter::PADDING_POSITION );
-					echo esc_attr( $human_readable->format( $impressions ) );
+					$formatter = new \NumberFormatter( 'en_US', \NumberFormatter::PADDING_POSITION );
+					$formatted = $formatter->format( $impressions );
 				} else {
-					echo esc_attr( number_format( $impressions ) );
+					$formatted = number_format( $impressions );
 				}
+
+				echo esc_attr( $formatted );
 			},
 			10,
 			2
