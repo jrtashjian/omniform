@@ -59,16 +59,24 @@ return array(
 	),
 
 	'patchers'   => array(
-		/**
-		 * ERROR date() is affected by runtime timezone changes which can cause date/time to be incorrectly displayed. Use gmdate() instead.
-		 * (WordPress.DateTime.RestrictedFunctions.date_date)
-		 */
 		function( $file_path, $prefix, $content ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
-			return \preg_replace(
+			// Disallow direct file access to files that contain procedural code and functions.
+			if ( false !== strpos( $file_path, 'respect/stringifier/src/stringify.php' ) ) {
+				$content = preg_replace(
+					'/(namespace.+?;)/',
+					"$1\ndefined( 'ABSPATH' ) || exit;",
+					$content
+				);
+			}
+
+			// ERROR date() is affected by runtime timezone changes which can cause date/time to be incorrectly displayed. Use gmdate() instead. (WordPress.DateTime.RestrictedFunctions.date_date).
+			$content = preg_replace(
 				'/(\W)date([\(;])/',
 				'$1gmdate$2',
 				$content
 			);
+
+			return $content;
 		},
 	),
 );
