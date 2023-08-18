@@ -61,7 +61,11 @@ return array(
 	'patchers'   => array(
 		function( $file_path, $prefix, $content ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
 			// Disallow direct file access to files that contain procedural code and functions.
-			if ( false !== strpos( $file_path, 'respect/stringifier/src/stringify.php' ) ) {
+			if (
+				false !== strpos( $file_path, 'respect/stringifier/src/stringify.php' ) ||
+				false !== strpos( $file_path, 'symfony/polyfill-mbstring/bootstrap.php' ) ||
+				false !== strpos( $file_path, 'symfony/polyfill-mbstring/bootstrap80.php' )
+			) {
 				$content = preg_replace(
 					'/(namespace.+?;)/',
 					"$1\ndefined( 'ABSPATH' ) || exit;",
