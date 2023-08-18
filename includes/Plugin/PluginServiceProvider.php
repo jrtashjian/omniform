@@ -125,7 +125,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				$impressions = (int) get_post_meta( $post_id, '_omniform_impressions', true );
 				$responses   = (int) get_post_meta( $post_id, '_omniform_responses', true );
 
-				if ( $impressions === 0 ) {
+				if ( 0 === $impressions ) {
 					echo esc_attr( '0%' );
 					return;
 				}
