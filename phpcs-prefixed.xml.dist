@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<ruleset name="OmniForm">
+	<description>Rules for OmniForm prefixed vendor files</description>
+
+	<arg name="extensions" value="php" />
+	<arg name="basepath" value="./" />
+	<file>./vendor_prefixed</file>
+
+	<arg name="colors" />
+	<arg value="sp" />
+
+	<rule ref="WordPress-Core">
+		<exclude name="Generic" />
+		<exclude name="PEAR.Functions.FunctionCallSignature" />
+		<exclude name="PHPCompatibility.Interfaces" />
+		<exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing" />
+		<exclude name="Squiz.PHP.DisallowMultipleAssignments" />
+		<exclude name="Squiz.Strings.DoubleQuoteUsage" />
+		<exclude name="WordPress.Arrays" />
+		<exclude name="WordPress.CodeAnalysis.AssignmentInCondition" />
+		<exclude name="WordPress.Files.FileName"/>
+		<exclude name="WordPress.NamingConventions" />
+		<exclude name="WordPress.PHP" />
+		<exclude name="WordPress.WhiteSpace" />
+	</rule>
+
+</ruleset>
