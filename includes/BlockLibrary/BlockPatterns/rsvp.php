@@ -6,7 +6,7 @@
  */
 
 return array(
-	'title'   => __( 'RSVP', 'omniform' ),
+	'title'   => esc_attr__( 'RSVP', 'omniform' ),
 	'content' => '
 		<!-- wp:group {"layout":{"type":"constrained"}} -->
 		<div class="wp-block-group"><!-- wp:group {"style":{"spacing":{"blockGap":"var:preset|spacing|30"}},"layout":{"type":"flex","orientation":"vertical","justifyContent":"center"}} -->

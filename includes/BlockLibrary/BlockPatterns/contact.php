@@ -6,7 +6,7 @@
  */
 
 return array(
-	'title'   => __( 'Contact', 'omniform' ),
+	'title'   => esc_attr__( 'Contact', 'omniform' ),
 	'content' => '
 		<!-- wp:group {"layout":{"type":"constrained"}} -->
 		<div class="wp-block-group"><!-- wp:heading -->

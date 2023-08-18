@@ -6,7 +6,7 @@
  */
 
 return array(
-	'title'   => __( 'Membership Registration', 'omniform' ),
+	'title'   => esc_attr__( 'Membership Registration', 'omniform' ),
 	'content' => '
 		<!-- wp:group {"layout":{"type":"constrained"}} -->
 		<div class="wp-block-group"><!-- wp:heading -->

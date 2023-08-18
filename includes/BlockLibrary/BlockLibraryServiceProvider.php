@@ -164,8 +164,8 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 		register_block_pattern_category(
 			'omniform',
 			array(
-				'label'       => __( 'Omniform', 'omniform' ),
-				'description' => __( 'Common form templates to get you started quickly.', 'omniform' ),
+				'label'       => esc_attr__( 'Omniform', 'omniform' ),
+				'description' => esc_attr__( 'Common form templates to get you started quickly.', 'omniform' ),
 			)
 		);
 
@@ -195,19 +195,19 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 
 		$block_categories[] = array(
 			'slug'  => 'omniform',
-			'title' => __( 'Forms', 'omniform' ),
+			'title' => esc_attr__( 'Forms', 'omniform' ),
 			'icon'  => null,
 		);
 
 		$block_categories[] = array(
 			'slug'  => 'omniform-control-simple',
-			'title' => __( 'Simple Controls', 'omniform' ),
+			'title' => esc_attr__( 'Simple Controls', 'omniform' ),
 			'icon'  => null,
 		);
 
 		$block_categories[] = array(
 			'slug'  => 'omniform-control-group',
-			'title' => __( 'Grouped Controls', 'omniform' ),
+			'title' => esc_attr__( 'Grouped Controls', 'omniform' ),
 			'icon'  => null,
 		);
 

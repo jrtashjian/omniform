@@ -54,7 +54,7 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 		if ( ! $form ) {
 			return new \WP_Error(
 				'omniform_not_found',
-				__( 'The requested form was not found.', 'omniform' ),
+				esc_attr__( 'The requested form was not found.', 'omniform' ),
 				array( 'status' => 404 )
 			);
 		}

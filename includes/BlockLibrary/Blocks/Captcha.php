@@ -83,10 +83,10 @@ class Captcha extends BaseControlBlock {
 	 */
 	public function get_field_label() {
 		$service_labels = array(
-			'hcaptcha'    => __( 'hCaptcha', 'omniform' ),
-			'recaptchav2' => __( 'reCAPTCHA', 'omniform' ),
-			'recaptchav3' => __( 'reCAPTCHA', 'omniform' ),
-			'turnstile'   => __( 'Turnstile', 'omniform' ),
+			'hcaptcha'    => esc_attr__( 'hCaptcha', 'omniform' ),
+			'recaptchav2' => esc_attr__( 'reCAPTCHA', 'omniform' ),
+			'recaptchav3' => esc_attr__( 'reCAPTCHA', 'omniform' ),
+			'turnstile'   => esc_attr__( 'Turnstile', 'omniform' ),
 		);
 
 		return $service_labels[ $this->get_block_attribute( 'service' ) ];

@@ -105,9 +105,9 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				return array_merge(
 					$part_one,
 					array(
-						'responses'   => __( 'Responses', 'omniform' ),
-						'impressions' => __( 'Impressions', 'omniform' ),
-						'conversion'  => __( 'Conversion Rate', 'omniform' ),
+						'responses'   => esc_html__( 'Responses', 'omniform' ),
+						'impressions' => esc_html__( 'Impressions', 'omniform' ),
+						'conversion'  => esc_html__( 'Conversion Rate', 'omniform' ),
 					),
 					$part_two,
 				);
@@ -202,7 +202,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					esc_url( admin_url( sprintf( 'edit.php?post_type=omniform_response&omniform_id=%d', $post->ID ) ) ),
 					/* translators: %s: Form title. */
 					esc_attr( sprintf( __( 'View &#8220;%s&#8221; responses', 'omniform' ), $post->post_title ) ),
-					__( 'Responses', 'omniform' ),
+					esc_html__( 'Responses', 'omniform' ),
 				);
 
 				return $actions;
@@ -218,8 +218,8 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				return array(
 					'cb'       => $columns['cb'],
 					'title'    => $columns['title'],
-					'form'     => __( 'Form', 'omniform' ),
-					'formdata' => __( 'Form Data', 'omniform' ),
+					'form'     => esc_html__( 'Form', 'omniform' ),
+					'formdata' => esc_html__( 'Form Data', 'omniform' ),
 					'date'     => $columns['date'],
 				);
 			}

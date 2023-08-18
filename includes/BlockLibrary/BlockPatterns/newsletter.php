@@ -6,7 +6,7 @@
  */
 
 return array(
-	'title'   => __( 'Newsletter', 'omniform' ),
+	'title'   => esc_attr__( 'Newsletter', 'omniform' ),
 	'content' => '
 		<!-- wp:group {"style":{"spacing":{"padding":{"top":"2em","right":"2em","bottom":"2em","left":"2em"},"blockGap":"1em"},"border":{"radius":"8px","width":"3px"}},"borderColor":"contrast","textColor":"foreground","layout":{"type":"default"}} -->
 		<div class="wp-block-group has-border-color has-contrast-border-color has-foreground-color has-text-color" style="border-width:3px;border-radius:8px;padding-top:2em;padding-right:2em;padding-bottom:2em;padding-left:2em"><!-- wp:columns {"isStackedOnMobile":false} -->

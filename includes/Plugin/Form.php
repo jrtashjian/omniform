@@ -306,10 +306,10 @@ class Form {
 
 		$message[] = '';
 		$message[] = '---';
-		$message[] = sprintf( 'This email was sent to notify you of a response made through the contact form on %s.', get_bloginfo( 'url' ) );
+		$message[] = sprintf( 'This email was sent to notify you of a response made through the contact form on %s.', esc_url( get_bloginfo( 'url' ) ) );
 		$message[] = 'Time: ' . $response_data['response']->post_date;
 		$message[] = 'IP Address: ' . $_SERVER['REMOTE_ADDR'];
-		$message[] = 'Form URL: ' . get_post_meta( $response_id, '_wp_http_referer', true );
+		$message[] = 'Form URL: ' . esc_url( get_post_meta( $response_id, '_wp_http_referer', true ) );
 
 		return esc_html( implode( "\n", $message ) );
 	}
