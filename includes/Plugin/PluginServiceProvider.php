@@ -125,6 +125,11 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				$impressions = (int) get_post_meta( $post_id, '_omniform_impressions', true );
 				$responses   = (int) get_post_meta( $post_id, '_omniform_responses', true );
 
+				if ( $impressions === 0 ) {
+					echo esc_attr( '0%' );
+					return;
+				}
+
 				if ( class_exists( '\NumberFormatter' ) ) {
 					$formatter = new \NumberFormatter( 'en_US', \NumberFormatter::PERCENT );
 					$formatted = $formatter->format( $responses / $impressions ?? 0 );
