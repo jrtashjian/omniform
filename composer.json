@@ -31,7 +31,7 @@
         "johnpbloch/wordpress-core": "^6.1",
         "phpcompatibility/phpcompatibility-wp": "^2.1",
         "wp-cli/wp-cli-bundle": "^2.6",
-        "wp-coding-standards/wpcs": "^2.3",
+        "wp-coding-standards/wpcs": "^2.2",
         "wp-phpunit/wp-phpunit": "^6.1",
         "yoast/phpunit-polyfills": "^1.0"
     },
@@ -46,6 +46,7 @@
     },
     "scripts": {
         "lint": "phpcs --standard=phpcs.xml.dist",
+        "lint-prefixed": "phpcs --standard=phpcs-prefixed.xml.dist",
         "format": "phpcbf --standard=phpcs.xml.dist --report-summary --report-source",
         "test": "phpunit",
         "makepot": "wp i18n make-pot . --exclude=\"node_modules,vendor,vendor_prefixed\" --headers='{\"Last-Translator\":\"info@omniform.io\",\"Language-Team\":\"info@omniform.io\",\"Report-Msgid-Bugs-To\":\"https://omniform.io/contact\"}'",
