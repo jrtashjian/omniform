@@ -6,6 +6,7 @@ node_modules/
 package-lock.json
 package.json
 packages/
+phpcs-prefixed.xml.dist
 phpcs.xml.dist
 phpunit.xml.dist
 phpunit/
