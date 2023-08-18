@@ -92,8 +92,8 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 				'post_title'   => wp_generate_uuid4(),
 				'post_content' => wp_json_encode(
 					array(
-						'response' => $response_data,
-						'fields'   => $fields_data,
+						'response' => array_map( 'sanitize_textarea_field', $response_data ),
+						'fields'   => array_map( 'sanitize_textarea_field', $fields_data ),
 						'groups'   => $form->get_groups(),
 					)
 				),
@@ -102,8 +102,8 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 				'post_parent'  => $form->get_id(),
 				'meta_input'   => array(
 					'_omniform_id'      => $form->get_id(),
-					'_omniform_user_ip' => $_SERVER['REMOTE_ADDR'],
-					'_wp_http_referer'  => $request->get_param( '_wp_http_referer' ),
+					'_omniform_user_ip' => sanitize_text_field( $_SERVER['REMOTE_ADDR'] ),
+					'_wp_http_referer'  => sanitize_text_field( $request->get_param( '_wp_http_referer' ) ),
 				),
 			),
 			true

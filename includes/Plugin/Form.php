@@ -208,7 +208,9 @@ class Form {
 	 * @param \WP_REST_Request $request Full details about the request.
 	 */
 	public function validate( \WP_REST_Request $request ) {
-		$request_params = new \OmniForm\Dependencies\Dflydev\DotAccessData\Data( $request->get_params() );
+		$request_params = new \OmniForm\Dependencies\Dflydev\DotAccessData\Data(
+			array_map( 'sanitize_textarea_field', $request->get_params() )
+		);
 
 		$this->register_fields();
 
@@ -308,7 +310,7 @@ class Form {
 		$message[] = '---';
 		$message[] = sprintf( 'This email was sent to notify you of a response made through the contact form on %s.', esc_url( get_bloginfo( 'url' ) ) );
 		$message[] = 'Time: ' . $response_data['response']->post_date;
-		$message[] = 'IP Address: ' . $_SERVER['REMOTE_ADDR'];
+		$message[] = 'IP Address: ' . sanitize_text_field( $_SERVER['REMOTE_ADDR'] );
 		$message[] = 'Form URL: ' . esc_url( get_post_meta( $response_id, '_wp_http_referer', true ) );
 
 		return esc_html( implode( "\n", $message ) );
