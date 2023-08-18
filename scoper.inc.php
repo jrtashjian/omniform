@@ -57,4 +57,18 @@ return array(
 			)
 			->in( 'vendor' ),
 	),
+
+	'patchers'   => array(
+		/**
+		 * ERROR date() is affected by runtime timezone changes which can cause date/time to be incorrectly displayed. Use gmdate() instead.
+		 * (WordPress.DateTime.RestrictedFunctions.date_date)
+		 */
+		function( $file_path, $prefix, $content ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
+			return \preg_replace(
+				'/(\W)date([\(;])/',
+				'$1gmdate$2',
+				$content
+			);
+		},
+	),
 );
