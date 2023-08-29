@@ -23,8 +23,6 @@ class Fieldset extends BaseBlock {
 			return '';
 		}
 
-		$form_id = omniform()->get( Form::class )->get_id() ?? $this->get_block_context( 'postId' );
-
 		$allowed_html = array(
 			'strong' => array(),
 			'em'     => array(),
@@ -39,6 +37,8 @@ class Fieldset extends BaseBlock {
 		$label_required = null;
 
 		if ( $this->get_block_context( 'isRequired' ) ) {
+			$form_id = omniform()->get( Form::class )->get_id() ?? $this->get_block_context( 'postId' );
+
 			$label_required = sprintf(
 				'<span class="omniform-field-required">%s</span>',
 				wp_kses( get_post_meta( $form_id, 'required_label', true ), $allowed_html )
