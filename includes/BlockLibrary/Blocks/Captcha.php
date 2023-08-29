@@ -30,8 +30,13 @@ class Captcha extends BaseControlBlock {
 	 */
 	public function render() {
 		$service = $this->get_block_attribute( 'service' );
-		$theme   = $this->get_block_attribute( 'theme' );
-		$size    = $this->get_block_attribute( 'size' );
+
+		if ( empty( $service ) ) {
+			return '';
+		}
+
+		$theme = $this->get_block_attribute( 'theme' );
+		$size  = $this->get_block_attribute( 'size' );
 
 		$site_key = get_option( 'omniform_' . $service . '_site_key' );
 
@@ -52,6 +57,14 @@ class Captcha extends BaseControlBlock {
 				$service_url = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=omniformCaptchaOnLoad';
 				$classname   = 'cf-turnstile';
 				break;
+			default:
+				$service_url = '';
+				$classname   = '';
+				break;
+		}
+
+		if ( empty( $service_url ) ) {
+			return '';
 		}
 
 		wp_enqueue_script(
