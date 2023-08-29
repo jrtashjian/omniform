@@ -24,14 +24,22 @@ jobs:
       WP_ENV_CORE: ${{ format( 'https://wordpress.org/wordpress-{0}.zip', matrix.wordpress ) }}
     steps:
       - uses: actions/checkout@v3
+
       - name: Restore npm dependency cache
         uses: ./.github/actions/restore-npm-cache
-      - run: npm install
-      - name: Restore dependency cache
-        uses: ./.github/actions/restore-composer-cache
-      - run: composer install
+
+      - name: Build scripts
+        run: npm run build
+
+      - name: Install PHP-Scoper
+        run: composer global require humbug/php-scoper
+
+      - name: Install composer dependencies
+        run: composer run phpscoper
+
       - name: Start Docker environment
         run: npm run wp-env start
+
       - name: Running single site unit tests
         if: ${{ ! matrix.multisite }}
         run: |
