@@ -1,0 +1,37 @@
+name: Unit Tests
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test-php:
+    name: PHP ${{matrix.php}}${{ matrix.multisite && ' multisite' || '' }}${{ matrix.wordpress != '' && format( ' (WP {0}) ', matrix.wordpress ) || '' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        php:
+          - "7.4"
+          - "8.0"
+          - "8.1"
+          - "8.2"
+        multisite: [false]
+        wordpress: ["latest"]
+    env:
+      WP_ENV_PHP_VERSION: ${{ matrix.php }}
+      WP_ENV_CORE: ${{ format( 'https://wordpress.org/wordpress-{0}.zip', matrix.wordpress ) }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Restore npm dependency cache
+        uses: ./.github/actions/restore-npm-cache
+      - name: Restore dependency cache
+        uses: ./.github/actions/restore-composer-cache
+      - name: Start Docker environment
+        run: npm run wp-env start
+      - name: Running single site unit tests
+        if: ${{ ! matrix.multisite }}
+        run: |
+          set -o pipefail
+          npm run test:unit:php:base | tee phpunit.log
