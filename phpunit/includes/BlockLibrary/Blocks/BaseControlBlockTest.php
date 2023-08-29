@@ -12,7 +12,14 @@ use OmniForm\BlockLibrary\Blocks\BaseControlBlock;
 /**
  * Tests the BaseControlBlock class.
  */
-class BaseControlBlockTest extends BlockTestCase {
+class BaseControlBlockTest extends FormBlockTestCase {
+	/**
+	 * The block instance to test against.
+	 *
+	 * @var \OmniForm\BlockLibrary\Blocks\BaseControlBlock
+	 */
+	protected $block_instance;
+
 	/**
 	 * Register the block to test against.
 	 */

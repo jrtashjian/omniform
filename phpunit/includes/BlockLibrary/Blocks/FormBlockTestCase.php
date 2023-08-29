@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests the BlockTestCase class.
+ * Tests the FormBlockTestCase class.
  *
  * @package OmniForm
  */
@@ -8,13 +8,13 @@
 namespace OmniForm\Tests\BlockLibrary\Blocks;
 
 /**
- * Tests the BlockTestCase class.
+ * Tests the FormBlockTestCase class.
  */
-class BlockTestCase extends \WP_UnitTestCase {
+class FormBlockTestCase extends \WP_UnitTestCase {
 	/**
 	 * The block instance to test against.
 	 *
-	 * @var \OmniForm\BlockLibrary\Blocks\BaseControlBlock
+	 * @var \OmniForm\BlockLibrary\Blocks\FormBlockInterface
 	 */
 	protected $block_instance;
 
@@ -28,9 +28,9 @@ class BlockTestCase extends \WP_UnitTestCase {
 	/**
 	 * Register the block to test against.
 	 *
-	 * @param \OmniForm\BlockLibrary\Blocks\BaseControlBlock $block_object The block object to test against.
+	 * @param \OmniForm\BlockLibrary\Blocks\FormBlockInterface $block_object The block object to test against.
 	 */
-	protected function register_block_type( \OmniForm\BlockLibrary\Blocks\BaseControlBlock $block_object ) {
+	protected function register_block_type( \OmniForm\BlockLibrary\Blocks\FormBlockInterface $block_object ) {
 		$this->block_type_name = $block_object->block_type_metadata();
 
 		register_block_type(
