@@ -17,6 +17,10 @@ class SelectGroup extends BaseBlock {
 	 * @return string Returns the block content.
 	 */
 	public function render() {
+		if ( empty( $this->get_block_attribute( 'fieldLabel' ) ) ) {
+			return '';
+		}
+
 		return sprintf(
 			'<optgroup label="%s">%s</optgroup>',
 			esc_attr( $this->get_block_attribute( 'fieldLabel' ) ),
