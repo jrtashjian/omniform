@@ -12,60 +12,12 @@ use OmniForm\BlockLibrary\Blocks\BaseControlBlock;
 /**
  * Tests the BaseControlBlock class.
  */
-class BaseControlBlockTest extends \WP_UnitTestCase {
+class BaseControlBlockTest extends BlockTestCase {
 	/**
 	 * Register the block to test against.
 	 */
 	public function set_up() {
-		$block_object = new TextControlBlock();
-
-		register_block_type(
-			$block_object->block_type_metadata(),
-			array(
-				'render_callback' => array( $block_object, 'render_block' ),
-				'uses_context'    => array(
-					'omniform/fieldGroupName',
-					'omniform/fieldGroupLabel',
-					'omniform/fieldGroupIsRequired',
-					'omniform/fieldLabel',
-					'omniform/fieldName',
-					'omniform/fieldIsRequired',
-				),
-			)
-		);
-	}
-
-	/**
-	 * Helper method to render a block comment delimeter.
-	 *
-	 * @param array $attributes The block attributes.
-	 */
-	private function render_block_with_attributes( $attributes = array() ) {
-		return do_blocks(
-			serialize_block(
-				array(
-					'blockName'    => 'omniform/text-control-block',
-					'attrs'        => $attributes,
-					'innerContent' => array(),
-				)
-			)
-		);
-	}
-
-	/**
-	 * Helper method to apply a block context.
-	 *
-	 * @param string $context The block context to apply.
-	 * @param mixed  $value   The value to apply to the block context.
-	 */
-	private function apply_block_context( $context, $value ) {
-		add_filter(
-			'render_block_context',
-			function( $block_contexts ) use ( $context, $value ) {
-				$block_contexts[ $context ] = $value;
-				return $block_contexts;
-			}
-		);
+		$this->register_block_type( new TextControlBlock() );
 	}
 
 	/**
@@ -93,6 +45,9 @@ class BaseControlBlockTest extends \WP_UnitTestCase {
 	 * Make sure the field label is used as the field name if the fieldName attribute is empty.
 	 */
 	public function test_field_group_name() {
+		$this->render_block_with_attributes();
+		$this->assertFalse( $this->block_instance->is_grouped() );
+
 		$this->apply_block_context( 'omniform/fieldLabel', 'field label' );
 		$this->apply_block_context( 'omniform/fieldName', 'field name' );
 
@@ -101,6 +56,20 @@ class BaseControlBlockTest extends \WP_UnitTestCase {
 
 		$this->apply_block_context( 'omniform/fieldGroupName', 'field group name' );
 		$this->assertStringContainsString( 'name="field-group-name[field-name]"', $this->render_block_with_attributes() );
+
+		$this->assertTrue( $this->block_instance->is_grouped() );
+	}
+
+	/**
+	 * Make sure validation rules are added to the field if the fieldIsRequired context is true.
+	 */
+	public function test_validation_rules() {
+		$this->render_block_with_attributes();
+		$this->assertEmpty( $this->block_instance->has_validation_rules() );
+
+		$this->apply_block_context( 'omniform/fieldIsRequired', true );
+		$this->render_block_with_attributes();
+		$this->assertNotEmpty( $this->block_instance->has_validation_rules() );
 	}
 }
 

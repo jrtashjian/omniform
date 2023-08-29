@@ -1,18 +1,18 @@
 <?php
 /**
- * Tests the Core class.
+ * Tests the Application class.
  *
  * @package OmniForm
  */
 
-namespace OmniForm\Tests\Core;
+namespace OmniForm\Tests\Application;
 
 use OmniForm\Application;
 
 /**
- * Tests the Core class.
+ * Tests the Application class.
  */
-class CoreTest extends \WP_UnitTestCase {
+class ApplicationTest extends \WP_UnitTestCase {
 	/**
 	 * The full path to the plugin.
 	 *

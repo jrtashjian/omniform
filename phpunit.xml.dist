@@ -6,10 +6,11 @@
 	convertErrorsToExceptions="true"
 	convertNoticesToExceptions="true"
 	convertWarningsToExceptions="true"
+	convertDeprecationsToExceptions="true"
 	>
 	<testsuites>
-		<testsuite name="OmniForm Test Suite">
-			<directory suffix=".php">./phpunit/</directory>
+		<testsuite name="default">
+			<directory suffix="Test.php">./phpunit/</directory>
 		</testsuite>
 	</testsuites>
 	<filter>
