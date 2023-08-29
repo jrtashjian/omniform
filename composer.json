@@ -21,6 +21,11 @@
             "vendor_prefixed/respect/stringifier/src/stringify.php"
         ]
     },
+    "autoload-dev": {
+        "psr-4": {
+            "OmniForm\\Tests\\": "phpunit/includes"
+        }
+    },
     "require": {
         "dflydev/dot-access-data": "^3.0",
         "league/container": "^4.2",
