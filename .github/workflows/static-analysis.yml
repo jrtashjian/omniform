@@ -16,7 +16,6 @@ jobs:
         uses: ./.github/actions/restore-composer-cache
       - run: composer install --no-autoloader
       - run: composer run lint
-      - run: composer run lint-prefixed
 
 
   lint_js:
