@@ -37,8 +37,11 @@ jobs:
       - name: Add Composer bin to PATH
         run: echo "$HOME/.composer/vendor/bin/" >> $GITHUB_PATH
 
-      - name: Install composer dependencies
+      - name: Run PHP-Scoper
         run: composer run phpscoper
+
+      - name: Install composer dependencies
+        run: composer install
 
       - name: Start Docker environment
         run: npm run wp-env start
