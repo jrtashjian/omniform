@@ -34,6 +34,9 @@ jobs:
       - name: Install PHP-Scoper
         run: composer global require humbug/php-scoper
 
+      - name: Add Composer bin to PATH
+        run: echo "$HOME/.composer/vendor/bin/" >> $GITHUB_PATH
+
       - name: Install composer dependencies
         run: composer run phpscoper
 
