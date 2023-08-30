@@ -45,6 +45,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 		add_action( 'init', array( $this, 'register_blocks' ) );
 		add_action( 'init', array( $this, 'register_patterns' ) );
 		add_filter( 'block_categories_all', array( $this, 'register_categories' ) );
+		add_filter( 'block_type_metadata_settings', array( $this, 'update_layout_support' ), 10, 2 );
 	}
 
 	/**
@@ -212,5 +213,29 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 		);
 
 		return $block_categories;
+	}
+
+	/**
+	 * Stabilize layout support for blocks.
+	 *
+	 * @param array $settings Array of determined settings for registering a block type.
+	 * @param array $metadata Metadata provided for registering a block type.
+	 *
+	 * @return array
+	 */
+	public function update_layout_support( $settings, $metadata ) {
+		global $wp_version;
+		if (
+			// Layout support was stabilized in WP 6.3.
+			version_compare( $wp_version, '6.3', '>=' ) &&
+			false !== strpos( $metadata['name'], 'omniform' ) &&
+			isset( $settings['supports']['__experimentalLayout'] )
+		) {
+			// Rename '__experimentalLayout' to 'layout'.
+			$settings['supports']['layout'] = $settings['supports']['__experimentalLayout'];
+			unset( $settings['supports']['__experimentalLayout'] );
+		}
+
+		return $settings;
 	}
 }
