@@ -54,7 +54,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		// Send email notification when a response is created.
 		add_action(
 			'omniform_response_created',
-			function( $response_id, $form ) {
+			function ( $response_id, $form ) {
 				wp_mail(
 					get_option( 'admin_email' ),
 					/* translators: %s: Form title */
@@ -69,7 +69,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		// Increment form response count.
 		add_action(
 			'omniform_response_created',
-			function( $response_id, $form ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
+			function ( $response_id, $form ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
 				// Incremement form responses.
 				$response_count = get_post_meta( $form->get_id(), '_omniform_responses', true );
 				$response_count = $response_count ? $response_count : 0;
@@ -83,7 +83,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		// Increment form impression count.
 		add_action(
 			'omniform_form_render',
-			function( $form_id ) {
+			function ( $form_id ) {
 				if ( is_admin() ) {
 					return;
 				}
@@ -98,7 +98,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		// Add custom columns to CPT.
 		add_filter(
 			'manage_omniform_posts_columns',
-			function( $columns ) {
+			function ( $columns ) {
 				$part_one = array_slice( $columns, 0, 2 );
 				$part_two = array_slice( $columns, 2 );
 
@@ -117,7 +117,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		// Add "Conversion Rate" column to CPT.
 		add_action(
 			'manage_omniform_posts_custom_column',
-			function( $column_key, $post_id ) {
+			function ( $column_key, $post_id ) {
 				if ( 'conversion' !== $column_key ) {
 					return;
 				}
@@ -146,7 +146,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		// Add "Responses" column to CPT.
 		add_action(
 			'manage_omniform_posts_custom_column',
-			function( $column_key, $post_id ) {
+			function ( $column_key, $post_id ) {
 				if ( 'responses' !== $column_key ) {
 					return;
 				}
@@ -169,7 +169,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		// Add "Impressions" column to CPT.
 		add_action(
 			'manage_omniform_posts_custom_column',
-			function( $column_key, $post_id ) {
+			function ( $column_key, $post_id ) {
 				if ( 'impressions' !== $column_key ) {
 					return;
 				}
@@ -192,7 +192,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		// Add responses quick link on CPT table list.
 		add_filter(
 			'post_row_actions',
-			function( $actions, $post ) {
+			function ( $actions, $post ) {
 				if ( 'omniform' !== $post->post_type ) {
 					return $actions;
 				}
@@ -214,7 +214,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		// Add custom columns to Responses CPT.
 		add_filter(
 			'manage_omniform_response_posts_columns',
-			function( $columns ) {
+			function ( $columns ) {
 				return array(
 					'cb'       => $columns['cb'],
 					'title'    => $columns['title'],
@@ -228,7 +228,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		// Add "Form" column to Responses CPT.
 		add_action(
 			'manage_omniform_response_posts_custom_column',
-			function( $column_key, $post_id ) {
+			function ( $column_key, $post_id ) {
 				if ( 'form' !== $column_key ) {
 					return;
 				}
@@ -248,7 +248,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					return;
 				}
 
-				echo sprintf(
+				printf(
 					'<a href="%s" aria-label="%s">%s</a>',
 					esc_url( admin_url( sprintf( 'post.php?post=%d&action=edit', $form->get_id() ) ) ),
 					/* translators: %s: Form title. */
@@ -263,7 +263,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		// Add "Form Data" column to Responses CPT.
 		add_action(
 			'manage_omniform_response_posts_custom_column',
-			function( $column_key, $post_id ) {
+			function ( $column_key, $post_id ) {
 				if ( 'formdata' !== $column_key ) {
 					return;
 				}
@@ -279,7 +279,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		// Remove default meta boxes.
 		add_action(
 			'add_meta_boxes_omniform_response',
-			function() {
+			function () {
 				remove_meta_box( 'submitdiv', 'omniform_response', 'side' );
 				remove_meta_box( 'postcustom', 'omniform_response', 'normal' );
 				remove_meta_box( 'slugdiv', 'omniform_response', 'normal' );
@@ -289,7 +289,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		// Filter responses by form id.
 		add_filter(
 			'parse_query',
-			function( $query ) {
+			function ( $query ) {
 				if ( ! ( is_admin() && $query->is_main_query() ) ) {
 					return $query;
 				}
@@ -319,7 +319,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		// Render response data instead of the editor.
 		add_action(
 			'edit_form_after_editor',
-			function( $post ) {
+			function ( $post ) {
 				if ( 'omniform_response' !== $post->post_type ) {
 					return;
 				}
@@ -333,7 +333,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		// Filter allowed blocks in the editor.
 		add_filter(
 			'allowed_block_types_all',
-			function( $allowed_block_types, $block_editor_context ) {
+			function ( $allowed_block_types, $block_editor_context ) {
 				if (
 					'core/edit-post' === $block_editor_context->name &&
 					'omniform' === $block_editor_context->post->post_type
@@ -385,7 +385,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		// Control when blocks can be inserted.
 		add_filter(
 			'block_type_metadata',
-			function( $metadata ) {
+			function ( $metadata ) {
 				if ( ! is_admin() ) {
 					return $metadata;
 				}

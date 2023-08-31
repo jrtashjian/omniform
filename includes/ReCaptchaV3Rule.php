@@ -20,7 +20,7 @@ class ReCaptchaV3Rule extends AbstractRule {
 	 *
 	 * @return bool
 	 */
-	public function validate( $input ) : bool {
+	public function validate( $input ): bool {
 		$secret = get_option( 'omniform_recaptchav3_secret_key' );
 
 		if ( ! $secret ) {

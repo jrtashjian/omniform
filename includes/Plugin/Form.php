@@ -340,5 +340,4 @@ class Form {
 
 		return $ret;
 	}
-
 }

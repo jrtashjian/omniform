@@ -59,7 +59,7 @@ return array(
 	),
 
 	'patchers'   => array(
-		function( $file_path, $prefix, $content ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
+		function ( $file_path, $prefix, $content ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
 
 			// ERROR date() is affected by runtime timezone changes which can cause date/time to be incorrectly displayed. Use gmdate() instead. (WordPress.DateTime.RestrictedFunctions.date_date).
 			$content = preg_replace(

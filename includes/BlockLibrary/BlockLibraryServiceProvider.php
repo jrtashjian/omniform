@@ -85,7 +85,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 		$patterns = glob( __DIR__ . '/BlockPatterns/*.php' );
 
 		return array_map(
-			function( $pattern ) {
+			function ( $pattern ) {
 				$path_parts = pathinfo( $pattern );
 				return array_merge(
 					array( 'name' => $path_parts['filename'] ),

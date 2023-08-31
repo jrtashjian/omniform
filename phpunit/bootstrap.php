@@ -7,7 +7,7 @@
  */
 
 // Require composer dependencies.
-require_once dirname( dirname( __FILE__ ) ) . '/vendor/autoload.php';
+require_once dirname( __DIR__ ) . '/vendor/autoload.php';
 
 // If we're running in WP's build directory, ensure that WP knows that, too.
 if ( 'build' === getenv( 'LOCAL_DIR' ) ) {
@@ -25,7 +25,7 @@ if ( ! $_tests_dir && 'tests-mysql' === getenv( 'WORDPRESS_DB_HOST' ) ) {
 
 // See if we're installed inside an existing WP dev instance.
 if ( ! $_tests_dir ) {
-	$_try_tests_dir = dirname( __FILE__ ) . '/../../../../../tests/phpunit';
+	$_try_tests_dir = __DIR__ . '/../../../../../tests/phpunit';
 	if ( file_exists( $_try_tests_dir . '/includes/functions.php' ) ) {
 		$_tests_dir = $_try_tests_dir;
 	}
@@ -47,7 +47,7 @@ require_once $_tests_dir . '/includes/functions.php';
  * Manually load the plugin being tested.
  */
 function _manually_load_plugin() {
-	$plugin_path = dirname( dirname( __FILE__ ) );
+	$plugin_path = dirname( __DIR__ );
 	require $plugin_path . '/' . basename( $plugin_path ) . '.php';
 }
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );

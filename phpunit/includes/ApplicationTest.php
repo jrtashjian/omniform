@@ -31,7 +31,7 @@ class ApplicationTest extends \WP_UnitTestCase {
 	 * This method is called before each test.
 	 */
 	public function set_up() {
-		$this->plugin_path = dirname( dirname( dirname( __FILE__ ) ) );
+		$this->plugin_path = dirname( dirname( __DIR__ ) );
 		$this->plugin_file = $this->plugin_path . '/' . basename( $this->plugin_path ) . '.php';
 	}
 

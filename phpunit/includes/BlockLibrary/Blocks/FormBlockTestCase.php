@@ -50,7 +50,7 @@ class FormBlockTestCase extends \WP_UnitTestCase {
 
 		add_filter(
 			'render_block_' . $this->block_type_name,
-			function( $block_content, $block, $instance ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
+			function ( $block_content, $block, $instance ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
 				$this->block_instance = $instance->block_type->render_callback[0];
 				return $block_content;
 			},
@@ -85,7 +85,7 @@ class FormBlockTestCase extends \WP_UnitTestCase {
 	protected function apply_block_context( $context, $value ) {
 		add_filter(
 			'render_block_context',
-			function( $block_contexts ) use ( $context, $value ) {
+			function ( $block_contexts ) use ( $context, $value ) {
 				$block_contexts[ $context ] = $value;
 				return $block_contexts;
 			}

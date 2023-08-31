@@ -20,7 +20,7 @@ class ReCaptchaV2Rule extends AbstractRule {
 	 *
 	 * @return bool
 	 */
-	public function validate( $input ) : bool {
+	public function validate( $input ): bool {
 		$secret = get_option( 'omniform_recaptchav2_secret_key' );
 
 		if ( ! $secret ) {

@@ -85,7 +85,7 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 		 */
 		$filtered_request_params = apply_filters( 'omniform_filtered_request_params', array( 'id', 'rest_route', 'wp_rest', '_locale', '_wp_http_referer' ) );
 
-		$filter_callback = function( $key ) use ( $filtered_request_params ) {
+		$filter_callback = function ( $key ) use ( $filtered_request_params ) {
 			return ! in_array( $key, $filtered_request_params, true );
 		};
 
