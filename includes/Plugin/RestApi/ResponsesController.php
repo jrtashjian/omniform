@@ -49,7 +49,7 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 	 * @return \WP_REST_Response|\WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function create_response( \WP_REST_Request $request ) {
-		$form = omniform()->get( \OmniForm\Plugin\Form::class )->get_instance( $request->get_param( 'id' ) );
+		$form = omniform()->get( \OmniForm\Plugin\Form::class )->get_instance( absint( $request->get_param( 'id' ) ) );
 
 		if ( ! $form ) {
 			return new \WP_Error(
@@ -59,7 +59,12 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 			);
 		}
 
-		$errors = $form->validate( $request );
+		// Prepare the submitted data.
+		$prepared_response_data = $this->sanitize_array(
+			$request->get_params()
+		);
+
+		$errors = $form->validate( $prepared_response_data );
 
 		if ( ! empty( $errors ) ) {
 			$response = array(
@@ -84,17 +89,18 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 			return ! in_array( $key, $filtered_request_params, true );
 		};
 
-		$response_data = array_filter( $request->get_params(), $filter_callback, ARRAY_FILTER_USE_KEY );
-		$fields_data   = array_filter( $form->get_fields(), $filter_callback, ARRAY_FILTER_USE_KEY );
+		// Prepare the form data.
+		$prepared_fields_data = $this->sanitize_array( $form->get_fields() );
+		$prepared_groups_data = $this->sanitize_array( $form->get_groups() );
 
 		$response_id = wp_insert_post(
 			array(
 				'post_title'   => wp_generate_uuid4(),
 				'post_content' => wp_json_encode(
 					array(
-						'response' => array_map( 'sanitize_textarea_field', $response_data ),
-						'fields'   => array_map( 'sanitize_textarea_field', $fields_data ),
-						'groups'   => $form->get_groups(),
+						'response' => array_filter( $prepared_response_data, $filter_callback, ARRAY_FILTER_USE_KEY ),
+						'fields'   => array_filter( $prepared_fields_data, $filter_callback, ARRAY_FILTER_USE_KEY ),
+						'groups'   => $prepared_groups_data,
 					)
 				),
 				'post_type'    => 'omniform_response',
@@ -103,7 +109,7 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 				'meta_input'   => array(
 					'_omniform_id'      => $form->get_id(),
 					'_omniform_user_ip' => sanitize_text_field( $_SERVER['REMOTE_ADDR'] ),
-					'_wp_http_referer'  => sanitize_text_field( $request->get_param( '_wp_http_referer' ) ),
+					'_wp_http_referer'  => sanitize_url( $request->get_param( '_wp_http_referer' ) ),
 				),
 			),
 			true
@@ -129,5 +135,18 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 		return rest_ensure_response(
 			new \WP_HTTP_Response( $response, $response['status'] )
 		);
+	}
+
+	/**
+	 * Sanitizes an array of data.
+	 *
+	 * @param mixed $data The data to sanitize.
+	 *
+	 * @return array
+	 */
+	public function sanitize_array( $data ) {
+		return is_array( $data )
+			? array_map( array( $this, 'sanitize_array' ), $data )
+			: sanitize_textarea_field( $data );
 	}
 }

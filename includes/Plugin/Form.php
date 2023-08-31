@@ -203,14 +203,14 @@ class Form {
 	}
 
 	/**
-	 * Validate the form.
+	 * Sanitize request params.
 	 *
-	 * @param \WP_REST_Request $request Full details about the request.
+	 * @param array $request_params The request params.
+	 *
+	 * @return array The sanitized request params.
 	 */
-	public function validate( \WP_REST_Request $request ) {
-		$request_params = new \OmniForm\Dependencies\Dflydev\DotAccessData\Data(
-			array_map( 'sanitize_textarea_field', $request->get_params() )
-		);
+	public function validate( $request_params ) {
+		$request_params = new \OmniForm\Dependencies\Dflydev\DotAccessData\Data( $request_params );
 
 		$this->register_fields();
 
