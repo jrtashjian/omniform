@@ -58,7 +58,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				wp_mail(
 					get_option( 'admin_email' ),
 					/* translators: %s: Form title */
-					sprintf( '%s Response', $form->get_title() ),
+					esc_attr( sprintf( __( '%s Response', 'omniform' ), $form->get_title() ) ),
 					wp_kses( $form->response_email_message( $response_id ), array() )
 				);
 			},
