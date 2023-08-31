@@ -8,6 +8,7 @@
 	word-break: normal;
 	box-sizing: border-box;
 	border-color: currentcolor;
+	font-weight: inherit;
 
 	@include focus-styles;
 
