@@ -11,6 +11,12 @@ namespace OmniForm\BlockLibrary\Blocks;
  * The Input block class.
  */
 class Input extends BaseControlBlock {
+	const FORMAT_DATE           = 'Y-m-d';
+	const FORMAT_TIME           = 'h:i:00';
+	const FORMAT_MONTH          = 'Y-m';
+	const FORMAT_WEEK           = 'Y-\WW';
+	const FORMAT_DATETIME_LOCAL = 'Y-m-d H:i:00';
+
 	/**
 	 * Renders the form control.
 	 *
@@ -61,15 +67,15 @@ class Input extends BaseControlBlock {
 				return $this->get_field_label();
 			// Date and time inputs need a default vaule to display properly on iOS.
 			case 'date':
-				return gmdate( 'Y-m-d' );
+				return gmdate( self::FORMAT_DATE );
 			case 'time':
-				return gmdate( 'h:i:00' );
+				return gmdate( self::FORMAT_TIME );
 			case 'month':
-				return gmdate( 'Y-m' );
+				return gmdate( self::FORMAT_MONTH );
 			case 'week':
-				return gmdate( 'Y-\WW' );
+				return gmdate( self::FORMAT_WEEK );
 			case 'datetime-local':
-				return gmdate( 'Y-m-d H:i:00' );
+				return gmdate( self::FORMAT_DATETIME_LOCAL );
 			default:
 				return '';
 		}
