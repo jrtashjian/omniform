@@ -67,7 +67,7 @@ export default function FormEdit( {
 				isMissing: hasResolvedEntity && ! entityRecord,
 			};
 		},
-		[ entityId, clientId, contextPostId, contextPostType ]
+		[ entityId, clientId ]
 	);
 
 	const blockProps = useBlockProps( {

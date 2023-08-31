@@ -65,50 +65,50 @@ const mountCaptchaScript = ( id, src ) => {
 	return promise;
 };
 
+const services = {
+	hcaptcha: {
+		icon: iconHCaptcha,
+		label: __( 'hCaptcha', 'omniform' ),
+		scriptUrl: 'https://js.hcaptcha.com/1/api.js',
+		setupLink: 'https://dashboard.hcaptcha.com/sites/new',
+		elementId: 'hcaptcha',
+		elementClassName: 'h-captcha',
+		globalAccessor: 'hcaptcha',
+	},
+	recaptchav2: {
+		icon: iconReCaptcha,
+		label: __( 'reCAPTCHA v2', 'omniform' ),
+		scriptUrl: 'https://www.google.com/recaptcha/api.js',
+		setupLink: 'https://www.google.com/recaptcha/admin/create',
+		elementId: 'recaptcha',
+		elementClassName: 'g-recaptcha',
+		globalAccessor: 'grecaptcha',
+	},
+	recaptchav3: {
+		icon: iconReCaptcha,
+		label: __( 'reCAPTCHA v3', 'omniform' ),
+		scriptUrl: 'https://www.google.com/recaptcha/api.js',
+		setupLink: 'https://www.google.com/recaptcha/admin/create',
+		elementId: 'recaptcha',
+		elementClassName: 'g-recaptcha',
+		globalAccessor: 'grecaptcha',
+	},
+	turnstile: {
+		icon: iconTurnstile,
+		label: __( 'Turnstile', 'omniform' ),
+		scriptUrl: 'https://challenges.cloudflare.com/turnstile/v0/api.js',
+		setupLink: 'https://dash.cloudflare.com/?to=:/account/turnstile',
+		elementId: 'turnstile',
+		elementClassName: 'cf-turnstile',
+		globalAccessor: 'turnstile',
+	},
+};
+
 const Edit = ( {
 	attributes: { service, theme, size },
 	setAttributes,
 } ) => {
 	const container = useRef();
-
-	const services = {
-		hcaptcha: {
-			icon: iconHCaptcha,
-			label: __( 'hCaptcha', 'omniform' ),
-			scriptUrl: 'https://js.hcaptcha.com/1/api.js',
-			setupLink: 'https://dashboard.hcaptcha.com/sites/new',
-			elementId: 'hcaptcha',
-			elementClassName: 'h-captcha',
-			globalAccessor: 'hcaptcha',
-		},
-		recaptchav2: {
-			icon: iconReCaptcha,
-			label: __( 'reCAPTCHA v2', 'omniform' ),
-			scriptUrl: 'https://www.google.com/recaptcha/api.js',
-			setupLink: 'https://www.google.com/recaptcha/admin/create',
-			elementId: 'recaptcha',
-			elementClassName: 'g-recaptcha',
-			globalAccessor: 'grecaptcha',
-		},
-		recaptchav3: {
-			icon: iconReCaptcha,
-			label: __( 'reCAPTCHA v3', 'omniform' ),
-			scriptUrl: 'https://www.google.com/recaptcha/api.js',
-			setupLink: 'https://www.google.com/recaptcha/admin/create',
-			elementId: 'recaptcha',
-			elementClassName: 'g-recaptcha',
-			globalAccessor: 'grecaptcha',
-		},
-		turnstile: {
-			icon: iconTurnstile,
-			label: __( 'Turnstile', 'omniform' ),
-			scriptUrl: 'https://challenges.cloudflare.com/turnstile/v0/api.js',
-			setupLink: 'https://dash.cloudflare.com/?to=:/account/turnstile',
-			elementId: 'turnstile',
-			elementClassName: 'cf-turnstile',
-			globalAccessor: 'turnstile',
-		},
-	};
 
 	const [ siteKey, setSiteKey ] = useEntityProp( 'root', 'site', `omniform_${ service }_site_key` );
 	const [ secretKey, setSecretKey ] = useEntityProp( 'root', 'site', `omniform_${ service }_secret_key` );

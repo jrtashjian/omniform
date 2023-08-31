@@ -5,7 +5,7 @@ import { __experimentalBlockPatternsList as BlockPatternsList } from '@wordpress
 import { createBlock } from '@wordpress/blocks';
 import { __experimentalHStack as HStack } from '@wordpress/components';
 import { useAsyncList } from '@wordpress/compose';
-import { useCallback, useMemo } from '@wordpress/element';
+import { useMemo } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -30,13 +30,13 @@ export default function FormSelectionModal( {
 			};
 		} );
 		return formsAsPatterns;
-	}, forms );
+	}, forms ); // eslint-disable-line react-hooks/exhaustive-deps -- passing `[ forms ]` is causing weird rendering behavior.
 	const shownForms = useAsyncList( filteredForms );
 
-	const onFormSelect = useCallback( ( form ) => {
+	const onFormSelect = ( form ) => {
 		setAttributes( { ref: form.id } );
 		onClose();
-	}, [] );
+	};
 
 	const hasForms = !! forms.length;
 

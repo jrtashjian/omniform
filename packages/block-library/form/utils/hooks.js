@@ -39,7 +39,7 @@ export function useAlternativeForms( excludedId ) {
 			return [];
 		}
 		return forms.filter( ( form ) => form.id !== excludedId ) || [];
-	}, [ forms ] );
+	}, [ forms, excludedId ] );
 
 	return {
 		forms: filteredForms,

@@ -98,7 +98,7 @@ export default function CreateFormModal( { closeModal, onCreate } ) {
 						{ formTypes.map(
 							( { icon, label, type: value, description, disabled } ) => (
 								<Radio
-									key={ label }
+									key={ value }
 									value={ value }
 									className="omniform-create-form-modal__area-radio"
 									disabled={ disabled }
