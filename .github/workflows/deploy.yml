@@ -1,0 +1,55 @@
+name: Deploy to WordPress.org
+
+on:
+  workflow_dispatch:
+  # release:
+  #   types: [published]
+
+jobs:
+
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Restore npm dependency cache
+        uses: ./.github/actions/restore-npm-cache
+
+      - name: Build scripts
+        run: |
+          npm install
+          npm run build
+
+      - name: Install PHP-Scoper
+        run: composer global require humbug/php-scoper
+
+      - name: Install WP CLI
+        run: |
+          composer global require wp-cli/wp-cli-bundle
+          composer global require wp-cli/dist-archive-command
+
+      - name: Add Composer bin to PATH
+        run: echo "$HOME/.composer/vendor/bin/" >> $GITHUB_PATH
+
+      - name: Install composer dependencies
+        run: composer run phpscoper
+
+      - name: WordPress Plugin Deploy
+        id: deploy
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        with:
+          generate-zip: true
+          dry-run: true
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+
+      # - name: Upload release asset
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ github.event.release.upload_url }}
+      #     asset_path: ${{ steps.deploy.outputs.zip-path }}
+      #     asset_name: ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}.zip
+      #     asset_content_type: application/zip
