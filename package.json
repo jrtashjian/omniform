@@ -1,6 +1,7 @@
 {
 	"name": "omniform",
 	"version": "1.0.0",
+	"license": "GPL-2.0-or-later",
 	"private": true,
 	"scripts": {
 		"build:analyze-bundles": "npm run build -- --webpack-bundle-analyzer",

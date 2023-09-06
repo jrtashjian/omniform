@@ -1,5 +1,7 @@
 {
-    "license": "GPL-2.0-only",
+    "name": "jrtashjian/omniform",
+	"type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
     "authors": [
         {
             "name": "JR Tashjian",
