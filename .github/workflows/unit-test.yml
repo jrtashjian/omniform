@@ -1,9 +1,7 @@
 name: Unit Tests
 
 on:
-  push:
-    branches:
-      - master
+  pull_request:
 
 jobs:
   test-php:
