@@ -1,5 +1,6 @@
 _scratchpad
 .*
+bin/
 composer.json
 composer.lock
 node_modules/

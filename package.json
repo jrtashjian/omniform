@@ -1,5 +1,6 @@
 {
 	"name": "omniform",
+	"version": "1.0.0",
 	"private": true,
 	"scripts": {
 		"build:analyze-bundles": "npm run build -- --webpack-bundle-analyzer",
@@ -21,7 +22,8 @@
 		"test:unit:php:coverage": "npm run test:unit:php:base -- --coverage-html phpunit/coverage",
 		"test:unit:php:setup": "wp-env start --xdebug=develop,coverage",
 		"test:unit:php": "npm-run-all test:unit:php:setup test:unit:php:base",
-		"wp-env": "wp-env"
+		"wp-env": "wp-env",
+		"version": "node bin/update-version.js"
 	},
 	"dependencies": {
 		"@wordpress/base-styles": "^4.26.3",
