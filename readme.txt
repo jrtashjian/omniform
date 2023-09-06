@@ -51,5 +51,5 @@ Manual installation method requires downloading the OmniForm plugin and uploadin
 
 == Changelog ==
 
-= 1.0.1 =
+= 1.0.2 =
 Initial release on WordPress.org!
