@@ -24,7 +24,8 @@
 		"test:unit:php:setup": "wp-env start --xdebug=develop,coverage",
 		"test:unit:php": "npm-run-all test:unit:php:setup test:unit:php:base",
 		"wp-env": "wp-env",
-		"version": "node bin/update-version.js && git add -A"
+		"version": "node bin/update-version.js && git add -A",
+		"postversion": "git push && git push --tags"
 	},
 	"dependencies": {
 		"@wordpress/base-styles": "^4.26.3",
