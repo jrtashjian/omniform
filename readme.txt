@@ -1,6 +1,6 @@
 === OmniForm ===
 Contributors: jrtashjian
-Tags: forms, contact, survey, feedback, lead generation, submissions, drag-and-drop, customization, templates, responsive, mobile-friendly, spam protection, email notifications, gutenberg, block editor
+Tags: block editor, form, contact, feedback, response, email, spam protection, gutenberg, survey, lead generation, form builder
 Requires at least: 6.2
 Tested up to: 6.3
 Requires PHP: 7.4
@@ -41,6 +41,13 @@ In the search field type “OmniForm,” then click “Search Plugins.” Once y
 = Manual installation =
 
 Manual installation method requires downloading the OmniForm plugin and uploading it to your web server via your favorite FTP application. The WordPress codex contains [instructions on how to do this here](https://wordpress.org/support/article/managing-plugins/#manual-plugin-installation).
+
+== Screenshots ==
+
+1. OmniForm enhances Block Editor with a specialized form-only editing option.
+2. Save time with OmniForm's pre-designed, customizable form templates.
+3. Build forms seamlessly within a WordPress post or page with OmniForm.
+4. Track all OmniForm submissions and get email notifications within the WordPress dashboard.
 
 == Changelog ==
 
