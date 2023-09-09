@@ -91,32 +91,21 @@ class Input extends BaseControlBlock {
 	public function get_validation_rules() {
 		$rules = parent::get_validation_rules();
 
-		if ( $this->get_block_attribute( 'fieldType' ) === 'email' ) {
-			$rules[] = new Validation\Rules\Email();
-		}
+		$validation_mapping = array(
+			'email'  => new Validation\Rules\Email(),
+			'url'    => new Validation\Rules\Url(),
+			'tel'    => new Validation\Rules\Phone(),
+			'number' => new Validation\Rules\Number(),
+			'date'   => new Validation\Rules\Date( self::FORMAT_DATE ),
+			'time'   => new Validation\Rules\Time( self::FORMAT_TIME ),
+			'month'  => new Validation\Rules\Date( self::FORMAT_MONTH ),
+		);
 
-		if ( $this->get_block_attribute( 'fieldType' ) === 'url' ) {
-			$rules[] = new Validation\Rules\Url();
-		}
-
-		if ( $this->get_block_attribute( 'fieldType' ) === 'tel' ) {
-			$rules[] = new Validation\Rules\Phone();
-		}
-
-		if ( $this->get_block_attribute( 'fieldType' ) === 'number' ) {
-			$rules[] = new Validation\Rules\Number();
-		}
-
-		if ( $this->get_block_attribute( 'fieldType' ) === 'date' ) {
-			$rules[] = new Validation\Rules\Date( self::FORMAT_DATE );
-		}
-
-		if ( $this->get_block_attribute( 'fieldType' ) === 'time' ) {
-			$rules[] = new Validation\Rules\Time( self::FORMAT_TIME );
-		}
-
-		if ( $this->get_block_attribute( 'fieldType' ) === 'month' ) {
-			$rules[] = new Validation\Rules\Date( self::FORMAT_MONTH );
+		if ( isset( $validation_mapping[ $this->get_block_attribute( 'fieldType' ) ] ) ) {
+			$rule    = $validation_mapping[ $this->get_block_attribute( 'fieldType' ) ];
+			$rules[] = $this->is_required()
+				? $rule
+				: new Validation\Rules\Optional( $rule );
 		}
 
 		return $rules;
