@@ -10,85 +10,85 @@ return array(
 	'content' => '
 		<!-- wp:group {"layout":{"type":"constrained"}} -->
 		<div class="wp-block-group"><!-- wp:heading -->
-		<h2 class="wp-block-heading">Feedback</h2>
+		<h2 class="wp-block-heading">' . esc_html__( 'Feedback', 'omniform' ) . '</h2>
 		<!-- /wp:heading -->
 
 		<!-- wp:paragraph -->
-		<p>We value your feedback! Please take a moment to fill out our website feedback form to let us know how we can improve your experience. Your input is important to us and we appreciate your time. Thank you for visiting our website.</p>
+		<p>' . esc_html__( 'We value your feedback! Please take a moment to fill out our website feedback form to let us know how we can improve your experience. Your input is important to us and we appreciate your time. Thank you for visiting our website.', 'omniform' ) . '</p>
 		<!-- /wp:paragraph -->
 
-		<!-- wp:omniform/field {"fieldLabel":"Name","fieldName":"name"} -->
+		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'Name', 'omniform' ) . '","fieldName":"' . esc_attr__( 'name', 'omniform' ) . '"} -->
 		<!-- wp:omniform/label /-->
 
 		<!-- wp:omniform/input /-->
 		<!-- /wp:omniform/field -->
 
-		<!-- wp:omniform/field {"fieldLabel":"Email","fieldName":"email"} -->
+		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'Email', 'omniform' ) . '","fieldName":"' . esc_attr__( 'email', 'omniform' ) . '"} -->
 		<!-- wp:omniform/label /-->
 
 		<!-- wp:omniform/input {"fieldType":"email"} /-->
 		<!-- /wp:omniform/field -->
 
-		<!-- wp:omniform/field {"fieldLabel":"Is this your first time visiting our site?","fieldName":"is-this-your-first-time-visiting-our-site"} -->
+		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'Is this your first time visiting our site?', 'omniform' ) . '","fieldName":"' . esc_attr__( 'is-this-your-first-time-visiting-our-site', 'omniform' ) . '"} -->
 		<!-- wp:omniform/label /-->
 
 		<!-- wp:omniform/select -->
-		<!-- wp:omniform/select-option {"fieldLabel":"No"} /-->
+		<!-- wp:omniform/select-option {"fieldLabel":"' . esc_html__( 'No', 'omniform' ) . '"} /-->
 
-		<!-- wp:omniform/select-option {"fieldLabel":"Yes"} /-->
+		<!-- wp:omniform/select-option {"fieldLabel":"' . esc_html__( 'Yes', 'omniform' ) . '"} /-->
 		<!-- /wp:omniform/select -->
 		<!-- /wp:omniform/field -->
 
-		<!-- wp:omniform/field {"fieldLabel":"Did you find what you were looking for?","fieldName":"did-you-find-what-you-were-looking-for"} -->
+		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'Did you find what you were looking for?', 'omniform' ) . '","fieldName":"' . esc_attr__( 'did-you-find-what-you-were-looking-for', 'omniform' ) . '"} -->
 		<!-- wp:omniform/label /-->
 
 		<!-- wp:omniform/select -->
-		<!-- wp:omniform/select-option {"fieldLabel":"No"} /-->
+		<!-- wp:omniform/select-option {"fieldLabel":"' . esc_html__( 'No', 'omniform' ) . '"} /-->
 
-		<!-- wp:omniform/select-option {"fieldLabel":"Yes"} /-->
+		<!-- wp:omniform/select-option {"fieldLabel":"' . esc_html__( 'Yes', 'omniform' ) . '"} /-->
 		<!-- /wp:omniform/select -->
 		<!-- /wp:omniform/field -->
 
-		<!-- wp:omniform/fieldset {"fieldLabel":"Please rate our website","fieldName":"please-rate-our-website","style":{"spacing":{"blockGap":"0.75em"}}} -->
-		<!-- wp:omniform/field {"fieldLabel":"1 - Very Bad","fieldName":"1-very-bad","layout":{"type":"flex","orientation":"horizontal","justifyContent":"left"}} -->
+		<!-- wp:omniform/fieldset {"fieldLabel":"' . esc_html__( 'Please rate our website', 'omniform' ) . '","fieldName":"' . esc_attr__( 'please-rate-our-website', 'omniform' ) . '","style":{"spacing":{"blockGap":"0.75em"}}} -->
+		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( '1 - Very Bad', 'omniform' ) . '","fieldName":"' . esc_attr__( '1-very-bad', 'omniform' ) . '","layout":{"type":"flex","orientation":"horizontal","justifyContent":"left"}} -->
 		<!-- wp:omniform/input {"fieldType":"radio"} /-->
 
 		<!-- wp:omniform/label /-->
 		<!-- /wp:omniform/field -->
 
-		<!-- wp:omniform/field {"fieldLabel":"2 - Poor","fieldName":"2-poor","layout":{"type":"flex","orientation":"horizontal","justifyContent":"left"}} -->
+		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( '2 - Poor', 'omniform' ) . '","fieldName":"' . esc_attr__( '2-poor', 'omniform' ) . '","layout":{"type":"flex","orientation":"horizontal","justifyContent":"left"}} -->
 		<!-- wp:omniform/input {"fieldType":"radio"} /-->
 
 		<!-- wp:omniform/label /-->
 		<!-- /wp:omniform/field -->
 
-		<!-- wp:omniform/field {"fieldLabel":"3 - Average","fieldName":"3-average","layout":{"type":"flex","orientation":"horizontal","justifyContent":"left"}} -->
+		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( '3 - Average', 'omniform' ) . '","fieldName":"' . esc_attr__( '3-average', 'omniform' ) . '","layout":{"type":"flex","orientation":"horizontal","justifyContent":"left"}} -->
 		<!-- wp:omniform/input {"fieldType":"radio"} /-->
 
 		<!-- wp:omniform/label /-->
 		<!-- /wp:omniform/field -->
 
-		<!-- wp:omniform/field {"fieldLabel":"4 - Good","fieldName":"4-good","layout":{"type":"flex","orientation":"horizontal","justifyContent":"left"}} -->
+		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( '4 - Good', 'omniform' ) . '","fieldName":"' . esc_attr__( '4-good', 'omniform' ) . '","layout":{"type":"flex","orientation":"horizontal","justifyContent":"left"}} -->
 		<!-- wp:omniform/input {"fieldType":"radio"} /-->
 
 		<!-- wp:omniform/label /-->
 		<!-- /wp:omniform/field -->
 
-		<!-- wp:omniform/field {"fieldLabel":"5 - Excellent","fieldName":"5-excellent","layout":{"type":"flex","orientation":"horizontal","justifyContent":"left"}} -->
+		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( '5 - Excellent', 'omniform' ) . '","fieldName":"' . esc_attr__( '5-excellent', 'omniform' ) . '","layout":{"type":"flex","orientation":"horizontal","justifyContent":"left"}} -->
 		<!-- wp:omniform/input {"fieldType":"radio"} /-->
 
 		<!-- wp:omniform/label /-->
 		<!-- /wp:omniform/field -->
 		<!-- /wp:omniform/fieldset -->
 
-		<!-- wp:omniform/field {"fieldLabel":"How could we improve?","fieldName":"how-could-we-improve"} -->
+		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'How could we improve?', 'omniform' ) . '","fieldName":"' . esc_attr__( 'how-could-we-improve', 'omniform' ) . '"} -->
 		<!-- wp:omniform/label /-->
 
 		<!-- wp:omniform/textarea {"style":{"dimensions":{"minHeight":"230px"}}} /-->
 		<!-- /wp:omniform/field -->
 
 		<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap"}} -->
-		<div class="wp-block-group"><!-- wp:omniform/button {"buttonType":"submit","buttonLabel":"Send Feedback"} /--></div>
+		<div class="wp-block-group"><!-- wp:omniform/button {"buttonType":"submit","buttonLabel":"' . esc_html__( 'Send Feedback', 'omniform' ) . '"} /--></div>
 		<!-- /wp:group --></div>
 		<!-- /wp:group -->
 	',
