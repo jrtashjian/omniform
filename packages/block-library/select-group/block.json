@@ -4,7 +4,7 @@
 	"name": "omniform/select-group",
 	"category": "omniform-control-simple",
 	"title": "Option Group",
-	"description": "Organize Option blocks that have a shared label into a group.",
+	"description": "Group Option blocks under a common label.",
 	"textdomain": "omniform",
 	"parent": [
 		"omniform/select"

@@ -4,7 +4,7 @@
 	"name": "omniform/select-option",
 	"category": "omniform-control-simple",
 	"title": "Option",
-	"description": "A choice within a Select block that can be selected.",
+	"description": "An selectable option within a Select block.",
 	"textdomain": "omniform",
 	"ancestor": [ "omniform/select" ],
 	"attributes": {

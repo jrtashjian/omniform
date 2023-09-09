@@ -70,7 +70,7 @@ const variations = [
 		name: 'field-text',
 		icon: { src: fieldInput },
 		title: __( 'Text', 'omniform' ),
-		description: __( 'A field for brief responses.', 'omniform' ),
+		description: __( 'A field for brief text entry.', 'omniform' ),
 		keywords: [ 'input', 'short' ],
 		example: inputTextExample( 'text', __( 'Short Text', 'omniform' ) ),
 		innerBlocks: inputTextExample( 'text' ).innerBlocks,
@@ -107,7 +107,7 @@ const variations = [
 		name: 'field-checkbox',
 		icon: { src: fieldCheckbox },
 		title: __( 'Checkbox', 'omniform' ),
-		description: __( 'A field that allows for multiple options and choices.', 'omniform' ),
+		description: __( 'A field for selecting multiple options or choices.', 'omniform' ),
 		keywords: [ 'input', 'box', 'multiple', 'choice' ],
 		attributes: {
 			layout: { type: 'flex', orientation: 'horizontal', justifyContent: 'left' },
@@ -119,7 +119,7 @@ const variations = [
 		name: 'field-radio',
 		icon: { src: fieldRadio },
 		title: __( 'Radio', 'omniform' ),
-		description: __( 'A field that can be grouped, from which a single choice can be made.', 'omniform' ),
+		description: __( 'A field in a group allowing for one selected choice.', 'omniform' ),
 		keywords: [ 'input', 'single', 'choice' ],
 		attributes: {
 			layout: { type: 'flex', orientation: 'horizontal', justifyContent: 'left' },
@@ -185,7 +185,7 @@ const variations = [
 		name: 'field-textarea',
 		icon: { src: fieldTextarea },
 		title: __( 'Textarea', 'omniform' ),
-		description: __( 'A field for collecting a week formatted date.', 'omniform' ),
+		description: __( 'A field for long-form text responses.', 'omniform' ),
 		keywords: [ 'input', 'long', 'paragraph' ],
 		example: {
 			attributes: {
@@ -211,7 +211,7 @@ const variations = [
 		name: 'field-select',
 		icon: { src: fieldSelect },
 		title: __( 'Select', 'omniform' ),
-		description: __( 'A field with multiple options where a single choice can be made.', 'omniform' ),
+		description: __( 'A field offering multiple options for a single selection.', 'omniform' ),
 		keywords: [ 'input', 'dropdown', 'single', 'choice' ],
 		example: {
 			attributes: {
@@ -231,7 +231,7 @@ const variations = [
 		name: 'field-select-multiple',
 		icon: { src: fieldSelect },
 		title: __( 'Select Multiple', 'omniform' ),
-		description: __( 'A field with multiple options where multiple choices can be made.', 'omniform' ),
+		description: __( 'A field offering multiple options for multiple selections.', 'omniform' ),
 		keywords: [ 'input', 'dropdown', 'multiple', 'choice' ],
 		example: {
 			attributes: {

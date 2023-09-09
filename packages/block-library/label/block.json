@@ -4,7 +4,7 @@
 	"name": "omniform/label",
 	"category": "omniform-control-simple",
 	"title": "Form Label",
-	"description": "A label for a single field in a form.",
+	"description": "A label associated with one form field.",
 	"textdomain": "omniform",
 	"ancestor": [
 		"omniform/field"
