@@ -1,6 +1,6 @@
 === OmniForm ===
 Contributors: jrtashjian
-Tags: block editor, form, contact, feedback, response, email, spam protection, gutenberg, survey, lead generation, form builder
+Tags: contact form, block editor, form builder, forms, email
 Requires at least: 6.2
 Tested up to: 6.3
 Requires PHP: 7.4
@@ -14,7 +14,7 @@ Easily create and manage custom forms with the block editor, customizable fields
 
 OmniForm is a powerful WordPress plugin that allows you to create and manage forms within your WordPress site. With OmniForm, you can easily create custom forms for your website, collect user data, and manage form submissions.
 
-= Features =
+= 🌟 Features =
 
 * Complete and steadfast support for the block editor and block themes.
 * Choose from 20+ form fields blocks, including text fields, checkboxes, radio buttons, and more
@@ -24,7 +24,7 @@ OmniForm is a powerful WordPress plugin that allows you to create and manage for
 * Customize form styling to match your website's design
 * Spam protection with Cloudflare Turnstile, hCaptcha, and Google reCAPTCHA.
 
-= Getting Started =
+= 🚀 Getting Started =
 
 To get started with OmniForm, simply install and activate the plugin on your WordPress site. Once activated, you can create new forms by navigating to the OmniForm menu in your WordPress dashboard.
 
@@ -45,9 +45,10 @@ Manual installation method requires downloading the OmniForm plugin and uploadin
 == Screenshots ==
 
 1. OmniForm enhances Block Editor with a specialized form-only editing option.
-2. Save time with OmniForm's pre-designed, customizable form templates.
-3. Build forms seamlessly within a WordPress post or page with OmniForm.
-4. Track all OmniForm submissions and get email notifications within the WordPress dashboard.
+2. Save Time and Effort: Use OmniForm's Ready-to-Customize Form Templates.
+3. Create Forms Directly in WordPress Posts or Pages with OmniForm.
+4. Get Insights on Form Performance: Responses, Impressions, and Conversion Rate.
+5. OmniForm Keeps You Informed: Track Submissions and Get Email Notifications within WordPress.
 
 == Changelog ==
 
