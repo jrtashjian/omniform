@@ -4,7 +4,7 @@
 	"name": "omniform/select",
 	"category": "omniform-control-simple",
 	"title": "Select",
-	"description": "A Select",
+	"description": "Create dropdown menus for single or multiple choices.",
 	"textdomain": "omniform",
 	"ancestor": [
 		"omniform/field"

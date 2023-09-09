@@ -4,7 +4,7 @@
 	"name": "omniform/captcha",
 	"category": "omniform-control-simple",
 	"title": "Captcha",
-	"description": "Captcha",
+	"description": "Add an extra layer of form protection against spam.",
 	"textdomain": "omniform",
 	"attributes": {
 		"service": {

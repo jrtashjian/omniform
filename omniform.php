@@ -9,7 +9,6 @@
  * Author: JR Tashjian
  * Author URI: https://jrtashjian.com
  * Text Domain: omniform
- * Domain Path: /languages
  *
  * Copyright 2022-2023 OmniForm
  *
@@ -57,5 +56,3 @@ omniform()->addServiceProvider( new \OmniForm\BlockLibrary\BlockLibraryServicePr
 
 register_activation_hook( __FILE__, array( omniform(), 'activation' ) );
 register_deactivation_hook( __FILE__, array( omniform(), 'deactivation' ) );
-
-add_action( 'plugins_loaded', array( omniform(), 'load_text_domain' ) );

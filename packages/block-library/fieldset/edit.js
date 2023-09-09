@@ -93,7 +93,6 @@ const Edit = ( {
 						checked={ isRequired }
 						onChange={ () => {
 							updateRequired( ! isRequired );
-							// setAttributes( { isRequired: ! isRequired } );
 						} }
 						help={ __( 'Set default \'required\' state for all fields in the group.', 'omniform' ) }
 					/>
@@ -107,7 +106,7 @@ const Edit = ( {
 						onBlur={ () => {
 							setAttributes( { fieldName: cleanForSlug( ( fieldName || fieldLabel ).replace( /(<([^>]+)>)/gi, '' ) ) } );
 						} }
-						help={ __( 'Name of the fieldset. Defaults to the fieldset\s label.', 'omniform' ) }
+						help={ __( 'Name of the fieldset. Defaults to the fieldset\'s label.', 'omniform' ) }
 					/>
 
 				</PanelBody>

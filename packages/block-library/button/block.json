@@ -4,7 +4,7 @@
 	"name": "omniform/button",
 	"category": "omniform-control-simple",
 	"title": "Button",
-	"description": "A button for the form",
+	"description": "A button for form actions.",
 	"textdomain": "omniform",
 	"attributes": {
 		"buttonType": {

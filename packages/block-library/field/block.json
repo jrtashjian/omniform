@@ -4,7 +4,7 @@
 	"name": "omniform/field",
 	"category": "omniform-control-simple",
 	"title": "Form field",
-	"description": "A form field.",
+	"description": "A consolidated form control component.",
 	"textdomain": "omniform",
 	"attributes": {
 		"fieldLabel": {

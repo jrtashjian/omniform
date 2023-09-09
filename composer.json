@@ -56,7 +56,6 @@
         "lint-prefixed": "phpcs --standard=phpcs-prefixed.xml.dist",
         "format": "phpcbf --standard=phpcs.xml.dist --report-summary --report-source",
         "test": "phpunit",
-        "makepot": "wp i18n make-pot . --exclude=\"node_modules,vendor,vendor_prefixed\" --headers='{\"Last-Translator\":\"info@omniform.io\",\"Language-Team\":\"info@omniform.io\",\"Report-Msgid-Bugs-To\":\"https://omniform.io/contact\"}'",
         "build-release": [
             "rm -r ./vendor",
             "@composer dump-autoload",

@@ -7,7 +7,7 @@ const variations = [
 	{
 		name: 'button-submit',
 		title: __( 'Submit', 'omniform' ),
-		description: __( '', 'omniform' ),
+		description: __( 'Trigger form submission.', 'omniform' ),
 		attributes: {
 			buttonType: 'submit',
 			buttonLabel: __( 'Submit', 'omniform' ),
@@ -17,7 +17,7 @@ const variations = [
 	{
 		name: 'button-reset',
 		title: __( 'Reset', 'omniform' ),
-		description: __( '', 'omniform' ),
+		description: __( 'Revert form to default state.', 'omniform' ),
 		attributes: {
 			buttonType: 'reset',
 			buttonLabel: __( 'Reset', 'omniform' ),

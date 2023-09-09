@@ -121,11 +121,4 @@ class Application extends Container {
 	public function deactivation() {
 		do_action( 'omniform_deactivate' );
 	}
-
-	/**
-	 * Load language files.
-	 */
-	public function load_text_domain() {
-		load_plugin_textdomain( 'omniform', false, $this->base_path( 'languages' ) );
-	}
 }

@@ -4,7 +4,7 @@
 	"name": "omniform/textarea",
 	"category": "omniform-control-simple",
 	"title": "Textarea",
-	"description": "A Textarea",
+	"description": "A field for long-form text responses.",
 	"textdomain": "omniform",
 	"ancestor": [
 		"omniform/field"
