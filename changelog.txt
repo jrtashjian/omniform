@@ -1,0 +1,11 @@
+
+1.0.3 / 2023-09-09
+==================
+
+  * Field specific validation rules [#15](https://github.com/jrtashjian/omniform/pull/15)
+  * Language pack support [#14](https://github.com/jrtashjian/omniform/pull/14)
+
+1.0.2 / 2023-09-09
+==================
+
+  * Initial release on WordPress.org!

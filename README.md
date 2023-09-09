@@ -11,9 +11,15 @@ OmniForm is a powerful WordPress plugin that allows you to create and manage for
 
 ## Installation
 
-[Download the latest release from Github](https://github.com/jrtashjian/omniform/releases/latest).
+**Automatic installation**
 
-You can upload and install the archived (zip) plugin via the WordPress dashboard (`Plugins` > `Add New` -> `Upload Plugin`) or manually inside of the `wp-content/plugins` directory, and activate on the Plugins dashboard.
+To do an automatic install of OmniForm, log in to your WordPress dashboard, navigate to the Plugins menu, and click “Add New.”
+
+In the search field type “OmniForm,” then click “Search Plugins.” Once you’ve found us, you can click “Install Now” and WordPress will take it from there.
+
+**Manual installation**
+
+Manual installation method requires [downloading the OmniForm plugin](https://wordpress.org/plugins/omniform) and uploading it to your web server via your favorite FTP application. The WordPress codex contains [instructions on how to do this here](https://wordpress.org/support/article/managing-plugins/#manual-plugin-installation).
 
 ## Development
 
@@ -29,5 +35,22 @@ composer install && npm install
 
 Run the development build which will watch for changes:
 ```
-npm run dev
+npm run start
 ```
+
+## Screenshots
+
+[![OmniForm enhances Block Editor with a specialized form-only editing option.](.wordpress-org/screenshot-1.png)](https://wordpress.org/plugins/omniform/)
+*OmniForm enhances Block Editor with a specialized form-only editing option.*
+
+[![Save Time and Effort: Use OmniForm's Ready-to-Customize Form Templates.](.wordpress-org/screenshot-2.png)](https://wordpress.org/plugins/omniform/)
+*Save Time and Effort: Use OmniForm's Ready-to-Customize Form Templates.*
+
+[![Create Forms Directly in WordPress Posts or Pages with OmniForm.](.wordpress-org/screenshot-3.png)](https://wordpress.org/plugins/omniform/)
+*Create Forms Directly in WordPress Posts or Pages with OmniForm.*
+
+[![Get Insights on Form Performance: Responses, Impressions, and Conversion Rate.](.wordpress-org/screenshot-4.png)](https://wordpress.org/plugins/omniform/)
+*Get Insights on Form Performance: Responses, Impressions, and Conversion Rate.*
+
+[![OmniForm Keeps You Informed: Track Submissions and Get Email Notifications within WordPress.](.wordpress-org/screenshot-5.png)](https://wordpress.org/plugins/omniform/)
+*OmniForm Keeps You Informed: Track Submissions and Get Email Notifications within WordPress.*
