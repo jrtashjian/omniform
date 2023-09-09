@@ -94,13 +94,6 @@ const variations = [
 		description: __( 'A field for collecting a formatted time.', 'omniform' ),
 		attributes: { fieldType: 'time' },
 	},
-	{
-		name: 'input-week',
-		icon: { src: fieldDate },
-		title: __( 'Week', 'omniform' ),
-		description: __( 'A field for collecting a week formatted date.', 'omniform' ),
-		attributes: { fieldType: 'week' },
-	},
 ];
 
 variations.forEach( ( variation ) => {
