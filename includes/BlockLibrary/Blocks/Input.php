@@ -7,15 +7,17 @@
 
 namespace OmniForm\BlockLibrary\Blocks;
 
+use OmniForm\Dependencies\Respect\Validation;
+
 /**
  * The Input block class.
  */
 class Input extends BaseControlBlock {
 	const FORMAT_DATE           = 'Y-m-d';
-	const FORMAT_TIME           = 'h:i:00';
+	const FORMAT_TIME           = 'h:i:s';
 	const FORMAT_MONTH          = 'Y-m';
 	const FORMAT_WEEK           = 'Y-\WW';
-	const FORMAT_DATETIME_LOCAL = 'Y-m-d H:i:00';
+	const FORMAT_DATETIME_LOCAL = 'Y-m-d H:i:s';
 
 	/**
 	 * Renders the form control.
@@ -79,6 +81,45 @@ class Input extends BaseControlBlock {
 			default:
 				return '';
 		}
+	}
+
+	/**
+	 * Gets the validation rules for the field.
+	 *
+	 * @return array
+	 */
+	public function get_validation_rules() {
+		$rules = parent::get_validation_rules();
+
+		if ( $this->get_block_attribute( 'fieldType' ) === 'email' ) {
+			$rules[] = new Validation\Rules\Email();
+		}
+
+		if ( $this->get_block_attribute( 'fieldType' ) === 'url' ) {
+			$rules[] = new Validation\Rules\Url();
+		}
+
+		if ( $this->get_block_attribute( 'fieldType' ) === 'tel' ) {
+			$rules[] = new Validation\Rules\Phone();
+		}
+
+		if ( $this->get_block_attribute( 'fieldType' ) === 'number' ) {
+			$rules[] = new Validation\Rules\Number();
+		}
+
+		if ( $this->get_block_attribute( 'fieldType' ) === 'date' ) {
+			$rules[] = new Validation\Rules\Date( self::FORMAT_DATE );
+		}
+
+		if ( $this->get_block_attribute( 'fieldType' ) === 'time' ) {
+			$rules[] = new Validation\Rules\Time( self::FORMAT_TIME );
+		}
+
+		if ( $this->get_block_attribute( 'fieldType' ) === 'month' ) {
+			$rules[] = new Validation\Rules\Date( self::FORMAT_MONTH );
+		}
+
+		return $rules;
 	}
 
 	/**
