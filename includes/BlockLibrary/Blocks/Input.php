@@ -7,15 +7,17 @@
 
 namespace OmniForm\BlockLibrary\Blocks;
 
+use OmniForm\Dependencies\Respect\Validation;
+
 /**
  * The Input block class.
  */
 class Input extends BaseControlBlock {
 	const FORMAT_DATE           = 'Y-m-d';
-	const FORMAT_TIME           = 'h:i:00';
+	const FORMAT_TIME           = 'h:i:s';
 	const FORMAT_MONTH          = 'Y-m';
 	const FORMAT_WEEK           = 'Y-\WW';
-	const FORMAT_DATETIME_LOCAL = 'Y-m-d H:i:00';
+	const FORMAT_DATETIME_LOCAL = 'Y-m-d H:i:s';
 
 	/**
 	 * Renders the form control.
@@ -79,6 +81,34 @@ class Input extends BaseControlBlock {
 			default:
 				return '';
 		}
+	}
+
+	/**
+	 * Gets the validation rules for the field.
+	 *
+	 * @return array
+	 */
+	public function get_validation_rules() {
+		$rules = parent::get_validation_rules();
+
+		$validation_mapping = array(
+			'email'  => new Validation\Rules\Email(),
+			'url'    => new Validation\Rules\Url(),
+			'tel'    => new Validation\Rules\Phone(),
+			'number' => new Validation\Rules\Number(),
+			'date'   => new Validation\Rules\Date( self::FORMAT_DATE ),
+			'time'   => new Validation\Rules\Time( self::FORMAT_TIME ),
+			'month'  => new Validation\Rules\Date( self::FORMAT_MONTH ),
+		);
+
+		if ( isset( $validation_mapping[ $this->get_block_attribute( 'fieldType' ) ] ) ) {
+			$rule    = $validation_mapping[ $this->get_block_attribute( 'fieldType' ) ];
+			$rules[] = $this->is_required()
+				? $rule
+				: new Validation\Rules\Optional( $rule );
+		}
+
+		return $rules;
 	}
 
 	/**
