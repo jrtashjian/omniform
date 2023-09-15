@@ -15,7 +15,7 @@
 		"prelint:php": "wp-env run --env-cwd=\"wp-content/plugins/${PWD##*/}\" cli composer update --no-interaction",
 		"lint:php": "wp-env run --env-cwd=\"wp-content/plugins/${PWD##*/}\" cli composer run-script lint",
 		"lint:php:prefixed": "wp-env run --env-cwd=\"wp-content/plugins/${PWD##*/}\" cli composer run-script lint-prefixed",
-		"mailhog": "docker run --name mailhog -d -p 1025:1025 -p 8025:8025 mailhog/mailhog",
+		"mailhog": "docker run --rm --name mailhog -d -p 1025:1025 -p 8025:8025 mailhog/mailhog",
 		"packages-update": "wp-scripts packages-update --dist-tag=wp-6.3",
 		"postpackages-update": "npm run build",
 		"test:php": "npm-run-all lint:php lint:php:prefixed test:unit:php",
