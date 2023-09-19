@@ -8,6 +8,9 @@ if [ -n ${CODESPACE_NAME+x} ]; then
 	echo "{\"config\": {\"WP_SITEURL\": \"${SITE_HOST}\",\"WP_HOME\": \"${SITE_HOST}\"}}" | jq . > /workspaces/omniform/.wp-env.override.json
 fi
 
+echo "PATH=\"\$PATH:${HOME}/.composer/vendor/bin\"" >> $HOME/.bashrc
+export PATH="$PATH:$HOME/.composer/vendor/bin"
+
 # Install PHP Scoper globally
 composer global require humbug/php-scoper
 
