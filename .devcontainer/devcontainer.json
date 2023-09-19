@@ -2,7 +2,6 @@
 	"image": "mcr.microsoft.com/devcontainers/base:debian",
 	"features": {
 		"ghcr.io/devcontainers/features/php:1": {
-			"version": "7.4",
 			"installComposer": true
 		},
 		"ghcr.io/devcontainers/features/node:1": {},
