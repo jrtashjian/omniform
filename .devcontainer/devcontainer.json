@@ -1,8 +1,16 @@
 {
 	"image": "mcr.microsoft.com/devcontainers/base:debian",
 	"features": {
+		"ghcr.io/devcontainers/features/php:1": {
+			"version": "7.4",
+			"installComposer": true
+		},
 		"ghcr.io/devcontainers/features/node:1": {},
 		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
 		"ghcr.io/devcontainers/features/git:1": {}
-	}
+	},
+	"postCreateCommand": "sudo chmod +x .devcontainer/setup.sh && .devcontainer/setup.sh",
+    "forwardPorts": [
+        8888
+    ]
 }
