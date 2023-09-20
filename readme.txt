@@ -82,6 +82,11 @@ Manual installation method requires downloading the OmniForm plugin and uploadin
 
 == Changelog ==
 
+= 1.0.4 / 2023-09-19 =
+
+* Make newsletter notice dismissable [#16](https://github.com/jrtashjian/omniform/pull/16)
+* Show the form editor post title
+
 = 1.0.3 / 2023-09-09 =
 
 * Field specific validation rules [#15](https://github.com/jrtashjian/omniform/pull/15)

@@ -1,4 +1,10 @@
 
+1.0.4 / 2023-09-19
+==================
+
+  * Make newsletter notice dismissable [#16](https://github.com/jrtashjian/omniform/pull/)
+  * Show the form editor post title
+
 1.0.3 / 2023-09-09
 ==================
 
