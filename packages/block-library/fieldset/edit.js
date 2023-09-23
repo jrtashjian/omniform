@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import {
+	BlockControls,
 	RichText,
 	useBlockProps,
 	useInnerBlocksProps,
@@ -13,6 +14,8 @@ import {
 	PanelBody,
 	TextControl,
 	ToggleControl,
+	ToolbarButton,
+	ToolbarGroup,
 } from '@wordpress/components';
 import { cleanForSlug } from '@wordpress/url';
 import { useEntityProp } from '@wordpress/core-data';
@@ -84,6 +87,19 @@ const Edit = ( {
 			</div>
 
 			<div { ...innerBlockProps } />
+
+			<BlockControls>
+				<ToolbarGroup>
+					<ToolbarButton
+						icon={ Required }
+						isActive={ isRequired }
+						label={ __( 'Required for submission', 'omniform' ) }
+						onClick={ () => {
+							updateRequired( ! isRequired );
+						} }
+					/>
+				</ToolbarGroup>
+			</BlockControls>
 
 			<InspectorControls>
 				<PanelBody title={ __( 'Fieldset Settings', 'omniform' ) }>
