@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { useDispatch, useSelect } from '@wordpress/data';
 import {
+	BlockControls,
 	InspectorControls,
 	useBlockProps,
 	useInnerBlocksProps,
@@ -13,9 +14,16 @@ import {
 	PanelBody,
 	TextControl,
 	ToggleControl,
+	ToolbarButton,
+	ToolbarGroup,
 } from '@wordpress/components';
 import { cleanForSlug } from '@wordpress/url';
 import { createBlock } from '@wordpress/blocks';
+
+/**
+ * Internal dependencies
+ */
+import { Required } from '../shared/icons';
 
 const Edit = ( {
 	attributes: { fieldLabel, fieldName, isRequired },
@@ -111,18 +119,32 @@ const Edit = ( {
 		}
 	};
 
+	/**
+	 * Toggles the required attribute.
+	 */
+	const toggleRequired = () =>
+		setAttributes( { isRequired: ! isRequired } );
+
 	return (
 		<>
 			<div { ...innerBlockProps } />
+			<BlockControls>
+				<ToolbarGroup>
+					<ToolbarButton
+						icon={ Required }
+						isActive={ isRequired }
+						label={ __( 'Required for submission', 'omniform' ) }
+						onClick={ toggleRequired }
+					/>
+				</ToolbarGroup>
+			</BlockControls>
 			<InspectorControls>
 				<PanelBody title={ __( 'Field Settings', 'omniform' ) }>
 
 					<ToggleControl
 						label={ __( 'Required for submission', 'omniform' ) }
 						checked={ isRequired }
-						onChange={ () => {
-							setAttributes( { isRequired: ! isRequired } );
-						} }
+						onChange={ toggleRequired }
 						help={ __( 'A value is required or must be check for the form to be submittable.', 'omniform' ) }
 					/>
 
