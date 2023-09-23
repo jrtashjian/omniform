@@ -167,6 +167,14 @@ class Form {
 
 		// If the block is a fieldset, add it to the list of groups.
 		if ( $block instanceof Fieldset ) {
+			if ( $block->get_block_attribute( 'isRequired' ) ) {
+				$validation_rules = new Validation\Rules\NotEmpty();
+				$validation_rules->setName( $block->get_field_group_label() );
+
+				$rule = new Validation\Rules\Key( $block->get_field_group_name(), $validation_rules );
+				$this->validator->addRule( $rule );
+			}
+
 			$this->groups[ $block->get_field_group_name() ] = $block->get_field_group_label();
 		}
 
