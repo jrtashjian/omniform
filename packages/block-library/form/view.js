@@ -46,6 +46,11 @@ import { applyFilters } from '@wordpress/hooks';
 				messageContainer.style.display = 'block';
 				messageContainer.style.borderLeftColor = 'var(--wp--preset--color--vivid-red,#cf2e2e)';
 			} );
+
+			// Focus the message container.
+			messageContainer.setAttribute( 'tabindex', '-1' );
+			messageContainer.focus();
+			messageContainer.removeAttribute( 'tabindex' );
 		};
 
 		// Create a paragraph element from text.
