@@ -3,25 +3,30 @@
  */
 import { __ } from '@wordpress/i18n';
 import {
+	BlockControls,
 	RichText,
 	useBlockProps,
 	useInnerBlocksProps,
 	InspectorControls,
-	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
 	TextControl,
 	ToggleControl,
+	ToolbarButton,
+	ToolbarGroup,
 } from '@wordpress/components';
 import { cleanForSlug } from '@wordpress/url';
 import { useEntityProp } from '@wordpress/core-data';
-import { useSelect, useDispatch } from '@wordpress/data';
+
+/**
+ * Internal dependencies
+ */
+import { Required } from '../shared/icons';
 
 const Edit = ( {
 	attributes: { fieldLabel, fieldName, isRequired },
 	setAttributes,
-	clientId,
 	context,
 } ) => {
 	// Manage the required label.
@@ -37,21 +42,11 @@ const Edit = ( {
 	const blockProps = useBlockProps();
 	const innerBlockProps = useInnerBlocksProps();
 
-	// Update all child field blocks with a new required setting.
-	const { updateBlockAttributes } = useDispatch( blockEditorStore );
-	const { getBlockOrder } = useSelect( ( select ) => select( blockEditorStore ), [] );
-
-	const updateRequired = ( newIsRequired ) => {
-		setAttributes( { isRequired: newIsRequired } );
-
-		// Update all child field Blocks to match.
-		const innerBlockClientIds = getBlockOrder( clientId );
-		innerBlockClientIds.forEach( ( innerBlockClientId ) => {
-			updateBlockAttributes( innerBlockClientId, {
-				isRequired: newIsRequired,
-			} );
-		} );
-	};
+	/**
+	 * Toggles the required attribute.
+	 */
+	const toggleRequired = () =>
+		setAttributes( { isRequired: ! isRequired } );
 
 	return (
 		<div { ...blockProps } >
@@ -85,15 +80,24 @@ const Edit = ( {
 
 			<div { ...innerBlockProps } />
 
+			<BlockControls>
+				<ToolbarGroup>
+					<ToolbarButton
+						icon={ Required }
+						isActive={ isRequired }
+						label={ __( 'Required for submission', 'omniform' ) }
+						onClick={ toggleRequired }
+					/>
+				</ToolbarGroup>
+			</BlockControls>
+
 			<InspectorControls>
 				<PanelBody title={ __( 'Fieldset Settings', 'omniform' ) }>
 
 					<ToggleControl
 						label={ __( 'Required for submission', 'omniform' ) }
 						checked={ isRequired }
-						onChange={ () => {
-							updateRequired( ! isRequired );
-						} }
+						onChange={ toggleRequired }
 						help={ __( 'Set default \'required\' state for all fields in the group.', 'omniform' ) }
 					/>
 
