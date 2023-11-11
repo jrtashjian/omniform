@@ -17,11 +17,14 @@
 		<exclude name="Squiz.PHP.DisallowMultipleAssignments" />
 		<exclude name="Squiz.Strings.DoubleQuoteUsage" />
 		<exclude name="WordPress.Arrays" />
-		<exclude name="WordPress.CodeAnalysis.AssignmentInCondition" />
+		<exclude name="WordPress.CodeAnalysis.AssignmentInTernaryCondition" />
 		<exclude name="WordPress.Files.FileName"/>
 		<exclude name="WordPress.NamingConventions" />
 		<exclude name="WordPress.PHP" />
 		<exclude name="WordPress.WhiteSpace" />
+		<exclude name="PSR12" />
+		<exclude name="Universal" />
+		<exclude name="NormalizedArrays" />
 	</rule>
 
 </ruleset>
