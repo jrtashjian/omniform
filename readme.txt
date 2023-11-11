@@ -82,6 +82,14 @@ Manual installation method requires downloading the OmniForm plugin and uploadin
 
 == Changelog ==
 
+= 1.0.5 / 2023-11-10 =
+
+* Fix is_required() method to return false if both contexts are null
+* Fix field name sanitization in BaseControlBlock
+* Toolbar Addition: Set Fields or Fieldsets as Required [#17](https://github.com/jrtashjian/omniform/pull/17)
+* Focus message container after submission
+* Textarea placeholder should not be the value
+
 = 1.0.4 / 2023-09-19 =
 
 * Make newsletter notice dismissable [#16](https://github.com/jrtashjian/omniform/pull/16)
