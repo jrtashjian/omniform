@@ -28,6 +28,11 @@ Clone this repository:
 git clone https://github.com/jrtashjian/omniform.git
 ```
 
+Install [PHP-Scoper](https://github.com/humbug/php-scoper) globally and run it to prefix required dependencies:
+```
+composer global require humbug/php-scoper && composer run phpscoper
+```
+
 Install the necessary Node.js and Composer dependencies:
 ```
 composer install && npm install
