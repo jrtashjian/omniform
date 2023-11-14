@@ -11,6 +11,8 @@ use OmniForm\BlockLibrary\Blocks\BaseControlBlock;
 use OmniForm\BlockLibrary\Blocks\Fieldset;
 use OmniForm\Dependencies\Dflydev\DotAccessData;
 use OmniForm\Dependencies\Respect\Validation;
+use OmniForm\Exceptions\FormNotFoundException;
+use OmniForm\Exceptions\InvalidFormIdException;
 
 /**
  * The Form class.
@@ -56,18 +58,28 @@ class Form {
 	 *
 	 * @param int $form_id Form ID.
 	 *
-	 * @return Form|false Form object, false otherwise.
+	 * @return Form Form object.
+	 *
+	 * @throws InvalidFormIdException If the form ID is invalid.
+	 * @throws FormNotFoundException If the form is not found.
 	 */
 	public function get_instance( $form_id ) {
 		$form_id = (int) $form_id;
+
 		if ( ! $form_id ) {
-			return false;
+			throw new InvalidFormIdException(
+				/* translators: %d: Form ID. */
+				esc_attr( sprintf( __( 'Form ID must be an integer. &#8220;%s&#8221; is not a valid integer.', 'omniform' ), $form_id ) )
+			);
 		}
 
 		$_form = get_post( $form_id );
 
 		if ( ! $_form || 'omniform' !== $_form->post_type ) {
-			return false;
+			throw new FormNotFoundException(
+				/* translators: %d: Form ID. */
+				esc_attr( sprintf( __( 'Form ID &#8220;%d&#8221; does not exist.', 'omniform' ), $form_id ) )
+			);
 		}
 
 		$this->id        = $_form->ID;
@@ -81,7 +93,7 @@ class Form {
 	/**
 	 * Return the form's ID.
 	 *
-	 * @return number
+	 * @return int
 	 */
 	public function get_id() {
 		return $this->id;
