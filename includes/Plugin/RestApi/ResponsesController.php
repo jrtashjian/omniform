@@ -49,12 +49,12 @@ class ResponsesController extends \WP_REST_Posts_Controller {
 	 * @return \WP_REST_Response|\WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function create_response( \WP_REST_Request $request ) {
-		$form = omniform()->get( \OmniForm\Plugin\Form::class )->get_instance( absint( $request->get_param( 'id' ) ) );
-
-		if ( ! $form ) {
+		try {
+			$form = omniform()->get( \OmniForm\Plugin\Form::class )->get_instance( absint( $request->get_param( 'id' ) ) );
+		} catch ( \Exception $e ) {
 			return new \WP_Error(
 				'omniform_not_found',
-				esc_attr__( 'The requested form was not found.', 'omniform' ),
+				esc_html( $e->getMessage() ),
 				array( 'status' => 404 )
 			);
 		}

@@ -29,16 +29,15 @@ class Form extends BaseBlock {
 			return '';
 		}
 
-		// Setup the Form object.
-		$form = omniform()->get( \OmniForm\Plugin\Form::class )->get_instance( $entity_id );
-
-		if ( ! $form ) {
+		try {
+			// Setup the Form object.
+			$form = omniform()->get( \OmniForm\Plugin\Form::class )->get_instance( $entity_id );
+		} catch ( \Exception $e ) {
 			// Display notice for logged in editors, render nothing for visitors.
 			return current_user_can( 'edit_posts' )
 				? sprintf(
 					'<p style="color:var(--wp--preset--color--vivid-red,#cf2e2e);">%s</p>',
-					/* translators: %d: Form ID. */
-					esc_html( sprintf( __( 'Form ID &#8220;%d&#8221; has been removed.', 'omniform' ), $entity_id ) )
+					esc_html( $e->getMessage() )
 				)
 				: '';
 		}
