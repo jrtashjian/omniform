@@ -9,11 +9,7 @@ return array(
 	'title'   => esc_attr__( 'Contact', 'omniform' ),
 	'content' => '
 		<!-- wp:group {"layout":{"type":"constrained"}} -->
-		<div class="wp-block-group"><!-- wp:heading -->
-		<h2 class="wp-block-heading">' . esc_html__( 'Contact Us', 'omniform' ) . '</h2>
-		<!-- /wp:heading -->
-
-		<!-- wp:paragraph -->
+		<div class="wp-block-group"><!-- wp:paragraph -->
 		<p>' . esc_html__( 'If you have any questions or comments, or if you\'d like to work with me or collaborate on a project, please don\'t hesitate to get in touch. I look forward to hearing from you!', 'omniform' ) . '</p>
 		<!-- /wp:paragraph -->
 

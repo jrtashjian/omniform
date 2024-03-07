@@ -6,14 +6,10 @@
  */
 
 return array(
-	'title'   => esc_attr__( 'Appointment', 'omniform' ),
+	'title'   => esc_attr__( 'Book an Appointment', 'omniform' ),
 	'content' => '
 		<!-- wp:group {"layout":{"type":"constrained"}} -->
-		<div class="wp-block-group"><!-- wp:heading {"className":"wp-block-heading"} -->
-		<h2 class="wp-block-heading">' . esc_html__( 'Book an Appointment', 'omniform' ) . '</h2>
-		<!-- /wp:heading -->
-
-		<!-- wp:paragraph -->
+		<div class="wp-block-group"><!-- wp:paragraph -->
 		<p>' . esc_html__( 'Please fill out the form below to make an appointment.', 'omniform' ) . '</p>
 		<!-- /wp:paragraph -->
 

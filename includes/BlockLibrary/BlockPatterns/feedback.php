@@ -9,11 +9,7 @@ return array(
 	'title'   => esc_attr__( 'Feedback', 'omniform' ),
 	'content' => '
 		<!-- wp:group {"layout":{"type":"constrained"}} -->
-		<div class="wp-block-group"><!-- wp:heading -->
-		<h2 class="wp-block-heading">' . esc_html__( 'Feedback', 'omniform' ) . '</h2>
-		<!-- /wp:heading -->
-
-		<!-- wp:paragraph -->
+		<div class="wp-block-group"><!-- wp:paragraph -->
 		<p>' . esc_html__( 'We value your feedback! Please take a moment to fill out our website feedback form to let us know how we can improve your experience. Your input is important to us and we appreciate your time. Thank you for visiting our website.', 'omniform' ) . '</p>
 		<!-- /wp:paragraph -->
 
