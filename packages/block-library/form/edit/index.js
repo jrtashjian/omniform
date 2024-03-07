@@ -44,10 +44,10 @@ export default function FormEdit( {
 	const hasAlreadyRendered = useHasRecursion( entityId );
 	const [ isFormSelectionOpen, setIsFormSelectionOpen ] = useState( false );
 
-	const { isResolved, innerBlocks, isMissing } = useSelect(
+	const { isResolved, hasInnerBlocks, isMissing } = useSelect(
 		( select ) => {
 			const { getEditedEntityRecord, hasFinishedResolution } = select( coreStore );
-			const { getBlocks } = select( blockEditorStore );
+			const { getBlockCount } = select( blockEditorStore );
 
 			const getEntityArgs = [
 				'postType',
@@ -62,7 +62,7 @@ export default function FormEdit( {
 				: false;
 
 			return {
-				innerBlocks: getBlocks( clientId ),
+				hasInnerBlocks: getBlockCount( clientId ) > 0,
 				isResolved: hasResolvedEntity,
 				isMissing: hasResolvedEntity && ! entityRecord,
 			};
@@ -91,7 +91,7 @@ export default function FormEdit( {
 		);
 	}
 
-	if ( innerBlocks.length === 0 && isMissing ) {
+	if ( hasInnerBlocks && isMissing ) {
 		return (
 			<div { ...blockProps }>
 				<Warning>
@@ -134,7 +134,7 @@ export default function FormEdit( {
 					<FormInnerBlocks
 						blockProps={ blockProps }
 						formId={ entityId }
-						hasInnerBlocks={ innerBlocks.length > 0 }
+						hasInnerBlocks={ hasInnerBlocks }
 					/>
 				) }
 
