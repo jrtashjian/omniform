@@ -9,11 +9,7 @@ return array(
 	'title'   => esc_attr__( 'Membership Registration', 'omniform' ),
 	'content' => '
 		<!-- wp:group {"layout":{"type":"constrained"}} -->
-		<div class="wp-block-group"><!-- wp:heading -->
-		<h2 class="wp-block-heading">' . esc_html__( 'Membership Registration', 'omniform' ) . '</h2>
-		<!-- /wp:heading -->
-
-		<!-- wp:paragraph -->
+		<div class="wp-block-group"><!-- wp:paragraph -->
 		<p>' . esc_html__( 'Join our community and take advantage of our member perks! Sign up for a membership and unlock access to special features and discounts.', 'omniform' ) . '</p>
 		<!-- /wp:paragraph -->
 

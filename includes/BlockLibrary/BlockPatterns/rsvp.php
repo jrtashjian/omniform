@@ -9,17 +9,7 @@ return array(
 	'title'   => esc_attr__( 'RSVP', 'omniform' ),
 	'content' => '
 		<!-- wp:group {"layout":{"type":"constrained"}} -->
-		<div class="wp-block-group"><!-- wp:group {"style":{"spacing":{"blockGap":"var:preset|spacing|30"}},"layout":{"type":"flex","orientation":"vertical","justifyContent":"center"}} -->
-		<div class="wp-block-group"><!-- wp:heading {"textAlign":"center"} -->
-		<h2 class="wp-block-heading has-text-align-center">' . esc_html__( 'Are You Attending?', 'omniform' ) . '</h2>
-		<!-- /wp:heading -->
-
-		<!-- wp:paragraph {"align":"center"} -->
-		<p class="has-text-align-center">' . esc_html__( 'RSVP', 'omniform' ) . '</p>
-		<!-- /wp:paragraph --></div>
-		<!-- /wp:group -->
-
-		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'Name', 'omniform' ) . '","fieldName":"' . esc_html__( 'name', 'omniform' ) . '"} -->
+		<div class="wp-block-group"><!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'Name', 'omniform' ) . '","fieldName":"' . esc_html__( 'name', 'omniform' ) . '"} -->
 		<!-- wp:omniform/label /-->
 
 		<!-- wp:omniform/input /-->
