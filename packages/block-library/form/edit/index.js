@@ -10,7 +10,6 @@ import {
 } from '@wordpress/block-editor';
 import {
 	Modal,
-	Placeholder,
 	Spinner,
 } from '@wordpress/components';
 import { store as coreStore } from '@wordpress/core-data';
@@ -22,7 +21,6 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { POST_TYPE } from '../../shared/constants';
-import { form } from '../../shared/icons';
 import FormInnerBlocks from './inner-blocks';
 import FormInspectorControls from './inspector-controls';
 import FormPlaceholder from './placeholder';
@@ -75,21 +73,6 @@ export default function FormEdit( {
 	} );
 	const isPlaceholder = ! entityId;
 	const isEntityAvailable = ! isPlaceholder && ! isMissing && isResolved;
-
-	if (
-		JSON.stringify( context ) === JSON.stringify( {} ) &&
-		typeof ref === 'undefined'
-	) {
-		return (
-			<div { ...blockProps }>
-				<Placeholder
-					icon={ form }
-					label={ __( 'OmniForm', 'omniform' ) }
-					instructions={ __( 'A single form will be rendered here.', 'omniform' ) }
-				/>
-			</div>
-		);
-	}
 
 	if ( hasInnerBlocks && isMissing ) {
 		return (
@@ -150,6 +133,7 @@ export default function FormEdit( {
 					title={ __( 'Choose a Form', 'omniform' ) }
 					closeLabel={ __( 'Cancel', 'omniform' ) }
 					onRequestClose={ () => setIsFormSelectionOpen( false ) }
+					isFullScreen
 				>
 					<FormSelectionModal
 						formId={ entityId }
