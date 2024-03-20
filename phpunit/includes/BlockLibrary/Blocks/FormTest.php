@@ -67,14 +67,10 @@ class FormTest extends FormBlockTestCase {
 		// Mock get_id to return the post ID.
 		$mock->method( 'get_id' )->willReturn( $post->ID );
 
-		// Mock is_published and is_private to fake a published form.
+		// Mock is_published to fake a published form.
 		$mock->expects( $this->once() )
 			->method( 'is_published' )
 			->willReturn( true );
-
-		$mock->expects( $this->once() )
-			->method( 'is_private' )
-			->willReturn( false );
 
 		$this->assertStringContainsString(
 			'<form method="post" action="' . rest_url( '/omniform/v1/forms/' . $post->ID . '/responses' ) . '" class="wp-block-omniform-form-block">',

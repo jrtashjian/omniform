@@ -109,12 +109,12 @@ class Form {
 	}
 
 	/**
-	 * The form's private status.
+	 * The form's password protection status.
 	 *
 	 * @return bool
 	 */
-	public function is_private() {
-		return ! empty( $this->post_data->post_password );
+	public function is_password_protected() {
+		return post_password_required( $this->get_id() );
 	}
 
 	/**
