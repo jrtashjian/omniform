@@ -42,7 +42,12 @@ class Form extends BaseBlock {
 				: '';
 		}
 
-		if ( ! $form->is_published() || $form->is_private() ) {
+		// If the form is password protected, render the password form.
+		if ( post_password_required( $form->get_id() ) ) {
+			return get_the_password_form();
+		}
+
+		if ( ! $form->is_published() ) {
 			// Display notice for logged in editors, render nothing for visitors.
 			return current_user_can( 'edit_post', $form->get_id() )
 				? sprintf(
