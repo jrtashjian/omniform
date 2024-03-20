@@ -43,7 +43,7 @@ class Form extends BaseBlock {
 		}
 
 		// If the form is password protected, render the password form.
-		if ( post_password_required( $form->get_id() ) ) {
+		if ( $form->is_password_protected() ) {
 			return get_the_password_form();
 		}
 
