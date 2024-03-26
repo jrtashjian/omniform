@@ -8,8 +8,8 @@
 return array(
 	'title'   => esc_attr__( 'Book an Appointment', 'omniform' ),
 	'content' => '
-		<!-- wp:group {"layout":{"type":"constrained"}} -->
-		<div class="wp-block-group"><!-- wp:paragraph -->
+		<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"5em","bottom":"5em","left":"5em","right":"5em"}}},"layout":{"type":"constrained"}} -->
+		<div class="wp-block-group alignfull" style="padding-top:5em;padding-right:5em;padding-bottom:5em;padding-left:5em"><!-- wp:paragraph -->
 		<p>' . esc_html__( 'Please fill out the form below to make an appointment.', 'omniform' ) . '</p>
 		<!-- /wp:paragraph -->
 
