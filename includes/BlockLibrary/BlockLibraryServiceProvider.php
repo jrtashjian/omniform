@@ -140,7 +140,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 							'attributes'    => array(
 								'ref' => $post->ID,
 							),
-							'viewportWidth' => 768,
+							'viewportWidth' => (int) ( $GLOBALS['content_width'] ?? 768 ),
 						),
 					);
 				}
@@ -173,7 +173,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 		$pattern_defaults = array(
 			'postTypes'     => array( 'omniform' ),
 			'categories'    => array( 'omniform' ),
-			'viewportWidth' => 768,
+			'viewportWidth' => (int) ( $GLOBALS['content_width'] ?? 768 ),
 		);
 
 		foreach ( $this->get_block_patterns() as $pattern ) {
