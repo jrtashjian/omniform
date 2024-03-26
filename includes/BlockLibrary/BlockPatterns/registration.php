@@ -8,8 +8,8 @@
 return array(
 	'title'   => esc_attr__( 'Membership Registration', 'omniform' ),
 	'content' => '
-		<!-- wp:group {"layout":{"type":"constrained"}} -->
-		<div class="wp-block-group"><!-- wp:paragraph -->
+		<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"5em","bottom":"5em","left":"5em","right":"5em"}}},"layout":{"type":"constrained"}} -->
+		<div class="wp-block-group alignfull" style="padding-top:5em;padding-right:5em;padding-bottom:5em;padding-left:5em"><!-- wp:paragraph -->
 		<p>' . esc_html__( 'Join our community and take advantage of our member perks! Sign up for a membership and unlock access to special features and discounts.', 'omniform' ) . '</p>
 		<!-- /wp:paragraph -->
 
