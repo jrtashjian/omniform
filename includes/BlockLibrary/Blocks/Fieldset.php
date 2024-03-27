@@ -36,7 +36,7 @@ class Fieldset extends BaseBlock {
 
 		$label_required = null;
 
-		if ( $this->get_block_context( 'isRequired' ) ) {
+		if ( $this->get_block_attribute( 'isRequired' ) ) {
 			$form_id = omniform()->get( Form::class )->get_id() ?? $this->get_block_context( 'postId' );
 
 			$label_required = sprintf(

@@ -84,6 +84,15 @@ class Input extends BaseControlBlock {
 	}
 
 	/**
+	 * Is the field required?
+	 *
+	 * @return bool
+	 */
+	public function is_required() {
+		return ! in_array( $this->get_block_attribute( 'fieldType' ), array( 'radio', 'checkbox' ), true ) && parent::is_required();
+	}
+
+	/**
 	 * Gets the validation rules for the field.
 	 *
 	 * @return array
