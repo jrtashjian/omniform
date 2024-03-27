@@ -1,3 +1,14 @@
 {
-	"plugins": [ "." ]
+	"plugins": [
+		".",
+		"https://downloads.wordpress.org/plugin/wp-mail-smtp.latest-stable.zip"
+	],
+	"config": {
+		"WPMS_ON": true,
+		"WPMS_MAILER": "smtp",
+		"WPMS_SMTP_HOST": "host.docker.internal",
+		"WPMS_SMTP_PORT": 1025,
+		"WPMS_SMTP_AUTH": false,
+		"WPMS_SMTP_AUTOTLS": false
+	}
 }
