@@ -115,6 +115,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 		);
 
 		foreach ( $blocks as $block ) {
+			/** @var Blocks\BaseBlock */ // phpcs:ignore
 			$block_object = new $block();
 
 			$variations = array();
