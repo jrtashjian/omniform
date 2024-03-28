@@ -10,6 +10,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
 import { decodeEntities } from '@wordpress/html-entities';
 import { addFilter } from '@wordpress/hooks';
+import { createHigherOrderComponent } from '@wordpress/compose';
 
 /**
  * Internal dependencies
@@ -67,4 +68,56 @@ addFilter(
 
 		return select( 'core/edit-post' ).isEditingTemplate();
 	}
+);
+
+// Restricts the blocks that can be added as child blocks within the form block.
+addFilter(
+	'editor.BlockEdit',
+	'restrictBlocksInOmniformChildBlocks',
+	createHigherOrderComponent( ( BlockEdit ) => {
+		return ( props ) => {
+			if (
+				[ 'core/group', 'core/cover', 'core/column' ].includes( props.name ) &&
+				!! select( 'core/block-editor' ).getBlockParentsByBlockName( props.clientId, 'omniform/form' ).length
+			) {
+				props.attributes.allowedBlocks = [
+					'omniform/button',
+					'omniform/fieldset',
+					'omniform/field',
+					'omniform/label',
+					'omniform/input',
+					'omniform/textarea',
+					'omniform/select',
+					'omniform/select-group',
+					'omniform/select-option',
+					'omniform/captcha',
+					'core/audio',
+					'core/block',
+					'core/code',
+					'core/column',
+					'core/columns',
+					'core/cover',
+					'core/file',
+					'core/gallery',
+					'core/group',
+					'core/heading',
+					'core/image',
+					'core/list-item',
+					'core/list',
+					'core/missing',
+					'core/paragraph',
+					'core/pattern',
+					'core/preformatted',
+					'core/separator',
+					'core/site-logo',
+					'core/site-tagline',
+					'core/site-title',
+					'core/spacer',
+					'core/table',
+					'core/video',
+				];
+			}
+			return <BlockEdit { ...props } />;
+		};
+	}, 'restrictBlocksInOmniformChildBlocks' )
 );
