@@ -54,7 +54,7 @@ registerBlockType( name, {
 // Prevent form block from being inserted into an omniform post type unless editing the template.
 addFilter(
 	'blockEditor.__unstableCanInsertBlockType',
-	'removeOmniformFromOmniformPostType',
+	'omniform/with-block-insertion-restrictions',
 	(
 		canInsert,
 		blockType,
@@ -73,7 +73,7 @@ addFilter(
 // Restricts the blocks that can be added as child blocks within the form block.
 addFilter(
 	'editor.BlockEdit',
-	'restrictBlocksInOmniformChildBlocks',
+	'omniform/with-child-block-restrictions',
 	createHigherOrderComponent( ( BlockEdit ) => {
 		return ( props ) => {
 			if (
@@ -119,5 +119,5 @@ addFilter(
 			}
 			return <BlockEdit { ...props } />;
 		};
-	}, 'restrictBlocksInOmniformChildBlocks' )
+	}, 'omniformChildBlockRestrictions' )
 );
