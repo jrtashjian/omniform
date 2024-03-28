@@ -39,7 +39,7 @@ export default function FormEdit( {
 		? contextPostId
 		: ref;
 
-	const hasAlreadyRendered = useHasRecursion( entityId );
+	const hasAlreadyRendered = useHasRecursion( [ entityId ] );
 	const [ isFormSelectionOpen, setIsFormSelectionOpen ] = useState( false );
 
 	const { isResolved, hasInnerBlocks, isMissing } = useSelect(
