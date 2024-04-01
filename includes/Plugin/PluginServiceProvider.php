@@ -424,34 +424,6 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				return $metadata;
 			},
 		);
-
-		// Filters the HTML output for the protected post password form.
-		add_filter(
-			'the_password_form',
-			function ( $output ) {
-				$output = '';
-
-				$output .= '<form action="' . esc_url( site_url( 'wp-login.php?action=postpass', 'login_post' ) ) . '" class="post-password-form" method="post">';
-				$output .= do_blocks( '
-					<!-- wp:paragraph {"style":{"color":{"text":"var(--wp--preset--color--vivid-red,#cf2e2e)"},"elements":{"link":{"color":{"text":"var(--wp--preset--color--vivid-red,#cf2e2e)"}}}}} -->
-					<p class="has-text-color has-link-color" style="color:var(--wp--preset--color--vivid-red,#cf2e2e)">' . __( 'This content is password protected. To view it please enter your password below:', 'omniform' ) . '</p>
-					<!-- /wp:paragraph -->
-
-					<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap"}} -->
-					<div class="wp-block-group"><!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'Password', 'omniform' ) . '","fieldName":"post_password","isRequired":false,"style":{"layout":{"selfStretch":"fill","flexSize":null},"spacing":{"blockGap":"1em"}},"layout":{"type":"flex","orientation":"horizontal","justifyContent":"left"}} -->
-					<!-- wp:omniform/label /-->
-
-					<!-- wp:omniform/input {"fieldType":"password","style":{"layout":{"selfStretch":"fill","flexSize":null}}} /-->
-					<!-- /wp:omniform/field -->
-
-					<!-- wp:omniform/button {"buttonType":"submit","buttonLabel":"' . esc_html__( 'Enter', 'omniform' ) . '"} /--></div>
-					<!-- /wp:group -->
-				' );
-				$output .= '</form>';
-
-				return $output;
-			}
-		);
 	}
 
 	/**
