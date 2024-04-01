@@ -1,6 +1,6 @@
 {
-	"$schema": "https://raw.githubusercontent.com/WordPress/gutenberg/wp/6.2/schemas/json/block.json",
-	"apiVersion": 2,
+	"$schema": "https://raw.githubusercontent.com/WordPress/gutenberg/wp/6.3/schemas/json/block.json",
+	"apiVersion": 3,
 	"name": "omniform/select-group",
 	"category": "omniform-control-simple",
 	"title": "Option Group",
