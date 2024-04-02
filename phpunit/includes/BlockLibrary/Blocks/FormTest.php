@@ -24,6 +24,8 @@ class FormTest extends FormBlockTestCase {
 	 * Register the block to test against.
 	 */
 	public function set_up() {
+		omniform()->addShared( \OmniForm\Plugin\Form::class );
+
 		$this->register_block_type( new FormBlock() );
 	}
 
@@ -35,19 +37,14 @@ class FormTest extends FormBlockTestCase {
 
 		$this->assertEmpty( $this->render_block_with_attributes() );
 
-		// Mock the \OmniForm\Plugin\Form::class.
-		$mock = $this->getMockBuilder( \OmniForm\Plugin\Form::class )
-			->disableOriginalConstructor()
-			->getMock();
-		omniform()->addShared( \OmniForm\Plugin\Form::class, $mock );
-
 		// Visitors should not see anything.
 		$this->assertEmpty( $this->render_block_with_attributes( array( 'ref' => $ref ) ) );
 
 		// Editors should see a notice.
 		wp_set_current_user( 1 );
+
 		$this->assertStringContainsString(
-			'Form ID &#8220;' . $ref . '&#8221; has been removed.',
+			'<p style="color:var(--wp--preset--color--vivid-red,#cf2e2e);">Form ID &#8220;' . $ref . '&#8221; does not exist.</p>',
 			$this->render_block_with_attributes( array( 'ref' => $ref ) )
 		);
 
@@ -57,20 +54,6 @@ class FormTest extends FormBlockTestCase {
 				'post_type' => 'omniform',
 			)
 		);
-
-		// Expect the get_instance method to be called once with the post ID.
-		$mock->expects( $this->once() )
-			->method( 'get_instance' )
-			->with( $post->ID )
-			->willReturn( $mock );
-
-		// Mock get_id to return the post ID.
-		$mock->method( 'get_id' )->willReturn( $post->ID );
-
-		// Mock is_published to fake a published form.
-		$mock->expects( $this->once() )
-			->method( 'is_published' )
-			->willReturn( true );
 
 		$this->assertStringContainsString(
 			'<form method="post" action="' . rest_url( '/omniform/v1/forms/' . $post->ID . '/responses' ) . '" class="wp-block-omniform-form-block">',
