@@ -21,8 +21,8 @@ class Form extends BaseBlock {
 			$entity_id = $this->get_block_context( 'postId' );
 		}
 
-		if ( ! empty( $this->attributes['ref'] ) ) {
-			$entity_id = $this->attributes['ref'];
+		if ( ! empty( $this->get_block_attribute( 'ref' ) ) ) {
+			$entity_id = $this->get_block_attribute( 'ref' );
 		}
 
 		if ( empty( $entity_id ) ) {
