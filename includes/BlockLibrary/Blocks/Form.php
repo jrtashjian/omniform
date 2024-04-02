@@ -29,8 +29,9 @@ class Form extends BaseBlock {
 			return '';
 		}
 
+		// Setup the Form object.
 		try {
-			// Setup the Form object.
+			/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
 			$form = omniform()->get( \OmniForm\Plugin\Form::class )->get_instance( $entity_id );
 		} catch ( \Exception $e ) {
 			// Display notice for logged in editors, render nothing for visitors.
