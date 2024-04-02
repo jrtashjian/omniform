@@ -48,7 +48,7 @@ class Form extends BaseBlock {
 			return get_the_password_form();
 		}
 
-		if ( ! $form->is_published() ) {
+		if ( ! $form->is_published() && ! is_preview() ) {
 			// Display notice for logged in editors, render nothing for visitors.
 			return current_user_can( 'edit_post', $form->get_id() )
 				? sprintf(
