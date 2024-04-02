@@ -3,6 +3,7 @@
  * PHPUnit bootstrap file
  *
  * @package OmniForm
+ *
  * @phpcs:disable WordPress.NamingConventions.PrefixAllGlobals
  */
 
