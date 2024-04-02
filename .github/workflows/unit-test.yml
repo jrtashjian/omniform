@@ -16,7 +16,7 @@ jobs:
           - "8.1"
           - "8.2"
         multisite: [false]
-        wordpress: ["6.3","6.2"]
+        wordpress: ["6.4","6.3"]
     env:
       WP_ENV_PHP_VERSION: ${{ matrix.php }}
       WP_ENV_CORE: ${{ format( 'https://wordpress.org/wordpress-{0}.zip', matrix.wordpress ) }}
