@@ -1,4 +1,14 @@
 
+1.1.0 / 2024-04-01
+==================
+
+  * Improve validation for grouped fields [#18](https://github.com/jrtashjian/omniform/pull/18)
+  * Require WordPress version 6.3
+  * Upgrade blocks to API version 3
+  * Properly restrict nested blocks within the form block
+  * Use global content_width for preview viewportWidth, if available
+  * Add proper password protection for form rendering
+
 1.0.5 / 2023-11-10
 ==================
 

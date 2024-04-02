@@ -82,24 +82,11 @@ Manual installation method requires downloading the OmniForm plugin and uploadin
 
 == Changelog ==
 
-= 1.0.5 / 2023-11-10 =
+= 1.1.0 / 2024-04-01 =
 
-* Fix is_required() method to return false if both contexts are null
-* Fix field name sanitization in BaseControlBlock
-* Toolbar Addition: Set Fields or Fieldsets as Required [#17](https://github.com/jrtashjian/omniform/pull/17)
-* Focus message container after submission
-* Textarea placeholder should not be the value
-
-= 1.0.4 / 2023-09-19 =
-
-* Make newsletter notice dismissable [#16](https://github.com/jrtashjian/omniform/pull/16)
-* Show the form editor post title
-
-= 1.0.3 / 2023-09-09 =
-
-* Field specific validation rules [#15](https://github.com/jrtashjian/omniform/pull/15)
-* Language pack support [#14](https://github.com/jrtashjian/omniform/pull/14)
-
-= 1.0.2 / 2023-09-06 =
-
-* Initial release on WordPress.org!
+  * Improve validation for grouped fields [#18](https://github.com/jrtashjian/omniform/pull/18)
+  * Require WordPress version 6.3
+  * Upgrade blocks to API version 3
+  * Properly restrict nested blocks within the form block
+  * Use global content_width for preview viewportWidth, if available
+  * Add proper password protection for form rendering
