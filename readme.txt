@@ -2,7 +2,7 @@
 Contributors: jrtashjian
 Tags: contact form, block editor, form builder, forms, email
 Requires at least: 6.3
-Tested up to: 6.4
+Tested up to: 6.5
 Requires PHP: 7.4
 Stable tag: 1.1.0
 License: GPLv2 or later
