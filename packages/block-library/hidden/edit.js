@@ -29,7 +29,7 @@ const Edit = ( {
 				} }
 				withoutInteractiveFormatting
 				allowedFormats={ [] }
-				style={ { fontSize: '0.8em', fontStyle: 'italic', paddingBottom: '0.5em' } }
+				style={ { fontSize: '0.8em', fontStyle: 'italic' } }
 			/>
 			<RichText
 				identifier="fieldControl"
@@ -41,6 +41,7 @@ const Edit = ( {
 				onChange={ ( html ) => setAttributes( { fieldValue: html } ) }
 				withoutInteractiveFormatting
 				allowedFormats={ [] }
+				style={ { fontFamily: 'monospace' } }
 			/>
 		</div>
 	);
