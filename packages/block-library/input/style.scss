@@ -73,3 +73,8 @@ input[type="radio"].wp-block-omniform-input:checked {
 		}
 	}
 }
+
+// Fix the width of input fields in the Style Book.
+.edit-site-style-book__example .wp-block-omniform-input.rich-text {
+	width: 100%;
+}
