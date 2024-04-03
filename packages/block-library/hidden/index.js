@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { registerBlockType } from '@wordpress/blocks';
+import { decodeEntities } from '@wordpress/html-entities';
 
 /**
  * Internal dependencies
@@ -20,4 +21,12 @@ registerBlockType( name, {
 	icon: { foreground: '#D92E83', src: fieldHidden },
 	variations,
 	example: {},
+	// Return the title of the variation if fieldName is in variations, otherwise return fieldName.
+	__experimentalLabel: ( { fieldName, fieldValue } ) => {
+		const variation = variations.find( ( { attributes } ) =>
+			attributes.fieldName === fieldName &&
+			attributes.fieldValue === fieldValue
+		);
+		return variation ? decodeEntities( variation.title ) : decodeEntities( fieldName );
+	},
 } );
