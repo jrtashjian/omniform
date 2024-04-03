@@ -8,8 +8,7 @@
 	"textdomain": "omniform",
 	"attributes": {
 		"fieldName": {
-			"type": "string",
-			"default": "hidden"
+			"type": "string"
 		},
 		"fieldValue": {
 			"type": "string"
