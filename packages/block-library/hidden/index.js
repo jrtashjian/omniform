@@ -12,7 +12,7 @@ import Edit from './edit';
 import variations from './variations';
 import { fieldHidden } from '../shared/icons';
 
-import './style.scss';
+import './index.scss';
 
 const { name } = json;
 

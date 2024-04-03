@@ -18,8 +18,8 @@ const Edit = ( {
 	return (
 		<div { ...blockProps }>
 			<RichText
-				identifier="fieldLabel"
-				placeholder={ __( 'Enter a label for the field…', 'omniform' ) }
+				identifier="fieldName"
+				placeholder={ __( 'Enter a name for the field…', 'omniform' ) }
 				value={ fieldName }
 				onChange={ ( newFieldName ) => {
 					setAttributes( { fieldName: newFieldName } );
@@ -29,7 +29,6 @@ const Edit = ( {
 				} }
 				withoutInteractiveFormatting
 				allowedFormats={ [] }
-				style={ { fontSize: '0.8em', fontStyle: 'italic' } }
 			/>
 			<RichText
 				identifier="fieldControl"
@@ -41,7 +40,6 @@ const Edit = ( {
 				onChange={ ( html ) => setAttributes( { fieldValue: html } ) }
 				withoutInteractiveFormatting
 				allowedFormats={ [] }
-				style={ { fontFamily: 'monospace' } }
 			/>
 		</div>
 	);

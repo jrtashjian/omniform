@@ -1,3 +1,9 @@
+.wp-block-omniform-hidden [data-wp-block-attribute-key="fieldName"] {
+	font-size: 0.8em;
+	font-style: italic;
+	display: inline-block;
+}
+
 .wp-block-omniform-hidden [data-wp-block-attribute-key="fieldControl"] {
 	appearance: none;
 	background-color: transparent;
@@ -8,6 +14,7 @@
 	box-sizing: border-box;
 	display: block;
 	font-size: inherit;
+	font-family: monospace;
 	line-height: inherit;
 	max-width: none;
 	min-height: auto;
