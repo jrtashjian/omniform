@@ -7,6 +7,7 @@ import { decodeEntities } from '@wordpress/html-entities';
 /**
  * Internal dependencies
  */
+import { __ } from '@wordpress/i18n';
 import json from './block.json';
 import Edit from './edit';
 import variations from './variations';
@@ -20,7 +21,11 @@ const { name } = json;
 registerBlockType( name, {
 	edit: Edit,
 	icon: { foreground: '#D92E83', src: Button },
-	example: {},
+	example: {
+		attributes: {
+			buttonLabel: __( 'Submit', 'omniform' ),
+		},
+	},
 	variations,
 	merge( attributes, attributesToMerge ) {
 		return {
