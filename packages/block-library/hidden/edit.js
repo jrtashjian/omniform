@@ -25,7 +25,7 @@ const Edit = ( {
 					setAttributes( { fieldName: newFieldName } );
 				} }
 				onBlur={ () => {
-					setAttributes( { fieldName: cleanForSlug( ( fieldName ).replace( /(<([^>]+)>)/gi, '' ) ) } );
+					setAttributes( { fieldName: cleanForSlug( ( fieldName ?? '' ).replace( /(<([^>]+)>)/gi, '' ) ) } );
 				} }
 				withoutInteractiveFormatting
 				allowedFormats={ [] }
