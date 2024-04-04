@@ -28,6 +28,7 @@ const ALLOWED_BLOCKS = [
 	'omniform/field',
 	'omniform/label',
 	'omniform/input',
+	'omniform/hidden',
 	'omniform/textarea',
 	'omniform/select',
 	'omniform/select-group',

@@ -1,0 +1,30 @@
+{
+	"$schema": "https://raw.githubusercontent.com/WordPress/gutenberg/wp/6.3/schemas/json/block.json",
+	"apiVersion": 3,
+	"name": "omniform/hidden",
+	"category": "omniform-control-simple",
+	"title": "Hidden Value",
+	"description": "A hidden form input for storing additional data.",
+	"textdomain": "omniform",
+	"attributes": {
+		"fieldName": {
+			"type": "string"
+		},
+		"fieldValue": {
+			"type": "string"
+		}
+	},
+	"supports": {
+		"html": false
+	},
+	"usesContext": [
+		"postId",
+		"postType",
+		"omniform/fieldGroupName",
+		"omniform/fieldGroupLabel",
+		"omniform/fieldGroupIsRequired",
+		"omniform/fieldIsRequired"
+	],
+	"editorScript": "file:index.js",
+	"editorStyle": "file:index.css"
+}
