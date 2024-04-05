@@ -7,8 +7,17 @@ import {
 	store as blockEditorStore,
 	useBlockProps,
 } from '@wordpress/block-editor';
-import { useSelect, useDispatch } from '@wordpress/data';
-import { cloneBlock, createBlock } from '@wordpress/blocks';
+import { useSelect } from '@wordpress/data';
+
+/**
+ * Internal dependencies
+ */
+import {
+	onMerge,
+	onRemove,
+	onReplace,
+	onSplit,
+} from '../shared/rich-text-handlers';
 
 const Edit = ( {
 	attributes: { fieldPlaceholder, fieldType },
@@ -21,98 +30,8 @@ const Edit = ( {
 		getBlockRootClientId,
 	} = useSelect( blockEditorStore );
 
-	const {
-		replaceBlocks,
-		selectBlock,
-	} = useDispatch( blockEditorStore );
-
 	const isTextInput = [ 'text', 'email', 'url', 'number', 'month', 'password', 'search', 'tel', 'week', 'hidden' ].includes( fieldType );
 	const isOptionInput = [ 'checkbox', 'radio' ].includes( fieldType );
-
-	/**
-	 * Handles splitting the parent field block.
-	 *
-	 * @param {string}  _value     The value of the field label.
-	 * @param {boolean} isOriginal Whether the field label is the original.
-	 * @return {Object} The new block.
-	 */
-	const onSplit = ( _value, isOriginal ) => {
-		let block;
-
-		const rootClientId = getBlockRootClientId( clientId );
-		const rootBlock = getBlock( rootClientId );
-
-		/**
-		 * Prepares the inner blocks of the new field block.
-		 *
-		 * @param {Array} innerBlocks The inner blocks of the parent field block.
-		 * @return {Array} The prepared inner blocks.
-		 */
-		const prepareInnerBlocks = ( innerBlocks ) => {
-			return innerBlocks.map(
-				( { name, attributes } ) => 'omniform/input' === name
-					? createBlock( name, { ...attributes, fieldPlaceholder: undefined, fieldValue: undefined } )
-					: createBlock( name, { style: attributes.style } )
-			);
-		};
-
-		if ( isOriginal ) {
-			block = cloneBlock(
-				rootBlock,
-				rootBlock.attributes,
-				! isOriginal && prepareInnerBlocks( rootBlock.innerBlocks )
-			);
-		} else {
-			block = createBlock(
-				'omniform/field',
-				{
-					...rootBlock.attributes,
-					fieldLabel: '',
-					fieldName: '',
-				},
-				prepareInnerBlocks( rootBlock.innerBlocks )
-			);
-		}
-
-		if ( isOriginal ) {
-			block.clientId = rootClientId;
-		}
-
-		return block;
-	};
-
-	/**
-	 * Handles replacing the parent field block.
-	 *
-	 * @param {Array}  blocks          The blocks to replace the parent field block with.
-	 * @param {number} indexToSelect   The index of the block to select.
-	 * @param {number} initialPosition The initial position of the caret.
-	 */
-	const onReplace = ( blocks, indexToSelect, initialPosition ) => {
-		replaceBlocks(
-			[ getBlockRootClientId( clientId ) ],
-			blocks,
-			indexToSelect,
-			initialPosition
-		);
-
-		// focus the label of the last field block inserted
-		selectLabelBlock( blocks[ indexToSelect ].clientId, -1 );
-	};
-
-	/**
-	 * Selects the label block of a field block.
-	 *
-	 * @param {string} fieldClientId   The client ID of the field block.
-	 * @param {number} initialPosition The initial position of the caret.
-	 */
-	const selectLabelBlock = ( fieldClientId, initialPosition = 0 ) => {
-		const labelBlock = getBlock( fieldClientId ).innerBlocks.filter(
-			( block ) => block.name === 'omniform/label'
-		)[ 0 ];
-
-		selectBlock( labelBlock.clientId, initialPosition );
-	};
 
 	const blockProps = useBlockProps();
 
@@ -130,8 +49,10 @@ const Edit = ( {
 				withoutInteractiveFormatting
 				allowedFormats={ [] }
 
-				onSplit={ onSplit }
-				onReplace={ onReplace }
+				onSplit={ ( ...args ) => onSplit( getBlock( getBlockRootClientId( clientId ) ), ...args ) }
+				onReplace={ ( ...args ) => onReplace( getBlock( getBlockRootClientId( clientId ) ), ...args ) }
+				onMerge={ ( ...args ) => onMerge( getBlock( getBlockRootClientId( clientId ) ), ...args ) }
+				onRemove={ ( ...args ) => onRemove( getBlock( getBlockRootClientId( clientId ) ), ...args ) }
 			/>
 		);
 	}

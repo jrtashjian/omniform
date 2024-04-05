@@ -15,12 +15,27 @@ import {
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
 
+/**
+ * Internal dependencies
+ */
+import {
+	onMerge,
+	onRemove,
+	onReplace,
+	onSplit,
+} from '../shared/rich-text-handlers';
+
 const Edit = ( {
 	attributes: { fieldPlaceholder, isMultiple },
 	setAttributes,
 	isSelected,
 	clientId,
 } ) => {
+	const {
+		getBlock,
+		getBlockRootClientId,
+	} = useSelect( blockEditorStore );
+
 	const hasSelectedInnerBlock = useSelect(
 		( select ) => select( blockEditorStore ).hasSelectedInnerBlock( clientId, true ),
 		[ clientId ]
@@ -87,6 +102,11 @@ const Edit = ( {
 					onChange={ ( html ) => setAttributes( { fieldPlaceholder: html } ) }
 					withoutInteractiveFormatting
 					allowedFormats={ [] }
+
+					onSplit={ ( ...args ) => onSplit( getBlock( getBlockRootClientId( clientId ) ), ...args ) }
+					onReplace={ ( ...args ) => onReplace( getBlock( getBlockRootClientId( clientId ) ), ...args ) }
+					onMerge={ ( ...args ) => onMerge( getBlock( getBlockRootClientId( clientId ) ), ...args ) }
+					onRemove={ ( ...args ) => onRemove( getBlock( getBlockRootClientId( clientId ) ), ...args ) }
 				/>
 			) }
 
