@@ -1,0 +1,45 @@
+{
+	"$schema": "https://raw.githubusercontent.com/WordPress/gutenberg/wp/6.3/schemas/json/block.json",
+	"apiVersion": 3,
+	"name": "omniform/response-notification",
+	"category": "omniform",
+	"title": "Response Notification",
+	"description": "Notifies user of submission.",
+	"textdomain": "omniform",
+	"attributes": {
+		"messageType": {
+			"type": "string",
+			"default": "success"
+		},
+		"messageContent": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"html": false,
+		"renaming": false,
+		"color": {
+			"text": true,
+			"background": true
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"__experimentalBorder": {
+			"color": true,
+			"radius": true,
+			"style": true,
+			"width": true,
+			"__experimentalDefaultControls": {
+				"radius": false
+			}
+		},
+		"layout": {
+			"allowEditing": false
+		}
+	},
+	"editorScript": "file:index.js",
+	"editorStyle": "file:index.css"
+}

@@ -113,6 +113,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 			Blocks\SelectGroup::class,
 			Blocks\SelectOption::class,
 			Blocks\Captcha::class,
+			Blocks\ResponseNotification::class,
 		);
 
 		foreach ( $blocks as $block ) {

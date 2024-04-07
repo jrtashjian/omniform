@@ -353,6 +353,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 						'omniform/select-group',
 						'omniform/select-option',
 						'omniform/captcha',
+						'omniform/response-notification',
 						'core/audio',
 						'core/block',
 						'core/code',
