@@ -28,13 +28,6 @@ registerBlockType( name, {
 			fieldLabel: __( 'Field Label', 'omniform' ),
 		},
 	},
-	merge: ( attributes, attributesToMerge ) => {
-		return {
-			fieldLabel:
-				( attributes.fieldLabel || '' ) +
-				( attributesToMerge.fieldLabel || '' ),
-		};
-	},
 	// Get block name from the option value.
 	__experimentalLabel: ( { fieldLabel } ) => fieldLabel && decodeEntities( fieldLabel ),
 } );

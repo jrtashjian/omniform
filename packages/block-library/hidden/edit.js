@@ -4,15 +4,29 @@
 import { __ } from '@wordpress/i18n';
 import {
 	RichText,
+	store as blockEditorStore,
 	useBlockProps,
 } from '@wordpress/block-editor';
+import { useSelect } from '@wordpress/data';
 import { cleanForSlug } from '@wordpress/url';
+
+/**
+ * Internal dependencies
+ */
+import {
+	onMerge,
+	onReplace,
+	onSplit,
+} from '../shared/rich-text-handlers';
 
 const Edit = ( {
 	attributes: { fieldValue, fieldName },
 	setAttributes,
 	isSelected,
+	clientId,
 } ) => {
+	const { getBlock } = useSelect( blockEditorStore );
+
 	const blockProps = useBlockProps();
 
 	return (
@@ -29,6 +43,10 @@ const Edit = ( {
 				} }
 				withoutInteractiveFormatting
 				allowedFormats={ [] }
+
+				onSplit={ ( ...args ) => onSplit( getBlock( clientId ), ...args ) }
+				onReplace={ ( ...args ) => onReplace( getBlock( clientId ), ...args ) }
+				onMerge={ ( ...args ) => onMerge( getBlock( clientId ), ...args ) }
 			/>
 			<RichText
 				identifier="fieldControl"
@@ -40,6 +58,10 @@ const Edit = ( {
 				onChange={ ( html ) => setAttributes( { fieldValue: html } ) }
 				withoutInteractiveFormatting
 				allowedFormats={ [] }
+
+				onSplit={ ( ...args ) => onSplit( getBlock( clientId ), ...args ) }
+				onReplace={ ( ...args ) => onReplace( getBlock( clientId ), ...args ) }
+				onMerge={ ( ...args ) => onMerge( getBlock( clientId ), ...args ) }
 			/>
 		</div>
 	);
