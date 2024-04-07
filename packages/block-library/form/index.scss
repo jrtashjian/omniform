@@ -43,3 +43,8 @@
 		}
 	}
 }
+
+// Hide the response notification when the form is not selected
+.wp-block-omniform-form:not(.has-child-selected):not(.is-selected) .wp-block-omniform-response-notification {
+	display: none;
+}
