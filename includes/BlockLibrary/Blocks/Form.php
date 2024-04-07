@@ -61,11 +61,74 @@ class Form extends BaseBlock {
 				: '';
 		}
 
-		$content     = do_blocks( $form->get_content() );
-		$nonce_field = wp_nonce_field( 'omniform', 'wp_rest', true, false );
+		$content = array(
+			do_blocks( $form->get_content() ),
+			wp_nonce_field( 'omniform', 'wp_rest', true, false ),
+		);
 
-		// Add a container for the response message.
-		$response_container = '<div class="omniform-response-container wp-block-group is-layout-flow" style="display:none;border-left-width:6px;padding-top:0.5em;padding-right:1.5em;padding-bottom:0.5em;padding-left:1.5em"></div>';
+		// Add a default success response notification block if one is not present.
+		if ( false !== preg_match( '/success-response-notification[^"]+?wp-block-omniform-response-notification/', $content[0] ) ) {
+			array_unshift(
+				$content,
+				render_block(
+					array(
+						'blockName' => 'omniform/response-notification',
+						'attrs'     => array(
+							'messageType'    => 'success',
+							'messageContent' => __( 'Success! Your submission has been completed.', 'omniform' ),
+							'style'          => array(
+								'border'  => array(
+									'left' => array(
+										'color' => 'var(--wp--preset--color--vivid-green-cyan,#00d084)',
+										'width' => '6px',
+									),
+								),
+								'spacing' => array(
+									'padding' => array(
+										'top'    => '0.5em',
+										'bottom' => '0.5em',
+										'left'   => '1.5em',
+										'right'  => '1.5em',
+									),
+								),
+							),
+						),
+					)
+				)
+			);
+		}
+
+		// Add a default error response notification block if one is not present.
+		if ( false !== preg_match( '/error-response-notification[^"]+?wp-block-omniform-response-notification/', $content[0] ) ) {
+			array_unshift(
+				$content,
+				render_block(
+					array(
+						'blockName' => 'omniform/response-notification',
+						'attrs'     => array(
+							'messageType'    => 'error',
+							'messageContent' => __( 'Unfortunately, your submission was not successful. Please ensure all fields are correctly filled out and try again.', 'omniform' ),
+							'style'          => array(
+								'border'  => array(
+									'left' => array(
+										'color' => 'var(--wp--preset--color--vivid-red,#cf2e2e)',
+										'width' => '6px',
+									),
+								),
+								'spacing' => array(
+									'padding' => array(
+										'top'    => '0.5em',
+										'bottom' => '0.5em',
+										'left'   => '1.5em',
+										'right'  => '1.5em',
+									),
+								),
+							),
+						),
+					)
+				)
+			);
+		}
 
 		/**
 		 * Fires when the form is rendered.
@@ -78,7 +141,7 @@ class Form extends BaseBlock {
 			'<form method="post" action="%s" %s>%s</form>',
 			esc_url( rest_url( 'omniform/v1/forms/' . $form->get_id() . '/responses' ) ),
 			get_block_wrapper_attributes(),
-			$response_container . $content . $nonce_field
+			implode( '', $content )
 		);
 	}
 }
