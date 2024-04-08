@@ -57,10 +57,17 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		add_action(
 			'omniform_response_created',
 			function ( $response_id, $form ) {
+				$notify_email         = get_post_meta( $form->get_id(), 'notify_email', true );
+				$notify_email_subject = get_post_meta( $form->get_id(), 'notify_email_subject', true );
+
 				wp_mail(
-					get_option( 'admin_email' ),
-					/* translators: %s: Form title */
-					esc_attr( sprintf( __( '%s Response', 'omniform' ), $form->get_title() ) ),
+					empty( $notify_email )
+						? esc_attr( get_option( 'admin_email' ) )
+						: esc_attr( $notify_email ),
+					empty( $notify_email_subject )
+						// translators: %1$s represents the blog name, %2$s represents the form title.
+						? esc_attr( sprintf( __( 'New Response: %1$s - %2$s', 'omniform' ), get_option( 'blogname' ), $form->get_title() ) )
+						: esc_attr( $notify_email_subject ),
 					wp_kses( $form->response_email_message( $response_id ), array() )
 				);
 			},
