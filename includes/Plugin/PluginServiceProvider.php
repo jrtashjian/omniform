@@ -500,6 +500,36 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			)
 		);
 
+		register_post_meta(
+			'omniform',
+			'notify_email',
+			array(
+				'show_in_rest' => array(
+					'schema' => array(
+						'type'  => 'array',
+						'items' => array(
+							'type' => 'string',
+						),
+					),
+
+				),
+				'single'       => true,
+				'type'         => 'array',
+				'default'      => array(),
+			)
+		);
+
+		register_post_meta(
+			'omniform',
+			'notify_email_subject',
+			array(
+				'show_in_rest' => true,
+				'single'       => true,
+				'type'         => 'string',
+				'default'      => '',
+			)
+		);
+
 		register_post_type(
 			'omniform_response',
 			array(
