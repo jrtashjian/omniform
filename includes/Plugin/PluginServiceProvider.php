@@ -590,6 +590,11 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 * Register the plugin settings.
 	 */
 	public function register_settings() {
+		// If the current user can't edit_theme_options, bail.
+		if ( ! current_user_can( 'edit_theme_options' ) ) {
+			return;
+		}
+
 		$options = array(
 			'hcaptcha'    => 'hCaptcha',
 			'recaptchav2' => 'reCAPTCHA v2',
