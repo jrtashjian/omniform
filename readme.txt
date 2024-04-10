@@ -82,6 +82,11 @@ Manual installation method requires downloading the OmniForm plugin and uploadin
 
 == Changelog ==
 
+= 1.2.1 / 2024-04-10 =
+
+  * Fixed improper check for success/error message blocks
+  * Resolved array to string conversion warning
+
 = 1.2.0 / 2024-04-09 =
 
   * Fixed Cloudflare Turnstile validation in Captcha block
