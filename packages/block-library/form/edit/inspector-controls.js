@@ -2,16 +2,19 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useEntityProp } from '@wordpress/core-data';
+import {
+	useEntityProp,
+} from '@wordpress/core-data';
 import { Button, PanelBody, TextControl } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
 import { addQueryArgs } from '@wordpress/url';
-import { commentContent } from '@wordpress/icons';
 
 /**
  * Internal dependencies
  */
-import { POST_TYPE, RESPONSE_POST_TYPE } from '../../shared/constants';
+import { POST_TYPE } from '../../shared/constants';
+import EmailNotificationSettings from '../../../components/form-settings/email-notifications';
+import ViewResponses from '../../../components/form-settings/view-responses';
 
 export default function FormInspectorControls( {
 	formId,
@@ -21,17 +24,7 @@ export default function FormInspectorControls( {
 
 	return isEntityAvailable && (
 		<InspectorControls>
-			<PanelBody className="omniform-view-responses__panel">
-				<Button
-					icon={ commentContent }
-					href={ addQueryArgs( 'edit.php', {
-						post_type: RESPONSE_POST_TYPE,
-						omniform_id: formId,
-					} ) }
-				>
-					{ __( 'View responses', 'omniform' ) }
-				</Button>
-			</PanelBody>
+			<ViewResponses formId={ formId } />
 			<PanelBody title={ __( 'Form Settings', 'omniform' ) }>
 				<TextControl
 					label={ __( 'Name', 'omniform' ) }
@@ -49,6 +42,7 @@ export default function FormInspectorControls( {
 					{ __( 'View in Form Editor', 'omniform' ) }
 				</Button>
 			</PanelBody>
+			<EmailNotificationSettings formId={ formId } />
 		</InspectorControls>
 	);
 }

@@ -57,10 +57,17 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		add_action(
 			'omniform_response_created',
 			function ( $response_id, $form ) {
+				$notify_email         = get_post_meta( $form->get_id(), 'notify_email', true );
+				$notify_email_subject = get_post_meta( $form->get_id(), 'notify_email_subject', true );
+
 				wp_mail(
-					get_option( 'admin_email' ),
-					/* translators: %s: Form title */
-					esc_attr( sprintf( __( '%s Response', 'omniform' ), $form->get_title() ) ),
+					empty( $notify_email )
+						? esc_attr( get_option( 'admin_email' ) )
+						: esc_attr( $notify_email ),
+					empty( $notify_email_subject )
+						// translators: %1$s represents the blog name, %2$s represents the form title.
+						? esc_attr( sprintf( __( 'New Response: %1$s - %2$s', 'omniform' ), get_option( 'blogname' ), $form->get_title() ) )
+						: esc_attr( $notify_email_subject ),
 					wp_kses( $form->response_email_message( $response_id ), array() )
 				);
 			},
@@ -489,6 +496,11 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			)
 		);
 
+		// If the current user can't edit_theme_options, bail.
+		if ( ! current_user_can( 'edit_theme_options' ) ) {
+			return;
+		}
+
 		register_post_meta(
 			'omniform',
 			'required_label',
@@ -497,6 +509,36 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				'single'       => true,
 				'type'         => 'string',
 				'default'      => '*',
+			)
+		);
+
+		register_post_meta(
+			'omniform',
+			'notify_email',
+			array(
+				'show_in_rest' => array(
+					'schema' => array(
+						'type'  => 'array',
+						'items' => array(
+							'type' => 'string',
+						),
+					),
+
+				),
+				'single'       => true,
+				'type'         => 'array',
+				'default'      => array(),
+			)
+		);
+
+		register_post_meta(
+			'omniform',
+			'notify_email_subject',
+			array(
+				'show_in_rest' => true,
+				'single'       => true,
+				'type'         => 'string',
+				'default'      => '',
 			)
 		);
 
@@ -548,6 +590,11 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 * Register the plugin settings.
 	 */
 	public function register_settings() {
+		// If the current user can't edit_theme_options, bail.
+		if ( ! current_user_can( 'edit_theme_options' ) ) {
+			return;
+		}
+
 		$options = array(
 			'hcaptcha'    => 'hCaptcha',
 			'recaptchav2' => 'reCAPTCHA v2',
