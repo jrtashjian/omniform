@@ -50,7 +50,7 @@ class Hidden extends Input {
 		// Callback functions must be surrounded by curly brackets. Example: "{{ callback_function }}".
 		if ( false === strpos( $callback, '{{' ) ) {
 			// Allow non-callback values to be set.
-			return $callback;
+			return esc_attr( $callback );
 		}
 
 		$fn = trim( str_replace( array( '{', '}' ), '', $callback ) );
@@ -67,6 +67,6 @@ class Hidden extends Input {
 			return '';
 		}
 
-		return strval( is_bool( $result ) ? intval( $result ) : $result );
+		return esc_attr( strval( is_bool( $result ) ? intval( $result ) : $result ) );
 	}
 }
