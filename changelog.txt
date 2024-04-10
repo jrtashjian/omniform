@@ -1,4 +1,16 @@
 
+1.2.0 / 2024-04-09
+==================
+
+  * Fixed Cloudflare Turnstile validation in Captcha block
+  * Added ability to customize email notification [#25](https://github.com/jrtashjian/omniform/pull/25)
+  * Introduced success and error message blocks [#23](https://github.com/jrtashjian/omniform/pull/23)
+  * Improved block splitting, replacing, removing, and merging of form blocks [#22](https://github.com/jrtashjian/omniform/pull/22)
+  * Introduced Hidden inputs with custom callbacks [#21](https://github.com/jrtashjian/omniform/pull/21)
+  * Fixed display of form blocks in the Style Book
+  * Allowed form to be rendered while previewing
+
+
 1.1.0 / 2024-04-01
 ==================
 
