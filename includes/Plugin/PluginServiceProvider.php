@@ -496,6 +496,11 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			)
 		);
 
+		// If the current user can't edit_theme_options, bail.
+		if ( ! current_user_can( 'edit_theme_options' ) ) {
+			return;
+		}
+
 		register_post_meta(
 			'omniform',
 			'required_label',
