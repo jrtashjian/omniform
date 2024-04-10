@@ -11,6 +11,7 @@ use OmniForm\Dependencies\Respect\Validation;
 use OmniForm\HCaptchaRule;
 use OmniForm\ReCaptchaV2Rule;
 use OmniForm\ReCaptchaV3Rule;
+use OmniForm\TurnstileRule;
 
 /**
  * The Captcha block class.
@@ -150,6 +151,9 @@ class Captcha extends BaseControlBlock {
 				break;
 			case 'recaptchav3':
 				$rule = new ReCaptchaV3Rule();
+				break;
+			case 'turnstile':
+				$rule = new TurnstileRule();
 				break;
 		}
 
