@@ -62,8 +62,8 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 
 				wp_mail(
 					empty( $notify_email )
-						? esc_attr( get_option( 'admin_email' ) )
-						: esc_attr( $notify_email ),
+						? get_option( 'admin_email' )
+						: $notify_email,
 					empty( $notify_email_subject )
 						// translators: %1$s represents the blog name, %2$s represents the form title.
 						? esc_attr( sprintf( __( 'New Response: %1$s - %2$s', 'omniform' ), get_option( 'blogname' ), $form->get_title() ) )
