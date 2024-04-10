@@ -67,7 +67,7 @@ class Form extends BaseBlock {
 		);
 
 		// Add a default success response notification block if one is not present.
-		if ( false === preg_match( '/success-response-notification[^"]+?wp-block-omniform-response-notification/', $content[0] ) ) {
+		if ( ! preg_match( '/success-response-notification[^"]+?wp-block-omniform-response-notification/', $content[0] ) ) {
 			array_unshift(
 				$content,
 				render_block(
@@ -99,7 +99,7 @@ class Form extends BaseBlock {
 		}
 
 		// Add a default error response notification block if one is not present.
-		if ( false === preg_match( '/error-response-notification[^"]+?wp-block-omniform-response-notification/', $content[0] ) ) {
+		if ( ! preg_match( '/error-response-notification[^"]+?wp-block-omniform-response-notification/', $content[0] ) ) {
 			array_unshift(
 				$content,
 				render_block(
