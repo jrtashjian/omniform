@@ -17,13 +17,13 @@ import {
 	ToolbarButton,
 	ToolbarGroup,
 } from '@wordpress/components';
-import { cleanForSlug } from '@wordpress/url';
 import { createBlock } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
 import { Required } from '../shared/icons';
+import { cleanFieldName } from '../shared/utils';
 
 const Edit = ( {
 	attributes: { fieldLabel, fieldName, isRequired },
@@ -79,12 +79,12 @@ const Edit = ( {
 	 * @param {string} value The new field label.
 	 */
 	const updateLabel = ( value ) => {
-		const cleanLabel = cleanForSlug( fieldLabel.replace( /(<([^>]+)>)/gi, '' ) );
+		const cleanLabel = cleanFieldName( fieldLabel );
 
 		if ( ! fieldName || fieldName === cleanLabel ) {
 			setAttributes( {
 				fieldLabel: value,
-				fieldName: cleanForSlug( value.replace( /(<([^>]+)>)/gi, '' ) ),
+				fieldName: cleanFieldName( value ),
 			} );
 		} else {
 			setAttributes( { fieldLabel: value } );
@@ -173,7 +173,7 @@ const Edit = ( {
 							setAttributes( { fieldName: newFieldName } );
 						} }
 						onBlur={ () => {
-							setAttributes( { fieldName: cleanForSlug( ( fieldName || fieldLabel ).replace( /(<([^>]+)>)/gi, '' ) ) } );
+							setAttributes( { fieldName: cleanFieldName( fieldName || fieldLabel ) } );
 						} }
 						help={ __( 'Name of the form control. Defaults to the label.', 'omniform' ) }
 					/>

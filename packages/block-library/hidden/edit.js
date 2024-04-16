@@ -8,7 +8,6 @@ import {
 	useBlockProps,
 } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
-import { cleanForSlug } from '@wordpress/url';
 
 /**
  * Internal dependencies
@@ -18,6 +17,7 @@ import {
 	onReplace,
 	onSplit,
 } from '../shared/rich-text-handlers';
+import { cleanFieldName } from '../shared/utils';
 
 const Edit = ( {
 	attributes: { fieldValue, fieldName },
@@ -39,7 +39,7 @@ const Edit = ( {
 					setAttributes( { fieldName: newFieldName } );
 				} }
 				onBlur={ () => {
-					setAttributes( { fieldName: cleanForSlug( ( fieldName ?? '' ).replace( /(<([^>]+)>)/gi, '' ) ) } );
+					setAttributes( { fieldName: cleanFieldName( fieldName ?? '' ) } );
 				} }
 				withoutInteractiveFormatting
 				allowedFormats={ [] }

@@ -16,13 +16,13 @@ import {
 	ToolbarButton,
 	ToolbarGroup,
 } from '@wordpress/components';
-import { cleanForSlug } from '@wordpress/url';
 import { useEntityProp } from '@wordpress/core-data';
 
 /**
  * Internal dependencies
  */
 import { Required } from '../shared/icons';
+import { cleanFieldName } from '../shared/utils';
 
 const Edit = ( {
 	attributes: { fieldLabel, fieldName, isRequired },
@@ -57,8 +57,8 @@ const Edit = ( {
 					placeholder={ __( 'Enter a title to the field…', 'omniform' ) }
 					multiple={ false }
 					value={ fieldLabel }
-					onChange={ ( html ) => ! fieldName || fieldName === cleanForSlug( fieldLabel.replace( /(<([^>]+)>)/gi, '' ) )
-						? setAttributes( { fieldLabel: html, fieldName: cleanForSlug( html.replace( /(<([^>]+)>)/gi, '' ) ) } )
+					onChange={ ( html ) => ! fieldName || fieldName === cleanFieldName( fieldLabel )
+						? setAttributes( { fieldLabel: html, fieldName: cleanFieldName( html ) } )
 						: setAttributes( { fieldLabel: html } )
 					}
 					withoutInteractiveFormatting
@@ -108,7 +108,7 @@ const Edit = ( {
 							setAttributes( { fieldName: newFieldName } );
 						} }
 						onBlur={ () => {
-							setAttributes( { fieldName: cleanForSlug( ( fieldName || fieldLabel ).replace( /(<([^>]+)>)/gi, '' ) ) } );
+							setAttributes( { fieldName: cleanFieldName( fieldName || fieldLabel ) } );
 						} }
 						help={ __( 'Name of the fieldset. Defaults to the fieldset\'s label.', 'omniform' ) }
 					/>
