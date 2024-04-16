@@ -512,6 +512,29 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			)
 		);
 
+		// register_post_meta for form submission method and action attributes of the form element.
+		register_post_meta(
+			'omniform',
+			'submit_method',
+			array(
+				'show_in_rest' => true,
+				'single'       => true,
+				'type'         => 'string',
+				'default'      => '',
+			)
+		);
+
+		register_post_meta(
+			'omniform',
+			'submit_action',
+			array(
+				'show_in_rest' => true,
+				'single'       => true,
+				'type'         => 'string',
+				'default'      => '',
+			)
+		);
+
 		register_post_meta(
 			'omniform',
 			'notify_email',
