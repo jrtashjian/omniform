@@ -63,8 +63,15 @@ class Form extends BaseBlock {
 
 		$content = array(
 			do_blocks( $form->get_content() ),
-			wp_nonce_field( 'omniform', 'wp_rest', true, false ),
 		);
+
+		// get submit_method and submit_action meta for the current form.
+		$form_submit_method = get_post_meta( $form->get_id(), 'submit_method', true );
+		$form_submit_action = get_post_meta( $form->get_id(), 'submit_action', true );
+
+		if ( 'POST' === $form_submit_method ) {
+			$content[] = wp_nonce_field( 'omniform', 'wp_rest', true, false );
+		}
 
 		// Add a default success response notification block if one is not present.
 		if ( ! preg_match( '/success-response-notification[^"]+?wp-block-omniform-response-notification/', $content[0] ) ) {
@@ -138,8 +145,9 @@ class Form extends BaseBlock {
 		do_action( 'omniform_form_render', $form->get_id() );
 
 		return sprintf(
-			'<form method="post" action="%s" %s>%s</form>',
-			esc_url( rest_url( 'omniform/v1/forms/' . $form->get_id() . '/responses' ) ),
+			'<form method="%s" action="%s" %s>%s</form>',
+			empty( $form_submit_method ) ? 'POST' : esc_attr( $form_submit_method ),
+			empty( $form_submit_action ) ? esc_url( rest_url( 'omniform/v1/forms/' . $form->get_id() . '/responses' ) ) : esc_url( $form_submit_action ),
 			get_block_wrapper_attributes(),
 			implode( '', $content )
 		);
