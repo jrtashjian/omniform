@@ -15,6 +15,7 @@ import { addQueryArgs } from '@wordpress/url';
 import { POST_TYPE } from '../../shared/constants';
 import EmailNotificationSettings from '../../../components/form-settings/email-notifications';
 import ViewResponses from '../../../components/form-settings/view-responses';
+import SubmissionMethodSettings from '../../../components/form-settings/submission-method';
 
 export default function FormInspectorControls( {
 	formId,
@@ -43,6 +44,7 @@ export default function FormInspectorControls( {
 				</Button>
 			</PanelBody>
 			<EmailNotificationSettings formId={ formId } />
+			<SubmissionMethodSettings formId={ formId } />
 		</InspectorControls>
 	);
 }
