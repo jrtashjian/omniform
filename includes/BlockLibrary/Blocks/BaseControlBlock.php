@@ -37,7 +37,7 @@ abstract class BaseControlBlock extends BaseBlock {
 	 * @return string|null
 	 */
 	public function get_field_name() {
-		return sanitize_title( $this->get_block_context( 'omniform/fieldName' ) ?? $this->get_field_label() ?? '' );
+		return sanitize_html_class( $this->get_block_context( 'omniform/fieldName' ) ?? $this->get_field_label() ?? '' );
 	}
 
 	/**
@@ -55,7 +55,7 @@ abstract class BaseControlBlock extends BaseBlock {
 	 * @return string|null
 	 */
 	public function get_field_group_name() {
-		return sanitize_title( $this->get_block_context( 'omniform/fieldGroupName' ) ?? $this->get_field_group_label() ?? '' );
+		return sanitize_html_class( $this->get_block_context( 'omniform/fieldGroupName' ) ?? $this->get_field_group_label() ?? '' );
 	}
 
 	/**
