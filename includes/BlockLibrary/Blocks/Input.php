@@ -78,6 +78,8 @@ class Input extends BaseControlBlock {
 				return gmdate( self::FORMAT_WEEK );
 			case 'datetime-local':
 				return gmdate( self::FORMAT_DATETIME_LOCAL );
+			case 'search':
+				return get_query_var( $this->get_control_name() );
 			default:
 				return '';
 		}

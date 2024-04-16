@@ -9,6 +9,7 @@ import {
 	fieldInput,
 	fieldNumber,
 	fieldRadio,
+	fieldSearch,
 	fieldTel,
 	fieldTime,
 	fieldUrl,
@@ -44,6 +45,13 @@ const variations = [
 		title: __( 'Number', 'omniform' ),
 		description: __( 'A field for collecting a numerical value.', 'omniform' ),
 		attributes: { fieldType: 'number' },
+	},
+	{
+		name: 'input-search',
+		icon: { src: fieldSearch },
+		title: __( 'Search', 'omniform' ),
+		description: __( 'Enter keywords to search for information.', 'omniform' ),
+		attributes: { fieldType: 'search' },
 	},
 	{
 		name: 'input-checkbox',
