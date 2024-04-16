@@ -8,6 +8,7 @@ import {
 	fieldEmail,
 	fieldInput,
 	fieldNumber,
+	fieldPassword,
 	fieldRadio,
 	fieldSearch,
 	fieldTel,
@@ -52,6 +53,13 @@ const variations = [
 		title: __( 'Search', 'omniform' ),
 		description: __( 'Enter keywords to search for information.', 'omniform' ),
 		attributes: { fieldType: 'search' },
+	},
+	{
+		name: 'input-password',
+		icon: { src: fieldPassword },
+		title: __( 'Password', 'omniform' ),
+		description: __( 'A field for secure password entry.', 'omniform' ),
+		attributes: { fieldType: 'password' },
 	},
 	{
 		name: 'input-checkbox',
