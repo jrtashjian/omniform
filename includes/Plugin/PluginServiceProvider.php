@@ -568,7 +568,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		register_post_type(
 			'omniform_response',
 			array(
-				'labels'            => array(
+				'labels'                          => array(
 					'name'               => _x( 'Responses', 'post type general name', 'omniform' ),
 					'singular_name'      => _x( 'Response', 'post type singular name', 'omniform' ),
 					'all_items'          => __( 'View responses', 'omniform' ),
@@ -579,16 +579,18 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					'search_items'       => __( 'Search responses', 'omniform' ),
 					'view_item'          => __( 'View response', 'omniform' ),
 				),
-				'public'            => false,
-				'show_ui'           => true,
-				'show_in_menu'      => 'edit.php?post_type=omniform',
-				'show_in_admin_bar' => false,
-				'rewrite'           => false,
-				'show_in_rest'      => true,
-				'rest_namespace'    => 'omniform/v1',
-				'rest_base'         => 'responses',
-				'map_meta_cap'      => true,
-				'capabilities'      => array(
+				'public'                          => false,
+				'show_ui'                         => true,
+				'show_in_menu'                    => 'edit.php?post_type=omniform',
+				'show_in_admin_bar'               => false,
+				'rewrite'                         => false,
+				'show_in_rest'                    => true,
+				'rest_namespace'                  => 'omniform/v1',
+				'rest_base'                       => 'responses',
+				'autosave_rest_controller_class'  => 'stdClass', // Disable autosave endpoints.
+				'revisions_rest_controller_class' => 'stdClass', // Disable revisions endpoints.
+				'map_meta_cap'                    => true,
+				'capabilities'                    => array(
 					'create_posts'           => 'do_not_allow',
 					'delete_posts'           => 'edit_theme_options',
 					'delete_others_posts'    => 'edit_theme_options',
@@ -602,7 +604,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					'read'                   => 'edit_theme_options',
 					'read_private_posts'     => 'edit_theme_options',
 				),
-				'supports'          => array(
+				'supports'                        => array(
 					'custom-fields',
 				),
 			)
