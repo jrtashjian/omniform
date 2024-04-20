@@ -496,6 +496,27 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			)
 		);
 
+		register_taxonomy(
+			'omniform_type',
+			array( 'omniform' ),
+			array(
+				'public'            => false,
+				'hierarchical'      => false,
+				'labels'            => array(
+					'name'          => _x( 'OmniForm Type', 'taxonomy general name', 'omniform' ),
+					'singular_name' => _x( 'OmniForm Type', 'taxonomy singular name', 'omniform' ),
+				),
+				'query_var'         => false,
+				'rewrite'           => false,
+				'show_ui'           => false,
+				'show_in_nav_menus' => false,
+				'show_in_rest'      => true,
+				'default_term'      => array(
+					'slug' => 'standard',
+				),
+			)
+		);
+
 		// If the current user can't edit_theme_options, bail.
 		if ( ! current_user_can( 'edit_theme_options' ) ) {
 			return;

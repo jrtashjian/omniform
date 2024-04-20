@@ -15,6 +15,7 @@ export default function SubmissionMethodSettings( {
 	formId,
 	isDocumentPanel,
 } ) {
+	const [ formType, setFormType ] = useEntityProp( 'postType', POST_TYPE, 'omniform_type', formId );
 	const [ meta, setMeta ] = useEntityProp( 'postType', POST_TYPE, 'meta', formId );
 
 	const metaSubmitMethod = meta?.submit_method;
@@ -27,6 +28,19 @@ export default function SubmissionMethodSettings( {
 		setMeta( { ...meta, submit_action: newValue } );
 	};
 
+	const updateFormType = ( newValue ) => {
+		setFormType( newValue );
+
+		// Reset the meta values when switching to standard form type.
+		if ( newValue === 'standard' ) {
+			setMeta( {
+				...meta,
+				submit_method: '',
+				submit_action: '',
+			} );
+		}
+	};
+
 	const PanelComponent = isDocumentPanel
 		? PluginDocumentSettingPanel
 		: PanelBody;
@@ -36,6 +50,16 @@ export default function SubmissionMethodSettings( {
 			name="omniform-submission-method"
 			title={ __( 'Submission', 'omniform' ) }
 		>
+			<SelectControl
+				label={ __( 'Type', 'omniform' ) }
+				value={ formType }
+				onChange={ updateFormType }
+				options={ [
+					{ label: 'Standard', value: 'standard' },
+					{ label: 'Custom', value: 'custom' },
+				] }
+			/>
+
 			<TextControl
 				label={ __( 'Submit Method', 'omniform' ) }
 				value={ metaSubmitAction }

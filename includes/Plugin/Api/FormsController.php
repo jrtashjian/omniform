@@ -147,4 +147,45 @@ class FormsController extends \WP_REST_Posts_Controller {
 			? array_map( array( $this, 'sanitize_array' ), $data )
 			: sanitize_textarea_field( $data );
 	}
+
+	/**
+	 * Adds the schema from additional fields to a schema array.
+	 *
+	 * @param array $schema Schema array.
+	 *
+	 * @return array Modified Schema array.
+	 */
+	protected function add_additional_fields_schema( $schema ) {
+		// Define the schema for the omniform_type field.
+		$schema['properties']['omniform_type'] = array(
+			'description' => __( 'omniform_type', 'omniform' ),
+			'type'        => 'string',
+			'enum'        => array(
+				'standard',
+				'custom',
+			),
+			'context'     => array( 'view', 'edit', 'embed' ),
+		);
+
+		return $schema;
+	}
+
+	/**
+	 * Adds the values from additional fields to a data object.
+	 *
+	 * @param array           $response_data Prepared response array.
+	 * @param WP_REST_Request $request       Full details about the request.
+	 *
+	 * @return array Modified data object with additional fields.
+	 */
+	protected function add_additional_fields_to_object( $response_data, $request ) {
+
+		$form_type_terms = get_the_terms( $response_data['id'], 'omniform_type' );
+
+		if ( ! is_wp_error( $form_type_terms ) && false !== $form_type_terms ) {
+			$response_data['omniform_type'] = $form_type_terms[0]->slug;
+		}
+
+		return $response_data;
+	}
 }
