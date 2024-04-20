@@ -65,11 +65,8 @@ class Form extends BaseBlock {
 			do_blocks( $form->get_content() ),
 		);
 
-		// get submit_method and submit_action meta for the current form.
-		$form_submit_method = get_post_meta( $form->get_id(), 'submit_method', true );
-		$form_submit_action = get_post_meta( $form->get_id(), 'submit_action', true );
-
-		if ( 'POST' === $form_submit_method ) {
+		// Add a nonce field to standard forms.
+		if ( 'standard' === $form->get_type() ) {
 			$content[] = wp_nonce_field( 'omniform', 'wp_rest', true, false );
 		}
 
@@ -146,8 +143,8 @@ class Form extends BaseBlock {
 
 		return sprintf(
 			'<form method="%s" action="%s" %s>%s</form>',
-			empty( $form_submit_method ) ? 'POST' : esc_attr( $form_submit_method ),
-			empty( $form_submit_action ) ? esc_url( rest_url( 'omniform/v1/forms/' . $form->get_id() . '/responses' ) ) : esc_url( $form_submit_action ),
+			esc_attr( $form->get_submit_method() ),
+			esc_attr( $form->get_submit_action() ),
 			get_block_wrapper_attributes(),
 			implode( '', $content )
 		);
