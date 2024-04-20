@@ -470,7 +470,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				'show_in_rest'          => true,
 				'rest_namespace'        => 'omniform/v1',
 				'rest_base'             => 'forms',
-				'rest_controller_class' => \OmniForm\Plugin\RestApi\ResponsesController::class,
+				'rest_controller_class' => \OmniForm\Plugin\Api\FormsController::class,
 				'map_meta_cap'          => true,
 				'capabilities'          => array(
 					'create_posts'           => 'edit_theme_options',

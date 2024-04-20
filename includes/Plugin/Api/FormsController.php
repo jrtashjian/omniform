@@ -1,20 +1,18 @@
 <?php
 /**
- * The ResponsesController class.
+ * The FormsController class.
  *
  * @package OmniForm
  */
 
-namespace OmniForm\Plugin\RestApi;
+namespace OmniForm\Plugin\Api;
 
 /**
- * The ResponsesController class.
+ * The FormsController class.
  */
-class ResponsesController extends \WP_REST_Posts_Controller {
+class FormsController extends \WP_REST_Posts_Controller {
 	/**
-	 * Registers the routes for attachments.
-	 *
-	 * @see register_rest_route()
+	 * Registers the routes for the objects of the controller.
 	 */
 	public function register_routes() {
 		parent::register_routes();
