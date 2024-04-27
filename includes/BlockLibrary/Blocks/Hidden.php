@@ -45,10 +45,10 @@ class Hidden extends Input {
 	public function get_control_value() {
 		$value = parent::get_control_value();
 
-		if ( ! $this->has_callback( $value ) ) {
-			return '';
+		if ( $this->has_callback( $value ) ) {
+			$value = $this->process_callbacks( $value );
 		}
 
-		return esc_attr( strval( $this->process_callbacks( $value ) ) );
+		return esc_attr( $value );
 	}
 }
