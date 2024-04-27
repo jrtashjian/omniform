@@ -7,11 +7,13 @@
 
 namespace OmniForm\BlockLibrary\Blocks;
 
+use OmniForm\Traits\CallbackSupport;
+
 /**
  * The Hidden block class.
  */
 class Hidden extends Input {
-	use \OmniForm\Traits\CallbackSupport;
+	use CallbackSupport;
 
 	/**
 	 * Gets the field label.

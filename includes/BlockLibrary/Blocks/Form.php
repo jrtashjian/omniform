@@ -7,10 +7,14 @@
 
 namespace OmniForm\BlockLibrary\Blocks;
 
+use OmniForm\Traits\CallbackSupport;
+
 /**
  * The Form block class.
  */
 class Form extends BaseBlock {
+	use CallbackSupport;
+
 	/**
 	 * Renders the block on the server.
 	 *
@@ -144,7 +148,7 @@ class Form extends BaseBlock {
 		return sprintf(
 			'<form method="%s" action="%s" %s>%s</form>',
 			esc_attr( $form->get_submit_method() ),
-			esc_attr( $form->get_submit_action() ),
+			esc_attr( $this->process_callbacks( $form->get_submit_action() ) ),
 			get_block_wrapper_attributes(),
 			implode( '', $content )
 		);
