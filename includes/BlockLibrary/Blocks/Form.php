@@ -105,7 +105,7 @@ class Form extends BaseBlock {
 
 		return sprintf(
 			'<form method="%s" action="%s" %s>%s</form>',
-			esc_attr( $form->get_submit_method() ),
+			esc_attr( strtolower( $form->get_submit_method() ) ),
 			esc_attr( $this->process_callbacks( $form->get_submit_action() ) ),
 			get_block_wrapper_attributes(),
 			implode( '', $content )
