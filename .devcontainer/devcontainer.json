@@ -1,5 +1,8 @@
 {
-	"image": "mcr.microsoft.com/devcontainers/base:debian",
+	"name": "OmniForm Development",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "app",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	"features": {
 		"ghcr.io/devcontainers/features/php:1": {
 			"installComposer": true
@@ -8,8 +11,9 @@
 		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
 		"ghcr.io/devcontainers/features/git:1": {}
 	},
+	"onCreateCommand": "sudo chmod +x .devcontainer/install-tools.sh && .devcontainer/install-tools.sh",
 	"postCreateCommand": "sudo chmod +x .devcontainer/setup.sh && .devcontainer/setup.sh",
-    "forwardPorts": [
-        8888
-    ]
+	"forwardPorts": [
+		8080
+	]
 }
