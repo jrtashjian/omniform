@@ -8,12 +8,14 @@ import {
 	fieldEmail,
 	fieldInput,
 	fieldNumber,
+	fieldPassword,
 	fieldRadio,
+	fieldSearch,
+	fieldSelect,
 	fieldTel,
+	fieldTextarea,
 	fieldTime,
 	fieldUrl,
-	fieldTextarea,
-	fieldSelect,
 } from '../shared/icons';
 
 /**
@@ -102,6 +104,24 @@ const variations = [
 		keywords: [ 'input', 'numeric', 'integer', 'decimal' ],
 		example: inputTextExample( 'number', __( 'Number', 'omniform' ) ),
 		innerBlocks: inputTextExample( 'number' ).innerBlocks,
+	},
+	{
+		name: 'field-search',
+		icon: { src: fieldSearch },
+		title: __( 'Search', 'omniform' ),
+		description: __( 'Enter keywords to search for information.', 'omniform' ),
+		keywords: [ 'input', 'search' ],
+		example: inputTextExample( 'search', __( 'Search', 'omniform' ) ),
+		innerBlocks: inputTextExample( 'search' ).innerBlocks,
+	},
+	{
+		name: 'field-password',
+		icon: { src: fieldPassword },
+		title: __( 'Password', 'omniform' ),
+		description: __( 'A field for secure password entry.', 'omniform' ),
+		keywords: [ 'input', 'password' ],
+		example: inputTextExample( 'password', __( 'Password', 'omniform' ) ),
+		innerBlocks: inputTextExample( 'password' ).innerBlocks,
 	},
 	{
 		name: 'field-checkbox',

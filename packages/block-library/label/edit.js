@@ -9,7 +9,6 @@ import {
 } from '@wordpress/block-editor';
 import { useEntityProp } from '@wordpress/core-data';
 import { useSelect, useDispatch } from '@wordpress/data';
-import { cleanForSlug } from '@wordpress/url';
 
 /**
  * Internal dependencies
@@ -20,6 +19,7 @@ import {
 	onReplace,
 	onSplit,
 } from '../shared/rich-text-handlers';
+import { cleanFieldName } from '../shared/utils';
 
 const Edit = ( {
 	attributes: { fieldLabel },
@@ -44,14 +44,14 @@ const Edit = ( {
 	 * @param {string} value The new field label.
 	 */
 	const updateLabel = ( value ) => {
-		const cleanLabel = cleanForSlug( contextFieldLabel.replace( /(<([^>]+)>)/gi, '' ) );
+		const cleanLabel = cleanFieldName( contextFieldLabel );
 
 		if ( ! contextFieldName || contextFieldName === cleanLabel ) {
 			updateBlockAttributes(
 				getBlockRootClientId( clientId ),
 				{
 					fieldLabel: value,
-					fieldName: cleanForSlug( value.replace( /(<([^>]+)>)/gi, '' ) ),
+					fieldName: cleanFieldName( value ),
 				}
 			);
 		} else {

@@ -154,6 +154,45 @@ class Form {
 	}
 
 	/**
+	 * The form's type.
+	 *
+	 * @return string
+	 */
+	public function get_type() {
+		$type_terms = get_the_terms( $this->get_id(), 'omniform_type' );
+
+		return ! is_wp_error( $type_terms ) && false !== $type_terms
+			? $type_terms[0]->slug
+			: 'standard';
+	}
+
+	/**
+	 * The form's submit method.
+	 *
+	 * @return string
+	 */
+	public function get_submit_method() {
+		$submit_method = get_post_meta( $this->get_id(), 'submit_method', true );
+
+		return empty( $submit_method ) || 'standard' === $this->get_type()
+			? 'POST'
+			: $submit_method;
+	}
+
+	/**
+	 * The form's submit action.
+	 *
+	 * @return string
+	 */
+	public function get_submit_action() {
+		$submit_action = get_post_meta( $this->get_id(), 'submit_action', true );
+
+		return empty( $submit_action ) || 'standard' === $this->get_type()
+			? rest_url( 'omniform/v1/forms/' . $this->get_id() . '/responses' )
+			: $submit_action;
+	}
+
+	/**
 	 * Parses blocks out of the form's `post_content`.
 	 */
 	protected function register_fields() {

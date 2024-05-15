@@ -23,6 +23,11 @@ import { applyFilters } from '@wordpress/hooks';
 
 		// Add event listeners to all omniforms.
 		document.querySelectorAll( 'form.wp-block-omniform-form' ).forEach( ( form ) => {
+			// Only add event listeners to OmniForms.
+			if ( ! form.action.includes( '/omniform/v1/forms/' ) ) {
+				return;
+			}
+
 			const containersInitialState = {};
 
 			const successContainer = form.querySelector( '.wp-block-omniform-response-notification.success-response-notification' );

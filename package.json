@@ -44,7 +44,8 @@
 		"change-case": "^4.1.2",
 		"classnames": "^2.3.2",
 		"colord": "^2.9.3",
-		"lodash": "^4.17.21"
+		"lodash": "^4.17.21",
+		"remove-accents": "^0.5.0"
 	},
 	"devDependencies": {
 		"@wordpress/env": "^9.3.1",
