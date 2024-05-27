@@ -52,10 +52,10 @@ export default function SubmissionMethodSettings( {
 		>
 			<SelectControl
 				label={ __( 'Type', 'omniform' ) }
-				value={ formType }
+				value={ formType.toString() || 'uncategorized' }
 				onChange={ updateFormType }
 				options={ [
-					{ label: 'Standard', value: 'standard' },
+					{ label: 'Standard', value: 'uncategorized' },
 					{ label: 'Custom', value: 'custom' },
 				] }
 			/>
