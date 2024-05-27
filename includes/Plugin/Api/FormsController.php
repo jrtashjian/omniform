@@ -149,6 +149,28 @@ class FormsController extends \WP_REST_Posts_Controller {
 	}
 
 	/**
+	 * Prepares a single post for create or update.
+	 *
+	 * @param WP_REST_Request $request Request object.
+	 *
+	 * @return stdClass|WP_Error Post object or WP_Error.
+	 */
+	protected function prepare_item_for_database( $request ) {
+		$prepared_post = parent::prepare_item_for_database( $request );
+
+		$form_types_manager = omniform()->get( \OmniForm\FormTypes\FormTypesManager::class );
+
+		if ( isset( $request['omniform_type'] ) ) {
+			$prepared_post->tax_input['omniform_type'] = $form_types_manager->validate_form_type( $request['omniform_type'] );
+		} else {
+			$prepared_post->tax_input['omniform_type'] = $form_types_manager->get_default_form_type();
+		}
+
+		/** This filter is documented in wp-includes/rest-api/endpoints/class-wp-rest-posts-controller.php */
+		return apply_filters( "rest_pre_insert_{$this->post_type}", $prepared_post, $request ); // phpcs:ignore WordPress.NamingConventions
+	}
+
+	/**
 	 * Adds the schema from additional fields to a schema array.
 	 *
 	 * @param array $schema Schema array.
@@ -156,14 +178,13 @@ class FormsController extends \WP_REST_Posts_Controller {
 	 * @return array Modified Schema array.
 	 */
 	protected function add_additional_fields_schema( $schema ) {
+		$form_types_manager = omniform()->get( \OmniForm\FormTypes\FormTypesManager::class );
+
 		// Define the schema for the omniform_type field.
 		$schema['properties']['omniform_type'] = array(
 			'description' => __( 'omniform_type', 'omniform' ),
 			'type'        => 'string',
-			'enum'        => array(
-				'standard',
-				'custom',
-			),
+			'enum'        => array_column( $form_types_manager->get_form_types(), 'type' ),
 			'context'     => array( 'view', 'edit', 'embed' ),
 		);
 
@@ -179,11 +200,14 @@ class FormsController extends \WP_REST_Posts_Controller {
 	 * @return array Modified data object with additional fields.
 	 */
 	protected function add_additional_fields_to_object( $response_data, $request ) {
+		$form_types_manager = omniform()->get( \OmniForm\FormTypes\FormTypesManager::class );
 
 		$form_type_terms = get_the_terms( $response_data['id'], 'omniform_type' );
 
 		if ( ! is_wp_error( $form_type_terms ) && false !== $form_type_terms ) {
-			$response_data['omniform_type'] = $form_type_terms[0]->slug;
+			$response_data['omniform_type'] = $form_types_manager->validate_form_type( $form_type_terms[0]->slug );
+		} else {
+			$response_data['omniform_type'] = $form_types_manager->get_default_form_type();
 		}
 
 		return $response_data;
