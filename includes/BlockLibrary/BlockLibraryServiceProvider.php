@@ -9,6 +9,7 @@ namespace OmniForm\BlockLibrary;
 
 use OmniForm\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use OmniForm\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
+use OmniForm\FormTypes\FormTypesManager;
 use WP_Query;
 
 /**
@@ -63,6 +64,9 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 			return;
 		}
 
+		/** @var \OmniForm\FormTypes\FormTypesManager */ // phpcs:ignore
+		$form_types_manager = $this->getContainer()->get( FormTypesManager::class );
+
 		foreach ( $this->get_block_patterns() as $form ) {
 			wp_insert_post(
 				array(
@@ -71,6 +75,10 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 					'post_name'    => $form['name'],
 					'post_title'   => $form['title'],
 					'post_content' => $form['content'],
+					'tax_input'    => array(
+						'omniform_type' => $form_types_manager->validate_form_type( $form['type'] ?? '' ),
+					),
+					'meta_input'   => $form['meta'] ?? array(),
 				)
 			);
 		}
