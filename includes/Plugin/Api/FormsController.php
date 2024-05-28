@@ -162,8 +162,6 @@ class FormsController extends \WP_REST_Posts_Controller {
 
 		if ( isset( $request['omniform_type'] ) ) {
 			$prepared_post->tax_input['omniform_type'] = $form_types_manager->validate_form_type( $request['omniform_type'] );
-		} else {
-			$prepared_post->tax_input['omniform_type'] = $form_types_manager->get_default_form_type();
 		}
 
 		/** This filter is documented in wp-includes/rest-api/endpoints/class-wp-rest-posts-controller.php */
