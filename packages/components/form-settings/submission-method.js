@@ -71,13 +71,13 @@ export default function SubmissionMethodSettings( {
 			{ formType === 'custom' && (
 				<>
 					<TextControl
-						label={ __( 'Submit Method', 'omniform' ) }
+						label={ __( 'Submit Action', 'omniform' ) }
 						value={ metaSubmitAction }
 						onChange={ updateMetaSubmitAction }
 						help={ __( 'Enter the URL where the form data will be submitted.', 'omniform' ) }
 					/>
 					<SelectControl
-						label={ __( 'Submit Action', 'omniform' ) }
+						label={ __( 'Submit Method', 'omniform' ) }
 						value={ metaSubmitMethod }
 						onChange={ updateMetaSubmitMethod }
 						options={ [
