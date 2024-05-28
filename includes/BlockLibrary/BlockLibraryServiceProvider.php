@@ -42,9 +42,10 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 	 * @return void
 	 */
 	public function boot(): void {
-		add_action( 'omniform_activate', array( $this, 'activation' ) );
+		add_action( 'init', array( $this, 'activation' ) );
 		add_action( 'init', array( $this, 'register_blocks' ) );
 		add_action( 'init', array( $this, 'register_patterns' ) );
+
 		add_filter( 'block_categories_all', array( $this, 'register_categories' ) );
 		add_filter( 'block_type_metadata_settings', array( $this, 'update_layout_support' ), 10, 2 );
 	}
@@ -53,6 +54,10 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 	 * Create the default forms.
 	 */
 	public function activation() {
+		if ( ! get_transient( 'omniform_just_activated' ) ) {
+			return;
+		}
+
 		$existing_forms = get_posts(
 			array(
 				'post_status' => 'any',

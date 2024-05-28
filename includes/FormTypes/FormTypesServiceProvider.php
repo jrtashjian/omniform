@@ -46,8 +46,6 @@ class FormTypesServiceProvider extends AbstractServiceProvider implements Bootab
 	public function boot(): void {
 		add_action( 'init', array( $this, 'register_taxonomy' ) );
 		add_action( 'init', array( $this, 'register_default_form_types' ) );
-		add_action( 'omniform_activate', array( $this, 'register_taxonomy' ) );
-		add_action( 'omniform_activate', array( $this, 'register_default_form_types' ) );
 
 		add_filter( 'block_editor_settings_all', array( $this, 'register_block_editor_settings' ), 10, 2 );
 	}

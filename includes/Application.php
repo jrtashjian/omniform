@@ -111,6 +111,14 @@ class Application extends Container {
 	 * Callback for plugin activation.
 	 */
 	public function activation() {
+		// Store the plugin version on first install.
+		add_option( 'omniform_initial_version', static::VERSION, '', false );
+
+		// Store the time the plugin was activated.
+		add_option( 'omniform_activated_time', time(), '', false );
+
+		set_transient( 'omniform_just_activated', true, MINUTE_IN_SECONDS );
+
 		do_action( 'omniform_activate' );
 	}
 
