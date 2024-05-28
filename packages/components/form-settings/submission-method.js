@@ -5,6 +5,8 @@ import { __ } from '@wordpress/i18n';
 import { useEntityProp } from '@wordpress/core-data';
 import { PanelBody, TextControl, SelectControl } from '@wordpress/components';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
+import { useSelect } from '@wordpress/data';
+import { store as editorStore } from '@wordpress/editor';
 
 /**
  * Internal dependencies
@@ -15,6 +17,11 @@ export default function SubmissionMethodSettings( {
 	formId,
 	isDocumentPanel,
 } ) {
+	const formTypes = useSelect( ( select ) => {
+		const editorSettings = select( editorStore ).getEditorSettings();
+		return editorSettings.omniformFormTypes ?? [];
+	}, [] );
+
 	const [ formType, setFormType ] = useEntityProp( 'postType', POST_TYPE, 'omniform_type', formId );
 	const [ meta, setMeta ] = useEntityProp( 'postType', POST_TYPE, 'meta', formId );
 
@@ -32,7 +39,7 @@ export default function SubmissionMethodSettings( {
 		setFormType( newValue );
 
 		// Reset the meta values when switching to standard form type.
-		if ( newValue === 'standard' ) {
+		if ( newValue === 'uncategorized' ) {
 			setMeta( {
 				...meta,
 				submit_method: '',
@@ -54,26 +61,33 @@ export default function SubmissionMethodSettings( {
 				label={ __( 'Type', 'omniform' ) }
 				value={ formType.toString() || 'uncategorized' }
 				onChange={ updateFormType }
-				options={ [
-					{ label: 'Standard', value: 'uncategorized' },
-					{ label: 'Custom', value: 'custom' },
-				] }
+				options={ formTypes.map( ( item ) => ( {
+					label: item.label,
+					value: item.type,
+				} ) ) }
+				help={ __( 'Determines how the form data is processed and submitted.', 'omniform' ) }
 			/>
 
-			<TextControl
-				label={ __( 'Submit Method', 'omniform' ) }
-				value={ metaSubmitAction }
-				onChange={ updateMetaSubmitAction }
-			/>
-			<SelectControl
-				label={ __( 'Submit Action', 'omniform' ) }
-				value={ metaSubmitMethod }
-				onChange={ updateMetaSubmitMethod }
-				options={ [
-					{ label: 'POST', value: 'POST' },
-					{ label: 'GET', value: 'GET' },
-				] }
-			/>
+			{ formType === 'custom' && (
+				<>
+					<TextControl
+						label={ __( 'Submit Method', 'omniform' ) }
+						value={ metaSubmitAction }
+						onChange={ updateMetaSubmitAction }
+						help={ __( 'Enter the URL where the form data will be submitted.', 'omniform' ) }
+					/>
+					<SelectControl
+						label={ __( 'Submit Action', 'omniform' ) }
+						value={ metaSubmitMethod }
+						onChange={ updateMetaSubmitMethod }
+						options={ [
+							{ label: 'POST', value: 'POST' },
+							{ label: 'GET', value: 'GET' },
+						] }
+						help={ __( 'Select the HTTP method to use for submission.', 'omniform' ) }
+					/>
+				</>
+			) }
 		</PanelComponent>
 	);
 }
