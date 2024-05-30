@@ -26,7 +26,7 @@ class AnalyticsServiceProvider extends AbstractServiceProvider implements Bootab
 	 */
 	public function provides( string $id ): bool {
 		$services = array(
-			// AnalyticsManager::class,
+			AnalyticsManager::class,
 		);
 
 		return in_array( $id, $services, true );
@@ -38,7 +38,15 @@ class AnalyticsServiceProvider extends AbstractServiceProvider implements Bootab
 	 * @return void
 	 */
 	public function register(): void {
-		// $this->getContainer()->addShared( AnalyticsManager::class );
+		$this->getContainer()->addShared(
+			AnalyticsManager::class,
+			function () {
+				return new AnalyticsManager(
+					$this->getContainer()->get( 'db' ),
+					$this->generate_daily_salt()
+				);
+			}
+		);
 	}
 
 	/**
@@ -48,6 +56,24 @@ class AnalyticsServiceProvider extends AbstractServiceProvider implements Bootab
 	 */
 	public function boot(): void {
 		add_action( 'omniform_activate', array( $this, 'activate' ) );
+	}
+
+	/**
+	 * Generate the daily salt.
+	 *
+	 * @return string
+	 */
+	public function generate_daily_salt() {
+		$daily_salt = get_transient( 'omniform_analytics_salt' );
+
+		if ( false === $daily_salt ) {
+			$salt       = wp_generate_password( 64, true, true );
+			$daily_salt = hash( 'sha256', $salt . gmdate( 'Y-m-d' ) );
+
+			set_transient( 'omniform_analytics_salt', $daily_salt, DAY_IN_SECONDS );
+		}
+
+		return $daily_salt;
 	}
 
 	/**
