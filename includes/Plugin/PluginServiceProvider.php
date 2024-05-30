@@ -9,6 +9,7 @@ namespace OmniForm\Plugin;
 
 use OmniForm\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use OmniForm\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
+use OmniForm\Plugin\Facades\DB;
 
 /**
  * The PluginServiceProvider class.
@@ -53,6 +54,8 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 * @return void
 	 */
 	public function boot(): void {
+		DB::set_container( $this->getContainer() );
+
 		add_action( 'admin_enqueue_scripts', array( $this, 'disable_admin_notices' ) );
 		add_action( 'init', array( $this, 'register_post_type' ) );
 		add_action( 'init', array( $this, 'register_settings' ) );
