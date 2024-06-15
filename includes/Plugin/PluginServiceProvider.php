@@ -112,7 +112,10 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		add_action(
 			'omniform_form_render',
 			function ( $form_id ) {
-				if ( is_admin() ) {
+				/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
+				$form = omniform()->get( \OmniForm\Plugin\Form::class )->get_instance( $form_id );
+
+				if ( ! $form->is_published() || is_admin() || ! current_user_can( 'edit_theme_options' ) ) {
 					return;
 				}
 
