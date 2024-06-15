@@ -57,6 +57,14 @@ class FormsController extends \WP_REST_Posts_Controller {
 			);
 		}
 
+		if ( ! $form->is_published() ) {
+			return new \WP_Error(
+				'omniform_not_published',
+				esc_html__( 'The form is not published.', 'omniform' ),
+				array( 'status' => 400 )
+			);
+		}
+
 		// Prepare the submitted data.
 		$prepared_response_data = $this->sanitize_array(
 			$request->get_params()
