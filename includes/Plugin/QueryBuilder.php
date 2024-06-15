@@ -181,6 +181,27 @@ class QueryBuilder {
 	}
 
 	/**
+	 * Count the number of records returned by the query.
+	 *
+	 * @param string $select The column to count.
+	 *
+	 * @return int The number of records.
+	 */
+	public function count( $select = '*' ) {
+		$query = 'SELECT COUNT(' . $select . ') FROM `' . $this->wpdb->prefix . $this->table . '`';
+
+		if ( ! empty( $this->wheres ) ) {
+			$query .= ' WHERE ' . $this->build_where_clause();
+		}
+
+		if ( ! empty( $this->group_bys ) ) {
+			$query .= ' GROUP BY ' . implode( ', ', $this->group_bys );
+		}
+
+		return (int) $this->wpdb->get_var( $query ); // phpcs:ignore WordPress.DB -- Query has been prepared.
+	}
+
+	/**
 	 * Build the WHERE clause.
 	 *
 	 * @return string
