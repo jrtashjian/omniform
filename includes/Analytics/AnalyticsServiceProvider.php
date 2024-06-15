@@ -16,7 +16,8 @@ use OmniForm\Plugin\Schema;
  * The AnalyticsServiceProvider class.
  */
 class AnalyticsServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface {
-	const EVENTS_TABLE = 'omniform_stats_events';
+	const EVENTS_TABLE  = 'omniform_stats_events';
+	const VISITOR_TABLE = 'omniform_stats_visitors';
 
 	/**
 	 * Get the services provided by the provider.
@@ -84,16 +85,27 @@ class AnalyticsServiceProvider extends AbstractServiceProvider implements Bootab
 		$events_table_definition = array(
 			'`event_id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT',
 			'`form_id` BIGINT(20) UNSIGNED NOT NULL',
-			'`visitor_hash` CHAR(64) NOT NULL',
+			'`visitor_id` BIGINT(20) UNSIGNED NOT NULL',
 			'`event_type` TINYINT(1) UNSIGNED NOT NULL',
 			'`event_time` DATETIME NOT NULL',
 			'PRIMARY KEY (`event_id`)',
 			'INDEX (`form_id`)',
+			'INDEX (`visitor_id`)',
 			'INDEX (`event_type`)',
 		);
 
 		if ( ! Schema::has_table( self::EVENTS_TABLE ) ) {
 			Schema::create( self::EVENTS_TABLE, $events_table_definition );
+		}
+
+		$visitors_table_definition = array(
+			'`visitor_id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT',
+			'`visitor_hash` CHAR(64) NOT NULL',
+			'PRIMARY KEY (`visitor_id`)',
+		);
+
+		if ( ! Schema::has_table( self::VISITOR_TABLE ) ) {
+			Schema::create( self::VISITOR_TABLE, $visitors_table_definition );
 		}
 	}
 }

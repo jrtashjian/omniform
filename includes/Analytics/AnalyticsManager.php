@@ -77,12 +77,39 @@ class AnalyticsManager {
 		$query_builder->table( AnalyticsServiceProvider::EVENTS_TABLE )
 			->insert(
 				array(
-					'form_id'      => $form_id,
-					'event_type'   => $event_type,
-					'visitor_hash' => $this->get_visitor_hash(),
-					'event_time'   => current_time( 'mysql' ),
+					'form_id'    => $form_id,
+					'event_type' => $event_type,
+					'visitor_id' => $this->get_visitor_id(),
+					'event_time' => current_time( 'mysql' ),
 				)
 			);
+	}
+
+	/**
+	 * Get the visitor ID from the visitor hash.
+	 *
+	 * @return int The visitor ID.
+	 */
+	protected function get_visitor_id() {
+		$query_builder = $this->query_builder_factory->create();
+
+		$visitor_results = $query_builder->table( AnalyticsServiceProvider::VISITOR_TABLE )
+			->select( 'visitor_id' )
+			->where( 'visitor_hash', '=', $this->get_visitor_hash() )
+			->get();
+
+		if ( empty( $visitor_results ) ) {
+			$query_builder->table( AnalyticsServiceProvider::VISITOR_TABLE )
+				->insert(
+					array(
+						'visitor_hash' => $this->get_visitor_hash(),
+					)
+				);
+
+			return $query_builder->get_last_insert_id();
+		}
+
+		return $visitor_results[0]->visitor_id;
 	}
 
 	/**
@@ -126,7 +153,7 @@ class AnalyticsManager {
 		return $query_builder->table( AnalyticsServiceProvider::EVENTS_TABLE )
 			->where( 'form_id', '=', $form_id )
 			->where( 'event_type', '=', EventType::IMPRESSION )
-			->count( $unique ? 'DISTINCT visitor_hash' : 'event_id' );
+			->count( $unique ? 'DISTINCT visitor_id' : 'event_id' );
 	}
 
 	/**
@@ -143,7 +170,7 @@ class AnalyticsManager {
 		return $query_builder->table( AnalyticsServiceProvider::EVENTS_TABLE )
 			->where( 'form_id', '=', $form_id )
 			->where( 'event_type', '=', EventType::SUBMISSION_SUCCESS )
-			->count( $unique ? 'DISTINCT visitor_hash' : 'event_id' );
+			->count( $unique ? 'DISTINCT visitor_id' : 'event_id' );
 	}
 
 	/**
@@ -160,7 +187,7 @@ class AnalyticsManager {
 		return $query_builder->table( AnalyticsServiceProvider::EVENTS_TABLE )
 			->where( 'form_id', '=', $form_id )
 			->where( 'event_type', '=', EventType::SUBMISSION_FAILURE )
-			->count( $unique ? 'DISTINCT visitor_hash' : 'event_id' );
+			->count( $unique ? 'DISTINCT visitor_id' : 'event_id' );
 	}
 
 	/**

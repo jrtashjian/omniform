@@ -246,6 +246,15 @@ class QueryBuilder {
 	}
 
 	/**
+	 * Get the ID of the last inserted record.
+	 *
+	 * @return int The ID of the last inserted record.
+	 */
+	public function get_last_insert_id() {
+		return $this->wpdb->insert_id;
+	}
+
+	/**
 	 * Update records in the table.
 	 *
 	 * @param array $data The data to update.
