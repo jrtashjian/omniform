@@ -71,6 +71,8 @@ class FormsController extends \WP_REST_Posts_Controller {
 				'invalid_fields' => $errors,
 			);
 
+			omniform()->get( \OmniForm\Analytics\AnalyticsManager::class )->record_submission_failure( $form->get_id() );
+
 			return rest_ensure_response(
 				new \WP_HTTP_Response( $response, $response['status'] )
 			);

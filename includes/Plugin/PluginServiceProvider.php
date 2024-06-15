@@ -7,6 +7,7 @@
 
 namespace OmniForm\Plugin;
 
+use OmniForm\Analytics\AnalyticsManager;
 use OmniForm\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use OmniForm\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
 use OmniForm\Plugin\Facades\DB;
@@ -100,10 +101,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			'omniform_response_created',
 			function ( $response_id, $form ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
 				// Incremement form responses.
-				$response_count = get_post_meta( $form->get_id(), '_omniform_responses', true );
-				$response_count = $response_count ? $response_count : 0;
-
-				update_post_meta( $form->get_id(), '_omniform_responses', (int) $response_count + 1 );
+				omniform()->get( AnalyticsManager::class )->record_submission_success( $form->get_id() );
 			},
 			10,
 			2
@@ -117,10 +115,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					return;
 				}
 
-				$impressions = get_post_meta( $form_id, '_omniform_impressions', true );
-				$impressions = $impressions ? $impressions : 0;
-
-				update_post_meta( $form_id, '_omniform_impressions', $impressions + 1 );
+				omniform()->get( AnalyticsManager::class )->record_impression( $form_id );
 			}
 		);
 
