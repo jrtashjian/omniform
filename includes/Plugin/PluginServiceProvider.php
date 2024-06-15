@@ -167,8 +167,8 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				$responses_unique = omniform()->get( AnalyticsManager::class )->get_submission_count( $post_id, true );
 
 				printf(
-					// translators: %s: Total responses, %s: Unique responses.
-					'%s total (%s unique)',
+					// translators: %1$s: Total responses, %2$s: Unique responses.
+					esc_html__( '%1$s total (%2$s unique)', 'omniform' ),
 					esc_attr( Number::format( $responses ) ),
 					esc_attr( Number::format( $responses_unique ) )
 				);
@@ -189,8 +189,8 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				$impressions_unique = omniform()->get( AnalyticsManager::class )->get_impression_count( $post_id, true );
 
 				printf(
-					// translators: %s: Total impressions, %s: Unique impressions.
-					'%s total (%s unique)',
+					// translators: %1$s: Total responses, %2$s: Unique responses.
+					esc_html__( '%1$s total (%2$s unique)', 'omniform' ),
 					esc_attr( Number::format( $impressions ) ),
 					esc_attr( Number::format( $impressions_unique ) )
 				);
