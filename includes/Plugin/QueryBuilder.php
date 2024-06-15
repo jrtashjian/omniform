@@ -49,6 +49,13 @@ class QueryBuilder {
 	protected $order_bys = array();
 
 	/**
+	 * The group by clauses.
+	 *
+	 * @var array
+	 */
+	protected $group_bys = array();
+
+	/**
 	 * The limit.
 	 *
 	 * @var int
@@ -121,6 +128,19 @@ class QueryBuilder {
 	}
 
 	/**
+	 * Add a group by clause to the query.
+	 *
+	 * @param string $column The column to group by.
+	 *
+	 * @return QueryBuilder
+	 */
+	public function group_by( $column ) {
+		$this->group_bys[] = $column;
+
+		return $this;
+	}
+
+	/**
 	 * Set the limit for the query.
 	 *
 	 * @param int $limit The limit.
@@ -147,6 +167,10 @@ class QueryBuilder {
 
 		if ( ! empty( $this->order_bys ) ) {
 			$query .= ' ORDER BY ' . $this->build_order_by_clause();
+		}
+
+		if ( ! empty( $this->group_bys ) ) {
+			$query .= ' GROUP BY ' . implode( ', ', $this->group_bys );
 		}
 
 		if ( ! empty( $this->limit ) ) {
