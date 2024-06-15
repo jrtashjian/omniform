@@ -57,6 +57,14 @@ class FormsController extends \WP_REST_Posts_Controller {
 			);
 		}
 
+		if ( ! $form->is_published() ) {
+			return new \WP_Error(
+				'omniform_not_published',
+				esc_html__( 'The form is not published.', 'omniform' ),
+				array( 'status' => 400 )
+			);
+		}
+
 		// Prepare the submitted data.
 		$prepared_response_data = $this->sanitize_array(
 			$request->get_params()
@@ -70,6 +78,10 @@ class FormsController extends \WP_REST_Posts_Controller {
 				'message'        => 'validation_failed',
 				'invalid_fields' => $errors,
 			);
+
+			if ( ! current_user_can( 'edit_theme_options' ) ) {
+				omniform()->get( \OmniForm\Analytics\AnalyticsManager::class )->record_submission_failure( $form->get_id() );
+			}
 
 			return rest_ensure_response(
 				new \WP_HTTP_Response( $response, $response['status'] )

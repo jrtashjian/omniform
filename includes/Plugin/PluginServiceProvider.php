@@ -7,8 +7,11 @@
 
 namespace OmniForm\Plugin;
 
+use OmniForm\Analytics\AnalyticsManager;
 use OmniForm\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use OmniForm\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
+use OmniForm\Plugin\Facades\DB;
+use OmniForm\Plugin\Support\Number;
 
 /**
  * The PluginServiceProvider class.
@@ -24,6 +27,8 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	public function provides( string $id ): bool {
 		$services = array(
 			Form::class,
+			QueryBuilder::class,
+			QueryBuilderFactory::class,
 		);
 
 		return in_array( $id, $services, true );
@@ -36,6 +41,21 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 */
 	public function register(): void {
 		$this->getContainer()->addShared( Form::class );
+
+		$this->getContainer()->add(
+			QueryBuilder::class,
+			function () {
+				global $wpdb;
+				return new QueryBuilder( $wpdb );
+			}
+		);
+		$this->getContainer()->add(
+			QueryBuilderFactory::class,
+			function () {
+				global $wpdb;
+				return new QueryBuilderFactory( $wpdb );
+			}
+		);
 	}
 
 	/**
@@ -44,6 +64,8 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 * @return void
 	 */
 	public function boot(): void {
+		DB::set_container( $this->getContainer() );
+
 		add_action( 'admin_enqueue_scripts', array( $this, 'disable_admin_notices' ) );
 		add_action( 'init', array( $this, 'register_post_type' ) );
 		add_action( 'init', array( $this, 'register_settings' ) );
@@ -79,11 +101,12 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		add_action(
 			'omniform_response_created',
 			function ( $response_id, $form ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
-				// Incremement form responses.
-				$response_count = get_post_meta( $form->get_id(), '_omniform_responses', true );
-				$response_count = $response_count ? $response_count : 0;
+				if ( current_user_can( 'edit_theme_options' ) ) {
+					return;
+				}
 
-				update_post_meta( $form->get_id(), '_omniform_responses', (int) $response_count + 1 );
+				// Incremement form responses.
+				omniform()->get( AnalyticsManager::class )->record_submission_success( $form->get_id() );
 			},
 			10,
 			2
@@ -93,14 +116,14 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		add_action(
 			'omniform_form_render',
 			function ( $form_id ) {
-				if ( is_admin() ) {
+				/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
+				$form = omniform()->get( \OmniForm\Plugin\Form::class )->get_instance( $form_id );
+
+				if ( ! $form->is_published() || is_admin() || current_user_can( 'edit_theme_options' ) ) {
 					return;
 				}
 
-				$impressions = get_post_meta( $form_id, '_omniform_impressions', true );
-				$impressions = $impressions ? $impressions : 0;
-
-				update_post_meta( $form_id, '_omniform_impressions', $impressions + 1 );
+				omniform()->get( AnalyticsManager::class )->record_impression( $form_id );
 			}
 		);
 
@@ -131,22 +154,9 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					return;
 				}
 
-				$impressions = (int) get_post_meta( $post_id, '_omniform_impressions', true );
-				$responses   = (int) get_post_meta( $post_id, '_omniform_responses', true );
+				$conversion_rate = omniform()->get( AnalyticsManager::class )->get_conversion_rate( $post_id );
 
-				if ( 0 === $impressions ) {
-					echo esc_attr( '0%' );
-					return;
-				}
-
-				if ( class_exists( '\NumberFormatter' ) ) {
-					$formatter = new \NumberFormatter( 'en_US', \NumberFormatter::PERCENT );
-					$formatted = $formatter->format( $responses / $impressions ?? 0 );
-				} else {
-					$formatted = $impressions ? round( $responses / $impressions * 100 ) . '%' : '0%';
-				}
-
-				echo esc_attr( $formatted );
+				echo esc_attr( Number::percentage( $conversion_rate ) );
 			},
 			10,
 			2
@@ -160,16 +170,15 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					return;
 				}
 
-				$responses = (int) get_post_meta( $post_id, '_omniform_responses', true );
+				$responses        = omniform()->get( AnalyticsManager::class )->get_submission_count( $post_id );
+				$responses_unique = omniform()->get( AnalyticsManager::class )->get_submission_count( $post_id, true );
 
-				if ( class_exists( '\NumberFormatter' ) ) {
-					$formatter = new \NumberFormatter( 'en_US', \NumberFormatter::PADDING_POSITION );
-					$formatted = $formatter->format( $responses );
-				} else {
-					$formatted = number_format( $responses );
-				}
-
-				echo esc_attr( $formatted );
+				printf(
+					// translators: %1$s: Total responses, %2$s: Unique responses.
+					esc_html__( '%1$s total (%2$s unique)', 'omniform' ),
+					esc_attr( Number::format( $responses ) ),
+					esc_attr( Number::format( $responses_unique ) )
+				);
 			},
 			10,
 			2
@@ -183,16 +192,15 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					return;
 				}
 
-				$impressions = (int) get_post_meta( $post_id, '_omniform_impressions', true );
+				$impressions        = omniform()->get( AnalyticsManager::class )->get_impression_count( $post_id );
+				$impressions_unique = omniform()->get( AnalyticsManager::class )->get_impression_count( $post_id, true );
 
-				if ( class_exists( '\NumberFormatter' ) ) {
-					$formatter = new \NumberFormatter( 'en_US', \NumberFormatter::PADDING_POSITION );
-					$formatted = $formatter->format( $impressions );
-				} else {
-					$formatted = number_format( $impressions );
-				}
-
-				echo esc_attr( $formatted );
+				printf(
+					// translators: %1$s: Total responses, %2$s: Unique responses.
+					esc_html__( '%1$s total (%2$s unique)', 'omniform' ),
+					esc_attr( Number::format( $impressions ) ),
+					esc_attr( Number::format( $impressions_unique ) )
+				);
 			},
 			10,
 			2

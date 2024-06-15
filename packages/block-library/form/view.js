@@ -99,10 +99,24 @@ import { applyFilters } from '@wordpress/hooks';
 					// Reset the form.
 					event.target.reset();
 				} ).catch( ( error ) => {
-					showMessage(
-						errorContainer,
-						[ createUnorderedList( Object.values( error.invalid_fields ) ) ]
-					);
+					// Show the field errors.
+					if ( error.invalid_fields ) {
+						showMessage(
+							errorContainer,
+							[ createUnorderedList( Object.values( error.invalid_fields ) ) ]
+						);
+					}
+
+					// Show the error message.
+					if ( error.message ) {
+						const paragraphElement = document.createElement( 'p' );
+						paragraphElement.textContent = error.message;
+
+						showMessage(
+							errorContainer,
+							[ paragraphElement ]
+						);
+					}
 				} );
 			};
 

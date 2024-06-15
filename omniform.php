@@ -53,6 +53,7 @@ omniform()->set_base_path( __FILE__ );
  */
 omniform()->addServiceProvider( new \OmniForm\Plugin\PluginServiceProvider() );
 omniform()->addServiceProvider( new \OmniForm\FormTypes\FormTypesServiceProvider() );
+omniform()->addServiceProvider( new \OmniForm\Analytics\AnalyticsServiceProvider() );
 omniform()->addServiceProvider( new \OmniForm\BlockLibrary\BlockLibraryServiceProvider() );
 
 register_activation_hook( __FILE__, array( omniform(), 'activation' ) );
