@@ -11,6 +11,7 @@ use OmniForm\Analytics\AnalyticsManager;
 use OmniForm\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use OmniForm\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
 use OmniForm\Plugin\Facades\DB;
+use OmniForm\Plugin\Support\Number;
 
 /**
  * The PluginServiceProvider class.
@@ -146,22 +147,9 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					return;
 				}
 
-				$impressions = (int) get_post_meta( $post_id, '_omniform_impressions', true );
-				$responses   = (int) get_post_meta( $post_id, '_omniform_responses', true );
+				$conversion_rate = omniform()->get( AnalyticsManager::class )->get_conversion_rate( $post_id );
 
-				if ( 0 === $impressions ) {
-					echo esc_attr( '0%' );
-					return;
-				}
-
-				if ( class_exists( '\NumberFormatter' ) ) {
-					$formatter = new \NumberFormatter( 'en_US', \NumberFormatter::PERCENT );
-					$formatted = $formatter->format( $responses / $impressions ?? 0 );
-				} else {
-					$formatted = $impressions ? round( $responses / $impressions * 100 ) . '%' : '0%';
-				}
-
-				echo esc_attr( $formatted );
+				echo esc_attr( Number::percentage( $conversion_rate ) );
 			},
 			10,
 			2
@@ -175,16 +163,15 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					return;
 				}
 
-				$responses = (int) get_post_meta( $post_id, '_omniform_responses', true );
+				$responses        = omniform()->get( AnalyticsManager::class )->get_submission_count( $post_id );
+				$responses_unique = omniform()->get( AnalyticsManager::class )->get_submission_count( $post_id, true );
 
-				if ( class_exists( '\NumberFormatter' ) ) {
-					$formatter = new \NumberFormatter( 'en_US', \NumberFormatter::PADDING_POSITION );
-					$formatted = $formatter->format( $responses );
-				} else {
-					$formatted = number_format( $responses );
-				}
-
-				echo esc_attr( $formatted );
+				printf(
+					// translators: %s: Total responses, %s: Unique responses.
+					'%s total (%s unique)',
+					esc_attr( Number::format( $responses ) ),
+					esc_attr( Number::format( $responses_unique ) )
+				);
 			},
 			10,
 			2
@@ -198,16 +185,15 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					return;
 				}
 
-				$impressions = (int) get_post_meta( $post_id, '_omniform_impressions', true );
+				$impressions        = omniform()->get( AnalyticsManager::class )->get_impression_count( $post_id );
+				$impressions_unique = omniform()->get( AnalyticsManager::class )->get_impression_count( $post_id, true );
 
-				if ( class_exists( '\NumberFormatter' ) ) {
-					$formatter = new \NumberFormatter( 'en_US', \NumberFormatter::PADDING_POSITION );
-					$formatted = $formatter->format( $impressions );
-				} else {
-					$formatted = number_format( $impressions );
-				}
-
-				echo esc_attr( $formatted );
+				printf(
+					// translators: %s: Total impressions, %s: Unique impressions.
+					'%s total (%s unique)',
+					esc_attr( Number::format( $impressions ) ),
+					esc_attr( Number::format( $impressions_unique ) )
+				);
 			},
 			10,
 			2
