@@ -154,7 +154,7 @@ class AnalyticsManager {
 	 *
 	 * @return int The failed submission count.
 	 */
-	public function get_failed_submission_count( int $form_id, bool $unique = false) {
+	public function get_failed_submission_count( int $form_id, bool $unique = false ) {
 		$query_builder = $this->query_builder_factory->create();
 
 		return $query_builder->table( AnalyticsServiceProvider::EVENTS_TABLE )
