@@ -154,6 +154,18 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					return;
 				}
 
+				try {
+					/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
+					$form = omniform()->get( \OmniForm\Plugin\Form::class )->get_instance( $post_id );
+
+					if ( 'uncategorized' !== $form->get_type() ) {
+						return;
+					}
+				} catch ( \Exception $e ) {
+					echo esc_html( $e->getMessage() );
+					return;
+				}
+
 				$conversion_rate = omniform()->get( AnalyticsManager::class )->get_conversion_rate( $post_id );
 
 				echo esc_attr( Number::percentage( $conversion_rate ) );
@@ -167,6 +179,18 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			'manage_omniform_posts_custom_column',
 			function ( $column_key, $post_id ) {
 				if ( 'responses' !== $column_key ) {
+					return;
+				}
+
+				try {
+					/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
+					$form = omniform()->get( \OmniForm\Plugin\Form::class )->get_instance( $post_id );
+
+					if ( 'uncategorized' !== $form->get_type() ) {
+						return;
+					}
+				} catch ( \Exception $e ) {
+					echo esc_html( $e->getMessage() );
 					return;
 				}
 
