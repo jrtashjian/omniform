@@ -163,7 +163,7 @@ class Form {
 
 		return ! is_wp_error( $type_terms ) && false !== $type_terms
 			? $type_terms[0]->slug
-			: 'standard';
+			: 'uncategorized';
 	}
 
 	/**
@@ -174,7 +174,7 @@ class Form {
 	public function get_submit_method() {
 		$submit_method = get_post_meta( $this->get_id(), 'submit_method', true );
 
-		return empty( $submit_method ) || 'standard' === $this->get_type()
+		return empty( $submit_method ) || 'uncategorized' === $this->get_type()
 			? 'POST'
 			: $submit_method;
 	}
@@ -187,7 +187,7 @@ class Form {
 	public function get_submit_action() {
 		$submit_action = get_post_meta( $this->get_id(), 'submit_action', true );
 
-		return empty( $submit_action ) || 'standard' === $this->get_type()
+		return empty( $submit_action ) || 'uncategorized' === $this->get_type()
 			? rest_url( 'omniform/v1/forms/' . $this->get_id() . '/responses' )
 			: $submit_action;
 	}

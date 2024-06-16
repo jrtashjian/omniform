@@ -69,7 +69,7 @@ class Form extends BaseBlock {
 			do_blocks( $form->get_content() ),
 		);
 
-		if ( 'standard' === $form->get_type() ) {
+		if ( 'uncategorized' === $form->get_type() ) {
 			// Add a nonce field to standard forms.
 			$content[] = wp_nonce_field( 'omniform', 'wp_rest', true, false );
 
