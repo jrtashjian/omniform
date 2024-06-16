@@ -58,6 +58,7 @@ class AnalyticsServiceProvider extends AbstractServiceProvider implements Bootab
 	 */
 	public function boot(): void {
 		add_action( 'omniform_activate', array( $this, 'activate' ) );
+		add_action( 'delete_post', array( $this, 'on_delete_form' ), 10, 2 );
 	}
 
 	/**
@@ -107,5 +108,20 @@ class AnalyticsServiceProvider extends AbstractServiceProvider implements Bootab
 		if ( ! Schema::has_table( self::VISITOR_TABLE ) ) {
 			Schema::create( self::VISITOR_TABLE, $visitors_table_definition );
 		}
+	}
+
+	/**
+	 * Fires immediately before a post is deleted from the database.
+	 *
+	 * @param int     $post_id Post ID.
+	 * @param WP_Post $post   Post object.
+	 */
+	public function on_delete_form( $post_id, $post ) {
+		if ( 'omniform' !== $post->post_type ) {
+			return;
+		}
+
+		$this->getContainer()->get( AnalyticsManager::class )
+			->delete_form_data( $post_id );
 	}
 }

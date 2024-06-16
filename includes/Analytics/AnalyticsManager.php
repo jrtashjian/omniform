@@ -203,4 +203,17 @@ class AnalyticsManager {
 
 		return $impressions > 0 ? ( $submissions / $impressions ) : 0;
 	}
+
+	/**
+	 * Purge data for a form.
+	 *
+	 * @param int $form_id The form ID.
+	 */
+	public function delete_form_data( int $form_id ) {
+		$query_builder = $this->query_builder_factory->create();
+
+		$query_builder->table( AnalyticsServiceProvider::EVENTS_TABLE )
+			->where( 'form_id', '=', $form_id )
+			->delete();
+	}
 }
