@@ -108,7 +108,7 @@ import { applyFilters } from '@wordpress/hooks';
 					}
 
 					// Show the error message.
-					if ( error.message ) {
+					if ( error.message && ! error.invalid_fields ) {
 						const paragraphElement = document.createElement( 'p' );
 						paragraphElement.textContent = error.message;
 
