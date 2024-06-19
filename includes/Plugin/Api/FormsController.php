@@ -79,7 +79,7 @@ class FormsController extends \WP_REST_Posts_Controller {
 				'invalid_fields' => $errors,
 			);
 
-			if ( ! current_user_can( 'edit_theme_options' ) ) {
+			if ( $form->is_published() ) {
 				omniform()->get( \OmniForm\Analytics\AnalyticsManager::class )->record_submission_failure( $form->get_id() );
 			}
 
