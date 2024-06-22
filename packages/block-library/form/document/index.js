@@ -11,7 +11,6 @@ import { registerPlugin } from '@wordpress/plugins';
  * Internal dependencies
  */
 import EmailNotificationSettings from '../../../components/form-settings/email-notifications';
-import ViewResponses from '../../../components/form-settings/view-responses';
 import { POST_TYPE } from '../../shared/constants';
 import SubmissionMethodSettings from '../../../components/form-settings/submission-method';
 
@@ -28,7 +27,6 @@ const DocumentSettingsPanel = () => {
 
 	return POST_TYPE === postType && (
 		<>
-			<ViewResponses formId={ postId } isDocumentPanel />
 			<EmailNotificationSettings formId={ postId } isDocumentPanel />
 			<SubmissionMethodSettings formId={ postId } isDocumentPanel />
 		</>

@@ -22,6 +22,7 @@ export default function ViewResponses( {
 
 	return (
 		<PanelComponent
+			name="omniform-view-responses"
 			className="omniform-view-responses__panel"
 		>
 			<Button
