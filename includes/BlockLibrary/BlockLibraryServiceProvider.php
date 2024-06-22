@@ -42,7 +42,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 	 * @return void
 	 */
 	public function boot(): void {
-		add_action( 'init', array( $this, 'activation' ) );
+		add_action( 'wp_loaded', array( $this, 'activation' ) );
 		add_action( 'init', array( $this, 'register_blocks' ) );
 		add_action( 'init', array( $this, 'register_patterns' ) );
 
