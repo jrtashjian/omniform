@@ -158,7 +158,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
 					$form = omniform()->get( \OmniForm\Plugin\Form::class )->get_instance( $post_id );
 
-					if ( 'uncategorized' !== $form->get_type() ) {
+					if ( 'standard' !== $form->get_type() ) {
 						return;
 					}
 				} catch ( \Exception $e ) {
@@ -186,7 +186,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
 					$form = omniform()->get( \OmniForm\Plugin\Form::class )->get_instance( $post_id );
 
-					if ( 'uncategorized' !== $form->get_type() ) {
+					if ( 'standard' !== $form->get_type() ) {
 						return;
 					}
 				} catch ( \Exception $e ) {

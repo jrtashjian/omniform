@@ -31,7 +31,7 @@ class FormTypesManager {
 	public function __construct() {
 		$this->form_types = array(
 			array(
-				'type'        => 'uncategorized',
+				'type'        => 'standard',
 				'label'       => __( 'Standard', 'omniform' ),
 				'description' => __( 'A standard form.', 'omniform' ),
 				'icon'        => '',
@@ -39,7 +39,7 @@ class FormTypesManager {
 		);
 
 		// Set up the default form type.
-		$this->default_form_type = 'uncategorized';
+		$this->default_form_type = 'standard';
 	}
 
 	/**

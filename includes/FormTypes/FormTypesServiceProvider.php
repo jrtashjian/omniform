@@ -65,6 +65,11 @@ class FormTypesServiceProvider extends AbstractServiceProvider implements Bootab
 			'query_var'    => false,
 			'rewrite'      => false,
 			'show_in_rest' => false,
+			'default'      => array(
+				'slug'        => 'standard',
+				'name'        => __( 'Standard', 'omniform' ),
+				'description' => __( 'A standard form.', 'omniform' ),
+			),
 		);
 
 		register_taxonomy( 'omniform_type', array( 'omniform' ), $args );
