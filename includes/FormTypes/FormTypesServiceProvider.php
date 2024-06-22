@@ -96,6 +96,11 @@ class FormTypesServiceProvider extends AbstractServiceProvider implements Bootab
 		 * @param FormTypesManager $form_types_manager The form types manager.
 		 */
 		do_action( 'omniform_register_form_types', $form_types_manager );
+
+		// Insert the default form type terms.
+		foreach ( $form_types_manager->get_form_types() as $form_type ) {
+			wp_insert_term( $form_type['label'], 'omniform_type' );
+		}
 	}
 
 	/**
