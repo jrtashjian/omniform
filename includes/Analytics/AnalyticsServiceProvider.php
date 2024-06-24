@@ -16,6 +16,13 @@ use OmniForm\Plugin\Schema;
  * The AnalyticsServiceProvider class.
  */
 class AnalyticsServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface {
+	/**
+	 * The database version.
+	 *
+	 * @var int
+	 */
+	const DB_VERSION = 1;
+
 	const EVENTS_TABLE  = 'omniform_stats_events';
 	const VISITOR_TABLE = 'omniform_stats_visitors';
 
@@ -58,6 +65,8 @@ class AnalyticsServiceProvider extends AbstractServiceProvider implements Bootab
 	 */
 	public function boot(): void {
 		add_action( 'omniform_activate', array( $this, 'activate' ) );
+		add_action( 'admin_init', array( $this, 'update_database' ) );
+
 		add_action( 'delete_post', array( $this, 'on_delete_form' ), 10, 2 );
 	}
 
@@ -107,6 +116,21 @@ class AnalyticsServiceProvider extends AbstractServiceProvider implements Bootab
 
 		if ( ! Schema::has_table( self::VISITOR_TABLE ) ) {
 			Schema::create( self::VISITOR_TABLE, $visitors_table_definition );
+		}
+	}
+
+	/**
+	 * Update the database if needed.
+	 */
+	public function update_database() {
+		$installed_version = get_option( 'omniform_analytics_db_version' );
+
+		// Check if an update is needed.
+		if ( false === $installed_version || version_compare( (int) $installed_version, self::DB_VERSION, '<' ) ) {
+			$this->activate();
+
+			// Update the installed version number.
+			update_option( 'omniform_analytics_db_version', self::DB_VERSION );
 		}
 	}
 
