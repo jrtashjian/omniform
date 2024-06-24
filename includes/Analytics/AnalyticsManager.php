@@ -14,6 +14,20 @@ use OmniForm\Plugin\QueryBuilderFactory;
  */
 class AnalyticsManager {
 	/**
+	 * The events table.
+	 *
+	 * @var string
+	 */
+	const EVENTS_TABLE = 'omniform_stats_events';
+
+	/**
+	 * The visitors table.
+	 *
+	 * @var string
+	 */
+	const VISITOR_TABLE = 'omniform_stats_visitors';
+
+	/**
 	 * The QueryBuilder instance.
 	 *
 	 * @var QueryBuilder
@@ -74,7 +88,7 @@ class AnalyticsManager {
 	protected function record_event( int $form_id, int $event_type ) {
 		$query_builder = $this->query_builder_factory->create();
 
-		$query_builder->table( AnalyticsServiceProvider::EVENTS_TABLE )
+		$query_builder->table( self::EVENTS_TABLE )
 			->insert(
 				array(
 					'form_id'    => $form_id,
@@ -93,13 +107,13 @@ class AnalyticsManager {
 	protected function get_visitor_id() {
 		$query_builder = $this->query_builder_factory->create();
 
-		$visitor_results = $query_builder->table( AnalyticsServiceProvider::VISITOR_TABLE )
+		$visitor_results = $query_builder->table( self::VISITOR_TABLE )
 			->select( 'visitor_id' )
 			->where( 'visitor_hash', '=', $this->get_visitor_hash() )
 			->get();
 
 		if ( empty( $visitor_results ) ) {
-			$query_builder->table( AnalyticsServiceProvider::VISITOR_TABLE )
+			$query_builder->table( self::VISITOR_TABLE )
 				->insert(
 					array(
 						'visitor_hash' => $this->get_visitor_hash(),
@@ -150,7 +164,7 @@ class AnalyticsManager {
 	public function get_impression_count( int $form_id, bool $unique = false ) {
 		$query_builder = $this->query_builder_factory->create();
 
-		return $query_builder->table( AnalyticsServiceProvider::EVENTS_TABLE )
+		return $query_builder->table( self::EVENTS_TABLE )
 			->where( 'form_id', '=', $form_id )
 			->where( 'event_type', '=', EventType::IMPRESSION )
 			->count( $unique ? 'DISTINCT visitor_id' : 'event_id' );
@@ -167,7 +181,7 @@ class AnalyticsManager {
 	public function get_submission_count( int $form_id, bool $unique = false ) {
 		$query_builder = $this->query_builder_factory->create();
 
-		return $query_builder->table( AnalyticsServiceProvider::EVENTS_TABLE )
+		return $query_builder->table( self::EVENTS_TABLE )
 			->where( 'form_id', '=', $form_id )
 			->where( 'event_type', '=', EventType::SUBMISSION_SUCCESS )
 			->count( $unique ? 'DISTINCT visitor_id' : 'event_id' );
@@ -184,7 +198,7 @@ class AnalyticsManager {
 	public function get_failed_submission_count( int $form_id, bool $unique = false ) {
 		$query_builder = $this->query_builder_factory->create();
 
-		return $query_builder->table( AnalyticsServiceProvider::EVENTS_TABLE )
+		return $query_builder->table( self::EVENTS_TABLE )
 			->where( 'form_id', '=', $form_id )
 			->where( 'event_type', '=', EventType::SUBMISSION_FAILURE )
 			->count( $unique ? 'DISTINCT visitor_id' : 'event_id' );
@@ -212,7 +226,7 @@ class AnalyticsManager {
 	public function delete_form_data( int $form_id ) {
 		$query_builder = $this->query_builder_factory->create();
 
-		$query_builder->table( AnalyticsServiceProvider::EVENTS_TABLE )
+		$query_builder->table( self::EVENTS_TABLE )
 			->where( 'form_id', '=', $form_id )
 			->delete();
 	}

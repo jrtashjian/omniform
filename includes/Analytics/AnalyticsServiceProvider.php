@@ -23,9 +23,6 @@ class AnalyticsServiceProvider extends AbstractServiceProvider implements Bootab
 	 */
 	const DB_VERSION = 1;
 
-	const EVENTS_TABLE  = 'omniform_stats_events';
-	const VISITOR_TABLE = 'omniform_stats_visitors';
-
 	/**
 	 * Get the services provided by the provider.
 	 *
@@ -104,8 +101,8 @@ class AnalyticsServiceProvider extends AbstractServiceProvider implements Bootab
 			'INDEX (`event_type`)',
 		);
 
-		if ( ! Schema::has_table( self::EVENTS_TABLE ) ) {
-			Schema::create( self::EVENTS_TABLE, $events_table_definition );
+		if ( ! Schema::has_table( AnalyticsManager::EVENTS_TABLE ) ) {
+			Schema::create( AnalyticsManager::EVENTS_TABLE, $events_table_definition );
 		}
 
 		$visitors_table_definition = array(
@@ -114,8 +111,8 @@ class AnalyticsServiceProvider extends AbstractServiceProvider implements Bootab
 			'PRIMARY KEY (`visitor_id`)',
 		);
 
-		if ( ! Schema::has_table( self::VISITOR_TABLE ) ) {
-			Schema::create( self::VISITOR_TABLE, $visitors_table_definition );
+		if ( ! Schema::has_table( AnalyticsManager::VISITOR_TABLE ) ) {
+			Schema::create( AnalyticsManager::VISITOR_TABLE, $visitors_table_definition );
 		}
 	}
 
