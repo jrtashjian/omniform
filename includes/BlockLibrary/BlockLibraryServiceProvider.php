@@ -42,51 +42,11 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 	 * @return void
 	 */
 	public function boot(): void {
-		add_action( 'wp_loaded', array( $this, 'activation' ) );
 		add_action( 'init', array( $this, 'register_blocks' ) );
 		add_action( 'init', array( $this, 'register_patterns' ) );
 
 		add_filter( 'block_categories_all', array( $this, 'register_categories' ) );
 		add_filter( 'block_type_metadata_settings', array( $this, 'update_layout_support' ), 10, 2 );
-	}
-
-	/**
-	 * Create the default forms.
-	 */
-	public function activation() {
-		if ( ! get_transient( 'omniform_just_activated' ) ) {
-			return;
-		}
-
-		$existing_forms = get_posts(
-			array(
-				'post_status' => 'any',
-				'post_type'   => 'omniform',
-			)
-		);
-
-		if ( ! empty( $existing_forms ) ) {
-			return;
-		}
-
-		/** @var \OmniForm\FormTypes\FormTypesManager */ // phpcs:ignore
-		$form_types_manager = $this->getContainer()->get( FormTypesManager::class );
-
-		foreach ( $this->get_block_patterns() as $form ) {
-			wp_insert_post(
-				array(
-					'post_type'    => 'omniform',
-					'post_status'  => 'draft',
-					'post_name'    => $form['name'],
-					'post_title'   => $form['title'],
-					'post_content' => $form['content'],
-					'tax_input'    => array(
-						'omniform_type' => $form_types_manager->validate_form_type( $form['type'] ?? '' ),
-					),
-					'meta_input'   => $form['meta'] ?? array(),
-				)
-			);
-		}
 	}
 
 	/**
