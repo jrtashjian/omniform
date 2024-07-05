@@ -48,3 +48,8 @@
 .wp-block-omniform-form:not(.has-child-selected):not(.is-selected) .wp-block-omniform-response-notification {
 	display: none;
 }
+
+// Make the form preview a little bit nicer.
+.block-editor-block-preview__content-iframe .wp-block-omniform-form > .wp-block-group {
+    padding: 5em;
+}
