@@ -43,7 +43,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 	 */
 	public function boot(): void {
 		add_action( 'init', array( $this, 'register_blocks' ) );
-		add_action( 'init', array( $this, 'register_patterns' ) );
+		add_action( 'admin_init', array( $this, 'register_patterns' ) );
 
 		add_filter( 'block_categories_all', array( $this, 'register_categories' ) );
 		add_filter( 'block_type_metadata_settings', array( $this, 'update_layout_support' ), 10, 2 );
@@ -138,6 +138,19 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 	 * Registers the form block patterns.
 	 */
 	public function register_patterns() {
+		if ( ! in_array( $GLOBALS['pagenow'], array( 'post.php', 'site-editor.php' ), true ) ) {
+			return;
+		}
+
+		$is_omniform_post_type = false;
+
+		if (
+			! empty( $_GET['post'] ) && // phpcs:ignore WordPress.Security.NonceVerification
+			'omniform' === get_post_type( (int) $_GET['post'] ) // phpcs:ignore WordPress.Security.NonceVerification
+		) {
+			$is_omniform_post_type = true;
+		}
+
 		register_block_pattern_category(
 			'omniform',
 			array(
@@ -147,12 +160,17 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 		);
 
 		$pattern_defaults = array(
-			'postTypes'     => array( 'omniform' ),
 			'categories'    => array( 'omniform' ),
 			'viewportWidth' => (int) ( $GLOBALS['content_width'] ?? 768 ),
 		);
 
 		foreach ( $this->get_block_patterns() as $pattern ) {
+			if ( $is_omniform_post_type ) {
+				$pattern['postTypes'] = array( 'omniform' );
+			} else {
+				$pattern['content'] = sprintf( '<!-- wp:omniform/form {"align":"full"} -->%s<!-- /wp:omniform/form -->', $pattern['content'] );
+			}
+
 			register_block_pattern(
 				'omniform/' . $pattern['name'],
 				wp_parse_args(
