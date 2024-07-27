@@ -29,14 +29,15 @@ class ResponseNotification extends BaseBlock {
 		);
 
 		return sprintf(
-			'<div %s><p>%s</p></div>',
+			'<div %s><p>%s</p>%s</div>',
 			get_block_wrapper_attributes(
 				array(
 					'class' => esc_attr( $this->get_block_attribute( 'messageType' ) . '-response-notification' ),
 					'style' => 'display:none;',
 				)
 			),
-			wp_kses( $this->get_block_attribute( 'messageContent' ), $allowed_html )
+			wp_kses( $this->get_block_attribute( 'messageContent' ), $allowed_html ),
+			$this->content
 		);
 	}
 }
