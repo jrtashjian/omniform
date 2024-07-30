@@ -136,7 +136,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			'omniform_form_render',
 			function ( $form_id ) {
 				/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
-				$form = omniform()->get( \OmniForm\Plugin\Form::class )->get_instance( $form_id );
+				$form = omniform()->get( FormFactory::class )->create_with_id( $form_id );
 
 				if ( ! $form->is_published() || is_admin() ) {
 					return;
@@ -175,7 +175,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 
 				try {
 					/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
-					$form = omniform()->get( \OmniForm\Plugin\Form::class )->get_instance( $post_id );
+					$form = omniform()->get( FormFactory::class )->create_with_id( $post_id );
 
 					if ( 'standard' !== $form->get_type() ) {
 						return;
@@ -203,7 +203,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 
 				try {
 					/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
-					$form = omniform()->get( \OmniForm\Plugin\Form::class )->get_instance( $post_id );
+					$form = omniform()->get( FormFactory::class )->create_with_id( $post_id );
 
 					if ( 'standard' !== $form->get_type() ) {
 						return;
@@ -297,7 +297,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 
 				try {
 					/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
-					$form = omniform()->get( \OmniForm\Plugin\Form::class )->get_instance( $form_id );
+					$form = omniform()->get( FormFactory::class )->create_with_id( $form_id );
 				} catch ( \Exception $e ) {
 					echo esc_html( $e->getMessage() );
 					return;

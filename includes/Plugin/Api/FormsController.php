@@ -48,7 +48,9 @@ class FormsController extends \WP_REST_Posts_Controller {
 	 */
 	public function create_response( \WP_REST_Request $request ) {
 		try {
-			$form = omniform()->get( \OmniForm\Plugin\Form::class )->get_instance( absint( $request->get_param( 'id' ) ) );
+			/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
+			$form = omniform()->get( \OmniForm\Plugin\FormFactory::class )
+				->create_with_id( absint( $request->get_param( 'id' ) ) );
 		} catch ( \Exception $e ) {
 			return new \WP_Error(
 				'omniform_not_found',
