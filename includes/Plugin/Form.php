@@ -11,13 +11,18 @@ use OmniForm\BlockLibrary\Blocks\BaseControlBlock;
 use OmniForm\BlockLibrary\Blocks\Fieldset;
 use OmniForm\Dependencies\Dflydev\DotAccessData;
 use OmniForm\Dependencies\Respect\Validation;
-use OmniForm\Exceptions\FormNotFoundException;
-use OmniForm\Exceptions\InvalidFormIdException;
 
 /**
  * The Form class.
  */
 class Form {
+	/**
+	 * Form content.
+	 *
+	 * @var string
+	 */
+	protected $content;
+
 	/**
 	 * Form ID.
 	 *
@@ -54,40 +59,32 @@ class Form {
 	protected $groups = array();
 
 	/**
-	 * Retrieve Form instance.
+	 * Form constructor.
 	 *
-	 * @param int $form_id Form ID.
-	 *
-	 * @return Form Form object.
-	 *
-	 * @throws InvalidFormIdException If the form ID is invalid.
-	 * @throws FormNotFoundException If the form is not found.
+	 * @param Validation\Validator $validator Validator object.
 	 */
-	public function get_instance( $form_id ) {
-		$form_id = (int) $form_id;
+	public function __construct( Validation\Validator $validator ) {
+		$this->validator = $validator;
+	}
 
-		if ( ! $form_id ) {
-			throw new InvalidFormIdException(
-				/* translators: %d: Form ID. */
-				esc_attr( sprintf( __( 'Form ID must be an integer. &#8220;%s&#8221; is not a valid integer.', 'omniform' ), $form_id ) )
-			);
-		}
+	/**
+	 * Set the form's content.
+	 *
+	 * @param string $content The form content.
+	 */
+	public function set_content( $content ) {
+		$this->content = $content;
+	}
 
-		$_form = get_post( $form_id );
-
-		if ( ! $_form || 'omniform' !== $_form->post_type ) {
-			throw new FormNotFoundException(
-				/* translators: %d: Form ID. */
-				esc_attr( sprintf( __( 'Form ID &#8220;%d&#8221; does not exist.', 'omniform' ), $form_id ) )
-			);
-		}
-
-		$this->id        = $_form->ID;
-		$this->post_data = $_form;
-
-		$this->validator = new Validation\Validator();
-
-		return $this;
+	/**
+	 * Set the form's post data.
+	 *
+	 * @param \WP_Post $post_data The form post data.
+	 */
+	public function set_post_data( \WP_Post $post_data ) {
+		$this->id        = $post_data->ID;
+		$this->post_data = $post_data;
+		$this->content   = $post_data->post_content;
 	}
 
 	/**
@@ -132,7 +129,7 @@ class Form {
 	 * @return string
 	 */
 	public function get_content() {
-		return $this->post_data->post_content;
+		return $this->content;
 	}
 
 	/**

@@ -10,6 +10,7 @@ namespace OmniForm\Plugin;
 use OmniForm\Analytics\AnalyticsManager;
 use OmniForm\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use OmniForm\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
+use OmniForm\Dependencies\Respect\Validation;
 use OmniForm\Plugin\Facades\DB;
 use OmniForm\Plugin\Support\Number;
 
@@ -27,6 +28,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	public function provides( string $id ): bool {
 		$services = array(
 			Form::class,
+			FormFactory::class,
 			QueryBuilder::class,
 			QueryBuilderFactory::class,
 		);
@@ -40,7 +42,24 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->addShared( Form::class );
+		$this->getContainer()->addShared(
+			Form::class,
+			function () {
+				return new Form(
+					new Validation\Validator()
+				);
+			}
+		);
+
+		$this->getContainer()->add(
+			FormFactory::class,
+			function () {
+				return new FormFactory(
+					$this->getContainer(),
+					new Validation\Validator()
+				);
+			}
+		);
 
 		$this->getContainer()->add(
 			QueryBuilder::class,
