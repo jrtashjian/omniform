@@ -7,6 +7,7 @@
 
 namespace OmniForm\BlockLibrary\Blocks;
 
+use OmniForm\Plugin\FormFactory;
 use OmniForm\Traits\CallbackSupport;
 
 /**
@@ -29,14 +30,15 @@ class Form extends BaseBlock {
 			$entity_id = $this->get_block_attribute( 'ref' );
 		}
 
-		if ( empty( $entity_id ) ) {
+		if ( empty( $entity_id ) && empty( $this->content ) ) {
 			return '';
 		}
 
 		// Setup the Form object.
 		try {
 			/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
-			$form = omniform()->get( \OmniForm\Plugin\Form::class )->get_instance( $entity_id );
+			$form = omniform()->get( FormFactory::class )
+				->create_with_id( $entity_id );
 		} catch ( \Exception $e ) {
 			// Display notice for logged in editors, render nothing for visitors.
 			return current_user_can( 'edit_posts' )
