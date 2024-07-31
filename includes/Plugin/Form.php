@@ -17,25 +17,32 @@ use OmniForm\Dependencies\Respect\Validation;
  */
 class Form {
 	/**
+	 * Form ID.
+	 *
+	 * @var number
+	 */
+	protected $id = 0;
+
+	/**
+	 * Form post status.
+	 *
+	 * @var string
+	 */
+	protected $status = 'publish';
+
+	/**
+	 * Form title.
+	 *
+	 * @var string
+	 */
+	protected $title = '';
+
+	/**
 	 * Form content.
 	 *
 	 * @var string
 	 */
 	protected $content;
-
-	/**
-	 * Form ID.
-	 *
-	 * @var number
-	 */
-	protected $id;
-
-	/**
-	 * Form post object.
-	 *
-	 * @var \WP_Post
-	 */
-	protected $post_data;
 
 	/**
 	 * Validator object.
@@ -82,9 +89,10 @@ class Form {
 	 * @param \WP_Post $post_data The form post data.
 	 */
 	public function set_post_data( \WP_Post $post_data ) {
-		$this->id        = $post_data->ID;
-		$this->post_data = $post_data;
-		$this->content   = $post_data->post_content;
+		$this->id      = $post_data->ID;
+		$this->status  = $post_data->post_status;
+		$this->title   = $post_data->post_title;
+		$this->content = $post_data->post_content;
 	}
 
 	/**
@@ -102,7 +110,7 @@ class Form {
 	 * @return bool
 	 */
 	public function is_published() {
-		return 'publish' === $this->post_data->post_status;
+		return 'publish' === $this->status;
 	}
 
 	/**
@@ -120,7 +128,7 @@ class Form {
 	 * @return string
 	 */
 	public function get_title() {
-		return $this->post_data->post_title;
+		return $this->title;
 	}
 
 	/**
