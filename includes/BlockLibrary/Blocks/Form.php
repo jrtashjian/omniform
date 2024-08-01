@@ -135,8 +135,9 @@ class Form extends BaseBlock {
 			// Handle form submission.
 			// @todo Implement form submission handling.
 
-			$prepared_response_data = $this->sanitize_array( $_POST );
-			$form->validate( $prepared_response_data );
+			// Validate the form.
+			$form->set_request_params( $_POST );
+			$form->validate();
 		}
 
 		$form_hash_input = sprintf(
@@ -151,19 +152,6 @@ class Form extends BaseBlock {
 			get_block_wrapper_attributes(),
 			do_blocks( $this->content ) . $form_hash_input . wp_nonce_field( 'omniform' . $form_hash, '_wpnonce', true, false )
 		);
-	}
-
-	/**
-	 * Sanitizes an array of data.
-	 *
-	 * @param mixed $data The data to sanitize.
-	 *
-	 * @return array
-	 */
-	public function sanitize_array( $data ) {
-		return is_array( $data )
-			? array_map( array( $this, 'sanitize_array' ), $data )
-			: sanitize_textarea_field( $data );
 	}
 
 	/**

@@ -67,12 +67,9 @@ class FormsController extends \WP_REST_Posts_Controller {
 			);
 		}
 
-		// Prepare the submitted data.
-		$prepared_response_data = $this->sanitize_array(
-			$request->get_params()
-		);
-
-		$errors = $form->validate( $prepared_response_data );
+		// Validate the form.
+		$form->set_request_params( $request->get_params() );
+		$errors = $form->validate();
 
 		if ( ! empty( $errors ) ) {
 			$response = array(
@@ -110,7 +107,7 @@ class FormsController extends \WP_REST_Posts_Controller {
 				'post_title'   => wp_generate_uuid4(),
 				'post_content' => wp_json_encode(
 					array(
-						'response' => array_filter( $prepared_response_data, $filter_callback, ARRAY_FILTER_USE_KEY ),
+						'response' => array_filter( $form->get_request_params(), $filter_callback, ARRAY_FILTER_USE_KEY ),
 						'fields'   => array_filter( $prepared_fields_data, $filter_callback, ARRAY_FILTER_USE_KEY ),
 						'groups'   => $prepared_groups_data,
 					)
