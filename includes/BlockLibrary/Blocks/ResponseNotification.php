@@ -28,16 +28,38 @@ class ResponseNotification extends BaseBlock {
 			),
 		);
 
+		$form = omniform()->get( \OmniForm\Plugin\Form::class );
+
 		return sprintf(
 			'<div %s><p>%s</p>%s</div>',
 			get_block_wrapper_attributes(
 				array(
 					'class' => esc_attr( $this->get_block_attribute( 'messageType' ) . '-response-notification' ),
-					'style' => 'display:none;',
+					'style' => $this->notification_display( $form ),
 				)
 			),
 			wp_kses( $this->get_block_attribute( 'messageContent' ), $allowed_html ),
 			$this->content
 		);
+	}
+
+	/**
+	 * Determines whether the notification should be displayed.
+	 *
+	 * @param \OmniForm\Plugin\Form $form The form object.
+	 *
+	 * @return string The display style.
+	 */
+	private function notification_display( \OmniForm\Plugin\Form $form ) {
+		$message_type = $this->get_block_attribute( 'messageType' );
+
+		if (
+			( 'error' === $message_type && $form->validation_failed() ) ||
+			( 'success' === $message_type && $form->validation_succeeded() )
+		) {
+			return 'display:block;';
+		}
+
+		return 'display:none;';
 	}
 }

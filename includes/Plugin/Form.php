@@ -52,6 +52,13 @@ class Form {
 	protected $validator;
 
 	/**
+	 * Validation passed.
+	 *
+	 * @var bool
+	 */
+	protected $validation_passed = null;
+
+	/**
 	 * The form's fields.
 	 *
 	 * @var array
@@ -280,9 +287,29 @@ class Form {
 
 		try {
 			$this->validator->assert( $request_params->export() );
+			$this->validation_passed = true;
 		} catch ( Validation\Exceptions\NestedValidationException $exception ) {
+			$this->validation_passed = false;
 			return $exception->getMessages();
 		}
+	}
+
+	/**
+	 * Check if validation failed.
+	 *
+	 * @return bool
+	 */
+	public function validation_failed() {
+		return false === $this->validation_passed;
+	}
+
+	/**
+	 * Check if validation succeeded.
+	 *
+	 * @return bool
+	 */
+	public function validation_succeeded() {
+		return true === $this->validation_passed;
 	}
 
 	/**
