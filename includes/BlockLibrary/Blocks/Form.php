@@ -36,9 +36,17 @@ class Form extends BaseBlock {
 
 		// Setup the Form object.
 		try {
+			$form_factory = omniform()->get( FormFactory::class );
+
+			if ( ! empty( $entity_id ) ) {
+				/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
+				$form = $form_factory->create_with_id( $entity_id );
+			} else {
 			/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
-			$form = omniform()->get( FormFactory::class )
-				->create_with_id( $entity_id );
+				$form = $form_factory->create_with_content( serialize_blocks( $this->instance->parsed_block['innerBlocks'] ) );
+			}
+
+			$this->content = $form->get_content();
 		} catch ( \Exception $e ) {
 			// Display notice for logged in editors, render nothing for visitors.
 			return current_user_can( 'edit_posts' )
