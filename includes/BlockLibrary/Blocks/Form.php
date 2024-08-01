@@ -96,6 +96,13 @@ class Form extends BaseBlock {
 			: $this->render_standalone( $form );
 	}
 
+	/**
+	 * Renders the form in standard mode.
+	 *
+	 * @param \OmniForm\Plugin\Form $form The form object.
+	 *
+	 * @return string The rendered form.
+	 */
 	private function render_standard( \OmniForm\Plugin\Form $form ) {
 		/**
 		 * Fires when the form is rendered.
@@ -143,10 +150,10 @@ class Form extends BaseBlock {
 	 * @return string The rendered block.
 	 */
 	private function render_reponse_notification( $message_type, $message_content ) {
-		return render_block(
+		return serialize_block(
 			array(
-				'blockName' => 'omniform/response-notification',
-				'attrs'     => array(
+				'blockName'    => 'omniform/response-notification',
+				'attrs'        => array(
 					'messageType'    => $message_type,
 					'messageContent' => $message_content,
 					'style'          => array(
@@ -168,6 +175,7 @@ class Form extends BaseBlock {
 						),
 					),
 				),
+				'innerContent' => array(),
 			)
 		);
 	}
