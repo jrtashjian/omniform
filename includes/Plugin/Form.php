@@ -45,6 +45,13 @@ class Form {
 	protected $content;
 
 	/**
+	 * Request params.
+	 *
+	 * @var array
+	 */
+	protected $request_params;
+
+	/**
 	 * Validator object.
 	 *
 	 * @var Validation\Validator
@@ -100,6 +107,24 @@ class Form {
 		$this->status  = $post_data->post_status;
 		$this->title   = $post_data->post_title;
 		$this->content = $post_data->post_content;
+	}
+
+	/**
+	 * Set the form's request params.
+	 *
+	 * @param array $request_params The form request params.
+	 */
+	public function set_request_params( $request_params ) {
+		$this->request_params = $this->sanitize_array( $request_params );
+	}
+
+	/**
+	 * Get the form's request params.
+	 *
+	 * @return array
+	 */
+	public function get_request_params() {
+		return $this->request_params;
 	}
 
 	/**
@@ -274,14 +299,12 @@ class Form {
 	}
 
 	/**
-	 * Sanitize request params.
+	 * Validate the form.
 	 *
-	 * @param array $request_params The request params.
-	 *
-	 * @return array The sanitized request params.
+	 * @return array|bool The validation errors, false otherwise.
 	 */
-	public function validate( $request_params ) {
-		$request_params = new \OmniForm\Dependencies\Dflydev\DotAccessData\Data( $request_params );
+	public function validate() {
+		$request_params = new \OmniForm\Dependencies\Dflydev\DotAccessData\Data( $this->request_params );
 
 		$this->register_fields();
 
@@ -406,6 +429,19 @@ class Form {
 		$message[] = esc_html__( 'Form URL: ', 'omniform' ) . esc_url( get_post_meta( $response_id, '_wp_http_referer', true ) );
 
 		return esc_html( implode( "\n", $message ) );
+	}
+
+	/**
+	 * Sanitizes an array of data.
+	 *
+	 * @param mixed $data The data to sanitize.
+	 *
+	 * @return array
+	 */
+	public function sanitize_array( $data ) {
+		return is_array( $data )
+			? array_map( array( $this, 'sanitize_array' ), $data )
+			: sanitize_textarea_field( $data );
 	}
 
 	/**
