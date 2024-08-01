@@ -59,6 +59,13 @@ class Form {
 	protected $validator;
 
 	/**
+	 * Validation messages.
+	 *
+	 * @var array
+	 */
+	protected $validation_messages;
+
+	/**
 	 * Validation passed.
 	 *
 	 * @var bool
@@ -312,9 +319,20 @@ class Form {
 			$this->validator->assert( $request_params->export() );
 			$this->validation_passed = true;
 		} catch ( Validation\Exceptions\NestedValidationException $exception ) {
-			$this->validation_passed = false;
-			return $exception->getMessages();
+			$this->validation_passed   = false;
+			$this->validation_messages = $exception->getMessages();
+
+			return $this->validation_messages;
 		}
+	}
+
+	/**
+	 * Get the validation messages.
+	 *
+	 * @return array
+	 */
+	public function get_validation_messages() {
+		return $this->validation_messages;
 	}
 
 	/**

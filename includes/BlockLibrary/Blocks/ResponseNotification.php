@@ -30,6 +30,20 @@ class ResponseNotification extends BaseBlock {
 
 		$form = omniform()->get( \OmniForm\Plugin\Form::class );
 
+		// Render validation messages if they exist.
+		if ( $form->get_validation_messages() ) {
+			$this->content = "<!-- wp:list -->\n<ul class=\"wp-block-list\">";
+
+			foreach ( $form->get_validation_messages() as $message ) {
+				$this->content .= sprintf(
+					"<!-- wp:list-item -->\n<li>%s</li>\n<!-- /wp:list-item -->",
+					esc_html( $message ),
+				);
+			}
+
+			$this->content .= "</ul>\n<!-- /wp:list -->";
+		}
+
 		return sprintf(
 			'<div %s><p>%s</p>%s</div>',
 			get_block_wrapper_attributes(
@@ -39,7 +53,7 @@ class ResponseNotification extends BaseBlock {
 				)
 			),
 			wp_kses( $this->get_block_attribute( 'messageContent' ), $allowed_html ),
-			$this->content
+			do_blocks( $this->content )
 		);
 	}
 
