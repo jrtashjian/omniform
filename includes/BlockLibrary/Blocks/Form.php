@@ -120,6 +120,50 @@ class Form extends BaseBlock {
 		);
 	}
 
+	/**
+	 * Renders the form in standalone mode.
+	 *
+	 * @param \OmniForm\Plugin\Form $form The form object.
+	 *
+	 * @return string The rendered form.
+	 */
+	private function render_standalone( \OmniForm\Plugin\Form $form ) {
+		$form_hash      = sha1( $this->content );
+		$submitted_hash = sanitize_text_field( filter_input( INPUT_POST, 'omniform_hash' ) );
+
+		if ( $submitted_hash === $form_hash && wp_verify_nonce( $_REQUEST['_wpnonce'], 'omniform' . $form_hash ) ) {
+			// Handle form submission.
+			// @todo Implement form submission handling.
+
+			$prepared_response_data = $this->sanitize_array( $_POST );
+			$form->validate( $prepared_response_data );
+		}
+
+		$form_hash_input = sprintf(
+			'<input type="hidden" name="omniform_hash" value="%s">',
+			esc_attr( $form_hash )
+		);
+
+		return sprintf(
+			'<form method="%s" action="%s" %s>%s</form>',
+			esc_attr( strtolower( 'POST' ) ),
+			esc_attr( '' ),
+			get_block_wrapper_attributes(),
+			do_blocks( $this->content ) . $form_hash_input . wp_nonce_field( 'omniform' . $form_hash, '_wpnonce', true, false )
+		);
+	}
+
+	/**
+	 * Sanitizes an array of data.
+	 *
+	 * @param mixed $data The data to sanitize.
+	 *
+	 * @return array
+	 */
+	public function sanitize_array( $data ) {
+		return is_array( $data )
+			? array_map( array( $this, 'sanitize_array' ), $data )
+			: sanitize_textarea_field( $data );
 	}
 
 	/**
