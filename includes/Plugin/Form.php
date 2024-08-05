@@ -185,7 +185,7 @@ class Form {
 	 * @return array
 	 */
 	public function get_fields() {
-		return $this->fields;
+		return $this->sanitize_array( $this->fields );
 	}
 
 	/**
@@ -194,7 +194,7 @@ class Form {
 	 * @return array
 	 */
 	public function get_groups() {
-		return $this->groups;
+		return $this->sanitize_array( $this->groups );
 	}
 
 	/**
@@ -354,102 +354,6 @@ class Form {
 	}
 
 	/**
-	 * Get the response data.
-	 *
-	 * @param int $response_id Submission ID.
-	 *
-	 * @return array|false The message, false otherwise.
-	 */
-	public function get_response_data( $response_id ) {
-		$response_id = (int) $response_id;
-		if ( ! $response_id ) {
-			return false;
-		}
-
-		$_response = get_post( $response_id );
-
-		if ( ! $_response || 'omniform_response' !== $_response->post_type ) {
-			return false;
-		}
-
-		$_data = json_decode( $_response->post_content, true );
-
-		$response_data = new \OmniForm\Dependencies\Dflydev\DotAccessData\Data( $_data['response'] ?? $_data );
-
-		$fields = array_combine(
-			array_keys( $this->flatten( $response_data->export() ) ),
-			array_keys( $this->flatten( $response_data->export() ) )
-		);
-
-		if ( ! empty( $_data['fields'] ) ) {
-			$fields = $_data['fields'];
-		}
-
-		return array(
-			'response' => $_response,
-			'content'  => $response_data,
-			'fields'   => $fields,
-		);
-	}
-
-
-	/**
-	 * Response to text content.
-	 *
-	 * @param int $response_id Submission ID.
-	 *
-	 * @return string|false The message, false otherwise.
-	 */
-	public function response_text_content( $response_id ) {
-		$response_data = $this->get_response_data( $response_id );
-		if ( empty( $response_data ) ) {
-			return false;
-		}
-
-		foreach ( $response_data['fields'] as $name => $label ) {
-			$value     = implode( ', ', (array) $response_data['content']->get( $name, '' ) );
-			$message[] = sprintf(
-				'<strong>%s:</strong> %s',
-				esc_html( $label ),
-				wp_kses( $value, array() )
-			);
-		}
-
-		return implode( '<br />', $message );
-	}
-
-	/**
-	 * Response to email message.
-	 *
-	 * @param int $response_id Submission ID.
-	 *
-	 * @return string|false The message, false otherwise.
-	 */
-	public function response_email_message( $response_id ) {
-		$response_data = $this->get_response_data( $response_id );
-		if ( empty( $response_data ) ) {
-			return false;
-		}
-
-		$message = array();
-
-		foreach ( $response_data['fields'] as $name => $label ) {
-			$value     = implode( ', ', (array) $response_data['content']->get( $name, '' ) );
-			$message[] = $label . ': ' . wp_kses( $value, array() );
-		}
-
-		$message[] = '';
-		$message[] = '---';
-		/* translators: %s: Site URL. */
-		$message[] = sprintf( esc_html__( 'This email was sent to notify you of a response made through the contact form on %s.', 'omniform' ), esc_url( get_bloginfo( 'url' ) ) );
-		$message[] = esc_html__( 'Time: ', 'omniform' ) . $response_data['response']->post_date;
-		$message[] = esc_html__( 'IP Address: ', 'omniform' ) . sanitize_text_field( $_SERVER['REMOTE_ADDR'] );
-		$message[] = esc_html__( 'Form URL: ', 'omniform' ) . esc_url( get_post_meta( $response_id, '_wp_http_referer', true ) );
-
-		return esc_html( implode( "\n", $message ) );
-	}
-
-	/**
 	 * Sanitizes an array of data.
 	 *
 	 * @param mixed $data The data to sanitize.
@@ -460,30 +364,5 @@ class Form {
 		return is_array( $data )
 			? array_map( array( $this, 'sanitize_array' ), $data )
 			: sanitize_textarea_field( $data );
-	}
-
-	/**
-	 * Flatten an array.
-	 *
-	 * @link https://github.com/dflydev/dflydev-dot-access-data/issues/16#issuecomment-699638023
-	 *
-	 * @param array  $data The array to flatten.
-	 * @param string $path_prefix The path prefix.
-	 *
-	 * @return array The flattened array.
-	 */
-	private function flatten( array $data, string $path_prefix = '' ) {
-		$ret = array();
-
-		foreach ( $data as $key => $value ) {
-			$full_key = ltrim( $path_prefix . '.' . $key, '.' );
-			if ( is_array( $value ) && DotAccessData\Util::isAssoc( $value ) ) {
-				$ret += $this->flatten( $value, $full_key );
-			} else {
-				$ret[ $full_key ] = $value;
-			}
-		}
-
-		return $ret;
 	}
 }
