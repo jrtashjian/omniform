@@ -8,6 +8,7 @@
 namespace OmniForm\BlockLibrary\Blocks;
 
 use OmniForm\Plugin\FormFactory;
+use OmniForm\Plugin\Response;
 use OmniForm\Traits\CallbackSupport;
 
 /**
@@ -132,12 +133,25 @@ class Form extends BaseBlock {
 		$submitted_hash = sanitize_text_field( filter_input( INPUT_POST, 'omniform_hash' ) );
 
 		if ( $submitted_hash === $form_hash && wp_verify_nonce( $_REQUEST['_wpnonce'], 'omniform' . $form_hash ) ) {
-			// Handle form submission.
-			// @todo Implement form submission handling.
-
 			// Validate the form.
 			$form->set_request_params( $_POST );
-			$form->validate();
+
+			if ( empty( $form->validate() ) ) {
+				// Send the notification email.
+				$response = new Response( $form );
+
+				$response->set_request_params( $form->get_request_params() );
+				$response->set_fields( $form->get_fields() );
+				$response->set_groups( $form->get_groups() );
+				$response->set_date( current_time( 'mysql' ) );
+
+				wp_mail(
+					get_option( 'admin_email' ),
+					// translators: %1$s represents the blog name.
+					esc_attr( sprintf( __( 'New Response: %1$s', 'omniform' ), get_option( 'blogname' ) ) ),
+					wp_kses( $response->email_content(), array() )
+				);
+			}
 		}
 
 		$form_hash_input = sprintf(
