@@ -131,7 +131,7 @@ class Response implements \JsonSerializable {
 		/* translators: %s: Site URL. */
 		$message[] = sprintf( esc_html__( 'This email was sent to notify you of a response made through the contact form on %s.', 'omniform' ), esc_url( get_bloginfo( 'url' ) ) );
 		$message[] = esc_html__( 'Time: ', 'omniform' ) . sanitize_text_field( $this->date );
-		$message[] = esc_html__( 'IP Address: ', 'omniform' ) . sanitize_text_field( $_SERVER['REMOTE_ADDR'] );
+		$message[] = esc_html__( 'IP Address: ', 'omniform' ) . sanitize_text_field( $this->request_params['_omniform_user_ip'] );
 		$message[] = esc_html__( 'Form URL: ', 'omniform' ) . esc_url( $this->request_params['_wp_http_referer'] );
 
 		return esc_html( implode( "\n", $message ) );
@@ -171,7 +171,7 @@ class Response implements \JsonSerializable {
 		 *
 		 * @param string[] $filtered_request_params The filtered request params.
 		 */
-		$filtered_request_params = apply_filters( 'omniform_filtered_request_params', array( 'id', 'rest_route', 'wp_rest', '_locale', '_wp_http_referer', '_wpnonce', 'omniform_hash' ) );
+		$filtered_request_params = apply_filters( 'omniform_filtered_request_params', array( 'id', 'rest_route', 'wp_rest', '_locale', '_wp_http_referer', '_wpnonce', 'omniform_hash', '_omniform_user_ip' ) );
 
 		return ! in_array( $key, $filtered_request_params, true );
 	}

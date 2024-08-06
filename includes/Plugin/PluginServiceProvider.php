@@ -29,6 +29,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		$services = array(
 			Form::class,
 			FormFactory::class,
+			ResponseFactory::class,
 			QueryBuilder::class,
 			QueryBuilderFactory::class,
 		);
@@ -57,6 +58,15 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				return new FormFactory(
 					$this->getContainer(),
 					new Validation\Validator()
+				);
+			}
+		);
+
+		$this->getContainer()->add(
+			ResponseFactory::class,
+			function () {
+				return new ResponseFactory(
+					$this->getContainer()
 				);
 			}
 		);
@@ -97,9 +107,12 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		// Send email notification when a response is created.
 		add_action(
 			'omniform_response_created',
-			function ( $response_id, $form ) {
+			function ( int $response_id, Form $form ) {
 				$notify_email         = get_post_meta( $form->get_id(), 'notify_email', true );
 				$notify_email_subject = get_post_meta( $form->get_id(), 'notify_email_subject', true );
+
+				/** @var \OmniForm\Plugin\Response */ // phpcs:ignore
+				$response = $this->getContainer()->get( ResponseFactory::class )->create_with_id( $response_id );
 
 				wp_mail(
 					empty( $notify_email )
@@ -109,7 +122,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 						// translators: %1$s represents the blog name, %2$s represents the form title.
 						? esc_attr( sprintf( __( 'New Response: %1$s - %2$s', 'omniform' ), get_option( 'blogname' ), $form->get_title() ) )
 						: esc_attr( $notify_email_subject ),
-					wp_kses( $form->response_email_message( $response_id ), array() )
+					wp_kses( $response->email_content(), array() )
 				);
 			},
 			10,
@@ -323,9 +336,10 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					return;
 				}
 
-				echo wp_kses_post(
-					$this->getContainer()->get( Form::class )->response_text_content( $post_id )
-				);
+				/** @var \OmniForm\Plugin\Response */ // phpcs:ignore
+				$response = $this->getContainer()->get( ResponseFactory::class )->create_with_id( $post_id );
+
+				echo wp_kses_post( $response->text_content() );
 			},
 			10,
 			2
@@ -379,9 +393,10 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					return;
 				}
 
-				echo wp_kses_post(
-					$this->getContainer()->get( Form::class )->response_text_content( $post->ID )
-				);
+				/** @var \OmniForm\Plugin\Response */ // phpcs:ignore
+				$response = $this->getContainer()->get( ResponseFactory::class )->create_with_id( $post->ID );
+
+				echo wp_kses_post( $response->text_content() );
 			}
 		);
 

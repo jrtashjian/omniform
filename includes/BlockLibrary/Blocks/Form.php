@@ -8,7 +8,7 @@
 namespace OmniForm\BlockLibrary\Blocks;
 
 use OmniForm\Plugin\FormFactory;
-use OmniForm\Plugin\Response;
+use OmniForm\Plugin\ResponseFactory;
 use OmniForm\Traits\CallbackSupport;
 
 /**
@@ -137,13 +137,8 @@ class Form extends BaseBlock {
 			$form->set_request_params( $_POST );
 
 			if ( empty( $form->validate() ) ) {
-				// Send the notification email.
-				$response = new Response( $form );
-
-				$response->set_request_params( $form->get_request_params() );
-				$response->set_fields( $form->get_fields() );
-				$response->set_groups( $form->get_groups() );
-				$response->set_date( current_time( 'mysql' ) );
+				/** @var \OmniForm\Plugin\Response */ // phpcs:ignore
+				$response = omniform()->get( ResponseFactory::class )->create_with_form( $form );
 
 				wp_mail(
 					get_option( 'admin_email' ),
