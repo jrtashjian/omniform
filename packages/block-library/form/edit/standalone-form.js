@@ -5,6 +5,7 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 } from '@wordpress/block-editor';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Allowed blocks constant is passed to InnerBlocks precisely as specified here.
@@ -57,23 +58,13 @@ const TEMPLATE = [
 	[ 'core/group', {
 		tagName: 'div',
 		align: 'full',
-		style: {
-			spacing: {
-				padding: {
-					top: '5em',
-					bottom: '5em',
-					left: '5em',
-					right: '5em',
-				},
-			},
-		},
 		layout: {
 			type: 'constrained',
 		},
 	}, [
 		[ 'omniform/response-notification', {
 			messageType: 'success',
-			messageContent: 'Success! Your submission has been completed.',
+			messageContent: __( 'Success! Your submission has been completed.', 'omniform' ),
 			style: {
 				border: {
 					left: {
@@ -93,7 +84,7 @@ const TEMPLATE = [
 		}, [] ],
 		[ 'omniform/response-notification', {
 			messageType: 'error',
-			messageContent: 'Unfortunately, your submission was not successful. Please ensure all fields are correctly filled out and try again.',
+			messageContent: __( 'Unfortunately, your submission was not successful. Please ensure all fields are correctly filled out and try again.', 'omniform' ),
 			style: {
 				border: {
 					left: {
@@ -112,18 +103,18 @@ const TEMPLATE = [
 			},
 		}, [] ],
 		[ 'core/paragraph', {
-			content: "If you have any questions or comments, or if you'd like to work with me or collaborate on a project, please don't hesitate to get in touch. I look forward to hearing from you!",
+			content: __( "If you have any questions or comments, or if you'd like to work with me or collaborate on a project, please don't hesitate to get in touch. I look forward to hearing from you!", 'omniform' ),
 			dropCap: false,
 		}, [] ],
 		[ 'omniform/field', {
-			fieldLabel: 'Your email address',
+			fieldLabel: __( 'Your email address', 'omniform' ),
 			fieldName: 'your-email-address',
 		}, [
 			[ 'omniform/label', {}, [] ],
 			[ 'omniform/input', {}, [] ],
 		] ],
 		[ 'omniform/field', {
-			fieldLabel: 'Your message',
+			fieldLabel: __( 'Your message', 'omniform' ),
 			fieldName: 'your-message',
 		}, [
 			[ 'omniform/label', {}, [] ],
@@ -144,7 +135,7 @@ const TEMPLATE = [
 		}, [
 			[ 'omniform/button', {
 				buttonType: 'submit',
-				buttonLabel: 'Send Message',
+				buttonLabel: __( 'Send Message', 'omniform' ),
 			}, [] ],
 		] ],
 	] ],
