@@ -12,7 +12,8 @@
 			"default": "button"
 		},
 		"buttonLabel": {
-			"type": "string"
+			"type": "string",
+			"__experimentalRole": "content"
 		},
 		"buttonName": {
 			"type": "string"

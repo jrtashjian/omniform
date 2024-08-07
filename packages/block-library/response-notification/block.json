@@ -13,7 +13,8 @@
 		},
 		"messageContent": {
 			"type": "string",
-			"default": ""
+			"default": "",
+			"__experimentalRole": "content"
 		}
 	},
 	"supports": {
