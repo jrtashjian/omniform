@@ -138,19 +138,6 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 	 * Registers the form block patterns.
 	 */
 	public function register_patterns() {
-		if ( ! in_array( $GLOBALS['pagenow'], array( 'post.php', 'site-editor.php' ), true ) ) {
-			return;
-		}
-
-		$is_omniform_post_type = false;
-
-		if (
-			! empty( $_GET['post'] ) && // phpcs:ignore WordPress.Security.NonceVerification
-			'omniform' === get_post_type( (int) $_GET['post'] ) // phpcs:ignore WordPress.Security.NonceVerification
-		) {
-			$is_omniform_post_type = true;
-		}
-
 		register_block_pattern_category(
 			'omniform',
 			array(
@@ -165,16 +152,30 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 		);
 
 		foreach ( $this->get_block_patterns() as $pattern ) {
-			if ( $is_omniform_post_type ) {
-				$pattern['postTypes'] = array( 'omniform' );
-			} else {
-				$pattern['content'] = sprintf( '<!-- wp:omniform/form {"align":"full"} -->%s<!-- /wp:omniform/form -->', $pattern['content'] );
-			}
+			register_block_pattern(
+				'omniform/standard-' . $pattern['name'],
+				wp_parse_args(
+					array_merge(
+						$pattern,
+						array(
+							'postTypes'  => array( 'omniform' ),
+							'blockTypes' => array( 'omniform/form' ),
+						),
+					),
+					$pattern_defaults
+				)
+			);
 
 			register_block_pattern(
-				'omniform/' . $pattern['name'],
+				'omniform/standalone' . $pattern['name'],
 				wp_parse_args(
-					$pattern,
+					array_merge(
+						$pattern,
+						array(
+							'postTypes' => array( 'post', 'page' ),
+							'content'   => sprintf( '<!-- wp:omniform/form {"align":"full"} -->%s<!-- /wp:omniform/form -->', $pattern['content'] ),
+						),
+					),
 					$pattern_defaults
 				)
 			);
