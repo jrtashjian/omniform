@@ -154,7 +154,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 		register_block_pattern_category(
 			'omniform',
 			array(
-				'label'       => esc_attr__( 'Omniform', 'omniform' ),
+				'label'       => esc_attr__( 'OmniForm', 'omniform' ),
 				'description' => esc_attr__( 'Common form templates to get you started quickly.', 'omniform' ),
 			)
 		);
