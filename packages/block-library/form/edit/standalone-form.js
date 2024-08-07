@@ -4,7 +4,10 @@
 import {
 	useBlockProps,
 	useInnerBlocksProps,
+	Warning,
+	store as blockEditorStore,
 } from '@wordpress/block-editor';
+import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -141,7 +144,10 @@ const TEMPLATE = [
 	] ],
 ];
 
-export default function StandaloneForm() {
+export default function StandaloneForm( {
+	name,
+	clientId,
+} ) {
 	const blockProps = useBlockProps( {
 		className: 'block-library-block__reusable-block-container',
 	} );
@@ -151,5 +157,26 @@ export default function StandaloneForm() {
 		template: TEMPLATE,
 	} );
 
-	return ( <div { ...innerBlockProps } /> );
+	const isNested = useSelect(
+		( select ) => {
+			const {
+				getBlockParents,
+				getBlock,
+			} = select( blockEditorStore );
+
+			const parentBlocks = getBlockParents( clientId );
+			const rootBlock = getBlock( parentBlocks[ 0 ] );
+
+			return rootBlock?.name === name;
+		},
+		[ clientId, name ]
+	);
+
+	return isNested ? (
+		<div { ...blockProps }>
+			<Warning>
+				{ __( 'A form cannot be nested within another form.', 'omniform' ) }
+			</Warning>
+		</div>
+	) : ( <div { ...innerBlockProps } /> );
 }
