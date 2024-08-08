@@ -4,7 +4,10 @@
 import { __ } from '@wordpress/i18n';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useMemo } from '@wordpress/element';
-import { store as coreStore } from '@wordpress/core-data';
+import {
+	useEntityProp,
+	store as coreStore,
+} from '@wordpress/core-data';
 import { serialize } from '@wordpress/blocks';
 
 /**
@@ -62,5 +65,41 @@ export function useCreateFormFromBlocks( setAttributes ) {
 			record
 		);
 		setAttributes( { ref: form.id } );
+	};
+}
+
+/**
+ * Retrieves the form settings.
+ *
+ * @param {number} formId Form ID.
+ *
+ * @return {Object} Form settings.
+ */
+export function useStandardFormSettings( formId ) {
+	const [ formTitle ] = useEntityProp( 'postType', POST_TYPE, 'title', formId );
+	const [ meta, setMeta ] = useEntityProp( 'postType', POST_TYPE, 'meta', formId );
+
+	return {
+		formTitle,
+		getSetting: ( key ) => meta?.[ key ],
+		setSetting: ( key, value ) => setMeta( { ...meta, [ key ]: value } ),
+	};
+}
+
+/**
+ * Retrieves the form settings.
+ *
+ * @param {Object} blockObject Props.
+ */
+export function useStandaloneFormSettings( blockObject ) {
+	const {
+		attributes,
+		setAttributes,
+	} = blockObject;
+
+	return {
+		formTitle: null,
+		getSetting: ( key ) => attributes[ key ],
+		setSetting: ( key, value ) => setAttributes( { [ key ]: value } ),
 	};
 }
