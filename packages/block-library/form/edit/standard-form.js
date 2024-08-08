@@ -97,10 +97,9 @@ export default function StandardForm( {
 	return (
 		<>
 			<RecursionProvider uniqueId={ entityId }>
-				<FormInspectorControls
-					formId={ entityId }
-					isEntityAvailable={ isEntityAvailable }
-				/>
+				{ isEntityAvailable && (
+					<FormInspectorControls formId={ entityId } />
+				) }
 
 				{ isPlaceholder && (
 					<div { ...blockProps }>

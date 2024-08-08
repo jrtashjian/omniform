@@ -19,11 +19,10 @@ import SubmissionMethodSettings from '../../../components/form-settings/submissi
 
 export default function FormInspectorControls( {
 	formId,
-	isEntityAvailable,
 } ) {
 	const [ title, setTitle ] = useEntityProp( 'postType', POST_TYPE, 'title', formId );
 
-	return isEntityAvailable && (
+	return (
 		<InspectorControls>
 			<ViewResponses formId={ formId } />
 			<PanelBody title={ __( 'Form Settings', 'omniform' ) }>
