@@ -179,13 +179,17 @@ export default function StandaloneForm( blockObject ) {
 		[ clientId, name ]
 	);
 
-	return isNested ? (
-		<div { ...blockProps }>
-			<Warning>
-				{ __( 'A form cannot be nested within another form.', 'omniform' ) }
-			</Warning>
-		</div>
-	) : (
+	if ( isNested ) {
+		return (
+			<div { ...blockProps }>
+				<Warning>
+					{ __( 'A form cannot be nested within another form.', 'omniform' ) }
+				</Warning>
+			</div>
+		);
+	}
+
+	return (
 		<>
 			<FormInspectorControls blockObject={ blockObject } />
 			<div { ...innerBlockProps } />
