@@ -58,6 +58,11 @@ class Form extends BaseBlock {
 				: '';
 		}
 
+		// If the form is empty, render nothing.
+		if ( empty( $this->content ) ) {
+			return '';
+		}
+
 		// If the form is password protected, render the password form.
 		if ( $form->is_password_protected() ) {
 			return get_the_password_form();
