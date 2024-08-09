@@ -173,7 +173,11 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 						$pattern,
 						array(
 							'postTypes' => array( 'post', 'page' ),
-							'content'   => sprintf( '<!-- wp:omniform/form {"align":"full"} -->%s<!-- /wp:omniform/form -->', $pattern['content'] ),
+							'content'   => sprintf(
+								'<!-- wp:omniform/form {"form_title":"%s","align":"full"} -->%s<!-- /wp:omniform/form -->',
+								esc_html( $pattern['title'] ),
+								$pattern['content']
+							),
 						),
 					),
 					$pattern_defaults
