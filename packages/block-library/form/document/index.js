@@ -26,12 +26,18 @@ const DocumentSettingsPanel = () => {
 		};
 	} );
 
+	return POST_TYPE === postType && (
+		<FormSettingsPanel postId={ postId } />
+	);
+};
+
+function FormSettingsPanel( { postId } ) {
 	const {
 		getSetting,
 		setSetting,
 	} = useStandardFormSettings( postId );
 
-	return POST_TYPE === postType && (
+	return (
 		<>
 			<EmailNotificationSettings
 				getSetting={ getSetting }
@@ -45,7 +51,7 @@ const DocumentSettingsPanel = () => {
 			/>
 		</>
 	);
-};
+}
 
 registerPlugin( 'omniform', {
 	render: DocumentSettingsPanel,
