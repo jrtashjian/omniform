@@ -140,10 +140,29 @@ class Form extends BaseBlock {
 				/** @var \OmniForm\Plugin\Response */ // phpcs:ignore
 				$response = omniform()->get( ResponseFactory::class )->create_with_form( $form );
 
+				$notify_email         = $this->get_block_attribute( 'notify_email' );
+				$notify_email_subject = $this->get_block_attribute( 'notify_email_subject' );
+
+				$default_subject = $this->get_block_attribute( 'form_title' )
+					? sprintf(
+						// translators: %1$s represents the blog name, %2$s represents the form title.
+						__( 'New Response: %1$s - %2$s', 'omniform' ),
+						get_option( 'blogname' ),
+						$this->get_block_attribute( 'form_title' )
+					)
+					: sprintf(
+						// translators: %1$s represents the blog name.
+						__( 'New Response: %1$s', 'omniform' ),
+						get_option( 'blogname' )
+					);
+
 				wp_mail(
-					get_option( 'admin_email' ),
-					// translators: %1$s represents the blog name.
-					esc_attr( sprintf( __( 'New Response: %1$s', 'omniform' ), get_option( 'blogname' ) ) ),
+					empty( $notify_email )
+						? get_option( 'admin_email' )
+						: $notify_email,
+					empty( $notify_email_subject )
+						? esc_attr( $default_subject )
+						: esc_attr( $notify_email_subject ),
 					wp_kses( $response->email_content(), array() )
 				);
 			}
