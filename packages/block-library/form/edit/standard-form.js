@@ -74,7 +74,7 @@ export default function StandardForm( {
 	const isPlaceholder = ! entityId;
 	const isEntityAvailable = ! isPlaceholder && ! isMissing && isResolved;
 
-	if ( hasInnerBlocks && isMissing ) {
+	if ( isMissing ) {
 		return (
 			<div { ...blockProps }>
 				<Warning>
