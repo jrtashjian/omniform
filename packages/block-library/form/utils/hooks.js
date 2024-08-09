@@ -108,6 +108,16 @@ export function useStandardFormSettings( formId ) {
 		switch ( key ) {
 			case 'form_type':
 				setFormType( value );
+
+				// Reset the meta values when switching from the custom form type.
+				if ( value !== 'custom' ) {
+					setMeta( {
+						...meta,
+						submit_method: '',
+						submit_action: '',
+					} );
+				}
+
 				break;
 			case 'form_title':
 				setFormTitle( value );
@@ -145,7 +155,24 @@ export function useStandaloneFormSettings( blockObject ) {
 	 * @param {string} key   Setting key.
 	 * @param {*}      value Setting value.
 	 */
-	const setSetting = ( key, value ) => setAttributes( { [ key ]: value } );
+	const setSetting = ( key, value ) => {
+		switch ( key ) {
+			case 'form_type':
+				setAttributes( { [ key ]: value } );
+
+				// Reset the meta values when switching from the custom form type.
+				if ( value !== 'custom' ) {
+					setAttributes( {
+						submit_method: undefined,
+						submit_action: undefined,
+					} );
+				}
+
+				break;
+			default:
+				setAttributes( { [ key ]: value } );
+		}
+	};
 
 	return { getSetting, setSetting };
 }
