@@ -2,9 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	useEntityProp,
-} from '@wordpress/core-data';
 import { Button, PanelBody, TextControl } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
 import { addQueryArgs } from '@wordpress/url';
@@ -12,7 +9,6 @@ import { addQueryArgs } from '@wordpress/url';
 /**
  * Internal dependencies
  */
-import { POST_TYPE } from '../../shared/constants';
 import EmailNotificationSettings from '../../../components/form-settings/email-notifications';
 import ViewResponses from '../../../components/form-settings/view-responses';
 import SubmissionMethodSettings from '../../../components/form-settings/submission-method';
@@ -28,8 +24,6 @@ export default function FormInspectorControls( {
 }
 
 function StandardFormInspectorControls( { formId } ) {
-	const [ title, setTitle ] = useEntityProp( 'postType', POST_TYPE, 'title', formId );
-
 	const {
 		getSetting,
 		setSetting,
@@ -41,8 +35,8 @@ function StandardFormInspectorControls( { formId } ) {
 			<PanelBody title={ __( 'Form Settings', 'omniform' ) }>
 				<TextControl
 					label={ __( 'Name', 'omniform' ) }
-					value={ title }
-					onChange={ setTitle }
+					value={ getSetting( 'form_title' ) || '' }
+					onChange={ ( newValue ) => setSetting( 'form_title', newValue ) }
 					help={ __( 'This name will not be visible to viewers and is only for identifying the form.', 'omniform' ) }
 				/>
 				<Button
@@ -75,6 +69,20 @@ function StandaloneFormInspectorControls( { blockObject } ) {
 
 	return (
 		<InspectorControls>
+			<PanelBody title={ __( 'Form Settings', 'omniform' ) }>
+				<TextControl
+					label={ __( 'Name', 'omniform' ) }
+					value={ getSetting( 'form_title' ) || '' }
+					onChange={ ( newValue ) => setSetting( 'form_title', newValue ) }
+					help={ __( 'This name will not be visible to viewers and is only for identifying the form.', 'omniform' ) }
+				/>
+				<Button
+					variant="primary"
+					onClick={ () => console.debug( 'convert' ) }
+				>
+					{ __( 'Convert to Standard Form', 'omniform' ) }
+				</Button>
+			</PanelBody>
 			<EmailNotificationSettings
 				getSetting={ getSetting }
 				setSetting={ setSetting }
