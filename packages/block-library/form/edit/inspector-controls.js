@@ -16,11 +16,24 @@ import { POST_TYPE } from '../../shared/constants';
 import EmailNotificationSettings from '../../../components/form-settings/email-notifications';
 import ViewResponses from '../../../components/form-settings/view-responses';
 import SubmissionMethodSettings from '../../../components/form-settings/submission-method';
+import { useStandaloneFormSettings, useStandardFormSettings } from '../../../block-library/form/utils/hooks';
 
 export default function FormInspectorControls( {
 	formId,
+	blockObject,
 } ) {
+	return !! formId
+		? <StandardFormInspectorControls formId={ formId } />
+		: <StandaloneFormInspectorControls blockObject={ blockObject } />;
+}
+
+function StandardFormInspectorControls( { formId } ) {
 	const [ title, setTitle ] = useEntityProp( 'postType', POST_TYPE, 'title', formId );
+
+	const {
+		getSetting,
+		setSetting,
+	} = useStandardFormSettings( formId );
 
 	return (
 		<InspectorControls>
@@ -42,8 +55,34 @@ export default function FormInspectorControls( {
 					{ __( 'View in Form Editor', 'omniform' ) }
 				</Button>
 			</PanelBody>
-			<EmailNotificationSettings formId={ formId } />
-			<SubmissionMethodSettings formId={ formId } />
+			<EmailNotificationSettings
+				getSetting={ getSetting }
+				setSetting={ setSetting }
+			/>
+			<SubmissionMethodSettings
+				getSetting={ getSetting }
+				setSetting={ setSetting }
+			/>
+		</InspectorControls>
+	);
+}
+
+function StandaloneFormInspectorControls( { blockObject } ) {
+	const {
+		getSetting,
+		setSetting,
+	} = useStandaloneFormSettings( blockObject );
+
+	return (
+		<InspectorControls>
+			<EmailNotificationSettings
+				getSetting={ getSetting }
+				setSetting={ setSetting }
+			/>
+			<SubmissionMethodSettings
+				getSetting={ getSetting }
+				setSetting={ setSetting }
+			/>
 		</InspectorControls>
 	);
 }

@@ -11,6 +11,11 @@ import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 
 /**
+ * Internal dependencies
+ */
+import FormInspectorControls from './inspector-controls';
+
+/**
  * Allowed blocks constant is passed to InnerBlocks precisely as specified here.
  * The contents of the array should never change.
  * The array should contain the name of each block that is allowed.
@@ -144,10 +149,12 @@ const TEMPLATE = [
 	] ],
 ];
 
-export default function StandaloneForm( {
-	name,
-	clientId,
-} ) {
+export default function StandaloneForm( blockObject ) {
+	const {
+		name,
+		clientId,
+	} = blockObject;
+
 	const blockProps = useBlockProps( {
 		className: 'block-library-block__reusable-block-container',
 	} );
@@ -178,5 +185,10 @@ export default function StandaloneForm( {
 				{ __( 'A form cannot be nested within another form.', 'omniform' ) }
 			</Warning>
 		</div>
-	) : ( <div { ...innerBlockProps } /> );
+	) : (
+		<>
+			<FormInspectorControls blockObject={ blockObject } />
+			<div { ...innerBlockProps } />
+		</>
+	);
 }
