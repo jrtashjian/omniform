@@ -53,11 +53,13 @@ export function useAlternativeForms( excludedId ) {
 export function useCreateFormFromBlocks( setAttributes ) {
 	const { saveEntityRecord } = useDispatch( coreStore );
 
-	return async ( blocks = [], title = __( 'Untitled Form', 'omniform' ), type = 'uncategorized' ) => { // eslint-disable-line no-unused-vars
+	return async ( blocks = [], title = __( 'Untitled Form', 'omniform' ), type = 'standard', meta = {} ) => {
 		const record = {
 			title,
 			content: serialize( blocks ),
 			status: 'publish',
+			omniform_type: type,
+			meta,
 		};
 		const form = await saveEntityRecord(
 			'postType',
