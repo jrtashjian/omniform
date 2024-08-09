@@ -175,8 +175,8 @@ class Form extends BaseBlock {
 
 		return sprintf(
 			'<form method="%s" action="%s" %s>%s</form>',
-			esc_attr( strtolower( 'POST' ) ),
-			esc_attr( '' ),
+			esc_attr( strtolower( $this->get_block_attribute( 'submit_method' ) ?? 'POST' ) ),
+			esc_attr( $this->process_callbacks( $this->get_block_attribute( 'submit_action' ) ?? '' ) ),
 			get_block_wrapper_attributes(),
 			do_blocks( $this->content ) . $form_hash_input . wp_nonce_field( 'omniform' . $form_hash, '_wpnonce', true, false )
 		);
