@@ -166,6 +166,16 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 				)
 			);
 
+			$block_attributes = array_merge(
+				array(
+					'form_title' => $pattern['title'],
+					'align'      => 'full',
+				),
+				isset( $pattern['settings'] )
+					? array_map( 'esc_attr', $pattern['settings'] )
+					: array()
+			);
+
 			register_block_pattern(
 				'omniform/standalone' . $pattern['name'],
 				wp_parse_args(
@@ -174,8 +184,8 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 						array(
 							'postTypes' => array( 'post', 'page' ),
 							'content'   => sprintf(
-								'<!-- wp:omniform/form {"form_title":"%s","align":"full"} -->%s<!-- /wp:omniform/form -->',
-								esc_html( $pattern['title'] ),
+								'<!-- wp:omniform/form %s -->%s<!-- /wp:omniform/form -->',
+								wp_json_encode( $block_attributes ),
 								$pattern['content']
 							),
 						),
