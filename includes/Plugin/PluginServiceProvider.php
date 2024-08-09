@@ -151,7 +151,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
 				$form = omniform()->get( FormFactory::class )->create_with_id( $form_id );
 
-				if ( ! $form->is_published() || is_admin() ) {
+				if ( ! $form->is_published() || is_admin() || wp_is_serving_rest_request() ) {
 					return;
 				}
 
