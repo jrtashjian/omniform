@@ -76,14 +76,48 @@ export function useCreateFormFromBlocks( setAttributes ) {
  * @return {Object} Form settings.
  */
 export function useStandardFormSettings( formId ) {
-	const [ formTitle ] = useEntityProp( 'postType', POST_TYPE, 'title', formId );
 	const [ meta, setMeta ] = useEntityProp( 'postType', POST_TYPE, 'meta', formId );
 
-	return {
-		formTitle,
-		getSetting: ( key ) => meta?.[ key ],
-		setSetting: ( key, value ) => setMeta( { ...meta, [ key ]: value } ),
+	const [ formTitle, setFormTitle ] = useEntityProp( 'postType', POST_TYPE, 'title', formId );
+	const [ formType, setFormType ] = useEntityProp( 'postType', POST_TYPE, 'omniform_type', formId );
+
+	/**
+	 * Retrieves the setting value.
+	 *
+	 * @param {string} key Setting key.
+	 * @return {*} Setting value.
+	 */
+	const getSetting = ( key ) => {
+		switch ( key ) {
+			case 'form_type':
+				return formType;
+			case 'form_title':
+				return formTitle;
+			default:
+				return meta?.[ key ];
+		}
 	};
+
+	/**
+	 * Sets the setting value.
+	 *
+	 * @param {string} key   Setting key.
+	 * @param {*}      value Setting value.
+	 */
+	const setSetting = ( key, value ) => {
+		switch ( key ) {
+			case 'form_type':
+				setFormType( value );
+				break;
+			case 'form_title':
+				setFormTitle( value );
+				break;
+			default:
+				setMeta( { ...meta, [ key ]: value } );
+		}
+	};
+
+	return { getSetting, setSetting };
 }
 
 /**
@@ -97,9 +131,21 @@ export function useStandaloneFormSettings( blockObject ) {
 		setAttributes,
 	} = blockObject;
 
-	return {
-		formTitle: null,
-		getSetting: ( key ) => attributes[ key ],
-		setSetting: ( key, value ) => setAttributes( { [ key ]: value } ),
-	};
+	/**
+	 * Retrieves the setting value.
+	 *
+	 * @param {string} key Setting key.
+	 * @return {*} Setting value.
+	 */
+	const getSetting = ( key ) => attributes[ key ];
+
+	/**
+	 * Sets the setting value.
+	 *
+	 * @param {string} key   Setting key.
+	 * @param {*}      value Setting value.
+	 */
+	const setSetting = ( key, value ) => setAttributes( { [ key ]: value } );
+
+	return { getSetting, setSetting };
 }
