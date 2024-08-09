@@ -3,8 +3,13 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Button, PanelBody, TextControl } from '@wordpress/components';
-import { InspectorControls } from '@wordpress/block-editor';
+import {
+	InspectorControls,
+	store as blockEditorStore,
+} from '@wordpress/block-editor';
 import { addQueryArgs } from '@wordpress/url';
+import { useDispatch, useSelect } from '@wordpress/data';
+import { store as noticesStore } from '@wordpress/notices';
 
 /**
  * Internal dependencies
@@ -12,7 +17,7 @@ import { addQueryArgs } from '@wordpress/url';
 import EmailNotificationSettings from '../../../components/form-settings/email-notifications';
 import ViewResponses from '../../../components/form-settings/view-responses';
 import SubmissionMethodSettings from '../../../components/form-settings/submission-method';
-import { useStandaloneFormSettings, useStandardFormSettings } from '../../../block-library/form/utils/hooks';
+import { useCreateFormFromBlocks, useStandaloneFormSettings, useStandardFormSettings } from '../../../block-library/form/utils/hooks';
 
 export default function FormInspectorControls( {
 	formId,
@@ -67,6 +72,52 @@ function StandaloneFormInspectorControls( { blockObject } ) {
 		setSetting,
 	} = useStandaloneFormSettings( blockObject );
 
+	const innerBlocks = useSelect(
+		( select ) => {
+			const { getBlocks } = select( blockEditorStore );
+			return getBlocks( blockObject.clientId );
+		},
+		[ blockObject.clientId ]
+	);
+
+	const { createSuccessNotice, createErrorNotice } = useDispatch( noticesStore );
+	const createFromBlocks = useCreateFormFromBlocks( blockObject.setAttributes, blockObject.attributes );
+
+	const createForm = async () => {
+		try {
+			await createFromBlocks(
+				innerBlocks,
+				getSetting( 'form_title' ),
+				getSetting( 'form_type' ),
+				{
+					submit_action: getSetting( 'submit_action' ),
+					submit_method: getSetting( 'submit_method' ),
+					notify_email: getSetting( 'notify_email' ),
+					notify_email_subject: getSetting( 'notify_email_subject' ),
+				}
+			);
+
+			// Reset all but the 'ref' block attribute.
+			blockObject.setAttributes(
+				Object.keys( blockObject.attributes ).reduce( ( acc, key ) => {
+					if ( key !== 'ref' ) {
+						acc[ key ] = undefined;
+					}
+					return acc;
+				}, {} )
+			);
+
+			createSuccessNotice( __( 'Form created', 'omniform' ), { type: 'snackbar' } );
+		} catch ( error ) {
+			const errorMessage =
+				error.message && error.code !== 'unknown_error'
+					? error.message
+					: __( 'An error occurred while creating the form.', 'omniform' );
+
+			createErrorNotice( errorMessage, { type: 'snackbar' } );
+		}
+	};
+
 	return (
 		<InspectorControls>
 			<PanelBody title={ __( 'Form Settings', 'omniform' ) }>
@@ -78,7 +129,7 @@ function StandaloneFormInspectorControls( { blockObject } ) {
 				/>
 				<Button
 					variant="primary"
-					onClick={ () => console.debug( 'convert' ) }
+					onClick={ () => createForm() }
 				>
 					{ __( 'Convert to Standard Form', 'omniform' ) }
 				</Button>
