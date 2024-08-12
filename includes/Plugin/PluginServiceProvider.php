@@ -10,6 +10,7 @@ namespace OmniForm\Plugin;
 use OmniForm\Analytics\AnalyticsManager;
 use OmniForm\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use OmniForm\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
+use OmniForm\Dependencies\Respect\Validation;
 use OmniForm\Plugin\Facades\DB;
 use OmniForm\Plugin\Support\Number;
 
@@ -27,6 +28,8 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	public function provides( string $id ): bool {
 		$services = array(
 			Form::class,
+			FormFactory::class,
+			ResponseFactory::class,
 			QueryBuilder::class,
 			QueryBuilderFactory::class,
 		);
@@ -40,7 +43,33 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->addShared( Form::class );
+		$this->getContainer()->addShared(
+			Form::class,
+			function () {
+				return new Form(
+					new Validation\Validator()
+				);
+			}
+		);
+
+		$this->getContainer()->add(
+			FormFactory::class,
+			function () {
+				return new FormFactory(
+					$this->getContainer(),
+					new Validation\Validator()
+				);
+			}
+		);
+
+		$this->getContainer()->add(
+			ResponseFactory::class,
+			function () {
+				return new ResponseFactory(
+					$this->getContainer()
+				);
+			}
+		);
 
 		$this->getContainer()->add(
 			QueryBuilder::class,
@@ -78,9 +107,12 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		// Send email notification when a response is created.
 		add_action(
 			'omniform_response_created',
-			function ( $response_id, $form ) {
+			function ( int $response_id, Form $form ) {
 				$notify_email         = get_post_meta( $form->get_id(), 'notify_email', true );
 				$notify_email_subject = get_post_meta( $form->get_id(), 'notify_email_subject', true );
+
+				/** @var \OmniForm\Plugin\Response */ // phpcs:ignore
+				$response = $this->getContainer()->get( ResponseFactory::class )->create_with_id( $response_id );
 
 				wp_mail(
 					empty( $notify_email )
@@ -90,7 +122,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 						// translators: %1$s represents the blog name, %2$s represents the form title.
 						? esc_attr( sprintf( __( 'New Response: %1$s - %2$s', 'omniform' ), get_option( 'blogname' ), $form->get_title() ) )
 						: esc_attr( $notify_email_subject ),
-					wp_kses( $form->response_email_message( $response_id ), array() )
+					wp_kses( $response->email_content(), array() )
 				);
 			},
 			10,
@@ -117,9 +149,9 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			'omniform_form_render',
 			function ( $form_id ) {
 				/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
-				$form = omniform()->get( \OmniForm\Plugin\Form::class )->get_instance( $form_id );
+				$form = omniform()->get( FormFactory::class )->create_with_id( $form_id );
 
-				if ( ! $form->is_published() || is_admin() ) {
+				if ( ! $form->is_published() || is_admin() || wp_is_serving_rest_request() ) {
 					return;
 				}
 
@@ -156,7 +188,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 
 				try {
 					/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
-					$form = omniform()->get( \OmniForm\Plugin\Form::class )->get_instance( $post_id );
+					$form = omniform()->get( FormFactory::class )->create_with_id( $post_id );
 
 					if ( 'standard' !== $form->get_type() ) {
 						return;
@@ -184,7 +216,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 
 				try {
 					/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
-					$form = omniform()->get( \OmniForm\Plugin\Form::class )->get_instance( $post_id );
+					$form = omniform()->get( FormFactory::class )->create_with_id( $post_id );
 
 					if ( 'standard' !== $form->get_type() ) {
 						return;
@@ -278,7 +310,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 
 				try {
 					/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
-					$form = omniform()->get( \OmniForm\Plugin\Form::class )->get_instance( $form_id );
+					$form = omniform()->get( FormFactory::class )->create_with_id( $form_id );
 				} catch ( \Exception $e ) {
 					echo esc_html( $e->getMessage() );
 					return;
@@ -304,9 +336,10 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					return;
 				}
 
-				echo wp_kses_post(
-					$this->getContainer()->get( Form::class )->response_text_content( $post_id )
-				);
+				/** @var \OmniForm\Plugin\Response */ // phpcs:ignore
+				$response = $this->getContainer()->get( ResponseFactory::class )->create_with_id( $post_id );
+
+				echo wp_kses_post( $response->text_content() );
 			},
 			10,
 			2
@@ -360,9 +393,10 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					return;
 				}
 
-				echo wp_kses_post(
-					$this->getContainer()->get( Form::class )->response_text_content( $post->ID )
-				);
+				/** @var \OmniForm\Plugin\Response */ // phpcs:ignore
+				$response = $this->getContainer()->get( ResponseFactory::class )->create_with_id( $post->ID );
+
+				echo wp_kses_post( $response->text_content() );
 			}
 		);
 
@@ -753,7 +787,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	public function render_singular_template( $content ) {
 		return ( ! is_singular( 'omniform' ) || ! is_main_query() )
 			? $content
-			: do_blocks( '<!-- wp:omniform/form {"ref":' . get_the_ID() . '} /-->' );
+			: do_blocks( '<!-- wp:omniform/form {"ref":' . get_the_ID() . ',"align":"full"} /-->' );
 	}
 
 	/**

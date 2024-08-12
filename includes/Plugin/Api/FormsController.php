@@ -7,6 +7,8 @@
 
 namespace OmniForm\Plugin\Api;
 
+use OmniForm\Plugin\ResponseFactory;
+
 /**
  * The FormsController class.
  */
@@ -48,7 +50,9 @@ class FormsController extends \WP_REST_Posts_Controller {
 	 */
 	public function create_response( \WP_REST_Request $request ) {
 		try {
-			$form = omniform()->get( \OmniForm\Plugin\Form::class )->get_instance( absint( $request->get_param( 'id' ) ) );
+			/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
+			$form = omniform()->get( \OmniForm\Plugin\FormFactory::class )
+				->create_with_id( absint( $request->get_param( 'id' ) ) );
 		} catch ( \Exception $e ) {
 			return new \WP_Error(
 				'omniform_not_found',
@@ -65,12 +69,9 @@ class FormsController extends \WP_REST_Posts_Controller {
 			);
 		}
 
-		// Prepare the submitted data.
-		$prepared_response_data = $this->sanitize_array(
-			$request->get_params()
-		);
-
-		$errors = $form->validate( $prepared_response_data );
+		// Validate the form.
+		$form->set_request_params( $request->get_params() );
+		$errors = $form->validate();
 
 		if ( ! empty( $errors ) ) {
 			$response = array(
@@ -88,31 +89,13 @@ class FormsController extends \WP_REST_Posts_Controller {
 			);
 		}
 
-		/**
-		 * Filter out the fields we don't want to save.
-		 *
-		 * @param string[] $filtered_request_params The filtered request params.
-		 */
-		$filtered_request_params = apply_filters( 'omniform_filtered_request_params', array( 'id', 'rest_route', 'wp_rest', '_locale', '_wp_http_referer' ) );
-
-		$filter_callback = function ( $key ) use ( $filtered_request_params ) {
-			return ! in_array( $key, $filtered_request_params, true );
-		};
-
-		// Prepare the form data.
-		$prepared_fields_data = $this->sanitize_array( $form->get_fields() );
-		$prepared_groups_data = $this->sanitize_array( $form->get_groups() );
+		/** @var \OmniForm\Plugin\Response */ // phpcs:ignore
+		$response = omniform()->get( ResponseFactory::class )->create_with_form( $form );
 
 		$response_id = wp_insert_post(
 			array(
 				'post_title'   => wp_generate_uuid4(),
-				'post_content' => wp_json_encode(
-					array(
-						'response' => array_filter( $prepared_response_data, $filter_callback, ARRAY_FILTER_USE_KEY ),
-						'fields'   => array_filter( $prepared_fields_data, $filter_callback, ARRAY_FILTER_USE_KEY ),
-						'groups'   => $prepared_groups_data,
-					)
-				),
+				'post_content' => wp_json_encode( $response ),
 				'post_type'    => 'omniform_response',
 				'post_status'  => 'publish',
 				'post_parent'  => $form->get_id(),

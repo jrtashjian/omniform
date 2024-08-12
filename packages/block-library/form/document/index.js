@@ -13,6 +13,7 @@ import { registerPlugin } from '@wordpress/plugins';
 import EmailNotificationSettings from '../../../components/form-settings/email-notifications';
 import { POST_TYPE } from '../../shared/constants';
 import SubmissionMethodSettings from '../../../components/form-settings/submission-method';
+import { useStandardFormSettings } from '../utils/hooks';
 
 const DocumentSettingsPanel = () => {
 	const {
@@ -26,12 +27,31 @@ const DocumentSettingsPanel = () => {
 	} );
 
 	return POST_TYPE === postType && (
-		<>
-			<EmailNotificationSettings formId={ postId } isDocumentPanel />
-			<SubmissionMethodSettings formId={ postId } isDocumentPanel />
-		</>
+		<FormSettingsPanel postId={ postId } />
 	);
 };
+
+function FormSettingsPanel( { postId } ) {
+	const {
+		getSetting,
+		setSetting,
+	} = useStandardFormSettings( postId );
+
+	return (
+		<>
+			<EmailNotificationSettings
+				getSetting={ getSetting }
+				setSetting={ setSetting }
+				isDocumentPanel
+			/>
+			<SubmissionMethodSettings
+				getSetting={ getSetting }
+				setSetting={ setSetting }
+				isDocumentPanel
+			/>
+		</>
+	);
+}
 
 registerPlugin( 'omniform', {
 	render: DocumentSettingsPanel,

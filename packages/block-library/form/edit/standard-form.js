@@ -26,7 +26,7 @@ import FormInspectorControls from './inspector-controls';
 import FormPlaceholder from './placeholder';
 import FormSelectionModal from './selection-modal';
 
-export default function FormEdit( {
+export default function StandardForm( {
 	context,
 	attributes,
 	setAttributes,
@@ -74,7 +74,7 @@ export default function FormEdit( {
 	const isPlaceholder = ! entityId;
 	const isEntityAvailable = ! isPlaceholder && ! isMissing && isResolved;
 
-	if ( hasInnerBlocks && isMissing ) {
+	if ( isMissing ) {
 		return (
 			<div { ...blockProps }>
 				<Warning>
@@ -97,10 +97,9 @@ export default function FormEdit( {
 	return (
 		<>
 			<RecursionProvider uniqueId={ entityId }>
-				<FormInspectorControls
-					formId={ entityId }
-					isEntityAvailable={ isEntityAvailable }
-				/>
+				{ isEntityAvailable && (
+					<FormInspectorControls formId={ entityId } />
+				) }
 
 				{ isPlaceholder && (
 					<div { ...blockProps }>

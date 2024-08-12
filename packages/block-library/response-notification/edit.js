@@ -34,9 +34,6 @@ const Edit = ( {
 				withoutInteractiveFormatting
 				allowedFormats={ [ 'core/bold', 'core/italic' ] }
 			/>
-			{ 'error' === messageType && (
-				<p>{ __( 'Error Messages Placeholder', 'omniform' ) }</p>
-			) }
 		</div>
 	);
 };

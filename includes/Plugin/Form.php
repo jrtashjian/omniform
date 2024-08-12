@@ -11,8 +11,6 @@ use OmniForm\BlockLibrary\Blocks\BaseControlBlock;
 use OmniForm\BlockLibrary\Blocks\Fieldset;
 use OmniForm\Dependencies\Dflydev\DotAccessData;
 use OmniForm\Dependencies\Respect\Validation;
-use OmniForm\Exceptions\FormNotFoundException;
-use OmniForm\Exceptions\InvalidFormIdException;
 
 /**
  * The Form class.
@@ -23,14 +21,35 @@ class Form {
 	 *
 	 * @var number
 	 */
-	protected $id;
+	protected $id = 0;
 
 	/**
-	 * Form post object.
+	 * Form post status.
 	 *
-	 * @var \WP_Post
+	 * @var string
 	 */
-	protected $post_data;
+	protected $status = 'publish';
+
+	/**
+	 * Form title.
+	 *
+	 * @var string
+	 */
+	protected $title = '';
+
+	/**
+	 * Form content.
+	 *
+	 * @var string
+	 */
+	protected $content;
+
+	/**
+	 * Request params.
+	 *
+	 * @var array
+	 */
+	protected $request_params;
 
 	/**
 	 * Validator object.
@@ -38,6 +57,20 @@ class Form {
 	 * @var Validation\Validator
 	 */
 	protected $validator;
+
+	/**
+	 * Validation messages.
+	 *
+	 * @var array
+	 */
+	protected $validation_messages;
+
+	/**
+	 * Validation passed.
+	 *
+	 * @var bool
+	 */
+	protected $validation_passed = null;
 
 	/**
 	 * The form's fields.
@@ -54,40 +87,51 @@ class Form {
 	protected $groups = array();
 
 	/**
-	 * Retrieve Form instance.
+	 * Form constructor.
 	 *
-	 * @param int $form_id Form ID.
-	 *
-	 * @return Form Form object.
-	 *
-	 * @throws InvalidFormIdException If the form ID is invalid.
-	 * @throws FormNotFoundException If the form is not found.
+	 * @param Validation\Validator $validator Validator object.
 	 */
-	public function get_instance( $form_id ) {
-		$form_id = (int) $form_id;
+	public function __construct( Validation\Validator $validator ) {
+		$this->validator = $validator;
+	}
 
-		if ( ! $form_id ) {
-			throw new InvalidFormIdException(
-				/* translators: %d: Form ID. */
-				esc_attr( sprintf( __( 'Form ID must be an integer. &#8220;%s&#8221; is not a valid integer.', 'omniform' ), $form_id ) )
-			);
-		}
+	/**
+	 * Set the form's content.
+	 *
+	 * @param string $content The form content.
+	 */
+	public function set_content( $content ) {
+		$this->content = $content;
+	}
 
-		$_form = get_post( $form_id );
+	/**
+	 * Set the form's post data.
+	 *
+	 * @param \WP_Post $post_data The form post data.
+	 */
+	public function set_post_data( \WP_Post $post_data ) {
+		$this->id      = $post_data->ID;
+		$this->status  = $post_data->post_status;
+		$this->title   = $post_data->post_title;
+		$this->content = $post_data->post_content;
+	}
 
-		if ( ! $_form || 'omniform' !== $_form->post_type ) {
-			throw new FormNotFoundException(
-				/* translators: %d: Form ID. */
-				esc_attr( sprintf( __( 'Form ID &#8220;%d&#8221; does not exist.', 'omniform' ), $form_id ) )
-			);
-		}
+	/**
+	 * Set the form's request params.
+	 *
+	 * @param array $request_params The form request params.
+	 */
+	public function set_request_params( $request_params ) {
+		$this->request_params = $this->sanitize_array( $request_params );
+	}
 
-		$this->id        = $_form->ID;
-		$this->post_data = $_form;
-
-		$this->validator = new Validation\Validator();
-
-		return $this;
+	/**
+	 * Get the form's request params.
+	 *
+	 * @return array
+	 */
+	public function get_request_params() {
+		return $this->request_params;
 	}
 
 	/**
@@ -105,7 +149,7 @@ class Form {
 	 * @return bool
 	 */
 	public function is_published() {
-		return 'publish' === $this->post_data->post_status;
+		return 'publish' === $this->status;
 	}
 
 	/**
@@ -123,7 +167,7 @@ class Form {
 	 * @return string
 	 */
 	public function get_title() {
-		return $this->post_data->post_title;
+		return $this->title;
 	}
 
 	/**
@@ -132,7 +176,7 @@ class Form {
 	 * @return string
 	 */
 	public function get_content() {
-		return $this->post_data->post_content;
+		return $this->content;
 	}
 
 	/**
@@ -141,7 +185,7 @@ class Form {
 	 * @return array
 	 */
 	public function get_fields() {
-		return $this->fields;
+		return $this->sanitize_array( $this->fields );
 	}
 
 	/**
@@ -150,7 +194,7 @@ class Form {
 	 * @return array
 	 */
 	public function get_groups() {
-		return $this->groups;
+		return $this->sanitize_array( $this->groups );
 	}
 
 	/**
@@ -262,142 +306,63 @@ class Form {
 	}
 
 	/**
-	 * Sanitize request params.
+	 * Validate the form.
 	 *
-	 * @param array $request_params The request params.
-	 *
-	 * @return array The sanitized request params.
+	 * @return array|bool The validation errors, false otherwise.
 	 */
-	public function validate( $request_params ) {
-		$request_params = new \OmniForm\Dependencies\Dflydev\DotAccessData\Data( $request_params );
+	public function validate() {
+		$request_params = new \OmniForm\Dependencies\Dflydev\DotAccessData\Data( $this->request_params );
 
 		$this->register_fields();
 
 		try {
 			$this->validator->assert( $request_params->export() );
+			$this->validation_passed = true;
 		} catch ( Validation\Exceptions\NestedValidationException $exception ) {
-			return $exception->getMessages();
+			$this->validation_passed   = false;
+			$this->validation_messages = $exception->getMessages();
+
+			return $this->validation_messages;
 		}
 	}
 
 	/**
-	 * Get the response data.
+	 * Get the validation messages.
 	 *
-	 * @param int $response_id Submission ID.
-	 *
-	 * @return array|false The message, false otherwise.
+	 * @return array
 	 */
-	public function get_response_data( $response_id ) {
-		$response_id = (int) $response_id;
-		if ( ! $response_id ) {
-			return false;
-		}
-
-		$_response = get_post( $response_id );
-
-		if ( ! $_response || 'omniform_response' !== $_response->post_type ) {
-			return false;
-		}
-
-		$_data = json_decode( $_response->post_content, true );
-
-		$response_data = new \OmniForm\Dependencies\Dflydev\DotAccessData\Data( $_data['response'] ?? $_data );
-
-		$fields = array_combine(
-			array_keys( $this->flatten( $response_data->export() ) ),
-			array_keys( $this->flatten( $response_data->export() ) )
-		);
-
-		if ( ! empty( $_data['fields'] ) ) {
-			$fields = $_data['fields'];
-		}
-
-		return array(
-			'response' => $_response,
-			'content'  => $response_data,
-			'fields'   => $fields,
-		);
-	}
-
-
-	/**
-	 * Response to text content.
-	 *
-	 * @param int $response_id Submission ID.
-	 *
-	 * @return string|false The message, false otherwise.
-	 */
-	public function response_text_content( $response_id ) {
-		$response_data = $this->get_response_data( $response_id );
-		if ( empty( $response_data ) ) {
-			return false;
-		}
-
-		foreach ( $response_data['fields'] as $name => $label ) {
-			$value     = implode( ', ', (array) $response_data['content']->get( $name, '' ) );
-			$message[] = sprintf(
-				'<strong>%s:</strong> %s',
-				esc_html( $label ),
-				wp_kses( $value, array() )
-			);
-		}
-
-		return implode( '<br />', $message );
+	public function get_validation_messages() {
+		return $this->validation_messages;
 	}
 
 	/**
-	 * Response to email message.
+	 * Check if validation failed.
 	 *
-	 * @param int $response_id Submission ID.
-	 *
-	 * @return string|false The message, false otherwise.
+	 * @return bool
 	 */
-	public function response_email_message( $response_id ) {
-		$response_data = $this->get_response_data( $response_id );
-		if ( empty( $response_data ) ) {
-			return false;
-		}
-
-		$message = array();
-
-		foreach ( $response_data['fields'] as $name => $label ) {
-			$value     = implode( ', ', (array) $response_data['content']->get( $name, '' ) );
-			$message[] = $label . ': ' . wp_kses( $value, array() );
-		}
-
-		$message[] = '';
-		$message[] = '---';
-		/* translators: %s: Site URL. */
-		$message[] = sprintf( esc_html__( 'This email was sent to notify you of a response made through the contact form on %s.', 'omniform' ), esc_url( get_bloginfo( 'url' ) ) );
-		$message[] = esc_html__( 'Time: ', 'omniform' ) . $response_data['response']->post_date;
-		$message[] = esc_html__( 'IP Address: ', 'omniform' ) . sanitize_text_field( $_SERVER['REMOTE_ADDR'] );
-		$message[] = esc_html__( 'Form URL: ', 'omniform' ) . esc_url( get_post_meta( $response_id, '_wp_http_referer', true ) );
-
-		return esc_html( implode( "\n", $message ) );
+	public function validation_failed() {
+		return false === $this->validation_passed;
 	}
 
 	/**
-	 * Flatten an array.
+	 * Check if validation succeeded.
 	 *
-	 * @link https://github.com/dflydev/dflydev-dot-access-data/issues/16#issuecomment-699638023
-	 *
-	 * @param array  $data The array to flatten.
-	 * @param string $path_prefix The path prefix.
-	 *
-	 * @return array The flattened array.
+	 * @return bool
 	 */
-	private function flatten( array $data, string $path_prefix = '' ) {
-		$ret = array();
+	public function validation_succeeded() {
+		return true === $this->validation_passed;
+	}
 
-		foreach ( $data as $key => $value ) {
-			$full_key = ltrim( $path_prefix . '.' . $key, '.' );
-			if ( is_array( $value ) && DotAccessData\Util::isAssoc( $value ) ) {
-				$ret += $this->flatten( $value, $full_key );
-			} else {
-				$ret[ $full_key ] = $value;
-			}
-		}
-
-		return $ret;
+	/**
+	 * Sanitizes an array of data.
+	 *
+	 * @param mixed $data The data to sanitize.
+	 *
+	 * @return array
+	 */
+	public function sanitize_array( $data ) {
+		return is_array( $data )
+			? array_map( array( $this, 'sanitize_array' ), $data )
+			: sanitize_textarea_field( $data );
 	}
 }

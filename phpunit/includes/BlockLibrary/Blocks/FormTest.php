@@ -24,7 +24,24 @@ class FormTest extends FormBlockTestCase {
 	 * Register the block to test against.
 	 */
 	public function set_up() {
-		omniform()->addShared( \OmniForm\Plugin\Form::class );
+		omniform()->addShared(
+			\OmniForm\Plugin\Form::class,
+			function () {
+				return new \OmniForm\Plugin\Form(
+					new \OmniForm\Dependencies\Respect\Validation\Validator()
+				);
+			}
+		);
+
+		omniform()->add(
+			\OmniForm\Plugin\FormFactory::class,
+			function () {
+				return new \OmniForm\Plugin\FormFactory(
+					omniform(),
+					new \OmniForm\Dependencies\Respect\Validation\Validator()
+				);
+			}
+		);
 
 		$this->register_block_type( new FormBlock() );
 	}

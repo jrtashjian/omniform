@@ -2,22 +2,15 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import {
-	useEntityProp,
-	store as coreStore,
-} from '@wordpress/core-data';
+import { store as coreStore } from '@wordpress/core-data';
 import { useSelect } from '@wordpress/data';
 import { PanelBody, TextControl, FormTokenField } from '@wordpress/components';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 
-/**
- * Internal dependencies
- */
-import { POST_TYPE } from '../../block-library/shared/constants';
-
 export default function EmailNotificationSettings( {
-	formId,
 	isDocumentPanel,
+	getSetting,
+	setSetting,
 } ) {
 	const {
 		siteTitle,
@@ -31,18 +24,17 @@ export default function EmailNotificationSettings( {
 		};
 	}, [] );
 
-	const [ title ] = useEntityProp( 'postType', POST_TYPE, 'title', formId );
-	const [ meta, setMeta ] = useEntityProp( 'postType', POST_TYPE, 'meta', formId );
-
-	const metaNotifyEmail = meta?.notify_email;
-	const updateMetaNotifyEmail = ( newValue ) => {
-		setMeta( { ...meta, notify_email: newValue } );
-	};
-
-	const metaNotifyEmailSubject = meta?.notify_email_subject;
-	const updateMetaNotifyEmailSubject = ( newValue ) => {
-		setMeta( { ...meta, notify_email_subject: newValue } );
-	};
+	const placeholder = getSetting( 'form_title' )
+		? sprintf(
+			// translators: %1$s represents the blog name, %2$s represents the form title.
+			__( 'New Response: %1$s - %2$s', 'omniform' ),
+			siteTitle, getSetting( 'form_title' )
+		)
+		: sprintf(
+			// translators: %1$s represents the blog name
+			__( 'New Response: %1$s', 'omniform' ),
+			siteTitle
+		);
 
 	const PanelComponent = isDocumentPanel
 		? PluginDocumentSettingPanel
@@ -55,19 +47,15 @@ export default function EmailNotificationSettings( {
 		>
 			<FormTokenField
 				label={ __( 'Notify These Emails', 'omniform' ) }
-				value={ metaNotifyEmail }
-				onChange={ updateMetaNotifyEmail }
+				value={ getSetting( 'notify_email' ) }
+				onChange={ ( newValue ) => setSetting( 'notify_email', newValue ) }
 				placeholder={ siteEmail }
 			/>
 			<TextControl
 				label={ __( 'Notification Subject', 'omniform' ) }
-				value={ metaNotifyEmailSubject }
-				onChange={ updateMetaNotifyEmailSubject }
-				placeholder={ sprintf(
-					// translators: %1$s represents the blog name, %2$s represents the form title.
-					__( 'New Response: %1$s - %2$s', 'omniform' ),
-					siteTitle, title
-				) }
+				value={ getSetting( 'notify_email_subject' ) }
+				onChange={ ( newValue ) => setSetting( 'notify_email_subject', newValue ) }
+				placeholder={ placeholder }
 				help={ __( 'Write a short headline for the notification.', 'omniform' ) }
 			/>
 		</PanelComponent>

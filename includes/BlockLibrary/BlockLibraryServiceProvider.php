@@ -42,51 +42,11 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 	 * @return void
 	 */
 	public function boot(): void {
-		add_action( 'wp_loaded', array( $this, 'activation' ) );
 		add_action( 'init', array( $this, 'register_blocks' ) );
-		add_action( 'init', array( $this, 'register_patterns' ) );
+		add_action( 'admin_init', array( $this, 'register_patterns' ) );
 
 		add_filter( 'block_categories_all', array( $this, 'register_categories' ) );
 		add_filter( 'block_type_metadata_settings', array( $this, 'update_layout_support' ), 10, 2 );
-	}
-
-	/**
-	 * Create the default forms.
-	 */
-	public function activation() {
-		if ( ! get_transient( 'omniform_just_activated' ) ) {
-			return;
-		}
-
-		$existing_forms = get_posts(
-			array(
-				'post_status' => 'any',
-				'post_type'   => 'omniform',
-			)
-		);
-
-		if ( ! empty( $existing_forms ) ) {
-			return;
-		}
-
-		/** @var \OmniForm\FormTypes\FormTypesManager */ // phpcs:ignore
-		$form_types_manager = $this->getContainer()->get( FormTypesManager::class );
-
-		foreach ( $this->get_block_patterns() as $form ) {
-			wp_insert_post(
-				array(
-					'post_type'    => 'omniform',
-					'post_status'  => 'draft',
-					'post_name'    => $form['name'],
-					'post_title'   => $form['title'],
-					'post_content' => $form['content'],
-					'tax_input'    => array(
-						'omniform_type' => $form_types_manager->validate_form_type( $form['type'] ?? '' ),
-					),
-					'meta_input'   => $form['meta'] ?? array(),
-				)
-			);
-		}
 	}
 
 	/**
@@ -181,22 +141,55 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 		register_block_pattern_category(
 			'omniform',
 			array(
-				'label'       => esc_attr__( 'Omniform', 'omniform' ),
+				'label'       => esc_attr__( 'OmniForm', 'omniform' ),
 				'description' => esc_attr__( 'Common form templates to get you started quickly.', 'omniform' ),
 			)
 		);
 
 		$pattern_defaults = array(
-			'postTypes'     => array( 'omniform' ),
 			'categories'    => array( 'omniform' ),
 			'viewportWidth' => (int) ( $GLOBALS['content_width'] ?? 768 ),
 		);
 
 		foreach ( $this->get_block_patterns() as $pattern ) {
 			register_block_pattern(
-				'omniform/' . $pattern['name'],
+				'omniform/standard-' . $pattern['name'],
 				wp_parse_args(
-					$pattern,
+					array_merge(
+						$pattern,
+						array(
+							'postTypes'  => array( 'omniform' ),
+							'blockTypes' => array( 'omniform/form' ),
+						),
+					),
+					$pattern_defaults
+				)
+			);
+
+			$block_attributes = array_merge(
+				array(
+					'form_title' => $pattern['title'],
+					'align'      => 'full',
+				),
+				isset( $pattern['settings'] )
+					? array_map( 'esc_attr', $pattern['settings'] )
+					: array()
+			);
+
+			register_block_pattern(
+				'omniform/standalone' . $pattern['name'],
+				wp_parse_args(
+					array_merge(
+						$pattern,
+						array(
+							'postTypes' => array( 'post', 'page' ),
+							'content'   => sprintf(
+								'<!-- wp:omniform/form %s -->%s<!-- /wp:omniform/form -->',
+								wp_json_encode( $block_attributes ),
+								$pattern['content']
+							),
+						),
+					),
 					$pattern_defaults
 				)
 			);

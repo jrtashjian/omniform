@@ -10,12 +10,14 @@ import { registerBlockType } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
 import { decodeEntities } from '@wordpress/html-entities';
 import { addFilter } from '@wordpress/hooks';
+import { InnerBlocks } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
  */
 import json from './block.json';
-import edit from './edit';
+import StandardForm from './edit/standard-form';
+import StandaloneForm from './edit/standalone-form';
 import { POST_TYPE } from '../shared/constants';
 import { form } from '../shared/icons';
 
@@ -27,7 +29,11 @@ import './style.scss';
 const { name } = json;
 
 registerBlockType( name, {
-	edit,
+	edit: ( props ) => {
+		const Edit = props.attributes.ref ? StandardForm : StandaloneForm;
+		return <Edit { ...props } />;
+	},
+	save: ( { ref } ) => ref ? null : <InnerBlocks.Content />,
 	icon: { foreground: '#D92E83', src: form },
 	// Get block name from the post name.
 	__experimentalLabel: ( { ref } ) => {

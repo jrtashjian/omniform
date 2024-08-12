@@ -7,6 +7,8 @@
 
 namespace OmniForm\BlockLibrary\Blocks;
 
+use OmniForm\Plugin\FormFactory;
+use OmniForm\Plugin\ResponseFactory;
 use OmniForm\Traits\CallbackSupport;
 
 /**
@@ -29,14 +31,23 @@ class Form extends BaseBlock {
 			$entity_id = $this->get_block_attribute( 'ref' );
 		}
 
-		if ( empty( $entity_id ) ) {
+		if ( empty( $entity_id ) && empty( $this->content ) ) {
 			return '';
 		}
 
 		// Setup the Form object.
 		try {
-			/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
-			$form = omniform()->get( \OmniForm\Plugin\Form::class )->get_instance( $entity_id );
+			$form_factory = omniform()->get( FormFactory::class );
+
+			if ( ! empty( $entity_id ) ) {
+				/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
+				$form = $form_factory->create_with_id( $entity_id );
+			} else {
+				/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
+				$form = $form_factory->create_with_content( serialize_blocks( $this->instance->parsed_block['innerBlocks'] ) );
+			}
+
+			$this->content = $form->get_content();
 		} catch ( \Exception $e ) {
 			// Display notice for logged in editors, render nothing for visitors.
 			return current_user_can( 'edit_posts' )
@@ -45,6 +56,11 @@ class Form extends BaseBlock {
 					esc_html( $e->getMessage() )
 				)
 				: '';
+		}
+
+		// If the form is empty, render nothing.
+		if ( empty( $this->content ) ) {
+			return '';
 		}
 
 		// If the form is password protected, render the password form.
@@ -65,37 +81,35 @@ class Form extends BaseBlock {
 				: '';
 		}
 
-		$content = array(
-			do_blocks( $form->get_content() ),
-		);
-
-		if ( 'standard' === $form->get_type() ) {
-			// Add a nonce field to standard forms.
-			$content[] = wp_nonce_field( 'omniform', 'wp_rest', true, false );
-
-			// Add a default success response notification block if one is not present.
-			if ( ! $this->has_success_response_notification( $content[0] ) ) {
-				array_unshift(
-					$content,
-					$this->render_reponse_notification(
-						'success',
-						__( 'Success! Your submission has been completed.', 'omniform' )
-					)
-				);
-			}
-
-			// Add a default error response notification block if one is not present.
-			if ( ! $this->has_error_response_notification( $content[0] ) ) {
-				array_unshift(
-					$content,
-					$this->render_reponse_notification(
-						'error',
-						__( 'Unfortunately, your submission was not successful. Please ensure all fields are correctly filled out and try again.', 'omniform' )
-					)
-				);
-			}
+		// Add a default success response notification block if one is not present.
+		if ( ! $this->has_success_response_notification( $this->content ) ) {
+			$this->content = $this->render_reponse_notification(
+				'success',
+				__( 'Success! Your submission has been completed.', 'omniform' )
+			) . $this->content;
 		}
 
+		// Add a default error response notification block if one is not present.
+		if ( ! $this->has_error_response_notification( $this->content ) ) {
+			$this->content = $this->render_reponse_notification(
+				'error',
+				__( 'Unfortunately, your submission was not successful. Please ensure all fields are correctly filled out and try again.', 'omniform' )
+			) . $this->content;
+		}
+
+		return $form->get_id()
+			? $this->render_standard( $form )
+			: $this->render_standalone( $form );
+	}
+
+	/**
+	 * Renders the form in standard mode.
+	 *
+	 * @param \OmniForm\Plugin\Form $form The form object.
+	 *
+	 * @return string The rendered form.
+	 */
+	private function render_standard( \OmniForm\Plugin\Form $form ) {
 		/**
 		 * Fires when the form is rendered.
 		 *
@@ -108,30 +122,88 @@ class Form extends BaseBlock {
 			esc_attr( strtolower( $form->get_submit_method() ) ),
 			esc_attr( $this->process_callbacks( $form->get_submit_action() ) ),
 			get_block_wrapper_attributes(),
-			implode( '', $content )
+			do_blocks( $this->content ) . wp_nonce_field( 'omniform', 'wp_rest', true, false )
+		);
+	}
+
+	/**
+	 * Renders the form in standalone mode.
+	 *
+	 * @param \OmniForm\Plugin\Form $form The form object.
+	 *
+	 * @return string The rendered form.
+	 */
+	private function render_standalone( \OmniForm\Plugin\Form $form ) {
+		$form_hash      = sha1( $this->content );
+		$submitted_hash = sanitize_text_field( filter_input( INPUT_POST, 'omniform_hash' ) );
+
+		if ( $submitted_hash === $form_hash && wp_verify_nonce( $_REQUEST['_wpnonce'], 'omniform' . $form_hash ) ) {
+			// Validate the form.
+			$form->set_request_params( $_POST );
+
+			if ( empty( $form->validate() ) ) {
+				/** @var \OmniForm\Plugin\Response */ // phpcs:ignore
+				$response = omniform()->get( ResponseFactory::class )->create_with_form( $form );
+
+				$notify_email         = $this->get_block_attribute( 'notify_email' );
+				$notify_email_subject = $this->get_block_attribute( 'notify_email_subject' );
+
+				$default_subject = $this->get_block_attribute( 'form_title' )
+					? sprintf(
+						// translators: %1$s represents the blog name, %2$s represents the form title.
+						__( 'New Response: %1$s - %2$s', 'omniform' ),
+						get_option( 'blogname' ),
+						$this->get_block_attribute( 'form_title' )
+					)
+					: sprintf(
+						// translators: %1$s represents the blog name.
+						__( 'New Response: %1$s', 'omniform' ),
+						get_option( 'blogname' )
+					);
+
+				wp_mail(
+					empty( $notify_email )
+						? get_option( 'admin_email' )
+						: $notify_email,
+					empty( $notify_email_subject )
+						? esc_attr( $default_subject )
+						: esc_attr( $notify_email_subject ),
+					wp_kses( $response->email_content(), array() )
+				);
+			}
+		}
+
+		$form_hash_input = sprintf(
+			'<input type="hidden" name="omniform_hash" value="%s">',
+			esc_attr( $form_hash )
+		);
+
+		return sprintf(
+			'<form method="%s" action="%s" %s>%s</form>',
+			esc_attr( strtolower( $this->get_block_attribute( 'submit_method' ) ?? 'POST' ) ),
+			esc_attr( $this->process_callbacks( $this->get_block_attribute( 'submit_action' ) ?? '' ) ),
+			get_block_wrapper_attributes(),
+			do_blocks( $this->content ) . $form_hash_input . wp_nonce_field( 'omniform' . $form_hash, '_wpnonce', true, false )
 		);
 	}
 
 	/**
 	 * Checks if the content has a success response notification block.
 	 *
-	 * @param string $content The content to check.
-	 *
 	 * @return boolean True if the content has a success response notification block, false otherwise.
 	 */
-	private function has_success_response_notification( $content ) {
-		return preg_match( '/success-response-notification[^"]+?wp-block-omniform-response-notification/', $content );
+	private function has_success_response_notification() {
+		return (bool) preg_match( '/<!-- wp:omniform\/response-notification(?:(?!messageType).)*?-->/', $this->content )
+			|| preg_match( '/<!-- wp:omniform\/response-notification.*?"messageType":"success".*?-->/', $this->content );
 	}
 
 	/**
 	 * Checks if the content has an error response notification block.
 	 *
-	 * @param string $content The content to check.
-	 *
 	 * @return boolean True if the content has an error response notification block, false otherwise.
 	 */
-	private function has_error_response_notification( $content ) {
-		return preg_match( '/error-response-notification[^"]+?wp-block-omniform-response-notification/', $content );
+	private function has_error_response_notification() {
+		return (bool) preg_match( '/<!-- wp:omniform\/response-notification.*?"messageType":"error".*?-->/', $this->content );
 	}
 
 	/**
@@ -143,10 +215,10 @@ class Form extends BaseBlock {
 	 * @return string The rendered block.
 	 */
 	private function render_reponse_notification( $message_type, $message_content ) {
-		return render_block(
+		return serialize_block(
 			array(
-				'blockName' => 'omniform/response-notification',
-				'attrs'     => array(
+				'blockName'    => 'omniform/response-notification',
+				'attrs'        => array(
 					'messageType'    => $message_type,
 					'messageContent' => $message_content,
 					'style'          => array(
@@ -168,6 +240,7 @@ class Form extends BaseBlock {
 						),
 					),
 				),
+				'innerContent' => array(),
 			)
 		);
 	}

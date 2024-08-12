@@ -9,6 +9,28 @@
 	"attributes": {
 		"ref": {
 			"type": "number"
+		},
+		"form_title": {
+			"type": "string"
+		},
+		"form_type": {
+			"type": "string",
+			"enum": [
+				"standard",
+				"custom"
+			]
+		},
+		"notify_email": {
+			"type": "array"
+		},
+		"notify_email_subject": {
+			"type": "string"
+		},
+		"submit_action": {
+			"type": "string"
+		},
+		"submit_method": {
+			"type": "string"
 		}
 	},
 	"supports": {
