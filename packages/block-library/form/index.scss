@@ -54,3 +54,9 @@
 .block-editor-block-preview__content-iframe .post-type-omniform .is-root-container > .wp-block-group {
 	padding: 5em;
 }
+
+.block-editor-block-preview__content-iframe .wp-block-omniform-input::after,
+.block-editor-block-preview__content-iframe .wp-block-omniform-select::after {
+	content: '.';
+	visibility: hidden;
+}
