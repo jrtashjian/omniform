@@ -4,6 +4,7 @@
 import {
 	useBlockProps,
 	useInnerBlocksProps,
+	InnerBlocks,
 	Warning,
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
@@ -155,6 +156,25 @@ export default function StandaloneForm( blockObject ) {
 		clientId,
 	} = blockObject;
 
+	const { isNested, hasInnerBlocks } = useSelect(
+		( select ) => {
+			const {
+				getBlockParents,
+				getBlock,
+				getBlockCount,
+			} = select( blockEditorStore );
+
+			const parentBlocks = getBlockParents( clientId );
+			const rootBlock = getBlock( parentBlocks[ 0 ] );
+
+			return {
+				isNested: rootBlock?.name === name,
+				hasInnerBlocks: getBlockCount( clientId ) > 0,
+			};
+		},
+		[ clientId, name ]
+	);
+
 	const blockProps = useBlockProps( {
 		className: 'block-library-block__reusable-block-container',
 	} );
@@ -162,22 +182,10 @@ export default function StandaloneForm( blockObject ) {
 	const innerBlockProps = useInnerBlocksProps( blockProps, {
 		allowedBlocks: ALLOWED_BLOCKS,
 		template: TEMPLATE,
+		renderAppender: hasInnerBlocks
+			? undefined
+			: InnerBlocks.ButtonBlockAppender,
 	} );
-
-	const isNested = useSelect(
-		( select ) => {
-			const {
-				getBlockParents,
-				getBlock,
-			} = select( blockEditorStore );
-
-			const parentBlocks = getBlockParents( clientId );
-			const rootBlock = getBlock( parentBlocks[ 0 ] );
-
-			return rootBlock?.name === name;
-		},
-		[ clientId, name ]
-	);
 
 	if ( isNested ) {
 		return (
