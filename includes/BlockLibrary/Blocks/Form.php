@@ -173,17 +173,23 @@ class Form extends BaseBlock {
 			}
 		}
 
-		$form_hash_input = sprintf(
-			'<input type="hidden" name="omniform_hash" value="%s">',
-			esc_attr( $form_hash )
-		);
+		$additional_fields = array();
+
+		if ( empty( $this->get_block_attribute( 'submit_action' ) ) ) {
+			$additional_fields[] = sprintf(
+				'<input type="hidden" name="omniform_hash" value="%s">',
+				esc_attr( $form_hash )
+			);
+
+			$additional_fields[] = wp_nonce_field( 'omniform' . $form_hash, '_wpnonce', true, false );
+		}
 
 		return sprintf(
 			'<form method="%s" action="%s" %s>%s</form>',
 			esc_attr( strtolower( $this->get_block_attribute( 'submit_method' ) ?? 'POST' ) ),
 			esc_attr( $this->process_callbacks( $this->get_block_attribute( 'submit_action' ) ?? '' ) ),
 			get_block_wrapper_attributes(),
-			do_blocks( $this->content ) . $form_hash_input . wp_nonce_field( 'omniform' . $form_hash, '_wpnonce', true, false )
+			do_blocks( $this->content ) . implode( '', $additional_fields )
 		);
 	}
 
