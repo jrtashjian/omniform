@@ -205,19 +205,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 
 		$block_categories[] = array(
 			'slug'  => 'omniform',
-			'title' => esc_attr__( 'Forms', 'omniform' ),
-			'icon'  => null,
-		);
-
-		$block_categories[] = array(
-			'slug'  => 'omniform-control-simple',
-			'title' => esc_attr__( 'Simple Controls', 'omniform' ),
-			'icon'  => null,
-		);
-
-		$block_categories[] = array(
-			'slug'  => 'omniform-control-group',
-			'title' => esc_attr__( 'Grouped Controls', 'omniform' ),
+			'title' => esc_attr__( 'OmniForm', 'omniform' ),
 			'icon'  => null,
 		);
 

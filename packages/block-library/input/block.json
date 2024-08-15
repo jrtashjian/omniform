@@ -2,7 +2,7 @@
 	"$schema": "https://raw.githubusercontent.com/WordPress/gutenberg/wp/6.3/schemas/json/block.json",
 	"apiVersion": 3,
 	"name": "omniform/input",
-	"category": "omniform-control-simple",
+	"category": "omniform",
 	"title": "Field Input",
 	"description": "A field for simple text entry.",
 	"textdomain": "omniform",

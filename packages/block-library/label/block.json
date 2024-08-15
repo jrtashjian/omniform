@@ -2,7 +2,7 @@
 	"$schema": "https://raw.githubusercontent.com/WordPress/gutenberg/wp/6.3/schemas/json/block.json",
 	"apiVersion": 3,
 	"name": "omniform/label",
-	"category": "omniform-control-simple",
+	"category": "omniform",
 	"title": "Form Label",
 	"description": "A label associated with one form field.",
 	"textdomain": "omniform",
