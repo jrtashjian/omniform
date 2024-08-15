@@ -23,11 +23,6 @@ registerBlockType( name, {
 	save: Save,
 	icon: { foreground: '#D92E83', src: iconField },
 	variations,
-	example: {
-		attributes: {
-			fieldLabel: __( 'Field Label', 'omniform' ),
-		},
-	},
 	// Get block name from the option value.
 	__experimentalLabel: ( { fieldLabel } ) => fieldLabel && decodeEntities( fieldLabel ),
 } );

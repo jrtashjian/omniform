@@ -20,7 +20,6 @@ registerBlockType( name, {
 	edit: Edit,
 	icon: { foreground: '#D92E83', src: fieldHidden },
 	variations,
-	example: {},
 	// Return the title of the variation if fieldName is in variations, otherwise return fieldName.
 	__experimentalLabel: ( { fieldName, fieldValue } ) => {
 		const variation = variations.find( ( { attributes } ) =>
