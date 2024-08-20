@@ -55,10 +55,8 @@
 	padding: 5em;
 }
 
-.block-editor-block-preview__content-iframe .wp-block-omniform-input::after,
-.block-editor-block-preview__content-iframe .wp-block-omniform-select::after,
-.edit-site-style-book__example-preview .wp-block-omniform-input::after,
-.edit-site-style-book__example-preview .wp-block-omniform-select::after {
+.wp-block-omniform-input:not(.rich-text)::after,
+.wp-block-omniform-select > div:first-of-type:not(.rich-text)::before {
 	content: ".";
 	visibility: hidden;
 }
