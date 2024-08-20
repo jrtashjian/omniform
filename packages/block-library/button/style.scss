@@ -9,6 +9,7 @@
 	box-sizing: border-box;
 	border-color: currentcolor;
 	font-weight: inherit;
+	white-space: nowrap;
 
 	@include focus-styles;
 
