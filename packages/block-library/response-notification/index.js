@@ -12,6 +12,7 @@ import Edit from './edit';
 import variations from './variations';
 import { iconSuccess } from '../shared/icons';
 
+import './style.scss';
 import './index.scss';
 
 const { name } = json;

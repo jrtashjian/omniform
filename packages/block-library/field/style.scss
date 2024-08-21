@@ -1,6 +1,9 @@
 .editor-styles-wrapper .wp-block-omniform-field,
 .wp-block-omniform-field {
 
+	box-sizing: border-box;
+	width: 100%;
+
 	&.is-layout-flex {
 		gap: 0.5em;
 	}
