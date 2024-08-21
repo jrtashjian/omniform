@@ -31,6 +31,9 @@
 		},
 		"submit_method": {
 			"type": "string"
+		},
+		"required_label": {
+			"type": "string"
 		}
 	},
 	"supports": {
