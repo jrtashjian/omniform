@@ -182,7 +182,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 					array_merge(
 						$pattern,
 						array(
-							'postTypes' => array( 'post', 'page', 'wp_template' ),
+							'postTypes' => array( 'post', 'page', 'wp_template', 'wp_template_part' ),
 							'content'   => sprintf(
 								'<!-- wp:omniform/form %s -->%s<!-- /wp:omniform/form -->',
 								wp_json_encode( $block_attributes ),
