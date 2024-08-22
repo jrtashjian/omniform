@@ -152,19 +152,22 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 		);
 
 		foreach ( $this->get_block_patterns() as $pattern ) {
-			register_block_pattern(
-				'omniform/standard-' . $pattern['name'],
-				wp_parse_args(
-					array_merge(
-						$pattern,
-						array(
-							'postTypes'  => array( 'omniform' ),
-							'blockTypes' => array( 'omniform/form' ),
+			// Ensure these patterns are not registered on the site editor.
+			if ( ! in_array( $GLOBALS['pagenow'], array( 'site-editor.php' ), true ) ) {
+				register_block_pattern(
+					'omniform/standard-' . $pattern['name'],
+					wp_parse_args(
+						array_merge(
+							$pattern,
+							array(
+								'postTypes'  => array( 'omniform' ),
+								'blockTypes' => array( 'omniform/form' ),
+							),
 						),
-					),
-					$pattern_defaults
-				)
-			);
+						$pattern_defaults
+					)
+				);
+			}
 
 			$block_attributes = array_merge(
 				array(
