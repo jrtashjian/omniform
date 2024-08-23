@@ -8,11 +8,14 @@
 namespace OmniForm\BlockLibrary\Blocks;
 
 use OmniForm\Dependencies\Respect\Validation;
+use OmniForm\Traits\CallbackSupport;
 
 /**
  * The Input block class.
  */
 class Input extends BaseControlBlock {
+	use CallbackSupport;
+
 	const FORMAT_DATE           = 'Y-m-d';
 	const FORMAT_TIME           = 'h:i:s';
 	const FORMAT_MONTH          = 'Y-m';
@@ -57,7 +60,13 @@ class Input extends BaseControlBlock {
 	 */
 	public function get_control_value() {
 		if ( $this->get_block_attribute( 'fieldValue' ) ) {
-			return $this->get_block_attribute( 'fieldValue' );
+			$value = $this->get_block_attribute( 'fieldValue' );
+
+			if ( $this->has_callback( $value ) ) {
+				$value = $this->process_callbacks( $value );
+			}
+
+			return $value;
 		}
 
 		switch ( $this->get_block_attribute( 'fieldType' ) ) {
