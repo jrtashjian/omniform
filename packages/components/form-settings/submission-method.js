@@ -21,6 +21,12 @@ export default function SubmissionMethodSettings( {
 		? PluginDocumentSettingPanel
 		: PanelBody;
 
+	const onChangeFormType = ( newValue ) => {
+		setSetting( 'form_type', newValue );
+		setSetting( 'submit_action', '' );
+		setSetting( 'submit_method', 'POST' );
+	};
+
 	return (
 		<PanelComponent
 			name="omniform-submission-method"
@@ -29,7 +35,7 @@ export default function SubmissionMethodSettings( {
 			<SelectControl
 				label={ __( 'Type', 'omniform' ) }
 				value={ getSetting( 'form_type' ) || 'standard' }
-				onChange={ ( newValue ) => setSetting( 'form_type', newValue ) }
+				onChange={ onChangeFormType }
 				options={ formTypes.map( ( item ) => ( {
 					label: item.label,
 					value: item.type,
