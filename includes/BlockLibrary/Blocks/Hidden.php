@@ -33,6 +33,7 @@ class Hidden extends Input {
 		return array_filter(
 			array(
 				'type'  => 'hidden',
+				'id'    => $this->get_control_name(),
 				'name'  => $this->get_control_name(),
 				'value' => $this->get_control_value(),
 			)
