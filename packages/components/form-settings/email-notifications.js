@@ -24,6 +24,11 @@ export default function EmailNotificationSettings( {
 		};
 	}, [] );
 
+	// Hide email notification settings if the form type is custom.
+	if ( 'custom' === getSetting( 'form_type' ) ) {
+		return null;
+	}
+
 	const placeholder = getSetting( 'form_title' )
 		? sprintf(
 			// translators: %1$s represents the blog name, %2$s represents the form title.

@@ -134,12 +134,10 @@ function StandaloneFormInspectorControls( { blockObject } ) {
 					{ __( 'Convert to Standard Form', 'omniform' ) }
 				</Button>
 			</PanelBody>
-			{ 'custom' !== getSetting( 'form_type' ) && (
-				<EmailNotificationSettings
-					getSetting={ getSetting }
-					setSetting={ setSetting }
-				/>
-			) }
+			<EmailNotificationSettings
+				getSetting={ getSetting }
+				setSetting={ setSetting }
+			/>
 			<SubmissionMethodSettings
 				getSetting={ getSetting }
 				setSetting={ setSetting }
