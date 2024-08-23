@@ -39,11 +39,13 @@ function FormSettingsPanel( { postId } ) {
 
 	return (
 		<>
-			<EmailNotificationSettings
-				getSetting={ getSetting }
-				setSetting={ setSetting }
-				isDocumentPanel
-			/>
+			{ 'custom' !== getSetting( 'form_type' ) && (
+				<EmailNotificationSettings
+					getSetting={ getSetting }
+					setSetting={ setSetting }
+					isDocumentPanel
+				/>
+			) }
 			<SubmissionMethodSettings
 				getSetting={ getSetting }
 				setSetting={ setSetting }
