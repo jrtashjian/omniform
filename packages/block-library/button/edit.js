@@ -7,18 +7,22 @@ import classnames from 'classnames';
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { createBlock, getDefaultBlockName } from '@wordpress/blocks';
 import {
 	RichText,
 	useBlockProps,
 	__experimentalGetElementClassName,
 } from '@wordpress/block-editor';
+import { useMergeRefs } from '@wordpress/compose';
+
+/**
+ * Internal dependencies
+ */
+import useEnter from '../shared/hooks';
 
 const Edit = ( {
 	attributes,
 	setAttributes,
-	onReplace,
-	mergeBlocks,
+	onRemove,
 	clientId,
 } ) => {
 	const {
@@ -26,6 +30,7 @@ const Edit = ( {
 	} = attributes;
 
 	const blockProps = useBlockProps( {
+		ref: useMergeRefs( [ useEnter( clientId ) ] ),
 		className: classnames(
 			__experimentalGetElementClassName( 'button' ),
 			'wp-block-button__link',
@@ -41,32 +46,10 @@ const Edit = ( {
 				placeholder={ __( 'Add text…', 'omniform' ) }
 				value={ buttonLabel }
 				onChange={ ( value ) => setAttributes( { buttonLabel: value } ) }
-				preserveWhiteSpace
 				withoutInteractiveFormatting
 				allowedFormats={ [ 'core/bold', 'core/italic', 'core/image' ] }
-				onSplit={ ( value, isOriginal ) => {
-					let block;
-
-					if ( isOriginal || value ) {
-						block = createBlock( 'omniform/button', {
-							...attributes,
-							buttonLabel: value,
-						} );
-					} else {
-						block = createBlock(
-							getDefaultBlockName() ?? 'omniform/button'
-						);
-					}
-
-					if ( isOriginal ) {
-						block.clientId = clientId;
-					}
-
-					return block;
-				} }
-				onReplace={ onReplace }
-				onRemove={ () => onReplace( [] ) }
-				onMerge={ mergeBlocks }
+				disableLineBreaks
+				onRemove={ onRemove }
 			/>
 		</div>
 	);

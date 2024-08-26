@@ -8,18 +8,14 @@ import {
 	useBlockProps,
 } from '@wordpress/block-editor';
 import { useSelect, useDispatch } from '@wordpress/data';
+import { useMergeRefs } from '@wordpress/compose';
 
 /**
  * Internal dependencies
  */
-import {
-	onMerge,
-	onRemove,
-	onReplace,
-	onSplit,
-} from '../shared/rich-text-handlers';
 import { cleanFieldName } from '../shared/utils';
 import { useStandaloneFormSettings, useStandardFormSettings } from '../form/utils/hooks';
+import useEnter from '../shared/hooks';
 
 const Edit = ( {
 	attributes: { fieldLabel },
@@ -87,34 +83,32 @@ const Edit = ( {
 		}
 	};
 
-	const blockProps = useBlockProps();
+	const blockProps = useBlockProps( {
+		ref: useMergeRefs( [ useEnter( clientId ) ] ),
+	} );
 
 	return (
 		<div { ...blockProps }>
 			<RichText
-				identifier="fieldLabel"
+				ref={ useMergeRefs( [ useEnter( clientId ) ] ) }
 				placeholder={ __( 'Enter a label for the field…', 'omniform' ) }
 				value={ fieldLabel || contextFieldLabel }
 				onChange={ updateLabel }
 				withoutInteractiveFormatting
 				allowedFormats={ [ 'core/bold', 'core/italic', 'core/image' ] }
-
-				onSplit={ ( ...args ) => onSplit( getBlock( getBlockRootClientId( clientId ) ), ...args ) }
-				onReplace={ ( ...args ) => onReplace( getBlock( getBlockRootClientId( clientId ) ), ...args ) }
-				onMerge={ ( ...args ) => onMerge( getBlock( getBlockRootClientId( clientId ) ), ...args ) }
-				onRemove={ ( ...args ) => onRemove( getBlock( getBlockRootClientId( clientId ) ), ...args ) }
+				disableLineBreaks
 			/>
 
 			{ context[ 'omniform/fieldIsRequired' ] && (
 				contextPostId && 'omniform' === contextPostType
-					? <StandardFormRequiredLabel formId={ contextPostId } />
-					: <StandaloneFormRequiredLabel blockObject={ formBlockObject } />
+					? <StandardFormRequiredLabel clientId={ clientId } formId={ contextPostId } />
+					: <StandaloneFormRequiredLabel clientId={ clientId } blockObject={ formBlockObject } />
 			) }
 		</div>
 	);
 };
 
-function StandardFormRequiredLabel( { formId } ) {
+function StandardFormRequiredLabel( { clientId, formId } ) {
 	const {
 		getSetting,
 		setSetting,
@@ -122,19 +116,19 @@ function StandardFormRequiredLabel( { formId } ) {
 
 	return (
 		<RichText
-			identifier="requiredLabel"
+			ref={ useMergeRefs( [ useEnter( clientId ) ] ) }
 			className="omniform-field-required"
 			placeholder={ __( 'Enter a required field label…', 'omniform' ) }
 			value={ getSetting( 'required_label' ) || '' }
 			onChange={ ( newValue ) => setSetting( 'required_label', newValue ) }
 			withoutInteractiveFormatting
 			allowedFormats={ [ 'core/bold', 'core/italic', 'core/image' ] }
-			disableLineBreaks={ true }
+			disableLineBreaks
 		/>
 	);
 }
 
-function StandaloneFormRequiredLabel( { blockObject } ) {
+function StandaloneFormRequiredLabel( { clientId, blockObject } ) {
 	const {
 		getSetting,
 		setSetting,
@@ -142,7 +136,7 @@ function StandaloneFormRequiredLabel( { blockObject } ) {
 
 	return (
 		<RichText
-			identifier="requiredLabel"
+			ref={ useMergeRefs( [ useEnter( clientId ) ] ) }
 			className="omniform-field-required"
 			placeholder={ __( 'Enter a required field label…', 'omniform' ) }
 			value={ getSetting( 'required_label' ) || '' }

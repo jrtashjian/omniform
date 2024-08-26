@@ -4,20 +4,14 @@
 import { __ } from '@wordpress/i18n';
 import {
 	RichText,
-	store as blockEditorStore,
 	useBlockProps,
 } from '@wordpress/block-editor';
-import { useSelect } from '@wordpress/data';
+import { useMergeRefs } from '@wordpress/compose';
 
 /**
  * Internal dependencies
  */
-import {
-	onMerge,
-	onRemove,
-	onReplace,
-	onSplit,
-} from '../shared/rich-text-handlers';
+import useEnter from '../shared/hooks';
 
 const Edit = ( {
 	attributes: { fieldPlaceholder, fieldType },
@@ -25,15 +19,12 @@ const Edit = ( {
 	clientId,
 	isSelected,
 } ) => {
-	const {
-		getBlock,
-		getBlockRootClientId,
-	} = useSelect( blockEditorStore );
-
 	const isTextInput = [ 'text', 'email', 'url', 'number', 'month', 'password', 'search', 'tel', 'week', 'hidden' ].includes( fieldType );
 	const isOptionInput = [ 'checkbox', 'radio' ].includes( fieldType );
 
-	const blockProps = useBlockProps();
+	const blockProps = useBlockProps( {
+		ref: useMergeRefs( [ useEnter( clientId ) ] ),
+	} );
 
 	if ( isTextInput ) {
 		return (
@@ -48,11 +39,7 @@ const Edit = ( {
 				onChange={ ( html ) => setAttributes( { fieldPlaceholder: html } ) }
 				withoutInteractiveFormatting
 				allowedFormats={ [] }
-
-				onSplit={ ( ...args ) => onSplit( getBlock( getBlockRootClientId( clientId ) ), ...args ) }
-				onReplace={ ( ...args ) => onReplace( getBlock( getBlockRootClientId( clientId ) ), ...args ) }
-				onMerge={ ( ...args ) => onMerge( getBlock( getBlockRootClientId( clientId ) ), ...args ) }
-				onRemove={ ( ...args ) => onRemove( getBlock( getBlockRootClientId( clientId ) ), ...args ) }
+				disableLineBreaks
 			/>
 		);
 	}

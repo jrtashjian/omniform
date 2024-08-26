@@ -4,20 +4,15 @@
 import { __ } from '@wordpress/i18n';
 import {
 	RichText,
-	store as blockEditorStore,
 	useBlockProps,
 } from '@wordpress/block-editor';
-import { useSelect } from '@wordpress/data';
+import { useMergeRefs } from '@wordpress/compose';
 
 /**
  * Internal dependencies
  */
-import {
-	onMerge,
-	onReplace,
-	onSplit,
-} from '../shared/rich-text-handlers';
 import { cleanFieldName } from '../shared/utils';
+import useEnter from '../shared/hooks';
 
 const Edit = ( {
 	attributes: { fieldValue, fieldName },
@@ -25,13 +20,14 @@ const Edit = ( {
 	isSelected,
 	clientId,
 } ) => {
-	const { getBlock } = useSelect( blockEditorStore );
-
-	const blockProps = useBlockProps();
+	const blockProps = useBlockProps( {
+		ref: useMergeRefs( [ useEnter( clientId ) ] ),
+	} );
 
 	return (
 		<div { ...blockProps }>
 			<RichText
+				ref={ useMergeRefs( [ useEnter( clientId ) ] ) }
 				identifier="fieldName"
 				placeholder={ __( 'Enter a name for the field…', 'omniform' ) }
 				value={ fieldName }
@@ -43,12 +39,10 @@ const Edit = ( {
 				} }
 				withoutInteractiveFormatting
 				allowedFormats={ [] }
-
-				onSplit={ ( ...args ) => onSplit( getBlock( clientId ), ...args ) }
-				onReplace={ ( ...args ) => onReplace( getBlock( clientId ), ...args ) }
-				onMerge={ ( ...args ) => onMerge( getBlock( clientId ), ...args ) }
+				disableLineBreaks
 			/>
 			<RichText
+				ref={ useMergeRefs( [ useEnter( clientId ) ] ) }
 				identifier="fieldControl"
 				aria-label={ __( 'Placeholder text for text input.', 'omniform' ) }
 				placeholder={
@@ -58,10 +52,7 @@ const Edit = ( {
 				onChange={ ( html ) => setAttributes( { fieldValue: html } ) }
 				withoutInteractiveFormatting
 				allowedFormats={ [] }
-
-				onSplit={ ( ...args ) => onSplit( getBlock( clientId ), ...args ) }
-				onReplace={ ( ...args ) => onReplace( getBlock( clientId ), ...args ) }
-				onMerge={ ( ...args ) => onMerge( getBlock( clientId ), ...args ) }
+				disableLineBreaks
 			/>
 		</div>
 	);
