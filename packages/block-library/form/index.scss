@@ -56,7 +56,7 @@
 }
 
 .wp-block-omniform-input:not(.rich-text)::after,
-.wp-block-omniform-select > div:first-of-type:not(.rich-text)::before {
+.wp-block-omniform-select > div:first-of-type:not(.rich-text):not(.block-editor-block-list__layout)::before {
 	content: ".";
 	visibility: hidden;
 }
