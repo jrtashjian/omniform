@@ -6,14 +6,17 @@ import {
 	RichText,
 	useBlockProps,
 } from '@wordpress/block-editor';
-import { createBlock } from '@wordpress/blocks';
+import { useMergeRefs } from '@wordpress/compose';
+
+/**
+ * Internal dependencies
+ */
+import useEnter from '../shared/hooks';
 
 const Edit = ( props ) => {
 	const {
 		attributes,
 		setAttributes,
-		mergeBlocks,
-		onReplace,
 		onRemove,
 		clientId,
 	} = props;
@@ -22,12 +25,14 @@ const Edit = ( props ) => {
 	} = attributes;
 
 	const blockProps = useBlockProps( {
+		ref: useMergeRefs( [ useEnter( clientId ) ] ),
 		className: 'omniform-field-select-option',
 	} );
 
 	return (
 		<div { ...blockProps }>
 			<RichText
+				ref={ useMergeRefs( [ useEnter( clientId ) ] ) }
 				identifier="fieldLabel"
 				aria-label={ __( 'Help text', 'omniform' ) }
 				placeholder={ __( 'Write the option text…', 'omniform' ) }
@@ -35,26 +40,7 @@ const Edit = ( props ) => {
 				onChange={ ( html ) => setAttributes( { fieldLabel: html } ) }
 				withoutInteractiveFormatting
 				allowedFormats={ [] }
-				onSplit={ ( value, isOriginal ) => {
-					let newAttributes;
-
-					if ( isOriginal || value ) {
-						newAttributes = {
-							...attributes,
-							fieldLabel: value.trim(),
-						};
-					}
-
-					const block = createBlock( props.name, newAttributes );
-
-					if ( isOriginal ) {
-						block.clientId = clientId;
-					}
-
-					return block;
-				} }
-				onMerge={ mergeBlocks }
-				onReplace={ onReplace }
+				disableLineBreaks
 				onRemove={ onRemove }
 				__unstableAllowPrefixTransformations
 			/>

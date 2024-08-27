@@ -25,14 +25,24 @@ export default function useEnter( clientId ) {
 
 				event.preventDefault();
 
-				const wrappedElements = [ 'omniform/input', 'omniform/label', 'omniform/select' ];
+				const blockName = getBlockName( clientId );
 
-				const targetClientId = wrappedElements.includes( getBlockName( clientId ) )
+				const wrappedElements = [
+					'omniform/input',
+					'omniform/label',
+					'omniform/select',
+				];
+
+				const targetClientId = wrappedElements.includes( blockName )
 					? getBlockRootClientId( clientId )
 					: clientId;
 
+				const defaultBlockName = [ 'omniform/select-group', 'omniform/select-option' ].includes( blockName )
+					? 'omniform/select-option'
+					: getDefaultBlockName();
+
 				insertBlock(
-					createBlock( getDefaultBlockName() ),
+					createBlock( defaultBlockName ),
 					getBlockIndex( targetClientId ) + 1,
 					getBlockRootClientId( targetClientId )
 				);

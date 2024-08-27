@@ -20,13 +20,6 @@ registerBlockType( name, {
 	edit: Edit,
 	save: Save,
 	icon: { foreground: '#D92E83', src: selectGroup },
-	merge: ( attributes, attributesToMerge ) => {
-		return {
-			fieldLabel:
-				( attributes.fieldLabel || '' ) +
-				( attributesToMerge.fieldLabel || '' ),
-		};
-	},
 	// Get block name from the option value.
 	__experimentalLabel: ( { fieldLabel } ) => fieldLabel && decodeEntities( fieldLabel ),
 } );

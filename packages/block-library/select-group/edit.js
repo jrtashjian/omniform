@@ -13,17 +13,20 @@ import {
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { chevronDown, chevronRight } from '@wordpress/icons';
-import { cloneBlock, createBlock } from '@wordpress/blocks';
-import { useDispatch, useSelect, useRegistry } from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
+import { useMergeRefs } from '@wordpress/compose';
+
+/**
+ * Internal dependencies
+ */
+import useEnter from '../shared/hooks';
 
 const Edit = ( props ) => {
 	const {
 		attributes,
 		clientId,
 		isSelected,
-		mergeBlocks,
 		onRemove,
-		onReplace,
 		setAttributes,
 	} = props;
 	const {
@@ -36,6 +39,7 @@ const Edit = ( props ) => {
 	);
 
 	const blockProps = useBlockProps( {
+		ref: useMergeRefs( [ useEnter( clientId ) ] ),
 		className: 'omniform-select-group',
 	} );
 
@@ -46,50 +50,12 @@ const Edit = ( props ) => {
 		template: [ [ 'omniform/select-option' ] ],
 	} );
 
-	const registry = useRegistry();
-
-	const {
-		getBlock,
-		getBlockIndex,
-		getBlockListSettings,
-		getBlockOrder,
-		getBlockRootClientId,
-	} = useSelect( blockEditorStore );
-
-	const {
-		moveBlocksToPosition,
-		replaceBlock,
-		updateBlockListSettings,
-	} = useDispatch( blockEditorStore );
-
-	const onMerge = ( forward ) => {
-		if ( forward ) {
-			return mergeBlocks( forward );
-		}
-
-		const parentId = getBlockRootClientId( clientId );
-		const nextOptionIndex = getBlockIndex( clientId ) + 1;
-
-		registry.batch( () => {
-			// Move existing omniform/select-option blocks out of group.
-			moveBlocksToPosition(
-				getBlockOrder( clientId ),
-				clientId,
-				parentId,
-				nextOptionIndex
-			);
-
-			// Convert select-group to select-option.
-			replaceBlock( clientId, createBlock( 'omniform/select-option', attributes ) );
-			updateBlockListSettings( clientId, getBlockListSettings( parentId ) );
-		}, [] );
-	};
-
 	return (
 		<div { ...blockProps }>
 			<HStack alignment="left">
 				<Icon icon={ ( isSelected || hasSelectedInnerBlock ) ? chevronDown : chevronRight } />
 				<RichText
+					ref={ useMergeRefs( [ useEnter( clientId ) ] ) }
 					identifier="fieldLabel"
 					aria-label={ __( 'Help text', 'omniform' ) }
 					placeholder={ __( 'Write the option text…', 'omniform' ) }
@@ -97,27 +63,7 @@ const Edit = ( props ) => {
 					onChange={ ( html ) => setAttributes( { fieldLabel: html } ) }
 					withoutInteractiveFormatting
 					allowedFormats={ [] }
-					onSplit={ ( value, isOriginal ) => {
-						let block;
-
-						if ( isOriginal || value ) {
-							block = cloneBlock( getBlock( clientId ), {
-								fieldLabel: value.trim(),
-							} );
-						} else {
-							block = createBlock( props.name, {
-								fieldLabel: value.trim(),
-							} );
-						}
-
-						if ( isOriginal ) {
-							block.clientId = clientId;
-						}
-
-						return block;
-					} }
-					onMerge={ onMerge }
-					onReplace={ onReplace }
+					disableLineBreaks
 					onRemove={ onRemove }
 				/>
 			</HStack>
