@@ -18,6 +18,7 @@ const Edit = ( props ) => {
 		attributes,
 		setAttributes,
 		onRemove,
+		onReplace,
 		clientId,
 	} = props;
 	const {
@@ -41,6 +42,7 @@ const Edit = ( props ) => {
 				withoutInteractiveFormatting
 				allowedFormats={ [] }
 				disableLineBreaks
+				onReplace={ onReplace }
 				onRemove={ onRemove }
 				__unstableAllowPrefixTransformations
 			/>

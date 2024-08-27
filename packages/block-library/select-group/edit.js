@@ -27,6 +27,7 @@ const Edit = ( props ) => {
 		clientId,
 		isSelected,
 		onRemove,
+		onReplace,
 		setAttributes,
 	} = props;
 	const {
@@ -64,6 +65,7 @@ const Edit = ( props ) => {
 					withoutInteractiveFormatting
 					allowedFormats={ [] }
 					disableLineBreaks
+					onReplace={ onReplace }
 					onRemove={ onRemove }
 				/>
 			</HStack>
