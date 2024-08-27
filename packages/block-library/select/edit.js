@@ -14,16 +14,12 @@ import {
 	useInnerBlocksProps,
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
+import { useMergeRefs } from '@wordpress/compose';
 
 /**
  * Internal dependencies
  */
-import {
-	onMerge,
-	onRemove,
-	onReplace,
-	onSplit,
-} from '../shared/rich-text-handlers';
+import useEnter from '../shared/hooks';
 
 const Edit = ( {
 	attributes: { fieldPlaceholder, isMultiple },
@@ -31,11 +27,6 @@ const Edit = ( {
 	isSelected,
 	clientId,
 } ) => {
-	const {
-		getBlock,
-		getBlockRootClientId,
-	} = useSelect( blockEditorStore );
-
 	const hasSelectedInnerBlock = useSelect(
 		( select ) => select( blockEditorStore ).hasSelectedInnerBlock( clientId, true ),
 		[ clientId ]
@@ -62,6 +53,8 @@ const Edit = ( {
 		allowedBlocks: [ 'omniform/select-option', 'omniform/select-group' ],
 		template: [ [ 'omniform/select-option' ] ],
 	} );
+
+	const richTextRef = useMergeRefs( [ useEnter( clientId ) ] );
 
 	if ( isMultiple ) {
 		// Set height to min height if block is not selected. This is the default behavior of the minHeight on <select> elements.
@@ -91,6 +84,7 @@ const Edit = ( {
 		>
 			{ ! isMultiple && (
 				<RichText
+					ref={ richTextRef }
 					identifier="fieldControl"
 					aria-label={ __( 'Placeholder text for text input.', 'omniform' ) }
 					placeholder={
@@ -102,11 +96,7 @@ const Edit = ( {
 					onChange={ ( html ) => setAttributes( { fieldPlaceholder: html } ) }
 					withoutInteractiveFormatting
 					allowedFormats={ [] }
-
-					onSplit={ ( ...args ) => onSplit( getBlock( getBlockRootClientId( clientId ) ), ...args ) }
-					onReplace={ ( ...args ) => onReplace( getBlock( getBlockRootClientId( clientId ) ), ...args ) }
-					onMerge={ ( ...args ) => onMerge( getBlock( getBlockRootClientId( clientId ) ), ...args ) }
-					onRemove={ ( ...args ) => onRemove( getBlock( getBlockRootClientId( clientId ) ), ...args ) }
+					disableLineBreaks
 				/>
 			) }
 

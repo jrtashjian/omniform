@@ -25,7 +25,7 @@ export default function useEnter( clientId ) {
 
 				event.preventDefault();
 
-				const wrappedElements = [ 'omniform/input', 'omniform/label' ];
+				const wrappedElements = [ 'omniform/input', 'omniform/label', 'omniform/select' ];
 
 				const targetClientId = wrappedElements.includes( getBlockName( clientId ) )
 					? getBlockRootClientId( clientId )
