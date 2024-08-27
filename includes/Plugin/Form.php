@@ -278,6 +278,11 @@ class Form {
 			$control_name_parts = $block->get_control_name_parts();
 			$flat_control_name  = implode( '.', $control_name_parts );
 
+			// Skip if the control name is empty.
+			if ( empty( $control_name_parts ) ) {
+				return $block_content;
+			}
+
 			$validation_rules = new Validation\Rules\AllOf(
 				...$block->get_validation_rules()
 			);
