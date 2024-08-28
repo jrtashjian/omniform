@@ -34,6 +34,22 @@ abstract class BaseBlock implements FormBlockInterface {
 	protected $instance;
 
 	/**
+	 * The allowed HTML for block labels.
+	 *
+	 * @var array
+	 */
+	protected $allowed_html_for_labels = array(
+		'strong' => array(),
+		'em'     => array(),
+		'img'    => array(
+			'class' => true,
+			'style' => true,
+			'src'   => true,
+			'alt'   => true,
+		),
+	);
+
+	/**
 	 * The path to the JSON file with metadata definition for the block.
 	 *
 	 * @return string path to the JSON file with metadata definition for the block.

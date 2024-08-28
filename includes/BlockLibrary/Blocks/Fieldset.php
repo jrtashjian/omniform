@@ -23,17 +23,6 @@ class Fieldset extends BaseBlock {
 			return '';
 		}
 
-		$allowed_html = array(
-			'strong' => array(),
-			'em'     => array(),
-			'img'    => array(
-				'class' => true,
-				'style' => true,
-				'src'   => true,
-				'alt'   => true,
-			),
-		);
-
 		$label_required = null;
 
 		if ( $this->get_block_attribute( 'isRequired' ) ) {
@@ -41,14 +30,14 @@ class Fieldset extends BaseBlock {
 
 			$label_required = sprintf(
 				'<span class="omniform-field-required">%s</span>',
-				wp_kses( get_post_meta( $form_id, 'required_label', true ), $allowed_html )
+				wp_kses( get_post_meta( $form_id, 'required_label', true ), $this->allowed_html_for_labels )
 			);
 		}
 
 		return sprintf(
 			'<fieldset %s><legend class="omniform-field-label">%s</legend>%s</fieldset>',
 			get_block_wrapper_attributes(),
-			wp_kses( $this->get_block_attribute( 'fieldLabel' ), $allowed_html ) . $label_required,
+			wp_kses( $this->get_block_attribute( 'fieldLabel' ), $this->allowed_html_for_labels ) . $label_required,
 			$this->content
 		);
 	}

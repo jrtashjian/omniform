@@ -21,17 +21,6 @@ class Button extends BaseBlock {
 			return '';
 		}
 
-		$allowed_html = array(
-			'strong' => array(),
-			'em'     => array(),
-			'img'    => array(
-				'class' => true,
-				'style' => true,
-				'src'   => true,
-				'alt'   => true,
-			),
-		);
-
 		$classname = implode(
 			' ',
 			array(
@@ -48,7 +37,7 @@ class Button extends BaseBlock {
 					'type'  => esc_attr( $this->get_block_attribute( 'buttonType' ) ),
 				)
 			),
-			wp_kses( $this->get_block_attribute( 'buttonLabel' ), $allowed_html )
+			wp_kses( $this->get_block_attribute( 'buttonLabel' ), $this->allowed_html_for_labels )
 		);
 	}
 }
