@@ -4,10 +4,11 @@
 import { __ } from '@wordpress/i18n';
 import {
 	BlockControls,
+	InspectorControls,
 	RichText,
+	store as blockEditorStore,
 	useBlockProps,
 	useInnerBlocksProps,
-	InspectorControls,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
@@ -16,30 +17,57 @@ import {
 	ToolbarButton,
 	ToolbarGroup,
 } from '@wordpress/components';
-import { useEntityProp } from '@wordpress/core-data';
+import { useSelect, useDispatch } from '@wordpress/data';
+import { useMergeRefs } from '@wordpress/compose';
 
 /**
  * Internal dependencies
  */
 import { Required } from '../shared/icons';
 import { cleanFieldName } from '../shared/utils';
+import { useStandaloneFormSettings, useStandardFormSettings } from '../form/utils/hooks';
+import useEnter from '../shared/hooks';
 
 const Edit = ( {
 	attributes: { fieldLabel, fieldName, isRequired },
 	setAttributes,
+	clientId,
 	context,
 } ) => {
+	const {
+		updateBlockAttributes,
+	} = useDispatch( blockEditorStore );
+
+	const { formBlockObject } = useSelect(
+		( select ) => {
+			const {
+				getBlock,
+				getBlockParents,
+			} = select( blockEditorStore );
+
+			const parentBlocks = getBlockParents( clientId );
+
+			const rootBlock = parentBlocks.find( ( blockId ) => {
+				const block = getBlock( blockId );
+				return block?.name === 'omniform/form';
+			} );
+
+			return {
+				formBlockObject: {
+					...getBlock( rootBlock ),
+					setAttributes: ( value ) => updateBlockAttributes( rootBlock, value ),
+				},
+			};
+		},
+		[ clientId, updateBlockAttributes ]
+	);
+
 	// Manage the required label.
 	const { postId: contextPostId, postType: contextPostType } = context;
 
-	const [ meta, setMeta ] = useEntityProp( 'postType', contextPostType, 'meta', contextPostId );
-
-	const metaRequiredLabel = meta?.required_label;
-	const updateMetaRequiredLabel = ( newValue ) => {
-		setMeta( { ...meta, required_label: newValue } );
-	};
-
-	const blockProps = useBlockProps();
+	const blockProps = useBlockProps( {
+		ref: useMergeRefs( [ useEnter( clientId ) ] ),
+	} );
 	const innerBlockProps = useInnerBlocksProps();
 
 	/**
@@ -52,6 +80,7 @@ const Edit = ( {
 		<div { ...blockProps } >
 			<div className="omniform-field-label">
 				<RichText
+					ref={ useMergeRefs( [ useEnter( clientId ) ] ) }
 					identifier="fieldsetLabel"
 					aria-label={ __( 'Legend text', 'omniform' ) }
 					placeholder={ __( 'Enter a title to the field…', 'omniform' ) }
@@ -64,17 +93,11 @@ const Edit = ( {
 					withoutInteractiveFormatting
 					allowedFormats={ [ 'core/bold', 'core/italic', 'core/image' ] }
 				/>
+
 				{ isRequired && (
-					<RichText
-						identifier="requiredLabel"
-						tagName="span"
-						className="omniform-field-required"
-						placeholder={ __( 'Enter a required field label…', 'omniform' ) }
-						value={ metaRequiredLabel }
-						onChange={ updateMetaRequiredLabel }
-						withoutInteractiveFormatting
-						allowedFormats={ [ 'core/bold', 'core/italic', 'core/image' ] }
-					/>
+					contextPostId && 'omniform' === contextPostType
+						? <StandardFormRequiredLabel clientId={ clientId } formId={ contextPostId } />
+						: <StandaloneFormRequiredLabel clientId={ clientId } blockObject={ formBlockObject } />
 				) }
 			</div>
 
@@ -118,4 +141,51 @@ const Edit = ( {
 		</div>
 	);
 };
+
+function StandardFormRequiredLabel( { clientId, formId } ) {
+	const {
+		getSetting,
+		setSetting,
+	} = useStandardFormSettings( formId );
+
+	const requiredLabel = getSetting( 'required_label' ) || '';
+
+	return (
+		<RichText
+			ref={ useMergeRefs( [ useEnter( clientId ) ] ) }
+			className="omniform-field-required"
+			placeholder={ __( 'Enter a required field label…', 'omniform' ) }
+			value={ requiredLabel }
+			onChange={ ( newValue ) => setSetting( 'required_label', newValue ) }
+			withoutInteractiveFormatting
+			allowedFormats={ [ 'core/bold', 'core/italic', 'core/image' ] }
+			disableLineBreaks
+			style={ { gap: requiredLabel ? undefined : '0' } }
+		/>
+	);
+}
+
+function StandaloneFormRequiredLabel( { clientId, blockObject } ) {
+	const {
+		getSetting,
+		setSetting,
+	} = useStandaloneFormSettings( blockObject );
+
+	const requiredLabel = getSetting( 'required_label' ) || '';
+
+	return (
+		<RichText
+			ref={ useMergeRefs( [ useEnter( clientId ) ] ) }
+			className="omniform-field-required"
+			placeholder={ __( 'Enter a required field label…', 'omniform' ) }
+			value={ requiredLabel }
+			onChange={ ( newValue ) => setSetting( 'required_label', newValue ) }
+			withoutInteractiveFormatting
+			allowedFormats={ [ 'core/bold', 'core/italic', 'core/image' ] }
+			disableLineBreaks={ true }
+			style={ { gap: requiredLabel ? undefined : '0' } }
+		/>
+	);
+}
+
 export default Edit;
