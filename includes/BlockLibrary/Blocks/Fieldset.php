@@ -23,21 +23,10 @@ class Fieldset extends BaseBlock {
 			return '';
 		}
 
-		$label_required = null;
-
-		if ( $this->get_block_attribute( 'isRequired' ) ) {
-			$form_id = omniform()->get( Form::class )->get_id() ?? $this->get_block_context( 'postId' );
-
-			$label_required = sprintf(
-				'<span class="omniform-field-required">%s</span>',
-				wp_kses( get_post_meta( $form_id, 'required_label', true ), $this->allowed_html_for_labels )
-			);
-		}
-
 		return sprintf(
 			'<fieldset %s><legend class="omniform-field-label">%s</legend>%s</fieldset>',
 			get_block_wrapper_attributes(),
-			wp_kses( $this->get_block_attribute( 'fieldLabel' ), $this->allowed_html_for_labels ) . $label_required,
+			wp_kses( $this->get_block_attribute( 'fieldLabel' ), $this->allowed_html_for_labels ) . $this->label_required(),
 			$this->content
 		);
 	}
@@ -58,5 +47,28 @@ class Fieldset extends BaseBlock {
 	 */
 	public function get_field_group_name() {
 		return sanitize_html_class( $this->get_block_attribute( 'fieldName' ) ?? $this->get_field_group_label() ?? '' );
+	}
+
+	/**
+	 * Returns the required label.
+	 *
+	 * @return string
+	 */
+	private function label_required() {
+		if ( ! $this->get_block_attribute( 'isRequired' ) ) {
+			return '';
+		}
+
+		$required_label = omniform()->get( \OmniForm\Plugin\Form::class )->get_required_label();
+
+		return ( '*' === $required_label )
+			? sprintf(
+				'<abbr class="omniform-field-required" title="%s">*</abbr>',
+				esc_attr__( 'required', 'omniform' )
+			)
+			: sprintf(
+				'<span class="omniform-field-required">%s</span>',
+				wp_kses( $required_label, $this->allowed_html_for_labels )
+			);
 	}
 }
