@@ -87,6 +87,13 @@ class Form {
 	protected $groups = array();
 
 	/**
+	 * The form's required label.
+	 *
+	 * @var string
+	 */
+	protected $required_label;
+
+	/**
 	 * Form constructor.
 	 *
 	 * @param Validation\Validator $validator Validator object.
@@ -234,6 +241,25 @@ class Form {
 		return empty( $submit_action ) || 'standard' === $this->get_type()
 			? rest_url( 'omniform/v1/forms/' . $this->get_id() . '/responses' )
 			: $submit_action;
+	}
+
+	/**
+	 * The form's required label.
+	 *
+	 * @return string
+	 */
+	public function get_required_label() {
+		$required_label = $this->required_label ?? get_post_meta( $this->get_id(), 'required_label', true );
+		return empty( $required_label ) ? '*' : $required_label;
+	}
+
+	/**
+	 * Set the form's required label.
+	 *
+	 * @param string $required_label The form's required label.
+	 */
+	public function set_required_label( $required_label ) {
+		$this->required_label = $required_label;
 	}
 
 	/**

@@ -21,28 +21,6 @@ class Label extends BaseBlock {
 			return '';
 		}
 
-		$allowed_html = array(
-			'strong' => array(),
-			'em'     => array(),
-			'img'    => array(
-				'class' => true,
-				'style' => true,
-				'src'   => true,
-				'alt'   => true,
-			),
-		);
-
-		$label_required = null;
-
-		if ( $this->get_block_context( 'omniform/fieldIsRequired' ) ) {
-			$form_id = omniform()->get( \OmniForm\Plugin\Form::class )->get_id() ?? $this->get_block_context( 'postId' );
-
-			$label_required = sprintf(
-				'<span class="omniform-field-required">%s</span>',
-				wp_kses( get_post_meta( $form_id, 'required_label', true ), $allowed_html )
-			);
-		}
-
 		$extra_attributes = array_filter(
 			array(
 				'class' => $this->get_block_attribute( 'isHidden' ) ? 'screen-reader-text' : null,
@@ -53,7 +31,30 @@ class Label extends BaseBlock {
 			'<label for="%s" %s>%s</label>',
 			esc_attr( $this->get_block_context( 'omniform/fieldName' ) ),
 			get_block_wrapper_attributes( $extra_attributes ),
-			wp_kses( $this->get_block_context( 'omniform/fieldLabel' ), $allowed_html ) . $label_required
+			wp_kses( $this->get_block_context( 'omniform/fieldLabel' ), $this->allowed_html_for_labels ) . $this->label_required()
 		);
+	}
+
+	/**
+	 * Returns the required label.
+	 *
+	 * @return string
+	 */
+	private function label_required() {
+		if ( ! $this->get_block_context( 'omniform/fieldIsRequired' ) ) {
+			return '';
+		}
+
+		$required_label = omniform()->get( \OmniForm\Plugin\Form::class )->get_required_label();
+
+		return ( '*' === $required_label )
+			? sprintf(
+				'<abbr class="omniform-field-required" title="%s">*</abbr>',
+				esc_attr__( 'required', 'omniform' )
+			)
+			: sprintf(
+				'<span class="omniform-field-required">%s</span>',
+				wp_kses( $required_label, $this->allowed_html_for_labels )
+			);
 	}
 }

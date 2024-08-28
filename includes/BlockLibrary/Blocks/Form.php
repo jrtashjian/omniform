@@ -45,6 +45,7 @@ class Form extends BaseBlock {
 			} else {
 				/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
 				$form = $form_factory->create_with_content( serialize_blocks( $this->instance->parsed_block['innerBlocks'] ) );
+				$form->set_required_label( $this->get_block_attribute( 'required_label' ) );
 			}
 
 			$this->content = $form->get_content();

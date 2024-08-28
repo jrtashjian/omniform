@@ -33,7 +33,8 @@
 			"type": "string"
 		},
 		"required_label": {
-			"type": "string"
+			"type": "string",
+			"default": "*"
 		}
 	},
 	"supports": {
