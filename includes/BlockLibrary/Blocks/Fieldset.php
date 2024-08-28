@@ -24,7 +24,7 @@ class Fieldset extends BaseBlock {
 		}
 
 		return sprintf(
-			'<fieldset %s><legend class="omniform-field-label">%s</legend>%s</fieldset>',
+			'<fieldset %1$s><legend>%2$s</legend><div class="omniform-field-label" aria-hidden="true">%2$s</div>%3$s</fieldset>',
 			get_block_wrapper_attributes(),
 			wp_kses( $this->get_block_attribute( 'fieldLabel' ), $this->allowed_html_for_labels ) . $this->label_required(),
 			$this->content
