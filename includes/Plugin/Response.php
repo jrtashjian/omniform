@@ -99,6 +99,7 @@ class Response implements \JsonSerializable {
 	 */
 	public function text_content() {
 		$response_data = $this->get_response_data();
+		$message       = array();
 
 		foreach ( $response_data['fields'] as $name => $label ) {
 			$value     = implode( ', ', (array) $response_data['content']->get( $name, '' ) );
