@@ -2,7 +2,7 @@
 	"$schema": "https://raw.githubusercontent.com/WordPress/gutenberg/wp/6.3/schemas/json/block.json",
 	"apiVersion": 3,
 	"name": "omniform/captcha",
-	"category": "omniform",
+	"category": "omniform-advanced-fields",
 	"title": "Captcha",
 	"description": "Add an extra layer of form protection against spam.",
 	"textdomain": "omniform",

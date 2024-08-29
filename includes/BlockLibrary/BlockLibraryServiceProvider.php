@@ -212,6 +212,24 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 			'icon'  => null,
 		);
 
+		$block_categories[] = array(
+			'slug'  => 'omniform-standard-fields',
+			'title' => esc_attr__( 'Standard Fields', 'omniform' ),
+			'icon'  => null,
+		);
+
+		$block_categories[] = array(
+			'slug'  => 'omniform-advanced-fields',
+			'title' => esc_attr__( 'Advanced Fields', 'omniform' ),
+			'icon'  => null,
+		);
+
+		$block_categories[] = array(
+			'slug'  => 'omniform-grouped-fields',
+			'title' => esc_attr__( 'Grouped Fields', 'omniform' ),
+			'icon'  => null,
+		);
+
 		return $block_categories;
 	}
 
