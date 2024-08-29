@@ -85,7 +85,7 @@ const Edit = ( {
 					aria-label={ __( 'Legend text', 'omniform' ) }
 					placeholder={ __( 'Enter a title to the field…', 'omniform' ) }
 					multiple={ false }
-					value={ fieldLabel }
+					value={ fieldLabel || '' }
 					onChange={ ( html ) => ! fieldName || fieldName === cleanFieldName( fieldLabel )
 						? setAttributes( { fieldLabel: html, fieldName: cleanFieldName( html ) } )
 						: setAttributes( { fieldLabel: html } )
@@ -126,7 +126,7 @@ const Edit = ( {
 
 					<TextControl
 						label={ __( 'Name', 'omniform' ) }
-						value={ fieldName }
+						value={ fieldName || '' }
 						onChange={ ( newFieldName ) => {
 							setAttributes( { fieldName: newFieldName } );
 						} }
