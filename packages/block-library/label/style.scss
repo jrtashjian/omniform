@@ -3,18 +3,19 @@
 label.wp-block-omniform-label[for],
 label.wp-block-omniform-label > * {
 	font-size: inherit;
-	align-items: center;
-	display: inline-flex;
-	flex-wrap: wrap;
-	gap: 0.25em;
+	display: inline;
 	margin: 0;
 
 	.rich-text span {
 		margin-left: -0.25em;
 	}
 
-	strong,
-	em {
-		display: contents;
+	img {
+		vertical-align: middle;
+		margin: 0 0.25em;
 	}
+}
+
+.wp-block-omniform-label .omniform-field-required {
+	margin-left: 0.75em;
 }
