@@ -8,11 +8,14 @@
 namespace OmniForm\BlockLibrary\Blocks;
 
 use OmniForm\Dependencies\Respect\Validation;
+use OmniForm\Traits\CallbackSupport;
 
 /**
  * The BaseControlBlock block class.
  */
 abstract class BaseControlBlock extends BaseBlock {
+	use CallbackSupport;
+
 	/**
 	 * Renders the block on the server.
 	 *
@@ -90,6 +93,7 @@ abstract class BaseControlBlock extends BaseBlock {
 			array(
 				'id'       => $this->get_field_name(),
 				'name'     => $this->get_control_name(),
+				'value'    => $this->get_control_value(),
 				'required' => $this->is_required(),
 				'class'    => $has_custom_border ? 'has-custom-border' : '',
 			)
@@ -123,6 +127,19 @@ abstract class BaseControlBlock extends BaseBlock {
 		return 2 === count( $parts )
 			? sprintf( '%s[%s]', $parts[0], $parts[1] )
 			: $parts[0];
+	}
+
+	/**
+	 * The form control's value attribute.
+	 *
+	 * @return string
+	 */
+	public function get_control_value() {
+		$value = $this->get_block_attribute( 'fieldValue' ) ?? '';
+
+		return $this->has_callback( $value )
+			? $this->process_callbacks( $value )
+			: $value;
 	}
 
 	/**

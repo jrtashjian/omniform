@@ -7,14 +7,10 @@
 
 namespace OmniForm\BlockLibrary\Blocks;
 
-use OmniForm\Traits\CallbackSupport;
-
 /**
  * The Hidden block class.
  */
 class Hidden extends Input {
-	use CallbackSupport;
-
 	/**
 	 * Gets the field label.
 	 *
@@ -38,20 +34,5 @@ class Hidden extends Input {
 				'value' => $this->get_control_value(),
 			)
 		);
-	}
-
-	/**
-	 * The form control's value attribute.
-	 *
-	 * @return string
-	 */
-	public function get_control_value() {
-		$value = parent::get_control_value();
-
-		if ( $this->has_callback( $value ) ) {
-			$value = $this->process_callbacks( $value );
-		}
-
-		return esc_attr( $value );
 	}
 }
