@@ -1,0 +1,22 @@
+{
+	"$schema": "https://raw.githubusercontent.com/WordPress/gutenberg/wp/6.3/schemas/json/block.json",
+	"apiVersion": 3,
+	"name": "omniform/post-comments-form-cancel-reply-link",
+	"category": "omniform",
+	"title": "Comments Form Cancel Reply Link",
+	"description": "Displays text based on comment reply status.",
+	"textdomain": "omniform",
+	"attributes": {
+		"linkText": {
+			"type": "string",
+			"default": "Cancel reply"
+		}
+	},
+	"supports": {
+		"html": false
+	},
+	"usesContext": [
+		"postId"
+	],
+	"editorScript": "file:index.js"
+}
