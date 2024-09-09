@@ -1,0 +1,26 @@
+{
+	"$schema": "https://raw.githubusercontent.com/WordPress/gutenberg/wp/6.3/schemas/json/block.json",
+	"apiVersion": 3,
+	"name": "omniform/conditional-group",
+	"category": "omniform",
+	"title": "Conditional Group",
+	"description": "Controls the visibility of a group of blocks based on specified conditions.",
+	"textdomain": "omniform",
+	"attributes": {
+		"callback": {
+			"type": "string"
+		},
+        "reverseCondition": {
+            "type": "boolean",
+            "default": false
+        }
+	},
+	"supports": {
+		"html": false,
+		"layout": {
+			"allowEditing": false
+		}
+	},
+	"editorScript": "file:index.js",
+	"editorStyle": "file:index.css"
+}
