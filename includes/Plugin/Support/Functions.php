@@ -45,6 +45,24 @@ function omniform_comment_login_required() {
 }
 
 /**
+ * Get the login URL with redirect for the current post.
+ *
+ * @return string The login URL for the current post.
+ */
+function omniform_comment_login_url() {
+	return wp_login_url( get_permalink() );
+}
+
+/**
+ * Get the logout URL with redirect for the current post.
+ *
+ * @return string The logout URL for the current post.
+ */
+function omniform_comment_logout_url() {
+	return wp_logout_url( get_permalink() );
+}
+
+/**
  * Check if comments are closed for the current post.
  *
  * @return bool True if comments are closed for the current post, false otherwise.
@@ -80,4 +98,14 @@ function omniform_open_for_comments() {
  */
 function omniform_comment_cookies_opt_in() {
 	return has_action( 'set_comment_cookies', 'wp_set_comment_cookies' ) && get_option( 'show_comments_cookies_opt_in' );
+}
+
+/**
+ * Get the current user's display name.
+ *
+ * @return string The user's display name.
+ */
+function omniform_current_user_display_name() {
+	$user = wp_get_current_user();
+	return $user->exists() ? $user->display_name : '';
 }

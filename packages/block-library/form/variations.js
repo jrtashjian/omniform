@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { createInputField, createTextareaField } from '../shared/variations';
 
 const variations = [
@@ -113,7 +113,7 @@ const variations = [
 								type: 'flex',
 								flexWrap: 'nowrap',
 								verticalAlignment: 'center',
-								justifyContent: 'space-between',
+								justifyContent: 'left',
 							},
 						},
 						innerBlocks: [
@@ -160,7 +160,13 @@ const variations = [
 									{
 										name: 'core/paragraph',
 										attributes: {
-											content: __( 'Logged in as admin. <a href="/wp-admin/profile.php" data-type="link" data-id="/wp-admin/profile.php">Edit your profile</a>. <a href="/wp-login.php?action=logout" data-type="link" data-id="/wp-login.php?action=logout">Log out?</a> Required fields are marked *', 'omniform' ),
+											content: sprintf(
+												/* translators: 1: User name, 2: Edit user link, 3: Logout URL. */
+												__( 'Logged in as %1$s. <a href="%2$s">Edit your profile</a>. <a href="%3$s">Log out?</a> Required fields are marked *', 'omniform' ),
+												'{{omniform_current_user_display_name}}',
+												'{{get_edit_user_link}}',
+												'{{omniform_comment_logout_url}'
+											),
 											dropCap: false,
 										},
 										innerBlocks: [],
@@ -197,7 +203,7 @@ const variations = [
 								innerBlocks: [
 									createInputField( __( 'Name', 'omniform' ), 'text', true, { fieldName: 'author', fieldValue: '{{omniform_current_commenter_author}}' } ),
 									createInputField( __( 'Email', 'omniform' ), 'text', true, { fieldName: 'email', fieldValue: '{{omniform_current_commenter_email}}' } ),
-									createInputField( __( 'Website', 'omniform' ), 'text', true, { fieldName: 'url', fieldValue: '{{omniform_current_commenter_url}}' } ),
+									createInputField( __( 'Website', 'omniform' ), 'text', false, { fieldName: 'url', fieldValue: '{{omniform_current_commenter_url}}' } ),
 									{
 										name: 'omniform/conditional-group',
 										attributes: {
@@ -261,7 +267,11 @@ const variations = [
 							{
 								name: 'core/paragraph',
 								attributes: {
-									content: __( 'You must be <a href="/wp-login.php">logged in</a> to post a comment.', 'omniform' ),
+									content: sprintf(
+										/* translators: %s: Login URL. */
+										__( 'You must be <a href="%s">logged in</a> to post a comment.', 'omniform' ),
+										'{{omniform_comment_login_url}}'
+									),
 									dropCap: false,
 								},
 								innerBlocks: [],
