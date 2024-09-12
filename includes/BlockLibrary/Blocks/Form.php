@@ -121,7 +121,7 @@ class Form extends BaseBlock {
 		return $this->get_form_wrapper(
 			$form->get_submit_method(),
 			$form->get_submit_action(),
-			do_blocks( $this->content ) . wp_nonce_field( 'omniform', 'wp_rest', true, false )
+			$this->process_callbacks( do_blocks( $this->content ) ) . wp_nonce_field( 'omniform', 'wp_rest', true, false )
 		);
 	}
 
@@ -186,7 +186,7 @@ class Form extends BaseBlock {
 		return $this->get_form_wrapper(
 			$this->get_block_attribute( 'submit_method' ) ?? 'POST',
 			$this->get_block_attribute( 'submit_action' ) ?? '',
-			do_blocks( $this->content ) . implode( '', $additional_fields )
+			$this->process_callbacks( do_blocks( $this->content ) ) . implode( '', $additional_fields )
 		);
 	}
 
