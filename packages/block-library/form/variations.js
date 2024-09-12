@@ -211,7 +211,7 @@ const variations = [
 											reverseCondition: false,
 										},
 										innerBlocks: [
-											createInputField( __( 'Save my name, email, and website in this browser for the next time I comment.', 'omniform' ), 'checkbox', true, { fieldName: 'wp-comment-cookies-consent', fieldValue: '{{omniform_current_commenter_author}}' } ),
+											createInputField( __( 'Save my name, email, and website in this browser for the next time I comment.', 'omniform' ), 'checkbox', false, { fieldName: 'wp-comment-cookies-consent', fieldValue: '{{omniform_current_commenter_author}}' } ),
 										],
 									},
 								],
