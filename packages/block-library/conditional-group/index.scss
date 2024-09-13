@@ -1,17 +1,17 @@
 .wp-block-omniform-conditional-group {
 
-    outline-color: var(--wp-admin-theme-color);
-    outline-offset: -1px;
-    outline-style: dashed;
-    outline-width: 1px;
-    padding-left: 1rem;
+	outline-color: var(--wp-admin-theme-color);
+	outline-offset: -1px;
+	outline-style: dashed;
+	outline-width: 1px;
+	padding-left: 1rem;
 
-    .condition-label {
-        display: block;
-        padding: 0.5rem 0;
-        font-size: 0.8em;
-        font-style: italic;
-        pointer-events: none;
-        color: var(--wp-admin-theme-color);
-    }
+	.condition-label {
+		display: block;
+		padding: 0.5rem 0;
+		font-size: 0.8em;
+		font-style: italic;
+		pointer-events: none;
+		color: var(--wp-admin-theme-color);
+	}
 }
