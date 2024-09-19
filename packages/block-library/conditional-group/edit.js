@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import {
 	BlockControls,
+	RichText,
 	useBlockProps,
 	useInnerBlocksProps,
 } from '@wordpress/block-editor';
@@ -41,7 +42,20 @@ const Edit = ( {
 				</ToolbarGroup>
 			</BlockControls>
 			<div { ...blockProps }>
-				<div className="condition-label">{ conditionLabel } { callback || '' }</div>
+				<div className="condition-label">
+					{ conditionLabel }
+					<RichText
+						identifier="callback"
+						placeholder={ __( 'Enter condition callback', 'omniform' ) }
+						value={ callback || '' }
+						onChange={ ( newCallback ) => {
+							setAttributes( { callback: newCallback } );
+						} }
+						withoutInteractiveFormatting
+						allowedFormats={ [] }
+						disableLineBreaks
+					/>
+				</div>
 				<div { ...innerBlockProps } />
 			</div>
 		</>

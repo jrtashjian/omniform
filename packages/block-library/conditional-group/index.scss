@@ -7,11 +7,15 @@
 	padding-left: 1rem;
 
 	.condition-label {
-		display: block;
+		display: inline-flex;
+		flex-direction: row;
 		padding: 0.5rem 0;
 		font-size: 0.8em;
 		font-style: italic;
-		pointer-events: none;
 		color: var(--wp-admin-theme-color);
+
+		.rich-text {
+			margin-left: 1ch;
+		}
 	}
 }
