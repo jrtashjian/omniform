@@ -2,49 +2,14 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { cleanFieldName } from '../shared/utils';
 
-const createInputField = ( fieldLabel, type, isRequired ) => {
-	const labelBlock = { name: 'omniform/label' };
-	const inputBlock = { name: 'omniform/input', attributes: { fieldType: type || 'text' } };
-
-	const layout = [ 'checkbox', 'radio' ].includes( type )
-		? { type: 'flex', orientation: 'horizontal', justifyContent: 'left' }
-		: undefined;
-
-	return ( {
-		name: 'omniform/field',
-		attributes: {
-			fieldLabel,
-			fieldName: cleanFieldName( fieldLabel ).toLowerCase(),
-			isRequired,
-			layout,
-		},
-		innerBlocks: [ 'checkbox', 'radio' ].includes( type )
-			? [ inputBlock, labelBlock ]
-			: [ labelBlock, inputBlock ],
-	} );
-};
-
-const createSelectBlock = ( fieldLabel, options, isRequired ) => {
-	const labelBlock = { name: 'omniform/label' };
-	const inputBlock = { name: 'omniform/select', attributes: { fieldPlaceholder: __( 'Select One', 'omniform' ), isMultiple: false } };
-
-	inputBlock.innerBlocks = options.map( ( option ) => ( {
-		name: 'omniform/select-option',
-		attributes: { fieldLabel: option },
-	} ) );
-
-	return ( {
-		name: 'omniform/field',
-		attributes: {
-			fieldLabel,
-			fieldName: cleanFieldName( fieldLabel ).toLowerCase(),
-			isRequired,
-		},
-		innerBlocks: [ labelBlock, inputBlock ],
-	} );
-};
+/**
+ * Internal dependencies
+ */
+import {
+	createInputField,
+	createSelectBlock,
+} from '../shared/variations';
 
 const variations = [
 	{

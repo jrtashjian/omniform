@@ -87,6 +87,9 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 			Blocks\SelectOption::class,
 			Blocks\Captcha::class,
 			Blocks\ResponseNotification::class,
+			Blocks\PostCommentsFormTitle::class,
+			Blocks\PostCommentsFormCancelReplyLink::class,
+			Blocks\ConditionalGroup::class,
 		);
 
 		foreach ( $blocks as $block ) {

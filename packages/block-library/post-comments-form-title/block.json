@@ -1,0 +1,34 @@
+{
+	"$schema": "https://raw.githubusercontent.com/WordPress/gutenberg/wp/6.3/schemas/json/block.json",
+	"apiVersion": 3,
+	"name": "omniform/post-comments-form-title",
+	"category": "omniform",
+	"title": "Comments Form Title",
+	"description": "Displays the title for the comments form.",
+	"textdomain": "omniform",
+	"attributes": {
+		"noReplyText": {
+			"type": "string",
+			"default": "Leave a Reply"
+		},
+		"replyText": {
+			"type": "string",
+			"default": "Leave a Reply to %s"
+		},
+		"linkToParent": {
+			"type": "boolean",
+			"default": true
+		},
+		"level": {
+			"type": "number",
+			"default": 3
+		}
+	},
+	"supports": {
+		"html": false
+	},
+	"usesContext": [
+		"postId"
+	],
+	"editorScript": "file:index.js"
+}

@@ -1,0 +1,21 @@
+.wp-block-omniform-conditional-group {
+
+	outline-color: var(--wp-admin-theme-color);
+	outline-offset: -1px;
+	outline-style: dashed;
+	outline-width: 1px;
+	padding-left: 1rem;
+
+	.condition-label {
+		display: inline-flex;
+		flex-direction: row;
+		padding: 0.5rem 0;
+		font-size: 0.8em;
+		font-style: italic;
+		color: var(--wp-admin-theme-color);
+
+		.rich-text {
+			margin-left: 1ch;
+		}
+	}
+}

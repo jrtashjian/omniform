@@ -38,7 +38,8 @@
 	outline: 0 solid transparent;
 	outline-offset: -2px;
 
-	&:focus, &:focus-visible {
+	&:focus,
+	&:focus-visible {
 		outline: 2px solid currentcolor;
 		outline-offset: 2px;
 	}

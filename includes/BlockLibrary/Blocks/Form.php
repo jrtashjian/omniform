@@ -118,12 +118,10 @@ class Form extends BaseBlock {
 		 */
 		do_action( 'omniform_form_render', $form->get_id() );
 
-		return sprintf(
-			'<form method="%s" action="%s" %s>%s</form>',
-			esc_attr( strtolower( $form->get_submit_method() ) ),
-			esc_attr( $this->process_callbacks( $form->get_submit_action() ) ),
-			get_block_wrapper_attributes(),
-			do_blocks( $this->content ) . wp_nonce_field( 'omniform', 'wp_rest', true, false )
+		return $this->get_form_wrapper(
+			$form->get_submit_method(),
+			$form->get_submit_action(),
+			$this->process_callbacks( do_blocks( $this->content ) ) . wp_nonce_field( 'omniform', 'wp_rest', true, false )
 		);
 	}
 
@@ -185,12 +183,45 @@ class Form extends BaseBlock {
 			$additional_fields[] = wp_nonce_field( 'omniform' . $form_hash, '_wpnonce', true, false );
 		}
 
+		return $this->get_form_wrapper(
+			$this->get_block_attribute( 'submit_method' ) ?? 'POST',
+			$this->get_block_attribute( 'submit_action' ) ?? '',
+			$this->process_callbacks( do_blocks( $this->content ) ) . implode( '', $additional_fields )
+		);
+	}
+
+	/**
+	 * Returns the form wrapper.
+	 *
+	 * @param string $submit_method  The form submit method.
+	 * @param string $submit_action  The form submit action.
+	 * @param string $inner_content  The inner content.
+	 *
+	 * @return string The form wrapper.
+	 */
+	private function get_form_wrapper( $submit_method, $submit_action, $inner_content = '' ) {
+		$form_wrapper     = '<form method="%1$s" action="%2$s" %3$s>%4$s</form>';
+		$extra_attributes = array();
+
+		// Change the form wrapper for comment forms.
+		$submit_action = $this->process_callbacks( $submit_action );
+		if ( str_ends_with( $submit_action, '/wp-comments-post.php' ) ) {
+			$form_wrapper     = '<div %3$s><form method="%1$s" action="%2$s">%4$s</form></div>';
+			$extra_attributes = array(
+				'id'    => 'respond',
+				'class' => 'comment-respond',
+			);
+			// Enqueue the comment-reply script.
+			wp_enqueue_script( 'comment-reply' );
+			$inner_content .= get_comment_id_fields( $this->get_block_context( 'postId' ) );
+		}
+
 		return sprintf(
-			'<form method="%s" action="%s" %s>%s</form>',
-			esc_attr( strtolower( $this->get_block_attribute( 'submit_method' ) ?? 'POST' ) ),
-			esc_attr( $this->process_callbacks( $this->get_block_attribute( 'submit_action' ) ?? '' ) ),
-			get_block_wrapper_attributes(),
-			do_blocks( $this->content ) . implode( '', $additional_fields )
+			$form_wrapper,
+			esc_attr( strtolower( $submit_method ) ),
+			esc_attr( $submit_action ),
+			get_block_wrapper_attributes( $extra_attributes ),
+			$inner_content,
 		);
 	}
 
