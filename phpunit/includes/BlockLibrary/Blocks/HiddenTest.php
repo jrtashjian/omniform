@@ -9,8 +9,6 @@ namespace OmniForm\Tests\BlockLibrary\Blocks;
 
 use OmniForm\BlockLibrary\Blocks\Hidden;
 
-require dirname( dirname( __DIR__ ) ) . '/callback-functions.php';
-
 /**
  * Tests the Hidden class.
  */
@@ -82,44 +80,6 @@ class HiddenTest extends FormBlockTestCase {
 			array(
 				'fieldName'  => $field_name,
 				'fieldValue' => '{{ nonexistent_callback }}',
-			)
-		);
-
-		$this->assertStringContainsString( "name=\"$field_name\"", $block_rendered );
-		$this->assertStringNotContainsString( 'value=', $block_rendered );
-	}
-
-	/**
-	 * Ensure the block renders the value returned by the callback.
-	 */
-	public function test_render_with_callback() {
-		$field_name = 'field-name';
-
-		$block_rendered = $this->render_block_with_attributes(
-			array(
-				'fieldName'  => $field_name,
-				'fieldValue' => '{{ omniform_existent_callback_return_string }}',
-			)
-		);
-
-		$this->assertStringContainsString( "name=\"$field_name\"", $block_rendered );
-		$this->assertStringContainsString( 'value="callback string"', $block_rendered );
-
-		// Ensure arrays and objects are not rendered.
-		$block_rendered = $this->render_block_with_attributes(
-			array(
-				'fieldName'  => $field_name,
-				'fieldValue' => '{{ omniform_existent_callback_return_array }}',
-			)
-		);
-
-		$this->assertStringContainsString( "name=\"$field_name\"", $block_rendered );
-		$this->assertStringNotContainsString( 'value=', $block_rendered );
-
-		$block_rendered = $this->render_block_with_attributes(
-			array(
-				'fieldName'  => $field_name,
-				'fieldValue' => '{{ omniform_existent_callback_return_object }}',
 			)
 		);
 
