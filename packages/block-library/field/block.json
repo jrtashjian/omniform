@@ -36,7 +36,6 @@
 				"blockGap": true
 			}
 		},
-		"__experimentalBorder": true,
 		"__experimentalLayout": {
 			"allowEditing": true,
 			"allowInheriting": false,

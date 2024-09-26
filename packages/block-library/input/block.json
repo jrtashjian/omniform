@@ -29,8 +29,7 @@
 		},
 		"spacing": {
 			"padding": true
-		},
-		"__experimentalBorder": true
+		}
 	},
 	"usesContext": [
 		"postId",

@@ -31,8 +31,7 @@
 			"__experimentalDefaultControls": {
 				"minHeight": true
 			}
-		},
-		"__experimentalBorder": true
+		}
 	},
 	"usesContext": [
 		"postId",
