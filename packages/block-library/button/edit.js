@@ -38,7 +38,7 @@ const Edit = ( {
 	} );
 
 	return (
-		<div>
+		<>
 			<RichText
 				{ ...blockProps }
 				identifier="buttonLabel"
@@ -51,7 +51,7 @@ const Edit = ( {
 				disableLineBreaks
 				onRemove={ onRemove }
 			/>
-		</div>
+		</>
 	);
 };
 export default Edit;

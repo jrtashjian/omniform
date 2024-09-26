@@ -3,13 +3,13 @@
 .wp-block-omniform-button {
 
 	align-items: center;
+	justify-content: center;
 	display: inline-flex;
 	gap: 0.5em;
 	word-break: normal;
 	box-sizing: border-box;
 	border-color: currentcolor;
 	font-weight: inherit;
-	white-space: nowrap !important;
 
 	@include focus-styles;
 
