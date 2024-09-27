@@ -58,7 +58,7 @@ trait CallbackSupport {
 					return '';
 				}
 
-				return $result;
+				return esc_attr( $result );
 			},
 			$content
 		);
