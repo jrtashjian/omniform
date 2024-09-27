@@ -2,9 +2,9 @@
 
 .wp-block-omniform-select {
 
-	@include field-control;
-
 	width: 100%;
+
+	@include field-control;
 
 	&[multiple] {
 		height: 230px;

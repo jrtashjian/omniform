@@ -2,13 +2,13 @@
 
 .wp-block-omniform-fieldset {
 
-	@include field-label;
-
 	margin-left: 0;
 	margin-right: 0;
 	padding: 0;
 	border-width: 0;
 	border-color: currentcolor;
+
+	@include field-label;
 
 	> .omniform-field-label,
 	legend.omniform-field-label {

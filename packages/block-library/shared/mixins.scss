@@ -27,6 +27,8 @@
 
 @mixin focus-styles {
 	box-shadow: none;
+	outline: 0 solid transparent;
+	outline-offset: -2px;
 
 	&,
 	&::before {
@@ -34,9 +36,6 @@
 		transition-property: background-color, border-color, box-shadow, color, opacity, outline, outline-offset;
 		transition-timing-function: ease-in-out;
 	}
-
-	outline: 0 solid transparent;
-	outline-offset: -2px;
 
 	&:focus,
 	&:focus-visible {
