@@ -3,7 +3,7 @@
 	"apiVersion": 3,
 	"name": "omniform/input",
 	"category": "omniform",
-	"title": "Field Input",
+	"title": "Input",
 	"description": "A field for simple text entry.",
 	"textdomain": "omniform",
 	"ancestor": [
