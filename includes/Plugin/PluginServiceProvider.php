@@ -750,11 +750,14 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			return;
 		}
 
+		/** @var \OmniForm\Application */ // phpcs:ignore
+		$container = $this->getContainer();
+
 		$dismissed_version = get_user_meta( get_current_user_id(), 'omniform_dismissed_newsletter_notice', true );
 
 		$semver_regex      = '/(\d+\.\d+)\.\d+/';
 		$dismissed_version = preg_replace( $semver_regex, '$1', $dismissed_version );
-		$current_version   = preg_replace( $semver_regex, '$1', $this->getContainer()->version() );
+		$current_version   = preg_replace( $semver_regex, '$1', $container->version() );
 
 		if ( $dismissed_version && version_compare( $dismissed_version, $current_version, '>=' ) ) {
 			return;
@@ -775,7 +778,9 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 */
 	public function dismiss_newsletter_notice() {
 		if ( isset( $_GET['dismiss_newsletter_notice'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			update_user_meta( get_current_user_id(), 'omniform_dismissed_newsletter_notice', $this->getContainer()->version() );
+			/** @var \OmniForm\Application */ // phpcs:ignore
+			$container = $this->getContainer();
+			update_user_meta( get_current_user_id(), 'omniform_dismissed_newsletter_notice', $container->version() );
 		}
 	}
 
