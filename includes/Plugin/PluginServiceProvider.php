@@ -793,7 +793,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	public function render_singular_template( $content ) {
 		return ( ! is_singular( 'omniform' ) || ! is_main_query() )
 			? $content
-			: do_blocks( '<!-- wp:omniform/form {"ref":' . get_the_ID() . '} /-->' );
+			: do_blocks( '<!-- wp:omniform/form {"ref":' . get_the_ID() . ',"align":"full"} /-->' );
 	}
 
 	/**
