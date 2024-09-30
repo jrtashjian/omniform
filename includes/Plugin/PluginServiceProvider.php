@@ -7,12 +7,14 @@
 
 namespace OmniForm\Plugin;
 
-use OmniForm\Analytics\AnalyticsManager;
-use OmniForm\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use OmniForm\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
-use OmniForm\Dependencies\Respect\Validation;
 use OmniForm\Plugin\Facades\DB;
 use OmniForm\Plugin\Support\Number;
+use OmniForm\Analytics\AnalyticsManager;
+use OmniForm\Dependencies\Respect\Validation;
+use OmniForm\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use OmniForm\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
+use WP_Block_Type;
+use WP_Block_Type_Registry;
 
 /**
  * The PluginServiceProvider class.
@@ -408,44 +410,43 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					'core/edit-post' === $block_editor_context->name &&
 					'omniform' === $block_editor_context->post->post_type
 				) {
-					return array(
-						'omniform/button',
-						'omniform/fieldset',
-						'omniform/form',
-						'omniform/field',
-						'omniform/label',
-						'omniform/input',
-						'omniform/hidden',
-						'omniform/textarea',
-						'omniform/select',
-						'omniform/select-group',
-						'omniform/select-option',
-						'omniform/captcha',
-						'omniform/response-notification',
-						'core/audio',
-						'core/block',
-						'core/code',
-						'core/column',
-						'core/columns',
-						'core/cover',
-						'core/file',
-						'core/gallery',
-						'core/group',
-						'core/heading',
-						'core/image',
-						'core/list-item',
-						'core/list',
-						'core/missing',
-						'core/paragraph',
-						'core/pattern',
-						'core/preformatted',
-						'core/separator',
-						'core/site-logo',
-						'core/site-tagline',
-						'core/site-title',
-						'core/spacer',
-						'core/table',
-						'core/video',
+					$registry = WP_Block_Type_Registry::get_instance();
+
+					$omniform_blocks = array_filter(
+						$registry->get_all_registered(),
+						function ( WP_Block_Type $block ) {
+							return str_starts_with( $block->name, 'omniform/' );
+						}
+					);
+
+					return array_merge(
+						array_keys( $omniform_blocks ),
+						array(
+							'core/audio',
+							'core/block',
+							'core/code',
+							'core/column',
+							'core/columns',
+							'core/cover',
+							'core/file',
+							'core/gallery',
+							'core/group',
+							'core/heading',
+							'core/image',
+							'core/list-item',
+							'core/list',
+							'core/missing',
+							'core/paragraph',
+							'core/pattern',
+							'core/preformatted',
+							'core/separator',
+							'core/site-logo',
+							'core/site-tagline',
+							'core/site-title',
+							'core/spacer',
+							'core/table',
+							'core/video',
+						)
 					);
 				}
 				return $allowed_block_types;
