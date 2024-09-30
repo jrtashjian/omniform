@@ -164,7 +164,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 							$pattern,
 							array(
 								'postTypes'  => array( 'omniform' ),
-								'blockTypes' => array( 'omniform/form' ),
+								'blockTypes' => array( 'omniform/form', 'core/post-content' ),
 							),
 						),
 						$pattern_defaults
