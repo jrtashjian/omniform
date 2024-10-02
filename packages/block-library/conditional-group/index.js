@@ -9,6 +9,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import json from './block.json';
 import Edit from './edit';
 import Save from './save';
+import variations from './variations';
 import { label as iconLabel } from '../shared/icons';
 
 import './index.scss';
@@ -19,4 +20,5 @@ registerBlockType( name, {
 	edit: Edit,
 	save: Save,
 	icon: { foreground: '#D92E83', src: iconLabel },
+	variations,
 } );
