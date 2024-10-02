@@ -5,12 +5,16 @@
 	outline-style: dashed;
 	outline-width: 1px;
 	padding-left: 1rem;
+	padding-top: 2.13rem;
 
 	.condition-label {
+		position: absolute;
+		top: 0;
+		left: 1rem;
 		display: inline-flex;
 		flex-direction: row;
 		padding: 0.5rem 0;
-		font-size: 0.8em;
+		font-size: 0.8rem;
 		font-style: italic;
 		color: var(--wp-admin-theme-color);
 

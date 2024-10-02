@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { createBlock } from '@wordpress/blocks';
 
 const transforms = {
@@ -116,6 +116,249 @@ const transforms = {
 							innerBlocks
 						),
 					]
+				);
+			},
+		},
+		{
+			type: 'block',
+			blocks: [ 'core/post-comments-form' ],
+			transform: ( attributes ) => {
+				return createBlock( 'omniform/form',
+					{
+						form_type: 'custom',
+						submit_action: '{{get_site_url}}/wp-comments-post.php',
+						submit_method: 'POST',
+						required_label: '*',
+					},
+					[
+						createBlock( 'core/group',
+							{
+								tagName: 'div',
+								align: 'full',
+								layout: {
+									type: 'default',
+								},
+								style: attributes?.style,
+								fontSize: attributes?.fontSize,
+							},
+							[
+								createBlock( 'core/group',
+									{
+										tagName: 'div',
+										layout: {
+											type: 'flex',
+											flexWrap: 'nowrap',
+											verticalAlignment: 'center',
+											justifyContent: 'left',
+										},
+									},
+									[
+										createBlock( 'omniform/post-comments-form-title',
+											{
+												noReplyText: __( 'Leave a Reply', 'omniform' ),
+												/* translators: %s: author name */
+												replyText: __( 'Leave a Reply to %s', 'omniform' ),
+												linkToParent: true,
+												level: 3,
+											},
+											[]
+										),
+										createBlock( 'omniform/post-comments-form-cancel-reply-link',
+											{
+												linkText: __( 'Cancel reply', 'omniform' ),
+											},
+											[]
+										),
+									]
+								),
+								createBlock( 'omniform/conditional-group',
+									{
+										callback: '{{omniform_open_for_comments}}',
+										reverseCondition: false,
+										layout: {
+											type: 'default',
+										},
+									},
+									[
+										createBlock( 'omniform/conditional-group',
+											{
+												callback: '{{is_user_logged_in}}',
+												reverseCondition: false,
+												layout: {
+													type: 'default',
+												},
+											},
+											[
+												createBlock( 'core/paragraph', {
+													content: sprintf(
+														/* translators: 1: User name, 2: Edit user link, 3: Logout URL. */
+														__( 'Logged in as %1$s. <a href="%2$s">Edit your profile</a>. <a href="%3$s">Log out?</a> Required fields are marked *', 'omniform' ),
+														'{{omniform_current_user_display_name}}',
+														'{{get_edit_user_link}}',
+														'{{omniform_comment_logout_url}'
+													),
+												} ),
+											]
+										),
+										createBlock( 'omniform/conditional-group',
+											{
+												callback: '{{is_user_logged_in}}',
+												reverseCondition: true,
+												layout: {
+													type: 'default',
+												},
+											},
+											[
+												createBlock( 'core/paragraph', {
+													content: __( 'Your email address will not be published. Required fields are marked *', 'omniform' ),
+												} ),
+											]
+										),
+										createBlock( 'omniform/field',
+											{
+												fieldLabel: __( 'Comment', 'omniform' ),
+												fieldName: 'comment',
+												isRequired: true,
+											},
+											[
+												createBlock( 'omniform/label' ),
+												createBlock( 'omniform/textarea', {
+													fieldValue: '',
+													style: {
+														dimensions: {
+															minHeight: '230px',
+														},
+													},
+												} ),
+											]
+										),
+										createBlock( 'omniform/conditional-group',
+											{
+												callback: '{{is_user_logged_in}}',
+												reverseCondition: true,
+											},
+											[
+												createBlock( 'omniform/field',
+													{
+														fieldLabel: __( 'Name', 'omniform' ),
+														fieldName: 'author',
+														isRequired: true,
+													},
+													[
+														createBlock( 'omniform/label' ),
+														createBlock( 'omniform/input', {
+															fieldType: 'text',
+															fieldValue: '{{omniform_current_commenter_author}}',
+														} ),
+													]
+												),
+												createBlock( 'omniform/field',
+													{
+														fieldLabel: __( 'Email', 'omniform' ),
+														fieldName: 'email',
+														isRequired: true,
+													},
+													[
+														createBlock( 'omniform/label' ),
+														createBlock( 'omniform/input', {
+															fieldType: 'text',
+															fieldValue: '{{omniform_current_commenter_email}}',
+														} ),
+													]
+												),
+												createBlock( 'omniform/field',
+													{
+														fieldLabel: __( 'Website', 'omniform' ),
+														fieldName: 'url',
+														isRequired: false,
+													},
+													[
+														createBlock( 'omniform/label' ),
+														createBlock( 'omniform/input', {
+															fieldType: 'text',
+															fieldValue: '{{omniform_current_commenter_url}}',
+														} ),
+													]
+												),
+												createBlock( 'omniform/conditional-group',
+													{
+														callback: '{{omniform_comment_cookies_opt_in}}',
+														reverseCondition: false,
+													},
+													[
+														createBlock( 'omniform/field',
+															{
+																fieldLabel: __( 'Save my name, email, and website in this browser for the next time I comment.', 'omniform' ),
+																fieldName: 'wp-comment-cookies-consent',
+																isRequired: false,
+																layout: {
+																	type: 'flex',
+																	orientation: 'horizontal',
+																	justifyContent: 'left',
+																	flexWrap: 'nowrap',
+																	verticalAlignment: 'center',
+																},
+															},
+															[
+																createBlock( 'omniform/input', {
+																	fieldType: 'checkbox',
+																	fieldValue: '{{omniform_current_commenter_author}}',
+																} ),
+																createBlock( 'omniform/label' ),
+															]
+														),
+													]
+												),
+											]
+										),
+										createBlock( 'core/group',
+											{
+												tagName: 'div',
+												layout: {
+													type: 'flex',
+													flexWrap: 'nowrap',
+													justifyContent: 'left',
+													orientation: 'horizontal',
+												},
+											},
+											[
+												createBlock( 'omniform/button', {
+													buttonType: 'submit',
+													buttonLabel: __( 'Post Comment', 'omniform' ),
+												} ),
+											],
+										),
+									]
+								),
+								createBlock( 'omniform/conditional-group',
+									{
+										callback: '{{omniform_closed_for_comments}}',
+										reverseCondition: false,
+									},
+									[
+										createBlock( 'core/paragraph', {
+											content: __( 'Comments are closed.', 'omniform' ),
+										} ),
+									]
+								),
+								createBlock( 'omniform/conditional-group',
+									{
+										callback: '{{omniform_comment_login_required}}',
+										reverseCondition: false,
+									},
+									[
+										createBlock( 'core/paragraph', {
+											content: sprintf(
+												/* translators: %s: Login URL. */
+												__( 'You must be <a href="%s">logged in</a> to post a comment.', 'omniform' ),
+												'{{omniform_comment_login_url}}'
+											),
+										} ),
+									]
+								),
+							],
+						),
+					],
 				);
 			},
 		},

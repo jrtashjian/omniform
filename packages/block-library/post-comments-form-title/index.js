@@ -10,6 +10,8 @@ import json from './block.json';
 import Edit from './edit';
 import { label as iconLabel } from '../shared/icons';
 
+import './style.scss';
+
 const { name } = json;
 
 registerBlockType( name, {

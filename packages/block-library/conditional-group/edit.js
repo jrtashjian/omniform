@@ -21,7 +21,7 @@ import {
 import { iconReverseCondition } from '../shared/icons';
 
 const Edit = ( {
-	attributes: { callback, reverseCondition },
+	attributes: { reverseCondition },
 	setAttributes,
 	clientId,
 } ) => {
