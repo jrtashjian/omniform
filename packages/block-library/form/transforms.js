@@ -66,7 +66,7 @@ const transforms = {
 						createBlock( 'omniform/button',
 							{
 								buttonType: 'submit',
-								buttonLabel: buttonText,
+								buttonLabel: buttonText || __( 'Search', 'omniform' ),
 								style: {
 									layout: {
 										selfStretch: 'fit',
