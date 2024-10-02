@@ -1,6 +1,7 @@
 @import "../shared/mixins";
 
-.wp-block-omniform-button {
+.wp-block-omniform-button,
+.wp-block-omniform-button.wp-element-button {
 
 	align-items: center;
 	justify-content: center;
@@ -10,6 +11,9 @@
 	box-sizing: border-box;
 	border-color: currentcolor;
 	font-weight: inherit;
+	font-size: inherit;
+	font-family: inherit;
+	letter-spacing: inherit;
 
 	@include focus-styles;
 
