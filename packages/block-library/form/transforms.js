@@ -12,11 +12,13 @@ const transforms = {
 				label,
 				showLabel,
 				buttonText,
+				placeholder,
+				buttonPosition,
 			} ) => {
 				const fieldInnerBlocks = [
 					createBlock( 'omniform/input', {
 						fieldType: 'search',
-						fieldPlaceholder: '',
+						fieldPlaceholder: placeholder,
 						style: {
 							layout: {
 								selfStretch: 'fill',
@@ -28,6 +30,48 @@ const transforms = {
 
 				if ( showLabel ) {
 					fieldInnerBlocks.unshift( createBlock( 'omniform/label', {}, [] ) );
+				}
+
+				const innerBlocks = [
+					createBlock( 'omniform/field',
+						{
+							fieldLabel: label,
+							fieldName: 's',
+							style: {
+								layout: {
+									selfStretch: 'fill',
+									flexSize: null,
+								},
+							},
+							layout: showLabel ? {
+								type: 'flex',
+								orientation: 'vertical',
+								justifyContent: 'stretch',
+							} : {
+								type: 'flex',
+								orientation: 'horizontal',
+								justifyContent: 'space-between',
+							},
+						},
+						fieldInnerBlocks
+					),
+				];
+
+				if ( buttonPosition !== 'no-button' ) {
+					innerBlocks.push(
+						createBlock( 'omniform/button',
+							{
+								buttonType: 'submit',
+								buttonLabel: buttonText,
+								style: {
+									layout: {
+										selfStretch: 'fit',
+										flexSize: null,
+									},
+								},
+							}
+						),
+					);
 				}
 
 				return createBlock( 'omniform/form',
@@ -57,42 +101,7 @@ const transforms = {
 									verticalAlignment: showLabel ? 'bottom' : undefined,
 								},
 							},
-							[
-								createBlock( 'omniform/field',
-									{
-										fieldLabel: label,
-										fieldName: 's',
-										style: {
-											layout: {
-												selfStretch: 'fill',
-												flexSize: null,
-											},
-										},
-										layout: showLabel ? {
-											type: 'flex',
-											orientation: 'vertical',
-											justifyContent: 'stretch',
-										} : {
-											type: 'flex',
-											orientation: 'horizontal',
-											justifyContent: 'space-between',
-										},
-									},
-									fieldInnerBlocks
-								),
-								createBlock( 'omniform/button',
-									{
-										buttonType: 'submit',
-										buttonLabel: buttonText,
-										style: {
-											layout: {
-												selfStretch: 'fit',
-												flexSize: null,
-											},
-										},
-									}
-								),
-							]
+							innerBlocks
 						),
 					]
 				);
