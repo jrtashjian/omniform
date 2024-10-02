@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { createBlock } from '@wordpress/blocks';
 
 const transforms = {
@@ -155,8 +155,9 @@ const transforms = {
 									[
 										createBlock( 'omniform/post-comments-form-title',
 											{
-												noReplyText: 'Leave a Reply',
-												replyText: 'Leave a Reply to %s',
+												noReplyText: __( 'Leave a Reply', 'omniform' ),
+												/* translators: %s: author name */
+												replyText: __( 'Leave a Reply to %s', 'omniform' ),
 												linkToParent: true,
 												level: 3,
 											},
@@ -164,7 +165,7 @@ const transforms = {
 										),
 										createBlock( 'omniform/post-comments-form-cancel-reply-link',
 											{
-												linkText: 'Cancel reply',
+												linkText: __( 'Cancel reply', 'omniform' ),
 											},
 											[]
 										),
@@ -189,7 +190,13 @@ const transforms = {
 											},
 											[
 												createBlock( 'core/paragraph', {
-													content: 'Logged in as {{omniform_current_user_display_name}}. <a href="{{get_edit_user_link}}">Edit your profile</a>. <a href="{{omniform_comment_logout_url}">Log out?</a> Required fields are marked *',
+													content: sprintf(
+														/* translators: 1: User name, 2: Edit user link, 3: Logout URL. */
+														__( 'Logged in as %1$s. <a href="%2$s">Edit your profile</a>. <a href="%3$s">Log out?</a> Required fields are marked *', 'omniform' ),
+														'{{omniform_current_user_display_name}}',
+														'{{get_edit_user_link}}',
+														'{{omniform_comment_logout_url}'
+													),
 												} ),
 											]
 										),
@@ -203,13 +210,13 @@ const transforms = {
 											},
 											[
 												createBlock( 'core/paragraph', {
-													content: 'Your email address will not be published. Required fields are marked *',
+													content: __( 'Your email address will not be published. Required fields are marked *', 'omniform' ),
 												} ),
 											]
 										),
 										createBlock( 'omniform/field',
 											{
-												fieldLabel: 'Comment',
+												fieldLabel: __( 'Comment', 'omniform' ),
 												fieldName: 'comment',
 												isRequired: true,
 											},
@@ -233,7 +240,7 @@ const transforms = {
 											[
 												createBlock( 'omniform/field',
 													{
-														fieldLabel: 'Name',
+														fieldLabel: __( 'Name', 'omniform' ),
 														fieldName: 'author',
 														isRequired: true,
 													},
@@ -247,7 +254,7 @@ const transforms = {
 												),
 												createBlock( 'omniform/field',
 													{
-														fieldLabel: 'Email',
+														fieldLabel: __( 'Email', 'omniform' ),
 														fieldName: 'email',
 														isRequired: true,
 													},
@@ -261,7 +268,7 @@ const transforms = {
 												),
 												createBlock( 'omniform/field',
 													{
-														fieldLabel: 'Website',
+														fieldLabel: __( 'Website', 'omniform' ),
 														fieldName: 'url',
 														isRequired: false,
 													},
@@ -281,7 +288,7 @@ const transforms = {
 													[
 														createBlock( 'omniform/field',
 															{
-																fieldLabel: 'Save my name, email, and website in this browser for the next time I comment.',
+																fieldLabel: __( 'Save my name, email, and website in this browser for the next time I comment.', 'omniform' ),
 																fieldName: 'wp-comment-cookies-consent',
 																isRequired: false,
 																layout: {
@@ -317,7 +324,7 @@ const transforms = {
 											[
 												createBlock( 'omniform/button', {
 													buttonType: 'submit',
-													buttonLabel: 'Post Comment',
+													buttonLabel: __( 'Post Comment', 'omniform' ),
 												} ),
 											],
 										),
@@ -330,7 +337,7 @@ const transforms = {
 									},
 									[
 										createBlock( 'core/paragraph', {
-											content: 'Comments are closed.',
+											content: __( 'Comments are closed.', 'omniform' ),
 										} ),
 									]
 								),
@@ -341,7 +348,11 @@ const transforms = {
 									},
 									[
 										createBlock( 'core/paragraph', {
-											content: 'You must be <a href="{{omniform_comment_login_url}}">logged in</a> to post a comment.',
+											content: sprintf(
+												/* translators: %s: Login URL. */
+												__( 'You must be <a href="%s">logged in</a> to post a comment.', 'omniform' ),
+												'{{omniform_comment_login_url}}'
+											),
 										} ),
 									]
 								),
