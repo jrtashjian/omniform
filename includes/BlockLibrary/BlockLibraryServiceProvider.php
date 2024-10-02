@@ -233,6 +233,12 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 			'icon'  => null,
 		);
 
+		$block_categories[] = array(
+			'slug'  => 'omniform-conditional-groups',
+			'title' => esc_attr__( 'Conditional Groups', 'omniform' ),
+			'icon'  => null,
+		);
+
 		return $block_categories;
 	}
 
