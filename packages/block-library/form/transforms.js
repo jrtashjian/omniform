@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { createBlock } from '@wordpress/blocks';
 
 const transforms = {
@@ -31,14 +32,14 @@ const transforms = {
 					}, [] ),
 				];
 
-				if ( showLabel ) {
+				if ( showLabel && label ) {
 					fieldInnerBlocks.unshift( createBlock( 'omniform/label', {}, [] ) );
 				}
 
 				const innerBlocks = [
 					createBlock( 'omniform/field',
 						{
-							fieldLabel: label,
+							fieldLabel: label || __( 'Search', 'omniform' ),
 							fieldName: 's',
 							style: {
 								layout: {
