@@ -21,19 +21,11 @@ class Button extends BaseBlock {
 			return '';
 		}
 
-		$classname = implode(
-			' ',
-			array(
-				wp_theme_get_element_class_name( 'button' ),
-				'wp-block-button__link',
-			)
-		);
-
 		return sprintf(
 			'<button %s>%s</button>',
 			get_block_wrapper_attributes(
 				array(
-					'class' => $classname,
+					'class' => wp_theme_get_element_class_name( 'button' ),
 					'type'  => esc_attr( $this->get_block_attribute( 'buttonType' ) ),
 				)
 			),

@@ -18,6 +18,7 @@ import { InnerBlocks } from '@wordpress/block-editor';
 import json from './block.json';
 import StandardForm from './edit/standard-form';
 import StandaloneForm from './edit/standalone-form';
+import transforms from './transforms';
 import variations from './variations';
 import { POST_TYPE } from '../shared/constants';
 import { form } from '../shared/icons';
@@ -36,6 +37,7 @@ registerBlockType( name, {
 	},
 	save: ( { ref } ) => ref ? null : <InnerBlocks.Content />,
 	icon: { foreground: '#D92E83', src: form },
+	transforms,
 	variations,
 	// Get block name from the post name.
 	__experimentalLabel: ( { ref } ) => {
