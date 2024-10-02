@@ -14,6 +14,7 @@ const transforms = {
 				buttonText,
 				placeholder,
 				buttonPosition,
+				...attributes
 			} ) => {
 				const fieldInnerBlocks = [
 					createBlock( 'omniform/input', {
@@ -24,7 +25,9 @@ const transforms = {
 								selfStretch: 'fill',
 								flexSize: null,
 							},
+							border: attributes?.style?.border,
 						},
+						borderColor: attributes?.borderColor,
 					}, [] ),
 				];
 
@@ -68,7 +71,12 @@ const transforms = {
 										selfStretch: 'fit',
 										flexSize: null,
 									},
+									border: attributes?.style?.border,
+									typography: attributes?.style?.typography,
 								},
+								textColor: attributes?.textColor,
+								backgroundColor: attributes?.backgroundColor,
+								borderColor: attributes?.borderColor,
 							}
 						),
 					);
@@ -92,6 +100,7 @@ const transforms = {
 											bottom: 0,
 										},
 									},
+									typography: attributes?.style?.typography,
 								},
 								layout: {
 									type: 'flex',
@@ -100,6 +109,8 @@ const transforms = {
 									orientation: 'horizontal',
 									verticalAlignment: showLabel ? 'bottom' : undefined,
 								},
+								fontFamily: attributes?.fontFamily,
+								fontSize: attributes?.fontSize,
 							},
 							innerBlocks
 						),
