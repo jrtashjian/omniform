@@ -9,10 +9,14 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 	store as blockEditorStore,
+	InspectorControls,
 } from '@wordpress/block-editor';
 import {
 	ToolbarGroup,
 	ToolbarButton,
+	PanelBody,
+	TextControl,
+	ToggleControl,
 } from '@wordpress/components';
 
 /**
@@ -21,7 +25,7 @@ import {
 import { iconReverseCondition } from '../shared/icons';
 
 const Edit = ( {
-	attributes: { reverseCondition },
+	attributes: { callback, reverseCondition },
 	setAttributes,
 	clientId,
 } ) => {
@@ -72,6 +76,23 @@ const Edit = ( {
 					/>
 				</ToolbarGroup>
 			</BlockControls>
+			<InspectorControls>
+				<PanelBody title={ __( 'Conditional Settings', 'omniform' ) }>
+					<TextControl
+						label={ __( 'Callback', 'omniform' ) }
+						value={ callback || '' }
+						onChange={ ( newValue ) => setAttributes( { callback: newValue } ) }
+						help={ __( 'The callback to determine if this block should be shown.', 'omniform' ) }
+					/>
+
+					<ToggleControl
+						label={ __( 'Reverse condition', 'omniform' ) }
+						checked={ !! reverseCondition }
+						onChange={ () => setAttributes( { reverseCondition: ! reverseCondition } ) }
+						help={ __( 'Show the block when the callback returns false.', 'omniform' ) }
+					/>
+				</PanelBody>
+			</InspectorControls>
 			<div { ...blockProps }>
 				<div className="condition-label">
 					{ conditionLabel + ' ' + blockTitle.toLowerCase() }
