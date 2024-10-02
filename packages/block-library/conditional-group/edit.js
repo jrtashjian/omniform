@@ -2,11 +2,13 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useSelect } from '@wordpress/data';
+import { store as blocksStore } from '@wordpress/blocks';
 import {
 	BlockControls,
-	RichText,
 	useBlockProps,
 	useInnerBlocksProps,
+	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import {
 	ToolbarGroup,
@@ -21,14 +23,43 @@ import { iconReverseCondition } from '../shared/icons';
 const Edit = ( {
 	attributes: { callback, reverseCondition },
 	setAttributes,
+	clientId,
 } ) => {
+	const blockTitle = useSelect(
+		( select ) => {
+			if ( ! clientId ) {
+				return null;
+			}
+
+			const {
+				getBlockName,
+				getBlockAttributes,
+			} = select( blockEditorStore );
+
+			const {
+				getBlockType,
+				getActiveBlockVariation,
+			} = select( blocksStore );
+
+			const blockName = getBlockName( clientId );
+			const blockType = getBlockType( blockName );
+			if ( ! blockType ) {
+				return null;
+			}
+
+			const attributes = getBlockAttributes( clientId );
+			const match = getActiveBlockVariation( blockName, attributes );
+			return match?.title || attributes?.callback;
+		},
+		[ clientId ]
+	);
+
 	const blockProps = useBlockProps();
 	const innerBlockProps = useInnerBlocksProps();
 
 	const conditionLabel = reverseCondition
 		? __( 'Show when not', 'omniform' )
 		: __( 'Show when', 'omniform' );
-
 	return (
 		<>
 			<BlockControls>
@@ -43,18 +74,7 @@ const Edit = ( {
 			</BlockControls>
 			<div { ...blockProps }>
 				<div className="condition-label">
-					{ conditionLabel }
-					<RichText
-						identifier="callback"
-						placeholder={ __( 'Enter condition callback', 'omniform' ) }
-						value={ callback || '' }
-						onChange={ ( newCallback ) => {
-							setAttributes( { callback: newCallback } );
-						} }
-						withoutInteractiveFormatting
-						allowedFormats={ [] }
-						disableLineBreaks
-					/>
+					{ conditionLabel + ' ' + blockTitle.toLowerCase() }
 				</div>
 				<div { ...innerBlockProps } />
 			</div>
