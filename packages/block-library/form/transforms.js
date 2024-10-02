@@ -122,9 +122,7 @@ const transforms = {
 		{
 			type: 'block',
 			blocks: [ 'core/post-comments-form' ],
-			transform: ( {
-				...attributes
-			} ) => {
+			transform: ( attributes ) => {
 				return createBlock( 'omniform/form',
 					{
 						form_type: 'custom',
@@ -140,6 +138,8 @@ const transforms = {
 								layout: {
 									type: 'default',
 								},
+								style: attributes?.style,
+								fontSize: attributes?.fontSize,
 							},
 							[
 								createBlock( 'core/group',
