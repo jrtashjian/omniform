@@ -10,7 +10,7 @@ import json from './block.json';
 import Edit from './edit';
 import Save from './save';
 import variations from './variations';
-import { label as iconLabel } from '../shared/icons';
+import { conditionalGroup as iconConditionalGroup } from '../shared/icons';
 
 import './index.scss';
 
@@ -19,6 +19,6 @@ const { name } = json;
 registerBlockType( name, {
 	edit: Edit,
 	save: Save,
-	icon: { foreground: '#D92E83', src: iconLabel },
+	icon: { foreground: '#D92E83', src: iconConditionalGroup },
 	variations,
 } );

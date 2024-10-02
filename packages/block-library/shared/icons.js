@@ -146,6 +146,12 @@ export const fieldGroup = (
 	</SVG>
 );
 
+export const conditionalGroup = (
+	<SVG viewBox="0 0 24 24">
+		<Path d="m14.4 20.038-1.4-1.4 2.6-2.6-2.6-2.6 1.4-1.4 2.6 2.6 2.6-2.6 1.4 1.4-2.6 2.6 2.6 2.6-1.4 1.4-2.6-2.6-2.6 2.6Zm1.975-9-3.55-3.55 1.4-1.4 2.125 2.124 4.25-4.25L22 5.387l-5.625 5.65ZM2 17.038v-2h9v2H2Zm0-8v-2h9v2H2Z" />
+	</SVG>
+);
+
 export const Button = (
 	<SVG viewBox="0 0 24 24">
 		<Path fill="#D92E83" d="M17 11H7v2h10v-2Z" />
