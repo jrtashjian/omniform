@@ -27,20 +27,21 @@
 
 @mixin focus-styles {
 	box-shadow: none;
-	outline: 0 solid transparent;
 	outline-offset: -2px;
+	outline-style: solid;
+	outline-width: 0;
 
 	&,
 	&::before {
 		transition-duration: 0.1s;
-		transition-property: background-color, border-color, box-shadow, color, opacity, outline, outline-offset;
+		transition-property: background-color, border-color, box-shadow, color, opacity, outline, outline-color, outline-offset, outline-style, outline-width;
 		transition-timing-function: ease-in-out;
 	}
 
 	&:focus,
 	&:focus-visible {
-		outline: 2px solid currentcolor;
 		outline-offset: 2px;
+		outline-width: 2px;
 	}
 
 	&:not(.has-custom-border):focus {
