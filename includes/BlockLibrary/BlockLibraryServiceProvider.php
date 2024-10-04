@@ -293,7 +293,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 				'fontSize'   => 'inherit',
 				'lineHeight' => 'inherit',
 			),
-			'css'        => 'flex-grow:1;',
+			'css'        => '&:is(:focus, :focus-visible) { outline-color:currentColor; }',
 		);
 
 		return array(
@@ -374,19 +374,64 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 	 */
 	public function global_styles_for_twentytwentyfour() {
 		$input_styles = array(
-			'border'  => array(
+			'border'     => array(
 				'radius' => '0.33em',
 				'color'  => 'var(--wp--preset--color--contrast-2)',
 			),
-			'color'   => array(
+			'color'      => array(
 				'background' => 'var(--wp--preset--color--base-2)',
+			),
+			'spacing'    => array(
+				'padding' => array(
+					'top'    => 'calc(.667em + 2px)',
+					'bottom' => 'calc(.667em + 2px)',
+					'left'   => 'calc(.667em + 2px)',
+					'right'  => 'calc(.667em + 2px)',
+				),
+			),
+			'typography' => array(
+				'fontFamily' => 'var(--wp--preset--font-family--body)',
+				'fontSize'   => 'var(--wp--preset--font-size--medium)',
+				'lineHeight' => 'normal',
+			),
+		);
+
+		return array(
+			'omniform/field'    => array(
+				'spacing' => array(
+					'blockGap' => '0.25em',
+				),
+			),
+			'omniform/input'    => $input_styles,
+			'omniform/select'   => $input_styles,
+			'omniform/textarea' => $input_styles,
+			'omniform/button'   => array(
+				'css' => '&:is(:focus, :focus-visible) { outline-color:var(--wp--preset--color--contrast); }',
+			),
+		);
+	}
+
+	/**
+	 * Get global styles for the Kanso theme.
+	 *
+	 * @return array
+	 */
+	public function global_styles_for_kanso() {
+		$input_styles = array(
+			'border'  => array(
+				'radius' => 'var(--wp--preset--spacing--10)',
+				'color'  => 'var(--wp--preset--color--theme-4)',
+			),
+			'color'   => array(
+				'text'       => 'var(--wp--preset--color--theme-6)',
+				'background' => 'color-mix(in srgb, var(--wp--preset--color--theme-1) 98%, var(--wp--preset--color--theme-6) 2%)',
 			),
 			'spacing' => array(
 				'padding' => array(
 					'top'    => '8px',
 					'bottom' => '8px',
-					'left'   => '8px',
-					'right'  => '8px',
+					'left'   => '12px',
+					'right'  => '12px',
 				),
 			),
 		);
@@ -396,7 +441,43 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 			'omniform/select'   => $input_styles,
 			'omniform/textarea' => $input_styles,
 			'omniform/button'   => array(
-				'css' => 'outline-color:var(--wp--preset--color--contrast);',
+				'css' => '&:is(:focus, :focus-visible) { outline-color:var(--wp--preset--color--theme-4); }',
+			),
+		);
+	}
+
+	/**
+	 * Get global styles for the Ollie theme.
+	 *
+	 * @return array
+	 */
+	public function global_styles_for_ollie() {
+		$input_styles = array(
+			'border'  => array(
+				'radius' => '5px',
+				'color'  => 'var(--wp--preset--color--main-accent)',
+			),
+			'color'   => array(
+				'text'       => 'var(--wp--preset--color--main)',
+				'background' => 'var(--wp--preset--color--base)',
+			),
+			'spacing' => array(
+				'padding' => array(
+					'top'    => '.5em',
+					'bottom' => '.5em',
+					'left'   => '1em',
+					'right'  => '1em',
+				),
+			),
+			'css'     => '&:is(:focus, :focus-visible) { outline-color:var(--wp--preset--color--primary); }',
+		);
+
+		return array(
+			'omniform/input'    => $input_styles,
+			'omniform/select'   => $input_styles,
+			'omniform/textarea' => $input_styles,
+			'omniform/button'   => array(
+				'css' => '&:is(:focus, :focus-visible) { outline-color:var(--wp--preset--color--primary); }',
 			),
 		);
 	}
