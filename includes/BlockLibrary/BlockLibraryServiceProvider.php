@@ -9,8 +9,8 @@ namespace OmniForm\BlockLibrary;
 
 use OmniForm\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use OmniForm\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
-use OmniForm\FormTypes\FormTypesManager;
 use WP_Query;
+use WP_Theme_JSON_Data;
 
 /**
  * The BlockLibraryServiceProvider class.
@@ -47,6 +47,8 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 
 		add_filter( 'block_categories_all', array( $this, 'register_categories' ) );
 		add_filter( 'block_type_metadata_settings', array( $this, 'update_layout_support' ), 10, 2 );
+
+		add_filter( 'wp_theme_json_data_blocks', array( $this, 'register_global_block_styles' ) );
 	}
 
 	/**
@@ -264,5 +266,81 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 		}
 
 		return $settings;
+	}
+
+	/**
+	 * Register global block styles.
+	 *
+	 * @param WP_Theme_JSON_Data $theme_json The theme JSON data.
+	 *
+	 * @return WP_Theme_JSON_Data
+	 */
+	public function register_global_block_styles( WP_Theme_JSON_Data $theme_json ) {
+
+		$input_styles = array(
+			'border'     => array(
+				'radius' => '0.25em',
+				'width'  => '1px',
+				'style'  => 'solid',
+			),
+			'spacing'    => array(
+				'padding' => array(
+					'top'    => '0.5em',
+					'bottom' => '0.5em',
+					'left'   => '0.75em',
+					'right'  => '0.75em',
+				),
+			),
+			'typography' => array(
+				'fontFamily' => 'inherit',
+				'fontSize'   => 'inherit',
+				'lineHeight' => 'inherit',
+			),
+			'css'        => 'flex-grow:1;',
+		);
+
+		$new_data = array(
+			'version' => 3,
+			'styles'  => array(
+				'blocks' => array(
+					'omniform/field'    => array(
+						'spacing'    => array(
+							'blockGap' => '0.5em',
+						),
+						'css'        => 'flex-wrap:nowrap; flex-direction:column; align-items:stretch;',
+						'variations' => array(
+							'inline' => array(
+								'css' => 'flex-direction:row; align-items:center;',
+							),
+						),
+					),
+					'omniform/label'    => array(
+						'typography' => array(
+							'fontSize' => 'inherit',
+						),
+					),
+					'omniform/input'    => $input_styles,
+					'omniform/select'   => $input_styles,
+					'omniform/textarea' => array_merge_recursive(
+						$input_styles,
+						array(
+							'dimensions' => array(
+								'minHeight' => '230px',
+							),
+						),
+					),
+					'omniform/button'   => array(
+						'typography' => array(
+							'fontFamily'    => 'inherit',
+							'fontSize'      => 'inherit',
+							'lineHeight'    => 'inherit',
+							'letterSpacing' => 'inherit',
+						),
+					),
+				),
+			),
+		);
+
+		return $theme_json->update_with( $new_data );
 	}
 }
