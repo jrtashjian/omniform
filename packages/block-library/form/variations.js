@@ -40,17 +40,6 @@ const variations = [
 							fieldLabel: __( 'Search', 'omniform' ),
 							fieldName: 's',
 							isRequired: true,
-							style: {
-								layout: {
-									selfStretch: 'fill',
-									flexSize: null,
-								},
-							},
-							layout: {
-								type: 'flex',
-								orientation: 'horizontal',
-								justifyContent: 'space-between',
-							},
 						},
 						innerBlocks: [
 							{
@@ -58,12 +47,6 @@ const variations = [
 								attributes: {
 									fieldType: 'search',
 									fieldPlaceholder: '',
-									style: {
-										layout: {
-											selfStretch: 'fill',
-											flexSize: null,
-										},
-									},
 								},
 							},
 						],
@@ -73,12 +56,6 @@ const variations = [
 						attributes: {
 							buttonType: 'submit',
 							buttonLabel: 'Search',
-							style: {
-								layout: {
-									selfStretch: 'fit',
-									flexSize: null,
-								},
-							},
 						},
 					},
 				],
@@ -142,9 +119,6 @@ const variations = [
 						attributes: {
 							callback: '{{omniform_open_for_comments}}',
 							reverseCondition: false,
-							layout: {
-								type: 'default',
-							},
 						},
 						innerBlocks: [
 							{
@@ -152,9 +126,6 @@ const variations = [
 								attributes: {
 									callback: '{{is_user_logged_in}}',
 									reverseCondition: false,
-									layout: {
-										type: 'default',
-									},
 								},
 								innerBlocks: [
 									{
@@ -178,9 +149,6 @@ const variations = [
 								attributes: {
 									callback: '{{is_user_logged_in}}',
 									reverseCondition: true,
-									layout: {
-										type: 'default',
-									},
 								},
 								innerBlocks: [
 									{

@@ -22,10 +22,6 @@ const transforms = {
 						fieldType: 'search',
 						fieldPlaceholder: placeholder,
 						style: {
-							layout: {
-								selfStretch: 'fill',
-								flexSize: null,
-							},
 							border: attributes?.style?.border,
 						},
 						borderColor: attributes?.borderColor,
@@ -41,12 +37,6 @@ const transforms = {
 						{
 							fieldLabel: label || __( 'Search', 'omniform' ),
 							fieldName: 's',
-							style: {
-								layout: {
-									selfStretch: 'fill',
-									flexSize: null,
-								},
-							},
 							layout: showLabel ? {
 								type: 'flex',
 								orientation: 'vertical',
@@ -68,10 +58,6 @@ const transforms = {
 								buttonType: 'submit',
 								buttonLabel: buttonText || __( 'Search', 'omniform' ),
 								style: {
-									layout: {
-										selfStretch: 'fit',
-										flexSize: null,
-									},
 									border: attributes?.style?.border,
 									typography: attributes?.style?.typography,
 								},
@@ -175,18 +161,12 @@ const transforms = {
 									{
 										callback: '{{omniform_open_for_comments}}',
 										reverseCondition: false,
-										layout: {
-											type: 'default',
-										},
 									},
 									[
 										createBlock( 'omniform/conditional-group',
 											{
 												callback: '{{is_user_logged_in}}',
 												reverseCondition: false,
-												layout: {
-													type: 'default',
-												},
 											},
 											[
 												createBlock( 'core/paragraph', {
@@ -204,9 +184,6 @@ const transforms = {
 											{
 												callback: '{{is_user_logged_in}}',
 												reverseCondition: true,
-												layout: {
-													type: 'default',
-												},
 											},
 											[
 												createBlock( 'core/paragraph', {
@@ -224,11 +201,6 @@ const transforms = {
 												createBlock( 'omniform/label' ),
 												createBlock( 'omniform/textarea', {
 													fieldValue: '',
-													style: {
-														dimensions: {
-															minHeight: '230px',
-														},
-													},
 												} ),
 											]
 										),
@@ -288,16 +260,10 @@ const transforms = {
 													[
 														createBlock( 'omniform/field',
 															{
+																className: 'is-style-inline',
 																fieldLabel: __( 'Save my name, email, and website in this browser for the next time I comment.', 'omniform' ),
 																fieldName: 'wp-comment-cookies-consent',
 																isRequired: false,
-																layout: {
-																	type: 'flex',
-																	orientation: 'horizontal',
-																	justifyContent: 'left',
-																	flexWrap: 'nowrap',
-																	verticalAlignment: 'center',
-																},
 															},
 															[
 																createBlock( 'omniform/input', {

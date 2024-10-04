@@ -52,7 +52,6 @@ const inputTextExample = ( fieldType, fieldLabel ) => ( {
 const inputOptionExample = ( fieldType, fieldLabel ) => ( {
 	attributes: {
 		fieldLabel: fieldLabel || __( 'Field Label', 'omniform' ),
-		layout: { type: 'flex', orientation: 'horizontal', justifyContent: 'left' },
 	},
 	innerBlocks: [
 		{
@@ -137,7 +136,7 @@ const variations = [
 		description: __( 'A field for selecting multiple options or choices.', 'omniform' ),
 		keywords: [ 'input', 'box', 'multiple', 'choice' ],
 		attributes: {
-			layout: { type: 'flex', orientation: 'horizontal', justifyContent: 'left' },
+			className: 'is-style-inline',
 		},
 		example: inputOptionExample( 'checkbox', __( 'Checkbox', 'omniform' ) ),
 		innerBlocks: inputOptionExample( 'checkbox' ).innerBlocks,
@@ -150,7 +149,7 @@ const variations = [
 		description: __( 'A field in a group allowing for one selected choice.', 'omniform' ),
 		keywords: [ 'input', 'single', 'choice' ],
 		attributes: {
-			layout: { type: 'flex', orientation: 'horizontal', justifyContent: 'left' },
+			className: 'is-style-inline',
 		},
 		example: inputOptionExample( 'radio', __( 'Radio', 'omniform' ) ),
 		innerBlocks: inputOptionExample( 'radio' ).innerBlocks,
@@ -228,18 +227,12 @@ const variations = [
 			},
 			innerBlocks: [
 				{ name: 'omniform/label' },
-				{
-					name: 'omniform/textarea',
-					attributes: { style: { dimensions: { minHeight: '230px' } } },
-				},
+				{ name: 'omniform/textarea' },
 			],
 		},
 		innerBlocks: [
 			{ name: 'omniform/label' },
-			{
-				name: 'omniform/textarea',
-				attributes: { style: { dimensions: { minHeight: '230px' } } },
-			},
+			{ name: 'omniform/textarea' },
 		],
 	},
 	{

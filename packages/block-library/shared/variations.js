@@ -8,17 +8,13 @@ export const createInputField = ( fieldLabel, type, isRequired, extra = {} ) => 
 	const labelBlock = { name: 'omniform/label' };
 	const inputBlock = { name: 'omniform/input', attributes: { fieldType: type || 'text', fieldValue: extra?.fieldValue || '' } };
 
-	const layout = [ 'checkbox', 'radio' ].includes( type )
-		? { type: 'flex', orientation: 'horizontal', justifyContent: 'left', flexWrap: 'nowrap', verticalAlignment: 'center' }
-		: undefined;
-
 	return ( {
 		name: 'omniform/field',
 		attributes: {
+			className: [ 'checkbox', 'radio' ].includes( type ) ? 'is-style-inline' : '',
 			fieldLabel,
 			fieldName: extra?.fieldName || cleanFieldName( fieldLabel ).toLowerCase(),
 			isRequired,
-			layout,
 		},
 		innerBlocks: [ 'checkbox', 'radio' ].includes( type )
 			? [ inputBlock, labelBlock ]
