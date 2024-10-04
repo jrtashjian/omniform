@@ -11,3 +11,8 @@
 		margin-block-start: 0;
 	}
 }
+
+// Fix the width of select fields in the previews
+.block-editor-block-preview__content-iframe .wp-block-omniform-select {
+	min-width: 200px;
+}

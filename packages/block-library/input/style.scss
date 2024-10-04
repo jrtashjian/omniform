@@ -9,6 +9,7 @@
 	&[type="radio"] {
 		position: relative;
 		flex-shrink: 0;
+		flex-grow: unset;
 		width: 1em;
 		height: 1em;
 		padding: 0;
@@ -53,7 +54,7 @@
 	}
 }
 
-// Fix the width of input fields in the Style Book.
-.edit-site-style-book__example .wp-block-omniform-input.rich-text {
-	width: 100%;
+// Fix the width of input fields in the previews
+.block-editor-block-preview__content-iframe .wp-block-omniform-input:not([type="checkbox"]):not([type="radio"]) {
+	min-width: 200px;
 }

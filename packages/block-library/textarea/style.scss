@@ -4,3 +4,8 @@
 
 	@include field-control;
 }
+
+// Fix the width of textarea fields in the previews
+.block-editor-block-preview__content-iframe .wp-block-omniform-textarea {
+	min-width: 200px;
+}

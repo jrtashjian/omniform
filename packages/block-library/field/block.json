@@ -37,10 +37,13 @@
 			}
 		},
 		"__experimentalLayout": {
-			"allowEditing": true,
-			"allowInheriting": false,
+			"allowEditing": false,
 			"allowSizingOnChildren": true,
 			"default": {
+				"type": "flex"
+			}
+		}
+	},
 	"styles": [
 		{
 			"name": "stacked",
@@ -50,7 +53,7 @@
 		{
 			"name": "inline",
 			"label": "Inline"
-			}
+		}
 	],
 	"usesContext": [
 		"postId",

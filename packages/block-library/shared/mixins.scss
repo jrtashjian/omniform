@@ -58,18 +58,11 @@
 @mixin field-control {
 	appearance: none;
 	background-color: transparent;
-	border-radius: 0.25em;
-	border-width: 1px;
-	border-style: solid;
 	border-color: currentcolor;
 	box-sizing: border-box;
 	display: block;
-	font-size: inherit;
-	font-family: inherit;
-	line-height: inherit;
 	max-width: none;
 	min-height: auto;
-	padding: 0.5em 0.75em;
 	margin: 0;
 	color: currentcolor;
 
