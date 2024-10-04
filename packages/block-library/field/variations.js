@@ -70,6 +70,7 @@ const inputOptionExample = ( fieldType, fieldLabel ) => ( {
 const variations = [
 	{
 		name: 'field-text',
+		category: 'omniform-standard-fields',
 		icon: { src: fieldInput },
 		title: __( 'Text', 'omniform' ),
 		description: __( 'A field for brief text entry.', 'omniform' ),
@@ -80,6 +81,7 @@ const variations = [
 	},
 	{
 		name: 'field-email',
+		category: 'omniform-standard-fields',
 		icon: { src: fieldEmail },
 		title: __( 'Email', 'omniform' ),
 		description: __( 'A field for collecting an email address.', 'omniform' ),
@@ -89,6 +91,7 @@ const variations = [
 	},
 	{
 		name: 'field-url',
+		category: 'omniform-standard-fields',
 		icon: { src: fieldUrl },
 		title: __( 'URL', 'omniform' ),
 		description: __( 'A field for collecting a website address or URL.', 'omniform' ),
@@ -98,6 +101,7 @@ const variations = [
 	},
 	{
 		name: 'field-number',
+		category: 'omniform-standard-fields',
 		icon: { src: fieldNumber },
 		title: __( 'Number', 'omniform' ),
 		description: __( 'A field for collecting a numerical value.', 'omniform' ),
@@ -107,6 +111,7 @@ const variations = [
 	},
 	{
 		name: 'field-search',
+		category: 'omniform-standard-fields',
 		icon: { src: fieldSearch },
 		title: __( 'Search', 'omniform' ),
 		description: __( 'Enter keywords to search for information.', 'omniform' ),
@@ -116,6 +121,7 @@ const variations = [
 	},
 	{
 		name: 'field-password',
+		category: 'omniform-standard-fields',
 		icon: { src: fieldPassword },
 		title: __( 'Password', 'omniform' ),
 		description: __( 'A field for secure password entry.', 'omniform' ),
@@ -125,6 +131,7 @@ const variations = [
 	},
 	{
 		name: 'field-checkbox',
+		category: 'omniform-standard-fields',
 		icon: { src: fieldCheckbox },
 		title: __( 'Checkbox', 'omniform' ),
 		description: __( 'A field for selecting multiple options or choices.', 'omniform' ),
@@ -137,6 +144,7 @@ const variations = [
 	},
 	{
 		name: 'field-radio',
+		category: 'omniform-standard-fields',
 		icon: { src: fieldRadio },
 		title: __( 'Radio', 'omniform' ),
 		description: __( 'A field in a group allowing for one selected choice.', 'omniform' ),
@@ -149,6 +157,7 @@ const variations = [
 	},
 	{
 		name: 'field-date',
+		category: 'omniform-standard-fields',
 		icon: { src: fieldDate },
 		title: __( 'Date', 'omniform' ),
 		description: __( 'A field for collecting a formatted date.', 'omniform' ),
@@ -158,6 +167,7 @@ const variations = [
 	},
 	{
 		name: 'field-datetime-local',
+		category: 'omniform-standard-fields',
 		icon: { src: fieldDate },
 		title: __( 'Datetime', 'omniform' ),
 		description: __( 'A field for collecting a localized date and time.', 'omniform' ),
@@ -167,6 +177,7 @@ const variations = [
 	},
 	{
 		name: 'field-month',
+		category: 'omniform-standard-fields',
 		icon: { src: fieldDate },
 		title: __( 'Month', 'omniform' ),
 		description: __( 'A field for collecting a month formatted date.', 'omniform' ),
@@ -176,6 +187,7 @@ const variations = [
 	},
 	{
 		name: 'field-tel',
+		category: 'omniform-standard-fields',
 		icon: { src: fieldTel },
 		title: __( 'Phone', 'omniform' ),
 		description: __( 'A field for collecting a telephone number.', 'omniform' ),
@@ -185,6 +197,7 @@ const variations = [
 	},
 	{
 		name: 'field-time',
+		category: 'omniform-standard-fields',
 		icon: { src: fieldTime },
 		title: __( 'Time', 'omniform' ),
 		description: __( 'A field for collecting a formatted time.', 'omniform' ),
@@ -194,6 +207,7 @@ const variations = [
 	},
 	{
 		name: 'field-week',
+		category: 'omniform-standard-fields',
 		icon: { src: fieldDate },
 		title: __( 'Week', 'omniform' ),
 		description: __( 'A field for collecting a week formatted date.', 'omniform' ),
@@ -203,6 +217,7 @@ const variations = [
 	},
 	{
 		name: 'field-textarea',
+		category: 'omniform-standard-fields',
 		icon: { src: fieldTextarea },
 		title: __( 'Textarea', 'omniform' ),
 		description: __( 'A field for long-form text responses.', 'omniform' ),
@@ -229,6 +244,7 @@ const variations = [
 	},
 	{
 		name: 'field-select',
+		category: 'omniform-standard-fields',
 		icon: { src: fieldSelect },
 		title: __( 'Select', 'omniform' ),
 		description: __( 'A field offering multiple options for a single selection.', 'omniform' ),
@@ -249,6 +265,7 @@ const variations = [
 	},
 	{
 		name: 'field-select-multiple',
+		category: 'omniform-standard-fields',
 		icon: { src: fieldSelect },
 		title: __( 'Select Multiple', 'omniform' ),
 		description: __( 'A field offering multiple options for multiple selections.', 'omniform' ),

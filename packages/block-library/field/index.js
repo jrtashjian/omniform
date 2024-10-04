@@ -21,6 +21,15 @@ registerBlockType( name, {
 	edit: Edit,
 	save: Save,
 	icon: { foreground: '#D92E83', src: iconField },
+	example: {
+		attributes: {
+			fieldLabel: 'Field Label',
+		},
+		innerBlocks: [
+			{ name: 'omniform/label' },
+			{ name: 'omniform/input' },
+		],
+	},
 	variations,
 	// Get block name from the option value.
 	__experimentalLabel: ( { fieldLabel } ) => fieldLabel && decodeEntities( fieldLabel ),
