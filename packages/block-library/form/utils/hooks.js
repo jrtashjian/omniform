@@ -149,7 +149,7 @@ export function useStandaloneFormSettings( blockObject ) {
 	 * @param {string} key Setting key.
 	 * @return {*} Setting value.
 	 */
-	const getSetting = ( key ) => attributes[ key ];
+	const getSetting = ( key ) => attributes?.[ key ];
 
 	/**
 	 * Sets the setting value.
