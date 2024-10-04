@@ -17,7 +17,5 @@ const { name } = json;
 registerBlockType( name, {
 	edit: Edit,
 	icon: { foreground: '#D92E83', src: fieldTextarea },
-	example: {
-		attributes: { style: { dimensions: { minHeight: '230px' } } },
-	},
+	example: {},
 } );

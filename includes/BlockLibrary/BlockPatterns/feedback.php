@@ -84,7 +84,7 @@ return array(
 		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'How could we improve?', 'omniform' ) . '","fieldName":"' . esc_attr__( 'how-could-we-improve', 'omniform' ) . '"} -->
 		<!-- wp:omniform/label /-->
 
-		<!-- wp:omniform/textarea {"style":{"dimensions":{"minHeight":"230px"}}} /-->
+		<!-- wp:omniform/textarea /-->
 		<!-- /wp:omniform/field -->
 
 		<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap"}} -->

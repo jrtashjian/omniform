@@ -48,7 +48,7 @@ export const createSelectBlock = ( fieldLabel, options, isRequired, extra = {} )
 
 export const createTextareaField = ( fieldLabel, isRequired, extra = {} ) => {
 	const labelBlock = { name: 'omniform/label' };
-	const textareaBlock = { name: 'omniform/textarea', attributes: { fieldValue: extra?.fieldValue || '', style: { dimensions: { minHeight: '230px' } } } };
+	const textareaBlock = { name: 'omniform/textarea', attributes: { fieldValue: extra?.fieldValue || '' } };
 
 	return ( {
 		name: 'omniform/field',

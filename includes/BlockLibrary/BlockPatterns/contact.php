@@ -26,7 +26,7 @@ return array(
 		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'Your message', 'omniform' ) . '","fieldName":"' . esc_attr__( 'your-message', 'omniform' ) . '"} -->
 		<!-- wp:omniform/label /-->
 
-		<!-- wp:omniform/textarea {"style":{"dimensions":{"minHeight":"230px"}}} /-->
+		<!-- wp:omniform/textarea /-->
 		<!-- /wp:omniform/field -->
 
 		<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap"}} -->
