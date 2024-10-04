@@ -41,12 +41,17 @@
 			"allowInheriting": false,
 			"allowSizingOnChildren": true,
 			"default": {
-				"type": "flex",
-				"orientation": "vertical",
-				"justifyContent": "stretch"
+	"styles": [
+		{
+			"name": "stacked",
+			"label": "Stacked",
+			"isDefault": true
+		},
+		{
+			"name": "inline",
+			"label": "Inline"
 			}
-		}
-	},
+	],
 	"usesContext": [
 		"postId",
 		"postType",
