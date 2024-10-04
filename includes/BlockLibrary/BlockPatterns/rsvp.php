@@ -27,13 +27,13 @@ return array(
 
 		<!-- wp:omniform/fieldset {"fieldLabel":"' . esc_html__( 'Attending?', 'omniform' ) . '","fieldName":"' . esc_html__( 'attending', 'omniform' ) . '"} -->
 		<!-- wp:group {"style":{"spacing":{"padding":{"top":"0.75em","bottom":"0.75em"}}},"layout":{"type":"flex","flexWrap":"nowrap"}} -->
-		<div class="wp-block-group" style="padding-top:0.75em;padding-bottom:0.75em"><!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'Joyfully accepts', 'omniform' ) . '","fieldName":"' . esc_html__( 'joyfully-accepts', 'omniform' ) . '","layout":{"type":"flex","orientation":"horizontal","justifyContent":"left"}} -->
+		<div class="wp-block-group" style="padding-top:0.75em;padding-bottom:0.75em"><!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'Joyfully accepts', 'omniform' ) . '","fieldName":"' . esc_html__( 'joyfully-accepts', 'omniform' ) . '","className":"is-style-inline"} -->
 		<!-- wp:omniform/input {"fieldType":"radio"} /-->
 
 		<!-- wp:omniform/label /-->
 		<!-- /wp:omniform/field -->
 
-		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'Regretfully declines', 'omniform' ) . '","fieldName":"' . esc_html__( 'regretfully-declines', 'omniform' ) . '","layout":{"type":"flex","orientation":"horizontal","justifyContent":"left"}} -->
+		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'Regretfully declines', 'omniform' ) . '","fieldName":"' . esc_html__( 'regretfully-declines', 'omniform' ) . '","className":"is-style-inline"} -->
 		<!-- wp:omniform/input {"fieldType":"radio"} /-->
 
 		<!-- wp:omniform/label /-->

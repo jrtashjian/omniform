@@ -50,31 +50,31 @@ return array(
 		<!-- /wp:omniform/field -->
 
 		<!-- wp:omniform/fieldset {"fieldLabel":"' . esc_html__( 'Please rate our website', 'omniform' ) . '","fieldName":"' . esc_attr__( 'please-rate-our-website', 'omniform' ) . '","style":{"spacing":{"blockGap":"0.75em"}}} -->
-		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( '1 - Very Bad', 'omniform' ) . '","fieldName":"' . esc_attr__( '1-very-bad', 'omniform' ) . '","layout":{"type":"flex","orientation":"horizontal","justifyContent":"left"}} -->
+		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( '1 - Very Bad', 'omniform' ) . '","fieldName":"' . esc_attr__( '1-very-bad', 'omniform' ) . '","className":"is-style-inline"} -->
 		<!-- wp:omniform/input {"fieldType":"radio"} /-->
 
 		<!-- wp:omniform/label /-->
 		<!-- /wp:omniform/field -->
 
-		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( '2 - Poor', 'omniform' ) . '","fieldName":"' . esc_attr__( '2-poor', 'omniform' ) . '","layout":{"type":"flex","orientation":"horizontal","justifyContent":"left"}} -->
+		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( '2 - Poor', 'omniform' ) . '","fieldName":"' . esc_attr__( '2-poor', 'omniform' ) . '","className":"is-style-inline"} -->
 		<!-- wp:omniform/input {"fieldType":"radio"} /-->
 
 		<!-- wp:omniform/label /-->
 		<!-- /wp:omniform/field -->
 
-		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( '3 - Average', 'omniform' ) . '","fieldName":"' . esc_attr__( '3-average', 'omniform' ) . '","layout":{"type":"flex","orientation":"horizontal","justifyContent":"left"}} -->
+		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( '3 - Average', 'omniform' ) . '","fieldName":"' . esc_attr__( '3-average', 'omniform' ) . '","className":"is-style-inline"} -->
 		<!-- wp:omniform/input {"fieldType":"radio"} /-->
 
 		<!-- wp:omniform/label /-->
 		<!-- /wp:omniform/field -->
 
-		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( '4 - Good', 'omniform' ) . '","fieldName":"' . esc_attr__( '4-good', 'omniform' ) . '","layout":{"type":"flex","orientation":"horizontal","justifyContent":"left"}} -->
+		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( '4 - Good', 'omniform' ) . '","fieldName":"' . esc_attr__( '4-good', 'omniform' ) . '","className":"is-style-inline"} -->
 		<!-- wp:omniform/input {"fieldType":"radio"} /-->
 
 		<!-- wp:omniform/label /-->
 		<!-- /wp:omniform/field -->
 
-		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( '5 - Excellent', 'omniform' ) . '","fieldName":"' . esc_attr__( '5-excellent', 'omniform' ) . '","layout":{"type":"flex","orientation":"horizontal","justifyContent":"left"}} -->
+		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( '5 - Excellent', 'omniform' ) . '","fieldName":"' . esc_attr__( '5-excellent', 'omniform' ) . '","className":"is-style-inline"} -->
 		<!-- wp:omniform/input {"fieldType":"radio"} /-->
 
 		<!-- wp:omniform/label /-->

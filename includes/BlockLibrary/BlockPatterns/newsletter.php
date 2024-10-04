@@ -27,7 +27,7 @@ return array(
 		<!-- /wp:columns -->
 
 		<!-- wp:group {"style":{"spacing":{"blockGap":"1em"}},"layout":{"type":"flex","flexWrap":"wrap","verticalAlignment":"center"}} -->
-		<div class="wp-block-group"><!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'Your email address', 'omniform' ) . '","fieldName":"' . esc_attr__( 'your-email-address', 'omniform' ) . '","isRequired":true,"style":{"layout":{"selfStretch":"fill"}},"layout":{"type":"flex","orientation":"vertical","justifyContent":"stretch","verticalAlignment":"center"}} -->
+		<div class="wp-block-group"><!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'Your email address', 'omniform' ) . '","fieldName":"' . esc_attr__( 'your-email-address', 'omniform' ) . '","isRequired":true} -->
 		<!-- wp:omniform/input {"fieldType":"email","fieldPlaceholder":"' . esc_attr__( 'Your email address', 'omniform' ) . '","style":{"spacing":{"padding":{"top":"0.72em","right":"0.72em","bottom":"0.72em","left":"0.72em"}}}} /-->
 		<!-- /wp:omniform/field -->
 

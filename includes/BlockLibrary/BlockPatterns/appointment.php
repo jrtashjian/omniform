@@ -19,13 +19,13 @@ return array(
 
 		<!-- wp:omniform/fieldset {"fieldLabel":"' . esc_html__( 'Your Name', 'omniform' ) . '","fieldName":"' . esc_attr__( 'your-name', 'omniform' ) . '"} -->
 		<!-- wp:group {"style":{"spacing":{}},"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between","verticalAlignment":"center"}} -->
-		<div class="wp-block-group"><!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'First Name', 'omniform' ) . '","fieldName":"' . esc_attr__( 'first-name', 'omniform' ) . '","style":{"layout":{"selfStretch":"fill","flexSize":null}}} -->
+		<div class="wp-block-group"><!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'First Name', 'omniform' ) . '","fieldName":"' . esc_attr__( 'first-name', 'omniform' ) . '"} -->
 		<!-- wp:omniform/label /-->
 
 		<!-- wp:omniform/input /-->
 		<!-- /wp:omniform/field -->
 
-		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'Last Name', 'omniform' ) . '","fieldName":"' . esc_attr__( 'last-name', 'omniform' ) . '","style":{"layout":{"selfStretch":"fill","flexSize":null}}} -->
+		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'Last Name', 'omniform' ) . '","fieldName":"' . esc_attr__( 'last-name', 'omniform' ) . '"} -->
 		<!-- wp:omniform/label /-->
 
 		<!-- wp:omniform/input /-->
@@ -46,13 +46,13 @@ return array(
 		<!-- /wp:omniform/field -->
 
 		<!-- wp:group {"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"}} -->
-		<div class="wp-block-group"><!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'Preferred Date', 'omniform' ) . '","fieldName":"' . esc_attr__( 'preferred-date', 'omniform' ) . '","style":{"layout":{"selfStretch":"fill","flexSize":null}}} -->
+		<div class="wp-block-group"><!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'Preferred Date', 'omniform' ) . '","fieldName":"' . esc_attr__( 'preferred-date', 'omniform' ) . '"} -->
 		<!-- wp:omniform/label /-->
 
 		<!-- wp:omniform/input {"fieldType":"date"} /-->
 		<!-- /wp:omniform/field -->
 
-		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'Preferred Time', 'omniform' ) . '","fieldName":"' . esc_attr__( 'preferred-time', 'omniform' ) . '","style":{"layout":{"selfStretch":"fill","flexSize":null}}} -->
+		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'Preferred Time', 'omniform' ) . '","fieldName":"' . esc_attr__( 'preferred-time', 'omniform' ) . '"} -->
 		<!-- wp:omniform/label /-->
 
 		<!-- wp:omniform/select -->
