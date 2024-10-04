@@ -269,14 +269,11 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 	}
 
 	/**
-	 * Register global block styles.
+	 * Get the default global styles.
 	 *
-	 * @param WP_Theme_JSON_Data $theme_json The theme JSON data.
-	 *
-	 * @return WP_Theme_JSON_Data
+	 * @return array
 	 */
-	public function register_global_block_styles( WP_Theme_JSON_Data $theme_json ) {
-
+	private function default_global_styles() {
 		$input_styles = array(
 			'border'     => array(
 				'radius' => '0.25em',
@@ -299,48 +296,108 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 			'css'        => 'flex-grow:1;',
 		);
 
-		$new_data = array(
-			'version' => 3,
-			'styles'  => array(
-				'blocks' => array(
-					'omniform/field'    => array(
-						'spacing'    => array(
-							'blockGap' => '0.5em',
-						),
-						'css'        => 'flex-wrap:nowrap; flex-direction:column; align-items:stretch;',
-						'variations' => array(
-							'inline' => array(
-								'css' => 'flex-direction:row; align-items:center;',
-							),
-						),
+		return array(
+			'omniform/field'    => array(
+				'spacing'    => array(
+					'blockGap' => '0.5em',
+				),
+				'css'        => 'flex-wrap:nowrap; flex-direction:column; align-items:stretch;',
+				'variations' => array(
+					'inline' => array(
+						'css' => 'flex-direction:row; align-items:center;',
 					),
-					'omniform/label'    => array(
-						'typography' => array(
-							'fontSize' => 'inherit',
-						),
-					),
-					'omniform/input'    => $input_styles,
-					'omniform/select'   => $input_styles,
-					'omniform/textarea' => array_merge_recursive(
-						$input_styles,
-						array(
-							'dimensions' => array(
-								'minHeight' => '230px',
-							),
-						),
-					),
-					'omniform/button'   => array(
-						'typography' => array(
-							'fontFamily'    => 'inherit',
-							'fontSize'      => 'inherit',
-							'lineHeight'    => 'inherit',
-							'letterSpacing' => 'inherit',
-						),
+				),
+			),
+			'omniform/label'    => array(
+				'typography' => array(
+					'fontSize' => 'inherit',
+				),
+			),
+			'omniform/input'    => $input_styles,
+			'omniform/select'   => $input_styles,
+			'omniform/textarea' => array_merge_recursive(
+				$input_styles,
+				array(
+					'dimensions' => array(
+						'minHeight' => '230px',
 					),
 				),
 			),
 		);
+	}
 
-		return $theme_json->update_with( $new_data );
+	/**
+	 * Get global styles for the current theme.
+	 *
+	 * @return array
+	 */
+	private function global_styles_for_current_theme() {
+		$theme = wp_get_theme();
+
+		$theme_slug = $theme->get_stylesheet();
+		$method     = 'global_styles_for_' . $theme_slug;
+
+		if ( method_exists( $this, $method ) ) {
+			return $this->$method();
+		}
+
+		return array();
+	}
+
+	/**
+	 * Register global block styles.
+	 *
+	 * @param WP_Theme_JSON_Data $theme_json The theme JSON data.
+	 *
+	 * @return WP_Theme_JSON_Data
+	 */
+	public function register_global_block_styles( WP_Theme_JSON_Data $theme_json ) {
+		$data = $theme_json->update_with(
+			array(
+				'version' => 3,
+				'styles'  => array(
+					'blocks' => array_replace_recursive(
+						$this->default_global_styles(),
+						$this->global_styles_for_current_theme(),
+					),
+				),
+			)
+		);
+
+		return $data;
+	}
+
+	/**
+	 * Get global styles for the Twenty Twenty Four theme.
+	 *
+	 * @return array
+	 */
+	public function global_styles_for_twentytwentyfour() {
+		$input_styles = array(
+			'border'  => array(
+				'radius' => '0.33em',
+				'color'  => 'var(--wp--preset--color--contrast-2)',
+			),
+			'color'   => array(
+				'background' => 'var(--wp--preset--color--base-2)',
+			),
+			'spacing' => array(
+				'padding' => array(
+					'top'    => '8px',
+					'bottom' => '8px',
+					'left'   => '8px',
+					'right'  => '8px',
+				),
+			),
+		);
+
+		return array(
+			'omniform/input'    => $input_styles,
+			'omniform/select'   => $input_styles,
+			'omniform/textarea' => $input_styles,
+			'omniform/button'   => array(
+				'css' => 'outline-color:var(--wp--preset--color--contrast);',
+			),
+		);
 	}
 }
