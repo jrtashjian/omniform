@@ -38,8 +38,11 @@
 		transition-timing-function: ease-in-out;
 	}
 
-	&:focus,
-	&:focus-visible {
+	&:not(:focus, :focus-visible) {
+		outline-color: transparent;
+	}
+
+	&:is(:focus, :focus-visible) {
 		outline-offset: 2px;
 		outline-width: 2px;
 	}
@@ -62,6 +65,7 @@
 	border-color: currentcolor;
 	box-sizing: border-box;
 	display: block;
+	flex-grow: 1;
 	max-width: none;
 	min-height: auto;
 	margin: 0;
