@@ -23,7 +23,12 @@ class Field extends BaseBlock {
 
 		return sprintf(
 			'<div %s>%s</div>',
-			get_block_wrapper_attributes(),
+			get_block_wrapper_attributes(
+				array(
+					// Bug in Core: https://github.com/WordPress/WordPress/blob/b9bdf794320b132e6a4ce1538e988e6d31be33b0/wp-includes/block-supports/layout.php#L817-L819/.
+					'class' => 'wp-block-omniform-field-is-layout-flex',
+				)
+			),
 			$this->content
 		);
 	}
