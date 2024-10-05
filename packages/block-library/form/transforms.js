@@ -8,6 +8,99 @@ const transforms = {
 	from: [
 		{
 			type: 'block',
+			blocks: [ 'core/group' ],
+			isMatch: ( attributes ) => attributes?.metadata?.name === 'Sample Form',
+			transform: ( attributes, innerBlocks ) => {
+				const transformBlocks = ( blocks ) => {
+					return blocks.reduce( ( transformedBlocks, block ) => {
+						// Recursively transform inner blocks.
+						if ( block.innerBlocks && block.innerBlocks.length > 0 ) {
+							block.innerBlocks = transformBlocks( block.innerBlocks );
+						}
+
+						// Convert "Sample Field" core/group blocks to omniform/field blocks.
+						if (
+							block.name === 'core/group' &&
+							block.attributes?.metadata?.name === 'Sample Field'
+						) {
+							// The inner paragraph should be the fieldPlaceholder and fieldLabel fallback.
+							const fieldPlaceholder = block.innerBlocks?.[ 0 ]?.attributes?.content?.text.trim().replace( /\*$/, '' );
+							let fieldLabel = fieldPlaceholder;
+							let isRequired = block.innerBlocks?.[ 0 ]?.attributes?.content?.text.trim().endsWith( '*' );
+
+							// Default to placeholder labels.
+							let hasLabel = false;
+
+							const controlType = block.attributes?.style?.dimensions?.minHeight
+								? 'omniform/textarea'
+								: 'omniform/input';
+
+							const prevBlock = transformedBlocks[ transformedBlocks.length - 1 ];
+							if ( prevBlock && prevBlock.name === 'core/paragraph' ) {
+								hasLabel = true;
+								fieldLabel = prevBlock.attributes.content.text.trim().replace( /\*$/, '' );
+								isRequired = prevBlock.attributes.content.text.trim().endsWith( '*' );
+								// Remove the previous block if it was used as the fieldLabel.
+								transformedBlocks.pop();
+							}
+
+							const fieldInnerBlocks = [
+								createBlock( controlType, {
+									fieldPlaceholder,
+									style: { dimensions: { minHeight: block.attributes?.style?.dimensions?.minHeight } },
+								} ),
+							];
+
+							if ( hasLabel ) {
+								fieldInnerBlocks.unshift( createBlock( 'omniform/label' ) );
+							}
+
+							transformedBlocks.push(
+								createBlock( 'omniform/field', {
+									fieldLabel,
+									isRequired,
+								}, fieldInnerBlocks )
+							);
+
+							return transformedBlocks;
+						}
+
+						// Convert core/buttons blocks to omniform/button blocks.
+						if ( block.name === 'core/buttons' ) {
+							transformedBlocks.push(
+								createBlock( 'omniform/button', {
+									buttonLabel: block.innerBlocks[ 0 ].attributes.text.text,
+									buttonType: 'submit',
+								} )
+							);
+
+							return transformedBlocks;
+						}
+
+						// Convert core/paragraph blocks with the "replace me" note.
+						if (
+							block.name === 'core/paragraph' &&
+							block.attributes.content.text === 'This is a sample form that you should replace with your own form solution.'
+						) {
+							return transformedBlocks;
+						}
+
+						transformedBlocks.push( block );
+						return transformedBlocks;
+					}, [] );
+				};
+
+				return createBlock(
+					'omniform/form', {}, [
+						createBlock( 'core/group', {
+							style: attributes?.style,
+						}, transformBlocks( innerBlocks ) ),
+					]
+				);
+			},
+		},
+		{
+			type: 'block',
 			blocks: [ 'core/search' ],
 			transform: ( {
 				label,
