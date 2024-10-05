@@ -437,6 +437,19 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 		);
 
 		return array(
+			'omniform/field'    => array(
+				'spacing' => array(
+					'blockGap' => '.25em',
+				),
+			),
+			'omniform/label'    => array(
+				'color'      => array(
+					'text' => 'var(--wp--preset--color--theme-6)',
+				),
+				'typography' => array(
+					'fontSize' => 'var(--wp--preset--font-size--small)',
+				),
+			),
 			'omniform/input'    => $input_styles,
 			'omniform/select'   => $input_styles,
 			'omniform/textarea' => $input_styles,
@@ -473,6 +486,11 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 		);
 
 		return array(
+			'omniform/field'    => array(
+				'spacing' => array(
+					'blockGap' => '.25em',
+				),
+			),
 			'omniform/input'    => $input_styles,
 			'omniform/select'   => $input_styles,
 			'omniform/textarea' => $input_styles,
