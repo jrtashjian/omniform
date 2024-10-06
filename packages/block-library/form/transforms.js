@@ -39,7 +39,7 @@ const transforms = {
 							const prevBlock = transformedBlocks[ transformedBlocks.length - 1 ];
 							if ( prevBlock && prevBlock.name === 'core/paragraph' ) {
 								hasLabel = true;
-								fieldLabel = prevBlock.attributes.content.text.trim().replace( /\*$/, '' );
+								fieldLabel = prevBlock.attributes.content.originalHTML.trim().replace( /\*$/, '' );
 								isRequired = prevBlock.attributes.content.text.trim().endsWith( '*' );
 								// Remove the previous block if it was used as the fieldLabel.
 								transformedBlocks.pop();
