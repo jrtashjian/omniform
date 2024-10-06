@@ -39,7 +39,7 @@ const transforms = {
 							const prevBlock = transformedBlocks[ transformedBlocks.length - 1 ];
 							if ( prevBlock && prevBlock.name === 'core/paragraph' ) {
 								hasLabel = true;
-								fieldLabel = prevBlock.attributes.content.originalHTML.trim().replace( /\*$/, '' );
+								fieldLabel = prevBlock.attributes.content.originalHTML.trim().replace( '*', '' );
 								isRequired = prevBlock.attributes.content.text.trim().endsWith( '*' );
 								// Remove the previous block if it was used as the fieldLabel.
 								transformedBlocks.pop();
@@ -48,7 +48,12 @@ const transforms = {
 							const fieldInnerBlocks = [
 								createBlock( controlType, {
 									fieldPlaceholder,
-									style: { dimensions: { minHeight: block.attributes?.style?.dimensions?.minHeight } },
+									backgroundColor: block.attributes?.backgroundColor,
+									textColor: block.attributes?.textColor,
+									style: {
+										...block.attributes?.style || {},
+										dimensions: { minHeight: block.attributes?.style?.dimensions?.minHeight },
+									},
 								} ),
 							];
 
@@ -60,6 +65,9 @@ const transforms = {
 								createBlock( 'omniform/field', {
 									fieldLabel,
 									isRequired,
+									style: {
+										spacing: { blockGap: attributes?.style?.spacing?.blockGap },
+									},
 								}, fieldInnerBlocks )
 							);
 
@@ -74,11 +82,15 @@ const transforms = {
 										type: 'flex',
 										orientation: 'horizontal',
 									},
+									style: block.attributes?.style,
 								}, [
 									createBlock( 'omniform/button', {
 										buttonLabel: block.innerBlocks[ 0 ].attributes.text.text,
 										buttonType: 'submit',
+										backgroundColor: block.innerBlocks[ 0 ].attributes?.backgroundColor,
+										textColor: block.innerBlocks[ 0 ].attributes?.textColor,
 										style: {
+											...block.innerBlocks[ 0 ].attributes?.style || {},
 											layout: {
 												selfStretch: block.innerBlocks[ 0 ].attributes?.width ? 'fill' : undefined,
 											},
