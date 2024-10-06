@@ -10,6 +10,7 @@
 	word-break: normal;
 	box-sizing: border-box;
 	border-color: currentcolor;
+	white-space: nowrap;
 
 	@include focus-styles;
 
