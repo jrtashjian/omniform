@@ -82,20 +82,23 @@ class Form extends BaseBlock {
 				: '';
 		}
 
-		// Add a default success response notification block if one is not present.
-		if ( ! $this->has_success_response_notification( $this->content ) ) {
-			$this->content = $this->render_reponse_notification(
-				'success',
-				__( 'Success! Your submission has been completed.', 'omniform' )
-			) . $this->content;
-		}
+		// Forms without a submit action are likely submitting elsewhere, so we don't need to add default response notifications.
+		if ( empty( $this->get_block_attribute( 'submit_action' ) ) ) {
+			// Add a default success response notification block if one is not present.
+			if ( ! $this->has_success_response_notification( $this->content ) ) {
+				$this->content = $this->render_reponse_notification(
+					'success',
+					__( 'Success! Your submission has been completed.', 'omniform' )
+				) . $this->content;
+			}
 
-		// Add a default error response notification block if one is not present.
-		if ( ! $this->has_error_response_notification( $this->content ) ) {
-			$this->content = $this->render_reponse_notification(
-				'error',
-				__( 'Unfortunately, your submission was not successful. Please ensure all fields are correctly filled out and try again.', 'omniform' )
-			) . $this->content;
+			// Add a default error response notification block if one is not present.
+			if ( ! $this->has_error_response_notification( $this->content ) ) {
+				$this->content = $this->render_reponse_notification(
+					'error',
+					__( 'Unfortunately, your submission was not successful. Please ensure all fields are correctly filled out and try again.', 'omniform' )
+				) . $this->content;
+			}
 		}
 
 		return $form->get_id()
