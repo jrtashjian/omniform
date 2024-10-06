@@ -293,7 +293,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 				'fontSize'   => 'inherit',
 				'lineHeight' => 'inherit',
 			),
-			'css'        => '&:is(:focus, :focus-visible) { outline-color:currentColor; }',
+			'css'        => '&:is(:focus, :focus-visible) { outline-color:currentColor !important; }',
 		);
 
 		return array(

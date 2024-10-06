@@ -44,7 +44,7 @@
 
 	&:is(:focus, :focus-visible) {
 		outline-offset: 2px;
-		outline-width: 2px;
+		outline-width: 2px !important;
 	}
 
 	&:not(.has-custom-border):focus {
