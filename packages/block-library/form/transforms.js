@@ -21,7 +21,8 @@ const transforms = {
 						// Convert "Sample Field" core/group blocks to omniform/field blocks.
 						if (
 							block.name === 'core/group' &&
-							block.attributes?.metadata?.name === 'Sample Field'
+							block.attributes?.metadata?.name === 'Sample Field' &&
+							block.innerBlocks?.[ 0 ].name === 'core/paragraph'
 						) {
 							// The inner paragraph should be the fieldPlaceholder and fieldLabel fallback.
 							const fieldPlaceholder = block.innerBlocks?.[ 0 ]?.attributes?.content?.text.trim().replace( /\*$/, '' );
