@@ -69,10 +69,22 @@ const transforms = {
 						// Convert core/buttons blocks to omniform/button blocks.
 						if ( block.name === 'core/buttons' ) {
 							transformedBlocks.push(
-								createBlock( 'omniform/button', {
-									buttonLabel: block.innerBlocks[ 0 ].attributes.text.text,
-									buttonType: 'submit',
-								} )
+								createBlock( 'core/group', {
+									layout: {
+										type: 'flex',
+										orientation: 'horizontal',
+									},
+								}, [
+									createBlock( 'omniform/button', {
+										buttonLabel: block.innerBlocks[ 0 ].attributes.text.text,
+										buttonType: 'submit',
+										style: {
+											layout: {
+												selfStretch: block.innerBlocks[ 0 ].attributes?.width ? 'fill' : undefined,
+											},
+										},
+									} ),
+								] )
 							);
 
 							return transformedBlocks;
