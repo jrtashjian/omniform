@@ -434,6 +434,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 					'right'  => '12px',
 				),
 			),
+			'css'     => '&:is(:focus, :focus-visible) { outline-color:var(--wp--preset--color--theme-5) !important; }',
 		);
 
 		return array(
@@ -454,7 +455,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 			'omniform/select'   => $input_styles,
 			'omniform/textarea' => $input_styles,
 			'omniform/button'   => array(
-				'css' => '&:is(:focus, :focus-visible) { outline-color:var(--wp--preset--color--theme-4); }',
+				'css' => '&:is(:focus, :focus-visible) { outline-color:var(--wp--preset--color--theme-5); }',
 			),
 		);
 	}
