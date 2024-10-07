@@ -62,6 +62,7 @@
 }
 
 .block-editor-block-list__block.with-omniform-overlay:not(.has-child-selected) {
+
 	* {
 		pointer-events: none;
 	}
@@ -75,26 +76,33 @@
 		right: -1em;
 		bottom: -1em;
 		left: -1em;
-        background: linear-gradient(135deg, #FFD500, #D92E83, #842ED9);
-        background-size: 300% 300%;
-        animation: gradientMove 5s infinite ease-in-out, pulse 3s infinite ease-in-out;
+		background: linear-gradient(135deg, #ffd500, #d92e83, #842ed9);
+		background-size: 300% 300%;
+		animation: gradientMove 5s infinite ease-in-out, pulse 3s infinite ease-in-out;
 		filter: blur(2em);
 	}
 }
 
 @keyframes gradientMove {
-    0%, 100% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
+
+	0%,
+	100% {
+		background-position: 0% 50%;
+	}
+
+	50% {
+		background-position: 100% 50%;
+	}
 }
+
 @keyframes pulse {
-	0%, 100% {
-		transform: scale(.98);
+
+	0%,
+	100% {
+		transform: scale(0.98);
 		opacity: 0.25;
 	}
+
 	50% {
 		transform: scale(1.02);
 		opacity: 0.15;
