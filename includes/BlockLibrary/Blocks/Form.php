@@ -234,8 +234,8 @@ class Form extends BaseBlock {
 	 * @return boolean True if the content has a success response notification block, false otherwise.
 	 */
 	private function has_success_response_notification() {
-		return (bool) preg_match( '/<!-- wp:omniform\/response-notification(?:(?!messageType).)*?-->/', $this->content )
-			|| preg_match( '/<!-- wp:omniform\/response-notification.*?"messageType":"success".*?-->/', $this->content );
+		return (bool) preg_match( '/<!-- wp:omniform\/response-notification(?:(?!className).)*?-->/', $this->content )
+			|| preg_match( '/<!-- wp:omniform\/response-notification.*?"className":"[^"]*?is-style-success".*?-->/', $this->content );
 	}
 
 	/**
@@ -244,7 +244,7 @@ class Form extends BaseBlock {
 	 * @return boolean True if the content has an error response notification block, false otherwise.
 	 */
 	private function has_error_response_notification() {
-		return (bool) preg_match( '/<!-- wp:omniform\/response-notification.*?"messageType":"error".*?-->/', $this->content );
+		return (bool) preg_match( '/<!-- wp:omniform\/response-notification.*?"className":"[^"]*?is-style-error".*?-->/', $this->content );
 	}
 
 	/**
@@ -260,26 +260,8 @@ class Form extends BaseBlock {
 			array(
 				'blockName'    => 'omniform/response-notification',
 				'attrs'        => array(
-					'messageType'    => $message_type,
 					'messageContent' => $message_content,
-					'style'          => array(
-						'border'  => array(
-							'left' => array(
-								'color' => 'success' === $message_type
-									? 'var(--wp--preset--color--vivid-green-cyan,#00d084)'
-									: 'var(--wp--preset--color--vivid-red,#cf2e2e)',
-								'width' => '6px',
-							),
-						),
-						'spacing' => array(
-							'padding' => array(
-								'top'    => '0.5em',
-								'bottom' => '0.5em',
-								'left'   => '1.5em',
-								'right'  => '1.5em',
-							),
-						),
-					),
+					'className'      => 'is-style-' . $message_type,
 				),
 				'innerContent' => array(),
 			)
