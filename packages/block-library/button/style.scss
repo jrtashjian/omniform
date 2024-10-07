@@ -6,13 +6,15 @@
 	align-items: center;
 	justify-content: center;
 	display: inline-flex;
-	gap: 0.5em;
 	word-break: normal;
 	box-sizing: border-box;
 	border-color: currentcolor;
-	white-space: nowrap;
 
 	@include focus-styles;
+
+	&:not(:has(span)) {
+		gap: 0.5em;
+	}
 
 	strong,
 	em {
