@@ -22,9 +22,7 @@ registerBlockType( name, {
 	icon: iconSuccess,
 	example: {
 		attributes: {
-			messageType: 'success',
-			messageContent: __( 'Success! Your submission has been completed.', 'omniform' ),
-			style: { border: { left: { color: 'var(--wp--preset--color--vivid-green-cyan,#00d084)', width: '6px' } }, spacing: { padding: { top: '0.5em', bottom: '0.5em', left: '1.5em', right: '1.5em' } } },
+			messageContent: __( 'Sharing some info you might find helpful.', 'omniform' ),
 		},
 	},
 	variations,

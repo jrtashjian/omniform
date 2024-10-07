@@ -41,6 +41,21 @@
 			"allowEditing": false
 		}
 	},
+	"styles": [
+		{
+			"name": "info",
+			"label": "Info",
+			"isDefault": true
+		},
+		{
+			"name": "success",
+			"label": "Success"
+		},
+		{
+			"name": "error",
+			"label": "Error"
+		}
+	],
 	"editorScript": "file:index.js",
 	"editorStyle": "file:index.css",
 	"style": "file:style-index.css"

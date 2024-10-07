@@ -37,13 +37,28 @@ class ResponseNotification extends BaseBlock {
 			'<div %s><p>%s</p>%s</div>',
 			get_block_wrapper_attributes(
 				array(
-					'class' => esc_attr( $this->get_block_attribute( 'messageType' ) . '-response-notification' ),
+					'class' => esc_attr( $this->get_message_type() . '-response-notification' ),
 					'style' => $this->notification_display( $form ),
 				)
 			),
 			wp_kses( $this->get_block_attribute( 'messageContent' ), $this->allowed_html_for_labels ),
 			do_blocks( $this->content )
 		);
+	}
+
+	/**
+	 * Gets the message type from the block class name.
+	 *
+	 * @return string The message type.
+	 */
+	private function get_message_type() {
+		$classname = $this->get_block_attribute( 'className' ) ?? '';
+
+		if ( preg_match( '/is-style-([^\s]+)/', $classname, $matches ) ) {
+			return $matches[1];
+		}
+
+		return 'info';
 	}
 
 	/**
@@ -54,7 +69,7 @@ class ResponseNotification extends BaseBlock {
 	 * @return string The display style.
 	 */
 	private function notification_display( \OmniForm\Plugin\Form $form ) {
-		$message_type = $this->get_block_attribute( 'messageType' );
+		$message_type = $this->get_message_type();
 
 		if (
 			( 'error' === $message_type && $form->validation_failed() ) ||
@@ -63,6 +78,8 @@ class ResponseNotification extends BaseBlock {
 			return 'display:block;';
 		}
 
-		return 'display:none;';
+		return in_array( $message_type, array( 'success', 'error' ), true )
+			? 'display:none;'
+			: '';
 	}
 }
