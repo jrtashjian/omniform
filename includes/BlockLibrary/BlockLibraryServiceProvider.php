@@ -297,7 +297,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 		);
 
 		return array(
-			'omniform/field'    => array(
+			'omniform/field'                 => array(
 				'spacing'    => array(
 					'blockGap' => '0.5em',
 				),
@@ -308,18 +308,51 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 					),
 				),
 			),
-			'omniform/label'    => array(
+			'omniform/label'                 => array(
 				'typography' => array(
 					'fontSize' => 'inherit',
 				),
 			),
-			'omniform/input'    => $input_styles,
-			'omniform/select'   => $input_styles,
-			'omniform/textarea' => array_merge_recursive(
+			'omniform/input'                 => $input_styles,
+			'omniform/select'                => $input_styles,
+			'omniform/textarea'              => array_merge_recursive(
 				$input_styles,
 				array(
 					'dimensions' => array(
 						'minHeight' => '230px',
+					),
+				),
+			),
+			'omniform/response-notification' => array(
+				'border'     => array(
+					'left' => array(
+						'style' => 'solid',
+						'width' => '6px',
+						'color' => 'var(--wp--preset--color--vivid-cyan-blue,#0693e3)',
+					),
+				),
+				'spacing'    => array(
+					'padding' => array(
+						'bottom' => '0.5em',
+						'left'   => '1.5em',
+						'right'  => '1.5em',
+						'top'    => '0.5em',
+					),
+				),
+				'variations' => array(
+					'success' => array(
+						'border' => array(
+							'left' => array(
+								'color' => 'var(--wp--preset--color--vivid-green-cyan,#00d084)',
+							),
+						),
+					),
+					'error'   => array(
+						'border' => array(
+							'left' => array(
+								'color' => 'var(--wp--preset--color--vivid-red,#cf2e2e)',
+							),
+						),
 					),
 				),
 			),
