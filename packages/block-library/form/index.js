@@ -6,11 +6,17 @@ import { capitalCase } from 'change-case';
 /**
  * WordPress dependencies
  */
-import { registerBlockType } from '@wordpress/blocks';
-import { select } from '@wordpress/data';
+import { __ } from '@wordpress/i18n';
+import { createHigherOrderComponent } from '@wordpress/compose';
+import { registerBlockType, switchToBlockType } from '@wordpress/blocks';
+import { dispatch, select } from '@wordpress/data';
 import { decodeEntities } from '@wordpress/html-entities';
 import { addFilter } from '@wordpress/hooks';
-import { InnerBlocks } from '@wordpress/block-editor';
+import {
+	InnerBlocks,
+	BlockControls,
+} from '@wordpress/block-editor';
+import { ToolbarButton, ToolbarGroup } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -79,4 +85,59 @@ addFilter(
 
 		return select( 'core/edit-post' ).isEditingTemplate();
 	}
+);
+
+// Show "Replace with OmniForm" in Ollie Pro Placeholder Forms.
+addFilter(
+	'editor.BlockEdit',
+	'omniform/replace-with-omniform',
+	createHigherOrderComponent( ( BlockEdit ) => {
+		return ( props ) => {
+			if ( props.name !== 'core/group' || props.attributes?.metadata?.name !== 'Sample Form' ) {
+				return <BlockEdit { ...props } />;
+			}
+
+			const { getBlock } = select( 'core/block-editor' );
+			const { replaceBlocks } = dispatch( 'core/block-editor' );
+
+			const handleClick = () => {
+				const newBlocks = switchToBlockType( getBlock( props.clientId ), 'omniform/form' );
+				replaceBlocks( props.clientId, newBlocks );
+			};
+
+			return (
+				<>
+					<BlockControls>
+						<ToolbarGroup>
+							<ToolbarButton
+								icon={ form }
+								text={ __( 'Replace with OmniForm', 'omniform' ) }
+								onClick={ handleClick }
+							/>
+						</ToolbarGroup>
+					</BlockControls>
+					<BlockEdit key="edit" { ...props } />
+				</>
+			);
+		};
+	}, 'replaceWithOmniForm' )
+);
+
+addFilter(
+	'editor.BlockListBlock',
+	'omniform/with-omniform-overlay',
+	createHigherOrderComponent(
+		( BlockListBlock ) => {
+			return ( props ) => {
+				if ( props.name !== 'core/group' || props.attributes?.metadata?.name !== 'Sample Form' ) {
+					return <BlockListBlock { ...props } />;
+				}
+
+				return (
+					<BlockListBlock { ...props } className="with-omniform-overlay" />
+				);
+			};
+		},
+		'withOmniFormOverlay'
+	)
 );

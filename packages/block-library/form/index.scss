@@ -60,3 +60,43 @@
 	content: ".";
 	visibility: hidden;
 }
+
+.block-editor-block-list__block.with-omniform-overlay:not(.has-child-selected) {
+	* {
+		pointer-events: none;
+	}
+
+	&::before {
+		content: "";
+		position: absolute;
+		z-index: 1;
+		pointer-events: none;
+		top: -1em;
+		right: -1em;
+		bottom: -1em;
+		left: -1em;
+        background: linear-gradient(135deg, #FFD500, #D92E83, #842ED9);
+        background-size: 300% 300%;
+        animation: gradientMove 5s infinite ease-in-out, pulse 3s infinite ease-in-out;
+		filter: blur(2em);
+	}
+}
+
+@keyframes gradientMove {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+@keyframes pulse {
+	0%, 100% {
+		transform: scale(.98);
+		opacity: 0.25;
+	}
+	50% {
+		transform: scale(1.02);
+		opacity: 0.15;
+	}
+}
