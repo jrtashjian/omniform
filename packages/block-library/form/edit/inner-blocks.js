@@ -12,57 +12,7 @@ import { useMemo } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { POST_TYPE } from '../../shared/constants';
-
-/**
- * Allowed blocks constant is passed to InnerBlocks precisely as specified here.
- * The contents of the array should never change.
- * The array should contain the name of each block that is allowed.
- *
- * @constant
- * @type {string[]}
- */
-const ALLOWED_BLOCKS = [
-	'omniform/button',
-	'omniform/captcha',
-	'omniform/conditional-group',
-	'omniform/field',
-	'omniform/fieldset',
-	'omniform/hidden',
-	'omniform/input',
-	'omniform/label',
-	'omniform/post-comments-form-cancel-reply-link',
-	'omniform/post-comments-form-title',
-	'omniform/response-notification',
-	'omniform/select-group',
-	'omniform/select-option',
-	'omniform/select',
-	'omniform/textarea',
-	'core/audio',
-	'core/block',
-	'core/code',
-	'core/column',
-	'core/columns',
-	'core/cover',
-	'core/file',
-	'core/gallery',
-	'core/group',
-	'core/heading',
-	'core/image',
-	'core/list-item',
-	'core/list',
-	'core/missing',
-	'core/paragraph',
-	'core/pattern',
-	'core/preformatted',
-	'core/separator',
-	'core/site-logo',
-	'core/site-tagline',
-	'core/site-title',
-	'core/spacer',
-	'core/table',
-	'core/video',
-];
+import { POST_TYPE, ALLOWED_BLOCKS } from '../../shared/constants';
 
 export default function FormInnerBlocks( {
 	blockProps,
