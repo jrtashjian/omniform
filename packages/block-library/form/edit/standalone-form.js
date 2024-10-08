@@ -26,17 +26,20 @@ import FormInspectorControls from './inspector-controls';
  */
 const ALLOWED_BLOCKS = [
 	'omniform/button',
-	'omniform/fieldset',
+	'omniform/captcha',
+	'omniform/conditional-group',
 	'omniform/field',
-	'omniform/label',
-	'omniform/input',
+	'omniform/fieldset',
 	'omniform/hidden',
-	'omniform/textarea',
-	'omniform/select',
+	'omniform/input',
+	'omniform/label',
+	'omniform/post-comments-form-cancel-reply-link',
+	'omniform/post-comments-form-title',
+	'omniform/response-notification',
 	'omniform/select-group',
 	'omniform/select-option',
-	'omniform/captcha',
-	'omniform/response-notification',
+	'omniform/select',
+	'omniform/textarea',
 	'core/audio',
 	'core/block',
 	'core/code',
@@ -72,44 +75,12 @@ const TEMPLATE = [
 		},
 	}, [
 		[ 'omniform/response-notification', {
-			messageType: 'success',
 			messageContent: __( 'Success! Your submission has been completed.', 'omniform' ),
-			style: {
-				border: {
-					left: {
-						color: 'var(--wp--preset--color--vivid-green-cyan,#00d084)',
-						width: '6px',
-					},
-				},
-				spacing: {
-					padding: {
-						top: '0.5em',
-						bottom: '0.5em',
-						left: '1.5em',
-						right: '1.5em',
-					},
-				},
-			},
+			className: 'is-style-success',
 		}, [] ],
 		[ 'omniform/response-notification', {
-			messageType: 'error',
 			messageContent: __( 'Unfortunately, your submission was not successful. Please ensure all fields are correctly filled out and try again.', 'omniform' ),
-			style: {
-				border: {
-					left: {
-						color: 'var(--wp--preset--color--vivid-red,#cf2e2e)',
-						width: '6px',
-					},
-				},
-				spacing: {
-					padding: {
-						top: '0.5em',
-						bottom: '0.5em',
-						left: '1.5em',
-						right: '1.5em',
-					},
-				},
-			},
+			className: 'is-style-error',
 		}, [] ],
 		[ 'core/paragraph', {
 			content: __( "If you have any questions or comments, or if you'd like to work with me or collaborate on a project, please don't hesitate to get in touch. I look forward to hearing from you!", 'omniform' ),
@@ -127,13 +98,7 @@ const TEMPLATE = [
 			fieldName: 'your-message',
 		}, [
 			[ 'omniform/label', {}, [] ],
-			[ 'omniform/textarea', {
-				style: {
-					dimensions: {
-						minHeight: '230px',
-					},
-				},
-			}, [] ],
+			[ 'omniform/textarea', {}, [] ],
 		] ],
 		[ 'core/group', {
 			tagName: 'div',
