@@ -298,14 +298,8 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 
 		return array(
 			'omniform/field'                 => array(
-				'spacing'    => array(
+				'spacing' => array(
 					'blockGap' => '0.5em',
-				),
-				'css'        => 'flex-wrap:nowrap; flex-direction:column; align-items:stretch;',
-				'variations' => array(
-					'inline' => array(
-						'css' => 'flex-direction:row; align-items:center;',
-					),
 				),
 			),
 			'omniform/label'                 => array(

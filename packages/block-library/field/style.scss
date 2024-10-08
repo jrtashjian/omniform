@@ -3,4 +3,16 @@
 
 	box-sizing: border-box;
 	flex-grow: 1;
+
+	&.is-layout-flex:not(.is-style-inline) {
+		flex-wrap: nowrap;
+		flex-direction: column;
+		align-items: stretch;
+
+	}
+
+	&.is-layout-flex.is-style-inline {
+		flex-direction: row;
+		align-content: center;
+	}
 }
