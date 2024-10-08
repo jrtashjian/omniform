@@ -10,6 +10,7 @@ import { decodeEntities } from '@wordpress/html-entities';
 import json from './block.json';
 import Edit from './edit';
 import Save from './save';
+import transforms from './transforms';
 import variations from './variations';
 import { fieldGroup } from '../shared/icons';
 
@@ -21,6 +22,7 @@ registerBlockType( name, {
 	edit: Edit,
 	icon: { foreground: '#D92E83', src: fieldGroup },
 	save: Save,
+	transforms,
 	variations,
 	// Get block name from the option value.
 	__experimentalLabel: ( { fieldLabel } ) => fieldLabel && decodeEntities( fieldLabel ),

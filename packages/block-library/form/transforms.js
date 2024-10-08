@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { createBlock } from '@wordpress/blocks';
+import { createBlock, switchToBlockType } from '@wordpress/blocks';
 
 const transforms = {
 	from: [
@@ -443,6 +443,70 @@ const transforms = {
 							],
 						),
 					],
+				);
+			},
+		},
+		{
+			type: 'block',
+			blocks: [ 'jetpack/contact-form' ],
+			transform: ( attributes, innerBlocks ) => {
+				const transformBlocks = ( blocks ) => {
+					return blocks.reduce( ( transformedBlocks, block ) => {
+						// Recursively transform inner blocks.
+						if ( block.innerBlocks && block.innerBlocks.length > 0 ) {
+							block.innerBlocks = transformBlocks( block.innerBlocks );
+						}
+
+						if ( block.name.startsWith( 'jetpack/' ) ) {
+							let transformTo;
+
+							if ( [
+								'jetpack/field-text',
+								'jetpack/field-name',
+								'jetpack/field-email',
+								'jetpack/field-url',
+								'jetpack/field-date',
+								'jetpack/field-telephone',
+								'jetpack/field-select',
+								'jetpack/field-textarea',
+								'jetpack/field-checkbox',
+								'jetpack/field-option-checkbox',
+								'jetpack/field-option-radio',
+							].includes( block.name ) ) {
+								transformTo = 'omniform/field';
+							}
+
+							if ( [
+								'jetpack/field-radio',
+								'jetpack/field-checkbox-multiple',
+							].includes( block.name ) ) {
+								transformTo = 'omniform/fieldset';
+							}
+
+							if ( 'jetpack/button' === block.name ) {
+								transformTo = 'omniform/button';
+							}
+
+							// If no transform is found, keep the block as is.
+							if ( ! transformTo ) {
+								transformedBlocks.push( block );
+								return transformedBlocks;
+							}
+
+							const newBlocks = switchToBlockType( block, transformTo );
+							transformedBlocks.push( ...newBlocks );
+							return transformedBlocks;
+						}
+
+						transformedBlocks.push( block );
+						return transformedBlocks;
+					}, [] );
+				};
+
+				return createBlock(
+					'omniform/form', {}, [
+						createBlock( 'core/group', {}, transformBlocks( innerBlocks ) ),
+					]
 				);
 			},
 		},

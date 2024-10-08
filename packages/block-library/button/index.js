@@ -10,6 +10,7 @@ import { decodeEntities } from '@wordpress/html-entities';
 import { __ } from '@wordpress/i18n';
 import json from './block.json';
 import Edit from './edit';
+import transforms from './transforms';
 import variations from './variations';
 import { Button } from '../shared/icons';
 
@@ -26,6 +27,7 @@ registerBlockType( name, {
 			buttonLabel: __( 'Submit', 'omniform' ),
 		},
 	},
+	transforms,
 	variations,
 	merge( attributes, attributesToMerge ) {
 		return {

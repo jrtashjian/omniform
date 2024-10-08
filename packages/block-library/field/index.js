@@ -10,6 +10,7 @@ import { decodeEntities } from '@wordpress/html-entities';
 import json from './block.json';
 import Edit from './edit';
 import Save from './save';
+import transforms from './transforms';
 import variations from './variations';
 import { field as iconField } from '../shared/icons';
 
@@ -30,6 +31,7 @@ registerBlockType( name, {
 			{ name: 'omniform/input' },
 		],
 	},
+	transforms,
 	variations,
 	// Get block name from the option value.
 	__experimentalLabel: ( { fieldLabel } ) => fieldLabel && decodeEntities( fieldLabel ),
