@@ -12,6 +12,7 @@
 	}
 
 	&.is-layout-flex.is-style-inline {
+		flex-wrap: nowrap;
 		flex-direction: row;
 		align-content: center;
 	}
