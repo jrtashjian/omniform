@@ -397,6 +397,8 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 	/**
 	 * Get global styles for the Twenty Twenty Four theme.
 	 *
+	 * @see https://wordpress.org/themes/twentytwentyfour/
+	 *
 	 * @return array
 	 */
 	public function global_styles_for_twentytwentyfour() {
@@ -440,6 +442,8 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 
 	/**
 	 * Get global styles for the Kanso theme.
+	 *
+	 * @see https://wordpress.org/themes/kanso/
 	 *
 	 * @return array
 	 */
@@ -489,6 +493,8 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 
 	/**
 	 * Get global styles for the Ollie theme.
+	 *
+	 * @see https://wordpress.org/themes/ollie/
 	 *
 	 * @return array
 	 */
