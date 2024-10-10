@@ -2,8 +2,6 @@
 
 .wp-block-omniform-select {
 
-	width: 100%;
-
 	@include field-control;
 
 	&[multiple] {
