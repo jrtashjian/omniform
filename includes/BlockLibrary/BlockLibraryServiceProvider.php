@@ -533,4 +533,42 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 			),
 		);
 	}
+
+	/**
+	 * Get global styles for the Rockbase theme.
+	 *
+	 * @see https://rockbase.co/
+	 *
+	 * @return array
+	 */
+	public function global_styles_for_rockbase() {
+		$input_styles = array(
+			'border'     => array(
+				'radius' => '8px',
+				'color'  => 'var(--wp--preset--color--foreground-4)',
+			),
+			'spacing'    => array(
+				'padding' => array(
+					'top'    => '0.7em',
+					'bottom' => '0.6em',
+					'left'   => 'clamp(1.5rem, 1.75vw, 3.5rem)',
+					'right'  => 'clamp(1.5rem, 1.75vw, 3.5rem)',
+				),
+			),
+			'typography' => array(
+				'fontFamily' => 'var(--wp--preset--font-family--primary)',
+				'fontSize'   => 'var(--wp--preset--font-size--small)',
+			),
+			'css'        => '&:is(:focus, :focus-visible) { outline: 1px solid var(--wp--preset--color--primary) !important; }',
+		);
+
+		return array(
+			'omniform/input'    => $input_styles,
+			'omniform/select'   => $input_styles,
+			'omniform/textarea' => $input_styles,
+			'omniform/button'   => array(
+				'css' => '&:is(:focus, :focus-visible) { outline: 1px solid var(--wp--preset--color--primary) !important; }',
+			),
+		);
+	}
 }
