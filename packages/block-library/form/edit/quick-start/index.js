@@ -62,28 +62,27 @@ export default function QuickStartPlaceholder( clientId ) {
 		<NavigatorProvider initialPath="/" className="omniform-quick-start">
 			<QuickStartScreen
 				path="/"
-				title="Let's Begin"
-				subtitle="Start your form creation process."
+				subtitle={ __( 'Start your form creation process.', 'omniform' ) }
 			>
 				<QuickStartOption
 					as={ NavigatorButton }
 					path="/define-your-goal"
-					title="Quick Start"
-					description="Let us guide you through building your form"
+					title={ __( 'Quick Start', 'omniform' ) }
+					description={ __( 'Let us guide you through building your form', 'omniform' ) }
 				/>
 
 				<QuickStartOption
 					as={ Button }
 					onClick={ () => createForm() }
-					title="Blank Form"
-					description="Build you form from scratch"
+					title={ __( 'Blank Form', 'omniform' ) }
+					description={ __( 'Build you form from scratch', 'omniform' ) }
 				/>
 			</QuickStartScreen>
 
 			<QuickStartScreen
 				path="/define-your-goal"
-				title="Define Your Goal"
-				subtitle="What do you want to achieve with this form?"
+				title={ __( 'Define Your Goal', 'omniform' ) }
+				subtitle={ __( 'What do you want to achieve with this form?', 'omniform' ) }
 				showBackButton
 			>
 				<QuickStartOption
@@ -91,8 +90,8 @@ export default function QuickStartPlaceholder( clientId ) {
 					path="/track-performance"
 					onClick={ () => setGoal( 'collect-info' ) }
 					isPressed={ goal === 'collect-info' }
-					title="Collect Info"
-					description="Gather basic details like names and emails"
+					title={ __( 'Collect Info', 'omniform' ) }
+					description={ __( 'Gather basic details like names and emails', 'omniform' ) }
 				/>
 
 				<QuickStartOption
@@ -100,8 +99,8 @@ export default function QuickStartPlaceholder( clientId ) {
 					path="/track-performance"
 					onClick={ () => setGoal( 'generate-leads' ) }
 					isPressed={ goal === 'generate-leads' }
-					title="Generate Leads"
-					description="Capture potential customers for follow-up"
+					title={ __( 'Generate Leads', 'omniform' ) }
+					description={ __( 'Capture potential customers for follow-up', 'omniform' ) }
 				/>
 
 				<QuickStartOption
@@ -109,15 +108,15 @@ export default function QuickStartPlaceholder( clientId ) {
 					path="/track-performance"
 					onClick={ () => setGoal( 'get-feedback' ) }
 					isPressed={ goal === 'get-feedback' }
-					title="Get Feedback"
-					description="Receive opinions or suggestions from visitors"
+					title={ __( 'Get Feedback', 'omniform' ) }
+					description={ __( 'Receive opinions or suggestions from visitors', 'omniform' ) }
 				/>
 			</QuickStartScreen>
 
 			<QuickStartScreen
 				path="/track-performance"
-				title="Track Performance"
-				subtitle="Do you want to monitor traffic and conversions?"
+				title={ __( 'Track Performance', 'omniform' ) }
+				subtitle={ __( 'Do you want to monitor traffic and conversions?', 'omniform' ) }
 				showBackButton
 			>
 				<QuickStartOption
@@ -125,7 +124,7 @@ export default function QuickStartPlaceholder( clientId ) {
 					path="/spam-protection"
 					onClick={ () => setTrackPerformance( true ) }
 					isPressed={ trackPerformance === true }
-					title="Track visits and conversion rates"
+					title={ __( 'Track visits and conversion rates', 'omniform' ) }
 				/>
 
 				<QuickStartOption
@@ -133,16 +132,16 @@ export default function QuickStartPlaceholder( clientId ) {
 					path="/spam-protection"
 					onClick={ () => setTrackPerformance( false ) }
 					isPressed={ trackPerformance === false }
-					title="No tracking needed"
+					title={ __( 'No tracking needed', 'omniform' ) }
 				/>
 			</QuickStartScreen>
 
 			<QuickStartScreen
 				path="/spam-protection"
-				title="Spam Protection"
-				subtitle="Add spam protection to your form."
+				title={ __( 'Spam Protection', 'omniform' ) }
+				subtitle={ __( 'Add spam protection to your form.', 'omniform' ) }
 				showBackButton
-				finishLabel="Add Form Without Protection"
+				finishLabel={ __( 'Add Form Without Protection', 'omniform' ) }
 				finishCallback={ () => createForm() }
 			>
 				<QuickStartOption
@@ -151,7 +150,7 @@ export default function QuickStartPlaceholder( clientId ) {
 					onClick={ () => setSpamProtection( 'hcaptcha' ) }
 					isPressed={ spamProtection === 'hcaptcha' }
 					icon={ iconHCaptcha }
-					title="hCaptcha"
+					title={ __( 'hCaptcha', 'omniform' ) }
 				/>
 
 				<QuickStartOption
@@ -160,7 +159,7 @@ export default function QuickStartPlaceholder( clientId ) {
 					onClick={ () => setSpamProtection( 'cloudflare-turnstile' ) }
 					isPressed={ spamProtection === 'cloudflare-turnstile' }
 					icon={ iconTurnstile }
-					title="Cloudflare Turnstile"
+					title={ __( 'Cloudflare Turnstile', 'omniform' ) }
 				/>
 
 				<QuickStartOption
@@ -169,34 +168,34 @@ export default function QuickStartPlaceholder( clientId ) {
 					onClick={ () => setSpamProtection( 'google-recaptcha' ) }
 					isPressed={ spamProtection === 'google-recaptcha' }
 					icon={ iconReCaptcha }
-					title="Google reCAPTCHA"
+					title={ __( 'Google reCAPTCHA', 'omniform' ) }
 				/>
 			</QuickStartScreen>
 
 			<QuickStartScreen
 				path="/hcaptcha"
-				title="hCaptcha"
-				subtitle="Add hCaptcha to your form."
+				title={ __( 'hCaptcha', 'omniform' ) }
+				subtitle={ __( 'Add hCaptcha to your form.', 'omniform' ) }
 				showBackButton
-				finishLabel="Finish and Add Form"
+				finishLabel={ __( 'Finish and Add Form', 'omniform' ) }
 				finishCallback={ () => createForm() }
 			/>
 
 			<QuickStartScreen
 				path="/cloudflare-turnstile"
-				title="Cloudflare Turnstile"
-				subtitle="Add Cloudflare Turnstile to your form."
+				title={ __( 'Cloudflare Turnstile', 'omniform' ) }
+				subtitle={ __( 'Add Cloudflare Turnstile to your form.', 'omniform' ) }
 				showBackButton
-				finishLabel="Finish and Add Form"
+				finishLabel={ __( 'Finish and Add Form', 'omniform' ) }
 				finishCallback={ () => createForm() }
 			/>
 
 			<QuickStartScreen
 				path="/google-recaptcha"
-				title="Google reCAPTCHA"
-				subtitle="Add Google reCAPTCHA to your form."
+				title={ __( 'Google reCAPTCHA', 'omniform' ) }
+				subtitle={ __( 'Add Google reCAPTCHA to your form.', 'omniform' ) }
 				showBackButton
-				finishLabel="Finish and Add Form"
+				finishLabel={ __( 'Finish and Add Form', 'omniform' ) }
 				finishCallback={ () => createForm() }
 			/>
 		</NavigatorProvider>
