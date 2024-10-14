@@ -33,7 +33,15 @@
 	&__title {
 		text-align: center;
 		font-size: 1.5rem;
-		font-weight: bold
+		font-weight: bold;
+		line-height: 1;
+		padding-top: $grid-unit-10;
+		padding-bottom: $grid-unit-10;
+
+		> svg {
+			display: block;
+			margin: 0 auto;
+		}
 	}
 
 	&__subtitle {
