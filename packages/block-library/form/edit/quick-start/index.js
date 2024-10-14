@@ -11,6 +11,8 @@ import {
 	__experimentalVStack as VStack,
 	__experimentalHStack as HStack,
 	Icon,
+	SVG,
+	Path,
 } from '@wordpress/components';
 import { createBlock } from '@wordpress/blocks';
 import { useDispatch } from '@wordpress/data';
@@ -25,6 +27,113 @@ import {
 import './index.scss';
 import { iconHCaptcha, iconReCaptcha, iconTurnstile } from '../../../shared/icons';
 
+/**
+ * Generates a form block based on the selected goal, tracking preference, and spam protection.
+ *
+ * @param {string}  goal              The goal of the form.
+ * @param {boolean} isTrackingEnabled Whether tracking is enabled.
+ * @param {string}  captchaType       The type of captcha to use.
+ *
+ * @return {Object} The generated form block.
+ */
+function generateForm( goal, isTrackingEnabled, captchaType ) {
+	let innerBlocks = [];
+
+	switch ( goal ) {
+		case 'collect-info':
+			innerBlocks = [
+				createBlock( 'omniform/field', { fieldLabel: __( 'Your Name', 'omniform' ) }, [
+					createBlock( 'omniform/label' ),
+					createBlock( 'omniform/input' ),
+				] ),
+				createBlock( 'omniform/field', { fieldLabel: __( 'Your Email Address', 'omniform' ), isRequired: true }, [
+					createBlock( 'omniform/label' ),
+					createBlock( 'omniform/input', { fieldType: 'email' } ),
+				] ),
+				createBlock( 'omniform/button', { buttonType: 'submit', buttonLabel: __( 'Submit', 'omniform' ) } ),
+			];
+			break;
+		case 'generate-leads':
+			innerBlocks = [
+				createBlock( 'omniform/field', { fieldLabel: __( 'Full Name', 'omniform' ) }, [
+					createBlock( 'omniform/label' ),
+					createBlock( 'omniform/input' ),
+				] ),
+				createBlock( 'omniform/field', { fieldLabel: __( 'Business Email', 'omniform' ), isRequired: true }, [
+					createBlock( 'omniform/label' ),
+					createBlock( 'omniform/input', { fieldType: 'email' } ),
+				] ),
+				createBlock( 'omniform/field', { fieldLabel: __( 'Company Name', 'omniform' ) }, [
+					createBlock( 'omniform/label' ),
+					createBlock( 'omniform/input' ),
+				] ),
+				createBlock( 'omniform/field', { fieldLabel: __( 'Phone Number', 'omniform' ) }, [
+					createBlock( 'omniform/label' ),
+					createBlock( 'omniform/input', { fieldType: 'tel' } ),
+				] ),
+				createBlock( 'omniform/field', { fieldLabel: __( 'What are you interested in?', 'omniform' ), isRequired: true }, [
+					createBlock( 'omniform/label' ),
+					createBlock( 'omniform/textarea' ),
+				] ),
+				createBlock( 'omniform/button', { buttonType: 'submit', buttonLabel: __( 'Get in Touch', 'omniform' ) } ),
+			];
+			break;
+		case 'get-feedback':
+			innerBlocks = [
+				createBlock( 'omniform/field', { fieldLabel: __( 'Your Name (Optional)', 'omniform' ) }, [
+					createBlock( 'omniform/label' ),
+					createBlock( 'omniform/input' ),
+				] ),
+				createBlock( 'omniform/field', { fieldLabel: __( 'Your Email (Optional)', 'omniform' ) }, [
+					createBlock( 'omniform/label' ),
+					createBlock( 'omniform/input' ),
+				] ),
+				createBlock( 'omniform/field', { fieldLabel: __( 'Your Feedback or Suggestions', 'omniform' ), isRequired: true }, [
+					createBlock( 'omniform/label' ),
+					createBlock( 'omniform/textarea' ),
+				] ),
+				createBlock( 'omniform/fieldset', { fieldLabel: __( 'Please rate our website', 'omniform' ), isRequired: true }, [
+					createBlock( 'omniform/field', { fieldLabel: __( '1 - Very Bad', 'omniform' ), className: 'is-style-inline' }, [
+						createBlock( 'omniform/input', { fieldType: 'radio' } ),
+						createBlock( 'omniform/label' ),
+					] ),
+					createBlock( 'omniform/field', { fieldLabel: __( '2 - Poor', 'omniform' ), className: 'is-style-inline' }, [
+						createBlock( 'omniform/input', { fieldType: 'radio' } ),
+						createBlock( 'omniform/label' ),
+					] ),
+					createBlock( 'omniform/field', { fieldLabel: __( '3 - Average', 'omniform' ), className: 'is-style-inline' }, [
+						createBlock( 'omniform/input', { fieldType: 'radio' } ),
+						createBlock( 'omniform/label' ),
+					] ),
+					createBlock( 'omniform/field', { fieldLabel: __( '4 - Good', 'omniform' ), className: 'is-style-inline' }, [
+						createBlock( 'omniform/input', { fieldType: 'radio' } ),
+						createBlock( 'omniform/label' ),
+					] ),
+					createBlock( 'omniform/field', { fieldLabel: __( '5 - Excellent', 'omniform' ), className: 'is-style-inline' }, [
+						createBlock( 'omniform/input', { fieldType: 'radio' } ),
+						createBlock( 'omniform/label' ),
+					] ),
+				] ),
+				createBlock( 'omniform/button', { buttonType: 'submit', buttonLabel: __( 'Send Feedback', 'omniform' ) } ),
+			];
+			break;
+		default:
+			innerBlocks = [
+				createBlock( 'omniform/button', { buttonType: 'submit', buttonLabel: __( 'Submit', 'omniform' ) } ),
+			];
+	}
+
+	if ( captchaType ) {
+		innerBlocks.push(
+			createBlock( 'omniform/captcha', { service: captchaType } )
+		);
+	}
+
+	return isTrackingEnabled
+		? createBlock( 'core/group', { layout: { type: 'default' } }, innerBlocks )
+		: createBlock( 'omniform/form', {}, [ createBlock( 'core/group', { layout: { type: 'default' } }, innerBlocks ) ] );
+}
+
 export default function QuickStartPlaceholder( clientId ) {
 	// define a state to store each slection from each step.
 	const [ goal, setGoal ] = useState( null );
@@ -33,28 +142,10 @@ export default function QuickStartPlaceholder( clientId ) {
 
 	const { replaceBlock } = useDispatch( blockEditorStore );
 
-	const createForm = () => {
-		const block = createBlock( 'omniform/form', {}, [
-			createBlock( 'core/group', {}, [
-				createBlock( 'omniform/field', {
-					fieldLabel: 'Your Name',
-				}, [
-					createBlock( 'omniform/label', {}, [] ),
-					createBlock( 'omniform/input', {}, [] ),
-				] ),
-				createBlock( 'omniform/field', {
-					fieldLabel: 'Your Email Address',
-				}, [
-					createBlock( 'omniform/label', {}, [] ),
-					createBlock( 'omniform/input', {}, [] ),
-				] ),
-				createBlock( 'omniform/button', {
-					buttonLabel: 'Submit',
-				}, [] ),
-			] ),
-		] );
-
+	const createForm = ( captchaType ) => {
+		const block = generateForm( goal, trackPerformance, captchaType );
 		block.clientId = clientId.clientId;
+
 		replaceBlock( clientId, block );
 	};
 
@@ -150,7 +241,7 @@ export default function QuickStartPlaceholder( clientId ) {
 				subtitle={ __( 'Add spam protection to your form.', 'omniform' ) }
 				showBackButton
 				finishLabel={ __( 'Add Form Without Protection', 'omniform' ) }
-				finishCallback={ () => createForm() }
+				finishCallback={ createForm }
 			>
 				<QuickStartOption
 					as={ NavigatorButton }
@@ -186,7 +277,7 @@ export default function QuickStartPlaceholder( clientId ) {
 				subtitle={ __( 'Add hCaptcha to your form.', 'omniform' ) }
 				showBackButton
 				finishLabel={ __( 'Finish and Add Form', 'omniform' ) }
-				finishCallback={ () => createForm() }
+				finishCallback={ () => createForm( 'hcaptcha' ) }
 			/>
 
 			<QuickStartScreen
@@ -195,7 +286,7 @@ export default function QuickStartPlaceholder( clientId ) {
 				subtitle={ __( 'Add Cloudflare Turnstile to your form.', 'omniform' ) }
 				showBackButton
 				finishLabel={ __( 'Finish and Add Form', 'omniform' ) }
-				finishCallback={ () => createForm() }
+				finishCallback={ () => createForm( 'turnstile' ) }
 			/>
 
 			<QuickStartScreen
@@ -204,7 +295,7 @@ export default function QuickStartPlaceholder( clientId ) {
 				subtitle={ __( 'Add Google reCAPTCHA to your form.', 'omniform' ) }
 				showBackButton
 				finishLabel={ __( 'Finish and Add Form', 'omniform' ) }
-				finishCallback={ () => createForm() }
+				finishCallback={ () => createForm( 'recaptchav2' ) }
 			/>
 		</NavigatorProvider>
 	);
