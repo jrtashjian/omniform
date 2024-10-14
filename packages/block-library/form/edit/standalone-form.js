@@ -1,6 +1,8 @@
 /**
  * WordPress dependencies
  */
+import { __ } from '@wordpress/i18n';
+import { useEffect, useState } from '@wordpress/element';
 import {
 	useBlockProps,
 	useInnerBlocksProps,
@@ -9,7 +11,6 @@ import {
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
-import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -23,6 +24,8 @@ export default function StandaloneForm( blockObject ) {
 		name,
 		clientId,
 	} = blockObject;
+
+	const [ isQuickStartFinished, setIsQuickStartFinished ] = useState( false );
 
 	const { isNested, hasInnerBlocks } = useSelect(
 		( select ) => {
@@ -42,6 +45,12 @@ export default function StandaloneForm( blockObject ) {
 		},
 		[ clientId, name ]
 	);
+
+	useEffect( () => {
+		if ( hasInnerBlocks ) {
+			setIsQuickStartFinished( true );
+		}
+	}, [ hasInnerBlocks ] );
 
 	const blockProps = useBlockProps( {
 		className: 'block-library-block__reusable-block-container',
@@ -64,14 +73,18 @@ export default function StandaloneForm( blockObject ) {
 		);
 	}
 
-	return hasInnerBlocks ? (
+	if ( ! isQuickStartFinished ) {
+		return (
+			<div { ...blockProps }>
+				<QuickStartPlaceholder clientId={ clientId } />
+			</div>
+		);
+	}
+
+	return (
 		<>
 			<FormInspectorControls blockObject={ blockObject } />
 			<div { ...innerBlockProps } />
 		</>
-	) : (
-		<div { ...blockProps }>
-			<QuickStartPlaceholder clientId={ clientId } />
-		</div>
 	);
 }
