@@ -48,7 +48,7 @@
 		text-align: center;
 		font-size: 0.8125rem;
 		color: $gray-700;
-		padding-bottom: $grid-unit-20;
+		padding-bottom: $grid-unit-30;
 	}
 
 	&__option {
@@ -56,8 +56,8 @@
 		width: 180px;
 		padding: 0;
 		line-height: 1.4;
-
-		&-icon {}
+		outline: 2px solid $gray-200;
+		border-radius: 8px;
 
 		&-title {
 			font-size: 0.875rem;
@@ -71,13 +71,21 @@
 			padding: 0 1rem;
 		}
 
+		&.is-pressed {
+			outline: none;
+		}
+
+		&.is-pressed &-description {
+			color: $gray-200;
+		}
+
 		> .components-flex {
 			margin: 0 auto;
 		}
 	}
 
 	&__buttons {
-		padding-top: $grid-unit-20;
+		padding-top: $grid-unit-30;
 
 		&-back {
 			margin-left: $grid-unit-30;
