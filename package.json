@@ -29,7 +29,7 @@
 	},
 	"dependencies": {
 		"@wordpress/base-styles": "^5.0.1",
-		"@wordpress/block-editor": "^13.0.6",
+		"@wordpress/block-editor": "^13.0.7",
 		"@wordpress/blocks": "^13.0.3",
 		"@wordpress/components": "^28.0.3",
 		"@wordpress/data": "^10.0.2",
