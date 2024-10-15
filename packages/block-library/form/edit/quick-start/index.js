@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import {
 	__experimentalNavigatorProvider as NavigatorProvider,
 	__experimentalNavigatorScreen as NavigatorScreen,
@@ -13,9 +13,15 @@ import {
 	Icon,
 	SVG,
 	Path,
+	TextControl,
+	ExternalLink,
 } from '@wordpress/components';
 import { createBlock } from '@wordpress/blocks';
 import { useDispatch } from '@wordpress/data';
+import {
+	useEntityProp,
+	store as coreDataStore,
+} from '@wordpress/core-data';
 import { useState } from '@wordpress/element';
 import {
 	store as blockEditorStore,
@@ -142,11 +148,31 @@ export default function QuickStartPlaceholder( clientId ) {
 
 	const { replaceBlock } = useDispatch( blockEditorStore );
 
-	const createForm = ( captchaType ) => {
+	const { saveEditedEntityRecord } = useDispatch( coreDataStore );
+
+	const createForm = async ( captchaType ) => {
+		await saveEditedEntityRecord( 'root', 'site' );
+
 		const block = generateForm( goal, trackPerformance, captchaType );
 		block.clientId = clientId.clientId;
 
 		replaceBlock( clientId, block );
+	};
+
+	const SetupInstructions = ( { serviceLabel, setupLink } ) => {
+		return (
+			<>
+				{ sprintf(
+					/* translators: 1: captcha service name */
+					__( 'To start using %s, you need to sign up for an API key pair for your site. The key pair consists of a site key and secret key.', 'omniform' ),
+					serviceLabel
+				) }
+				&nbsp;
+				<ExternalLink href={ setupLink }>
+					{ __( 'Generate keys', 'omniform' ) }
+				</ExternalLink>
+			</>
+		);
 	};
 
 	return (
@@ -241,7 +267,7 @@ export default function QuickStartPlaceholder( clientId ) {
 				subtitle={ __( 'Add spam protection to your form.', 'omniform' ) }
 				showBackButton
 				finishLabel={ __( 'Add Form Without Protection', 'omniform' ) }
-				finishCallback={ createForm }
+				finishCallback={ () => createForm() }
 			>
 				<QuickStartOption
 					as={ NavigatorButton }
@@ -274,29 +300,50 @@ export default function QuickStartPlaceholder( clientId ) {
 			<QuickStartScreen
 				path="/hcaptcha"
 				title={ __( 'hCaptcha', 'omniform' ) }
-				subtitle={ __( 'Add hCaptcha to your form.', 'omniform' ) }
+				subtitle={ (
+					<SetupInstructions
+						serviceLabel={ __( 'hCaptcha', 'omniform' ) }
+						setupLink="https://dashboard.hcaptcha.com/sites/new"
+					/>
+				) }
 				showBackButton
 				finishLabel={ __( 'Finish and Add Form', 'omniform' ) }
 				finishCallback={ () => createForm( 'hcaptcha' ) }
-			/>
+			>
+				<CaptchaSettingControls service="hcaptcha" />
+			</QuickStartScreen>
 
 			<QuickStartScreen
 				path="/cloudflare-turnstile"
 				title={ __( 'Cloudflare Turnstile', 'omniform' ) }
-				subtitle={ __( 'Add Cloudflare Turnstile to your form.', 'omniform' ) }
+				subtitle={ (
+					<SetupInstructions
+						serviceLabel={ __( 'Turnstile', 'omniform' ) }
+						setupLink="https://dash.cloudflare.com/?to=:/account/turnstile"
+					/>
+				) }
 				showBackButton
 				finishLabel={ __( 'Finish and Add Form', 'omniform' ) }
 				finishCallback={ () => createForm( 'turnstile' ) }
-			/>
+			>
+				<CaptchaSettingControls service="turnstile" />
+			</QuickStartScreen>
 
 			<QuickStartScreen
 				path="/google-recaptcha"
 				title={ __( 'Google reCAPTCHA', 'omniform' ) }
-				subtitle={ __( 'Add Google reCAPTCHA to your form.', 'omniform' ) }
+				subtitle={ (
+					<SetupInstructions
+						serviceLabel={ __( 'reCAPTCHA v2', 'omniform' ) }
+						setupLink="https://www.google.com/recaptcha/admin/create"
+					/>
+				) }
 				showBackButton
 				finishLabel={ __( 'Finish and Add Form', 'omniform' ) }
 				finishCallback={ () => createForm( 'recaptchav2' ) }
-			/>
+			>
+				<CaptchaSettingControls service="recaptchav2" />
+			</QuickStartScreen>
 		</NavigatorProvider>
 	);
 }
@@ -308,7 +355,7 @@ const QuickStartScreen = ( {
 	showBackButton,
 	children,
 	finishLabel,
-	finishCallback = () => {},
+	finishCallback,
 } ) => (
 	<NavigatorScreen path={ path } className="omniform-quick-start__step">
 		<div className="omniform-quick-start__title">{ title }</div>
@@ -329,7 +376,7 @@ const QuickStartScreen = ( {
 				<Button
 					className="omniform-quick-start__buttons-finish"
 					variant="primary"
-					onClick={ finishCallback }
+					onClick={ () => finishCallback?.() }
 				>
 					{ finishLabel }
 				</Button>
@@ -341,7 +388,7 @@ const QuickStartScreen = ( {
 const QuickStartOption = ( {
 	as: Component = NavigatorButton,
 	path,
-	onClick = () => {},
+	onClick,
 	icon,
 	title,
 	description,
@@ -350,7 +397,7 @@ const QuickStartOption = ( {
 	<Component
 		className="omniform-quick-start__option"
 		path={ path }
-		onClick={ onClick }
+		onClick={ () => onClick?.() }
 		isPressed={ isPressed }
 	>
 		<VStack alignment="center" justify="center">
@@ -368,3 +415,26 @@ const QuickStartOption = ( {
 		</VStack>
 	</Component>
 );
+
+const CaptchaSettingControls = ( { service } ) => {
+	const [ siteKey, setSiteKey ] = useEntityProp( 'root', 'site', `omniform_${ service }_site_key` );
+	const [ secretKey, setSecretKey ] = useEntityProp( 'root', 'site', `omniform_${ service }_secret_key` );
+
+	return (
+		<>
+			<TextControl
+				label={ __( 'Site Key', 'omniform' ) }
+				value={ siteKey || '' }
+				onChange={ setSiteKey }
+				type="password"
+			/>
+
+			<TextControl
+				label={ __( 'Secret Key', 'omniform' ) }
+				value={ secretKey || '' }
+				onChange={ setSecretKey }
+				type="password"
+			/>
+		</>
+	);
+};

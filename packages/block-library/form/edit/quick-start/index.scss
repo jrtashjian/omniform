@@ -35,8 +35,7 @@
 		font-size: 1.5rem;
 		font-weight: bold;
 		line-height: 1;
-		padding-top: $grid-unit-10;
-		padding-bottom: $grid-unit-10;
+		padding: $grid-unit-10 $grid-unit-30;
 
 		> svg {
 			display: block;
@@ -48,7 +47,7 @@
 		text-align: center;
 		font-size: 0.8125rem;
 		color: $gray-700;
-		padding-bottom: $grid-unit-30;
+		padding: 0 $grid-unit-30 $grid-unit-30;
 	}
 
 	&__option {
