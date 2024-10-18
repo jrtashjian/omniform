@@ -124,9 +124,6 @@ function generateForm( goal, isTrackingEnabled, captchaType ) {
 			];
 			break;
 		default:
-			innerBlocks = [
-				createBlock( 'omniform/button', { buttonType: 'submit', buttonLabel: __( 'Submit', 'omniform' ) } ),
-			];
 	}
 
 	if ( captchaType ) {
@@ -140,7 +137,7 @@ function generateForm( goal, isTrackingEnabled, captchaType ) {
 		: createBlock( 'omniform/form', {}, [ createBlock( 'core/group', { layout: { type: 'default' } }, innerBlocks ) ] );
 }
 
-export default function QuickStartPlaceholder( clientId ) {
+export default function QuickStartPlaceholder( { clientId, onFinish } ) {
 	// define a state to store each slection from each step.
 	const [ goal, setGoal ] = useState( null );
 	const [ trackPerformance, setTrackPerformance ] = useState( null );
@@ -150,13 +147,14 @@ export default function QuickStartPlaceholder( clientId ) {
 
 	const { saveEditedEntityRecord } = useDispatch( coreDataStore );
 
-	const createForm = async ( captchaType ) => {
+	const createForm = async () => {
 		await saveEditedEntityRecord( 'root', 'site' );
 
-		const block = generateForm( goal, trackPerformance, captchaType );
-		block.clientId = clientId.clientId;
+		const block = generateForm( goal, trackPerformance, spamProtection );
+		block.clientId = clientId;
 
 		replaceBlock( clientId, block );
+		onFinish();
 	};
 
 	const SetupInstructions = ( { serviceLabel, setupLink } ) => {
@@ -198,7 +196,7 @@ export default function QuickStartPlaceholder( clientId ) {
 
 				<QuickStartOption
 					as={ Button }
-					onClick={ () => createForm() }
+					onClick={ () => onFinish() }
 					title={ __( 'Blank Form', 'omniform' ) }
 					description={ __( 'Build you form from scratch', 'omniform' ) }
 				/>
@@ -281,8 +279,8 @@ export default function QuickStartPlaceholder( clientId ) {
 				<QuickStartOption
 					as={ NavigatorButton }
 					path="/cloudflare-turnstile"
-					onClick={ () => setSpamProtection( 'cloudflare-turnstile' ) }
-					isPressed={ spamProtection === 'cloudflare-turnstile' }
+					onClick={ () => setSpamProtection( 'turnstile' ) }
+					isPressed={ spamProtection === 'turnstile' }
 					icon={ iconTurnstile }
 					title={ __( 'Cloudflare Turnstile', 'omniform' ) }
 				/>
@@ -290,8 +288,8 @@ export default function QuickStartPlaceholder( clientId ) {
 				<QuickStartOption
 					as={ NavigatorButton }
 					path="/google-recaptcha"
-					onClick={ () => setSpamProtection( 'google-recaptcha' ) }
-					isPressed={ spamProtection === 'google-recaptcha' }
+					onClick={ () => setSpamProtection( 'recaptchav2' ) }
+					isPressed={ spamProtection === 'recaptchav2' }
 					icon={ iconReCaptcha }
 					title={ __( 'Google reCAPTCHA', 'omniform' ) }
 				/>
@@ -308,7 +306,7 @@ export default function QuickStartPlaceholder( clientId ) {
 				) }
 				showBackButton
 				finishLabel={ __( 'Finish and Add Form', 'omniform' ) }
-				finishCallback={ () => createForm( 'hcaptcha' ) }
+				finishCallback={ () => createForm() }
 			>
 				<CaptchaSettingControls service="hcaptcha" />
 			</QuickStartScreen>
@@ -324,7 +322,7 @@ export default function QuickStartPlaceholder( clientId ) {
 				) }
 				showBackButton
 				finishLabel={ __( 'Finish and Add Form', 'omniform' ) }
-				finishCallback={ () => createForm( 'turnstile' ) }
+				finishCallback={ () => createForm() }
 			>
 				<CaptchaSettingControls service="turnstile" />
 			</QuickStartScreen>
@@ -340,7 +338,7 @@ export default function QuickStartPlaceholder( clientId ) {
 				) }
 				showBackButton
 				finishLabel={ __( 'Finish and Add Form', 'omniform' ) }
-				finishCallback={ () => createForm( 'recaptchav2' ) }
+				finishCallback={ () => createForm() }
 			>
 				<CaptchaSettingControls service="recaptchav2" />
 			</QuickStartScreen>

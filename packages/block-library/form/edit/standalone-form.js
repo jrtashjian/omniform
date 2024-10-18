@@ -76,7 +76,10 @@ export default function StandaloneForm( blockObject ) {
 	if ( ! isQuickStartFinished ) {
 		return (
 			<div { ...blockProps }>
-				<QuickStartPlaceholder clientId={ clientId } />
+				<QuickStartPlaceholder
+					clientId={ clientId }
+					onFinish={ () => setIsQuickStartFinished( true ) }
+				/>
 			</div>
 		);
 	}
