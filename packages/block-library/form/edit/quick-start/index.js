@@ -32,6 +32,7 @@ import {
  */
 import './index.scss';
 import { iconHCaptcha, iconReCaptcha, iconTurnstile } from '../../../shared/icons';
+import { useCreateFormFromBlocks } from '../../utils/hooks';
 
 /**
  * Generates a form block based on the selected goal, tracking preference, and spam protection.
@@ -137,23 +138,40 @@ function generateForm( goal, isTrackingEnabled, captchaType ) {
 		: createBlock( 'omniform/form', {}, [ createBlock( 'core/group', { layout: { type: 'default' } }, innerBlocks ) ] );
 }
 
-export default function QuickStartPlaceholder( { clientId, onFinish } ) {
-	// define a state to store each slection from each step.
+export default function QuickStartPlaceholder( { blockObject, onFinish } ) {
 	const [ goal, setGoal ] = useState( null );
 	const [ trackPerformance, setTrackPerformance ] = useState( null );
 	const [ spamProtection, setSpamProtection ] = useState( null );
 
 	const { replaceBlock } = useDispatch( blockEditorStore );
-
 	const { saveEditedEntityRecord } = useDispatch( coreDataStore );
+
+	const createFromBlocks = useCreateFormFromBlocks( blockObject.setAttributes, blockObject.attributes );
 
 	const createForm = async () => {
 		await saveEditedEntityRecord( 'root', 'site' );
 
 		const block = generateForm( goal, trackPerformance, spamProtection );
-		block.clientId = clientId;
+		block.clientId = blockObject.clientId;
 
-		replaceBlock( clientId, block );
+		if ( trackPerformance ) {
+			try {
+				await createFromBlocks( block );
+
+				// Reset all but the 'ref' block attribute.
+				blockObject.setAttributes(
+					Object.keys( blockObject.attributes ).reduce( ( acc, key ) => {
+						if ( key !== 'ref' ) {
+							acc[ key ] = undefined;
+						}
+						return acc;
+					}, {} )
+				);
+			} catch ( error ) {}
+		} else {
+			replaceBlock( blockObject.clientId, block );
+		}
+
 		onFinish();
 	};
 
