@@ -137,6 +137,18 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 				)
 			);
 		}
+
+		/** @var \OmniForm\Application */ // phpcs:ignore
+		$container = $this->getContainer();
+
+		wp_add_inline_script(
+			'omniform-form-editor-script',
+			'const omniform = ' . wp_json_encode(
+				array(
+					'assetsUrl' => esc_url( $container->base_url( 'assets/' ) ),
+				)
+			)
+		);
 	}
 
 	/**
