@@ -57,7 +57,9 @@ function generateForm( goal, isTrackingEnabled, captchaType ) {
 					createBlock( 'omniform/label' ),
 					createBlock( 'omniform/input', { fieldType: 'email' } ),
 				] ),
-				createBlock( 'omniform/button', { buttonType: 'submit', buttonLabel: __( 'Submit', 'omniform' ) } ),
+				createBlock( 'core/group', { layout: { type: 'flex', flexWrap: 'nowrap' } }, [
+					createBlock( 'omniform/button', { buttonType: 'submit', buttonLabel: __( 'Submit', 'omniform' ) } ),
+				] ),
 			];
 			break;
 		case 'generate-leads':
@@ -82,7 +84,9 @@ function generateForm( goal, isTrackingEnabled, captchaType ) {
 					createBlock( 'omniform/label' ),
 					createBlock( 'omniform/textarea' ),
 				] ),
-				createBlock( 'omniform/button', { buttonType: 'submit', buttonLabel: __( 'Get in Touch', 'omniform' ) } ),
+				createBlock( 'core/group', { layout: { type: 'flex', flexWrap: 'nowrap' } }, [
+					createBlock( 'omniform/button', { buttonType: 'submit', buttonLabel: __( 'Get in Touch', 'omniform' ) } ),
+				] ),
 			];
 			break;
 		case 'get-feedback':
@@ -121,7 +125,9 @@ function generateForm( goal, isTrackingEnabled, captchaType ) {
 						createBlock( 'omniform/label' ),
 					] ),
 				] ),
-				createBlock( 'omniform/button', { buttonType: 'submit', buttonLabel: __( 'Send Feedback', 'omniform' ) } ),
+				createBlock( 'core/group', { layout: { type: 'flex', flexWrap: 'nowrap' } }, [
+					createBlock( 'omniform/button', { buttonType: 'submit', buttonLabel: __( 'Send Feedback', 'omniform' ) } ),
+				] ),
 			];
 			break;
 		default:

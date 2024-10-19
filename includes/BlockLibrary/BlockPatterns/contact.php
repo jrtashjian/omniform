@@ -8,8 +8,8 @@
 return array(
 	'title'   => esc_attr__( 'Contact', 'omniform' ),
 	'content' => '
-		<!-- wp:group {"align":"full","layout":{"type":"constrained"}} -->
-		<div class="wp-block-group alignfull"><!-- wp:omniform/response-notification {"messageContent":"' . esc_html__( 'Success! Your submission has been completed.', 'omniform' ) . '","className":"is-style-success"} /-->
+		<!-- wp:group {"layout":{"type":"default"}} -->
+		<div class="wp-block-group"><!-- wp:omniform/response-notification {"messageContent":"' . esc_html__( 'Success! Your submission has been completed.', 'omniform' ) . '","className":"is-style-success"} /-->
 
 		<!-- wp:omniform/response-notification {"messageContent":"' . esc_html__( 'Unfortunately, your submission was not successful. Please ensure all fields are correctly filled out and try again.', 'omniform' ) . '","className":"is-style-error"} /-->
 
