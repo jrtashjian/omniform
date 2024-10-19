@@ -1,6 +1,8 @@
 /**
  * WordPress dependencies
  */
+import { __ } from '@wordpress/i18n';
+import { useEffect, useState } from '@wordpress/element';
 import {
 	useBlockProps,
 	useInnerBlocksProps,
@@ -9,68 +11,21 @@ import {
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
-import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
  */
 import FormInspectorControls from './inspector-controls';
 import { ALLOWED_BLOCKS } from '../../shared/constants';
-
-const TEMPLATE = [
-	[ 'core/group', {
-		tagName: 'div',
-		align: 'full',
-		layout: {
-			type: 'constrained',
-		},
-	}, [
-		[ 'omniform/response-notification', {
-			messageContent: __( 'Success! Your submission has been completed.', 'omniform' ),
-			className: 'is-style-success',
-		}, [] ],
-		[ 'omniform/response-notification', {
-			messageContent: __( 'Unfortunately, your submission was not successful. Please ensure all fields are correctly filled out and try again.', 'omniform' ),
-			className: 'is-style-error',
-		}, [] ],
-		[ 'core/paragraph', {
-			content: __( "If you have any questions or comments, or if you'd like to work with me or collaborate on a project, please don't hesitate to get in touch. I look forward to hearing from you!", 'omniform' ),
-			dropCap: false,
-		}, [] ],
-		[ 'omniform/field', {
-			fieldLabel: __( 'Your email address', 'omniform' ),
-			fieldName: 'your-email-address',
-		}, [
-			[ 'omniform/label', {}, [] ],
-			[ 'omniform/input', {}, [] ],
-		] ],
-		[ 'omniform/field', {
-			fieldLabel: __( 'Your message', 'omniform' ),
-			fieldName: 'your-message',
-		}, [
-			[ 'omniform/label', {}, [] ],
-			[ 'omniform/textarea', {}, [] ],
-		] ],
-		[ 'core/group', {
-			tagName: 'div',
-			layout: {
-				type: 'flex',
-				flexWrap: 'nowrap',
-			},
-		}, [
-			[ 'omniform/button', {
-				buttonType: 'submit',
-				buttonLabel: __( 'Send Message', 'omniform' ),
-			}, [] ],
-		] ],
-	] ],
-];
+import QuickStartPlaceholder from './quick-start';
 
 export default function StandaloneForm( blockObject ) {
 	const {
 		name,
 		clientId,
 	} = blockObject;
+
+	const [ isQuickStartFinished, setIsQuickStartFinished ] = useState( false );
 
 	const { isNested, hasInnerBlocks } = useSelect(
 		( select ) => {
@@ -91,13 +46,18 @@ export default function StandaloneForm( blockObject ) {
 		[ clientId, name ]
 	);
 
+	useEffect( () => {
+		if ( hasInnerBlocks ) {
+			setIsQuickStartFinished( true );
+		}
+	}, [ hasInnerBlocks ] );
+
 	const blockProps = useBlockProps( {
 		className: 'block-library-block__reusable-block-container',
 	} );
 
 	const innerBlockProps = useInnerBlocksProps( blockProps, {
 		allowedBlocks: ALLOWED_BLOCKS,
-		template: TEMPLATE,
 		renderAppender: hasInnerBlocks
 			? undefined
 			: InnerBlocks.ButtonBlockAppender,
@@ -109,6 +69,17 @@ export default function StandaloneForm( blockObject ) {
 				<Warning>
 					{ __( 'A form cannot be nested within another form.', 'omniform' ) }
 				</Warning>
+			</div>
+		);
+	}
+
+	if ( ! isQuickStartFinished ) {
+		return (
+			<div { ...blockProps }>
+				<QuickStartPlaceholder
+					blockObject={ blockObject }
+					onFinish={ () => setIsQuickStartFinished( true ) }
+				/>
 			</div>
 		);
 	}
