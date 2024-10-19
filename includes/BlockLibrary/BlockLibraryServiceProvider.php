@@ -453,6 +453,45 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 	}
 
 	/**
+	 * Get global styles for the Twenty Twenty Five theme.
+	 *
+	 * @see https://wordpress.org/themes/twentytwentyfive/
+	 *
+	 * @return array
+	 */
+	public function global_styles_for_twentytwentyfive() {
+		$input_styles = array(
+			'border'     => array(
+				'radius' => '1.5625rem',
+				'color'  => 'var(--wp--preset--color--accent-6)',
+			),
+			'color'      => array(
+				'background' => 'var(--wp--preset--color--accent-5)',
+			),
+			'spacing'    => array(
+				'padding' => array(
+					'left'   => '1.5625rem',
+					'right'  => '1.5625rem',
+				),
+			),
+			'typography' => array(
+				'fontSize'   => 'var(--wp--preset--font-size--medium)',
+				'lineHeight' => '1.6',
+			),
+			'css'     => '&:is(:focus, :focus-visible) { outline-color:var(--wp--preset--color--contrast) !important; }',
+		);
+
+		return array(
+			'omniform/input'    => $input_styles,
+			'omniform/select'   => $input_styles,
+			'omniform/textarea' => $input_styles,
+			'omniform/button'   => array(
+				'css' => '&:is(:focus, :focus-visible) { outline-color:var(--wp--preset--color--contrast); }',
+			),
+		);
+	}
+
+	/**
 	 * Get global styles for the Kanso theme.
 	 *
 	 * @see https://wordpress.org/themes/kanso/

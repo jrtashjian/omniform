@@ -16,7 +16,11 @@
 		margin: 0;
 
 		&[type="radio"] {
-			border-radius: 100%;
+			border-radius: 100% !important;
+		}
+
+		&[type="checkbox"] {
+			border-radius: 0.25em !important;
 		}
 
 		&::after {
@@ -43,7 +47,7 @@
 		}
 
 		&[type="checkbox"]::before {
-			border-radius: 0.25em;
+			border-radius: 0.25em !important;
 			mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath fill='%23000' fill-rule='evenodd' d='M20 0H0v20h20V0Zm-4.44 8.06a1.5 1.5 0 0 0-2.12-2.12L8.5 10.878l-1.94-1.94a1.5 1.5 0 1 0-2.12 2.122l3 3a1.5 1.5 0 0 0 2.12 0l6-6Z' clip-rule='evenodd'/%3E%3C/svg%3E");
 		}
 
