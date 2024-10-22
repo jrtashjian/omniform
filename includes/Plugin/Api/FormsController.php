@@ -74,7 +74,7 @@ class FormsController extends \WP_REST_Posts_Controller {
 		$errors = $form->validate();
 
 		if ( ! empty( $errors ) ) {
-			$response = array(
+			$api_response = array(
 				'status'         => 400,
 				'message'        => 'validation_failed',
 				'invalid_fields' => $errors,
@@ -85,7 +85,7 @@ class FormsController extends \WP_REST_Posts_Controller {
 			}
 
 			return rest_ensure_response(
-				new \WP_HTTP_Response( $response, $response['status'] )
+				new \WP_HTTP_Response( $api_response, $api_response['status'] )
 			);
 		}
 
@@ -115,18 +115,18 @@ class FormsController extends \WP_REST_Posts_Controller {
 		/**
 		 * Fires after a response has been created.
 		 *
-		 * @param int $response_id The response ID.
+		 * @param \OmniForm\Plugin\Response $response The response instance.
 		 * @param \OmniForm\Plugin\Form $form The form instance.
 		 */
-		do_action( 'omniform_response_created', $response_id, $form );
+		do_action( 'omniform_response_created', $response, $form );
 
-		$response = array(
+		$api_response = array(
 			'status'  => 201,
 			'message' => 'response_created',
 		);
 
 		return rest_ensure_response(
-			new \WP_HTTP_Response( $response, $response['status'] )
+			new \WP_HTTP_Response( $api_response, $api_response['status'] )
 		);
 	}
 

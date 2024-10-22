@@ -272,6 +272,33 @@ class Form {
 	}
 
 	/**
+	 * The form's notify email.
+	 *
+	 * @return string
+	 */
+	public function get_notify_email() {
+		$notify_email = get_post_meta( $this->get_id(), 'notify_email', true );
+
+		return empty( $notify_email )
+			? get_option( 'admin_email' )
+			: $notify_email;
+	}
+
+	/**
+	 * The form's notify email subject.
+	 *
+	 * @return string
+	 */
+	public function get_notify_email_subject() {
+		$notify_email_subject = get_post_meta( $this->get_id(), 'notify_email_subject', true );
+
+		return empty( $notify_email_subject )
+			// translators: %1$s represents the blog name, %2$s represents the form title.
+			? esc_attr( sprintf( __( 'New Response: %1$s - %2$s', 'omniform' ), get_option( 'blogname' ), $this->get_title() ) )
+			: esc_attr( $notify_email_subject );
+	}
+
+	/**
 	 * Filters the content of a single block. This is used to parse the form's
 	 * blocks and add them to the form's fields for processing.
 	 *

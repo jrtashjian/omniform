@@ -109,21 +109,10 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		// Send email notification when a response is created.
 		add_action(
 			'omniform_response_created',
-			function ( int $response_id, Form $form ) {
-				$notify_email         = get_post_meta( $form->get_id(), 'notify_email', true );
-				$notify_email_subject = get_post_meta( $form->get_id(), 'notify_email_subject', true );
-
-				/** @var \OmniForm\Plugin\Response */ // phpcs:ignore
-				$response = $this->getContainer()->get( ResponseFactory::class )->create_with_id( $response_id );
-
+			function ( Response $response, Form $form ) {
 				wp_mail(
-					empty( $notify_email )
-						? get_option( 'admin_email' )
-						: $notify_email,
-					empty( $notify_email_subject )
-						// translators: %1$s represents the blog name, %2$s represents the form title.
-						? esc_attr( sprintf( __( 'New Response: %1$s - %2$s', 'omniform' ), get_option( 'blogname' ), $form->get_title() ) )
-						: esc_attr( $notify_email_subject ),
+					$form->get_notify_email(),
+					$form->get_notify_email_subject(),
 					wp_kses( $response->email_content(), array() )
 				);
 			},
@@ -134,7 +123,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		// Increment form response count.
 		add_action(
 			'omniform_response_created',
-			function ( $response_id, $form ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
+			function ( Response $response, $form ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
 				if ( ! $form->is_published() ) {
 					return;
 				}
