@@ -234,8 +234,7 @@ class Form extends BaseBlock {
 	 * @return boolean True if the content has a success response notification block, false otherwise.
 	 */
 	private function has_success_response_notification() {
-		return (bool) preg_match( '/<!-- wp:omniform\/response-notification(?:(?!className).)*?-->/', $this->content )
-			|| preg_match( '/<!-- wp:omniform\/response-notification.*?"className":"[^"]*?is-style-success".*?-->/', $this->content );
+		return (bool) preg_match( '/<!-- wp:omniform\/response-notification.*?"className":"[^"]*?is-style-success".*?-->/', $this->content );
 	}
 
 	/**
