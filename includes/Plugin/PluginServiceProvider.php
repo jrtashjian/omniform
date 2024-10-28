@@ -387,6 +387,67 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				/** @var \OmniForm\Plugin\Response */ // phpcs:ignore
 				$response = $this->getContainer()->get( ResponseFactory::class )->create_with_id( $post->ID );
 
+				echo '<div>';
+
+				$in_section    = false;
+				$current_group = null;
+
+				$request_params = $response->get_request_params();
+				$fields         = $response->get_fields();
+				$groups         = $response->get_groups();
+
+				foreach ( $fields as $field => $label ) {
+					$is_grouped = strpos( $field, '.' ) !== false;
+
+					$parts = explode( '.', $field );
+
+					$field_group = $parts[0];
+					$sub_field   = $parts[1] ?? null;
+
+					if ( $is_grouped && $current_group !== $field_group ) {
+						if ( $in_section ) {
+							echo '</dl>';
+							$in_section = false;
+						}
+
+						echo '<h2>' . esc_html( $groups[ $field_group ] ) . '</h2>';
+						echo '<dl>';
+
+						$current_group = $field_group;
+					} elseif ( ! $is_grouped && null !== $current_group ) {
+						echo '</dl>';
+						$current_group = null;
+					}
+
+					if ( ! $is_grouped && ! $in_section ) {
+						echo '<dl>';
+						$in_section = true;
+					}
+
+					echo '<dt>' . esc_html( $label ) . '</dt>';
+					$value = $request_params[ $field ] ?? null;
+
+					if ( ! empty( $sub_field ) ) {
+						$value = $request_params[ $field_group ][ $sub_field ] ?? null;
+					}
+
+					if ( is_array( $value ) ) {
+						echo '<dd>';
+						foreach ( $value as $sub_value ) {
+							echo esc_html( $sub_value ) . '<br>';
+						}
+						echo '</dd>';
+					} else {
+						echo '<dd>' . esc_html( $value ?: '(Empty)' ) . '</dd>';
+					}
+				}
+
+				if ( $in_section || $is_grouped ) {
+					echo '</dl>';
+				}
+
+				echo '</div>';
+
 				echo wp_kses_post( $response->text_content() );
 			}
 		);

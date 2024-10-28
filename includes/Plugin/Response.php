@@ -83,6 +83,10 @@ class Response implements \JsonSerializable {
 		$this->fields = $fields;
 	}
 
+	public function get_fields() {
+		return $this->fields;
+	}
+
 	/**
 	 * Set the groups.
 	 *
@@ -90,6 +94,10 @@ class Response implements \JsonSerializable {
 	 */
 	public function set_groups( $groups ) {
 		$this->groups = $groups;
+	}
+
+	public function get_groups() {
+		return $this->groups;
 	}
 
 	/**
