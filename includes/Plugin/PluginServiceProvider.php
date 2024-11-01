@@ -103,8 +103,23 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		add_action( 'init', array( $this, 'filter_block_patterns_on_admin' ), PHP_INT_MAX );
 		add_action( 'rest_api_init', array( $this, 'filter_block_patterns_on_rest_api' ), PHP_INT_MAX );
 		add_filter( 'the_content', array( $this, 'render_singular_template' ) );
-
 		add_action( 'admin_init', array( $this, 'dismiss_newsletter_notice' ) );
+
+		// Disable autosave for omniform_response.
+		add_action(
+			'admin_enqueue_scripts',
+			function () {
+				if (
+				! is_admin() ||
+				'post.php' !== $GLOBALS['pagenow'] ||
+				'omniform_response' !== get_post_type( (int) $_GET['post'] ) // phpcs:ignore WordPress.Security.NonceVerification
+				) {
+					return;
+				}
+
+				wp_deregister_script( 'autosave' );
+			}
+		);
 
 		// Send email notification when a response is created.
 		add_action(
@@ -447,8 +462,6 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				}
 
 				echo '</div>';
-
-				echo wp_kses_post( $response->text_content() );
 			}
 		);
 
