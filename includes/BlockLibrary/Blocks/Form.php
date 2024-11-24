@@ -234,7 +234,12 @@ class Form extends BaseBlock {
 	 * @return boolean True if the content has a success response notification block, false otherwise.
 	 */
 	private function has_success_response_notification() {
-		return (bool) preg_match( '/<!-- wp:omniform\/response-notification.*?"className":"[^"]*?is-style-success".*?-->/', $this->content );
+		return (bool) (
+			preg_match( '/<!-- wp:omniform\/response-notification.*?"className":"[^"]*?is-style-success[^"]*?".*?-->/', $this->content )
+			// Fallback for pre-'is-style-' response notifications.
+			|| preg_match( '/<!-- wp:omniform\/response-notification.*?"messageType":"[^"]*?success[^"]*?".*?-->/', $this->content )
+			|| preg_match( '/<!-- wp:omniform\/response-notification.*?"color":"[^"]*?vivid-green-cyan,#00d084[^"]*?".*?-->/', $this->content )
+		);
 	}
 
 	/**
@@ -243,7 +248,12 @@ class Form extends BaseBlock {
 	 * @return boolean True if the content has an error response notification block, false otherwise.
 	 */
 	private function has_error_response_notification() {
-		return (bool) preg_match( '/<!-- wp:omniform\/response-notification.*?"className":"[^"]*?is-style-error".*?-->/', $this->content );
+		return (bool) (
+			preg_match( '/<!-- wp:omniform\/response-notification.*?"className":"[^"]*?is-style-error[^"]*?".*?-->/', $this->content )
+			// Fallback for pre-'is-style-' response notifications.
+			|| preg_match( '/<!-- wp:omniform\/response-notification.*?"messageType":"[^"]*?error[^"]*?".*?-->/', $this->content )
+			|| preg_match( '/<!-- wp:omniform\/response-notification.*?"color":"[^"]*?vivid-red,#cf2e2e[^"]*?".*?-->/', $this->content )
+		);
 	}
 
 	/**
