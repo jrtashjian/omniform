@@ -453,7 +453,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 						}
 						echo '</dd>';
 					} else {
-						echo '<dd>' . esc_html( $value ?: '(Empty)' ) . '</dd>';
+						echo '<dd>' . esc_html( $value ? $value : '(Empty)' ) . '</dd>';
 					}
 				}
 
