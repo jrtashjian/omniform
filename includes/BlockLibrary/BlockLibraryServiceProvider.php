@@ -470,15 +470,15 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 			),
 			'spacing'    => array(
 				'padding' => array(
-					'left'   => '1.5625rem',
-					'right'  => '1.5625rem',
+					'left'  => '1.5625rem',
+					'right' => '1.5625rem',
 				),
 			),
 			'typography' => array(
 				'fontSize'   => 'var(--wp--preset--font-size--medium)',
 				'lineHeight' => '1.6',
 			),
-			'css'     => '&:is(:focus, :focus-visible) { outline-color:var(--wp--preset--color--contrast) !important; }',
+			'css'        => '&:is(:focus, :focus-visible) { outline-color:var(--wp--preset--color--contrast) !important; }',
 		);
 
 		return array(
