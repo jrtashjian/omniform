@@ -106,7 +106,7 @@ class Response implements \JsonSerializable {
 			$message[] = sprintf(
 				'<strong>%s:</strong> %s',
 				esc_html( $label ),
-				wp_kses( $value, array() )
+				wp_kses_post( nl2br( $value ), array() )
 			);
 		}
 
