@@ -189,7 +189,6 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 			$block_attributes = array_merge(
 				array(
 					'form_title' => $pattern['title'],
-					'align'      => 'full',
 				),
 				isset( $pattern['settings'] )
 					? array_map( 'esc_attr', $pattern['settings'] )
