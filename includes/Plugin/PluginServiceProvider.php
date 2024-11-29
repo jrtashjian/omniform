@@ -307,12 +307,16 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					return;
 				}
 
+				$form_title = empty( $form->get_title() )
+					? __( '(no title)', 'omniform' )
+					: $form->get_title();
+
 				printf(
 					'<a href="%s" aria-label="%s">%s</a>',
 					esc_url( admin_url( sprintf( 'post.php?post=%d&action=edit', $form->get_id() ) ) ),
 					/* translators: %s: Form title. */
-					esc_attr( sprintf( __( 'View &#8220;%s&#8221; responses', 'omniform' ), $form->get_title() ) ),
-					esc_attr( $form->get_title() ),
+					esc_attr( sprintf( __( 'View &#8220;%s&#8221; responses', 'omniform' ), $form_title ) ),
+					esc_attr( $form_title ),
 				);
 			},
 			10,
