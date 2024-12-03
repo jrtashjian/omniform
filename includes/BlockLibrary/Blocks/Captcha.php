@@ -8,10 +8,10 @@
 namespace OmniForm\BlockLibrary\Blocks;
 
 use OmniForm\Dependencies\Respect\Validation;
-use OmniForm\HCaptchaRule;
-use OmniForm\ReCaptchaV2Rule;
-use OmniForm\ReCaptchaV3Rule;
-use OmniForm\TurnstileRule;
+use OmniForm\Validation\Rules\HCaptchaRule;
+use OmniForm\Validation\Rules\ReCaptchaV2Rule;
+use OmniForm\Validation\Rules\ReCaptchaV3Rule;
+use OmniForm\Validation\Rules\TurnstileRule;
 
 /**
  * The Captcha block class.

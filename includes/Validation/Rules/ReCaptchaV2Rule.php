@@ -1,18 +1,18 @@
 <?php
 /**
- * The TurnstileRule class.
+ * The ReCaptchaV2Rule class.
  *
  * @package OmniForm
  */
 
-namespace OmniForm;
+namespace OmniForm\Validation\Rules;
 
 use OmniForm\Dependencies\Respect\Validation\Rules\AbstractRule;
 
 /**
- * The TurnstileRule class.
+ * The ReCaptchaV2Rule class.
  */
-class TurnstileRule extends AbstractRule {
+class ReCaptchaV2Rule extends AbstractRule {
 	/**
 	 * Validates the input.
 	 *
@@ -21,14 +21,14 @@ class TurnstileRule extends AbstractRule {
 	 * @return bool
 	 */
 	public function validate( $input ): bool {
-		$secret = get_option( 'omniform_turnstile_secret_key' );
+		$secret = get_option( 'omniform_recaptchav2_secret_key' );
 
 		if ( ! $secret ) {
 			return true;
 		}
 
 		$response = wp_remote_post(
-			'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+			'https://www.google.com/recaptcha/api/siteverify',
 			array(
 				'body' => array(
 					'secret'   => $secret,

@@ -1,18 +1,18 @@
 <?php
 /**
- * The ReCaptchaV2Rule class.
+ * The HCaptchaRule class.
  *
  * @package OmniForm
  */
 
-namespace OmniForm;
+namespace OmniForm\Validation\Rules;
 
 use OmniForm\Dependencies\Respect\Validation\Rules\AbstractRule;
 
 /**
- * The ReCaptchaV2Rule class.
+ * The HCaptchaRule class.
  */
-class ReCaptchaV2Rule extends AbstractRule {
+class HCaptchaRule extends AbstractRule {
 	/**
 	 * Validates the input.
 	 *
@@ -21,14 +21,14 @@ class ReCaptchaV2Rule extends AbstractRule {
 	 * @return bool
 	 */
 	public function validate( $input ): bool {
-		$secret = get_option( 'omniform_recaptchav2_secret_key' );
+		$secret = get_option( 'omniform_hcaptcha_secret_key' );
 
 		if ( ! $secret ) {
 			return true;
 		}
 
 		$response = wp_remote_post(
-			'https://www.google.com/recaptcha/api/siteverify',
+			'https://hcaptcha.com/siteverify',
 			array(
 				'body' => array(
 					'secret'   => $secret,
