@@ -153,6 +153,14 @@ class Response implements \JsonSerializable {
 			array_keys( $this->flatten( $content->export() ) )
 		);
 
+		// Map the fields to the original field names.
+		$fields = array_map(
+			function ( $field ) {
+				return $this->fields[ $field ] ?? $field;
+			},
+			$fields
+		);
+
 		return array(
 			'content' => $content,
 			'fields'  => $fields,
