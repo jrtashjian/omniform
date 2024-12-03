@@ -73,6 +73,14 @@ class InputTest extends FormBlockTestCase {
 
 		$this->render_block_with_attributes( array( 'fieldType' => 'datetime-local' ) );
 		$this->assertEquals( $this->block_instance->get_control_value(), gmdate( $this->block_instance::FORMAT_DATETIME_LOCAL ) );
+
+		$this->render_block_with_attributes( array( 'fieldType' => 'search' ) );
+		$this->assertEquals( $this->block_instance->get_control_value(), '' );
+
+		global $wp_query;
+		$wp_query->set( $this->block_instance->get_control_name(), 'search query' );
+		$this->render_block_with_attributes( array( 'fieldType' => 'search' ) );
+		$this->assertEquals( $this->block_instance->get_control_value(), 'search query' );
 	}
 
 	/**
