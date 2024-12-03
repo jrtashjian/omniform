@@ -26,13 +26,11 @@ class CaptchaTest extends FormBlockTestCase {
 	public function test_does_not_render_without_service() {
 		$this->assertEmpty( $this->render_block_with_attributes() );
 
-		$this->assertNotEmpty(
-			$this->render_block_with_attributes(
-				array(
-					'service' => 'hcaptcha',
-				)
-			)
-		);
+		foreach ( array_keys( CaptchaBlock::SERVICES ) as $service ) {
+			$this->assertNotEmpty(
+				$this->render_block_with_attributes( array( 'service' => $service ) )
+			);
+		}
 
 		$this->assertEmpty(
 			$this->render_block_with_attributes(
