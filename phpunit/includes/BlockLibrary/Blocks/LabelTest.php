@@ -29,6 +29,16 @@ class LabelTest extends FormBlockTestCase {
 		$this->apply_block_context( 'omniform/fieldLabel', 'field label' );
 		$this->assertNotEmpty( $this->render_block_with_attributes() );
 	}
+
+	/**
+	 * Ensure the label indicates if the field is required.
+	 */
+	public function test_label_required() {
+		$this->apply_block_context( 'omniform/fieldLabel', 'field label' );
+		$this->apply_block_context( 'omniform/fieldIsRequired', true );
+		$this->assertStringContainsString( 'class="omniform-field-required"', $this->render_block_with_attributes() );
+		$this->assertStringContainsString( '>*</abbr>', $this->render_block_with_attributes() );
+	}
 }
 
 // phpcs:disable

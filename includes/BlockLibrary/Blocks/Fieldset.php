@@ -7,8 +7,6 @@
 
 namespace OmniForm\BlockLibrary\Blocks;
 
-use OmniForm\Plugin\Form;
-
 /**
  * The Fieldset block class.
  */

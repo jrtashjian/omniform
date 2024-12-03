@@ -17,6 +17,8 @@ class FieldsetTest extends FormBlockTestCase {
 	 * Register the block to test against.
 	 */
 	public function set_up() {
+		omniform()->addServiceProvider( new \OmniForm\Plugin\PluginServiceProvider() );
+
 		$this->register_block_type( new FieldsetBlock() );
 	}
 
@@ -33,6 +35,21 @@ class FieldsetTest extends FormBlockTestCase {
 				)
 			)
 		);
+	}
+
+	/**
+	 * Ensure the label indicates if the field is required.
+	 */
+	public function test_label_required() {
+		$render = $this->render_block_with_attributes(
+			array(
+				'fieldLabel' => 'field label',
+				'isRequired' => true,
+			)
+		);
+
+		$this->assertStringContainsString( 'class="omniform-field-required"', $render );
+		$this->assertStringContainsString( '>*</abbr>', $render );
 	}
 }
 
