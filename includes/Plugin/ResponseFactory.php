@@ -90,6 +90,15 @@ class ResponseFactory {
 
 		$data = json_decode( $_response->post_content, true );
 
+		// Fallback for old responses.
+		if ( empty( $data['response'] ) ) {
+			$data = array(
+				'response' => $data,
+				'fields'   => array_combine( array_keys( $data ), array_keys( $data ) ),
+				'groups'   => array_combine( array_keys( $data ), array_keys( $data ) ),
+			);
+		}
+
 		$post_meta = get_post_meta( $response_id );
 
 		$response->set_request_params(
