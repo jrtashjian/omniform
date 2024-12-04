@@ -35,7 +35,7 @@ jobs:
         run: composer run phpscoper
 
       - name: Generate zip
-        run: wp dist-archive ./ ${{ github.event.repository.name }}
+        run: wp dist-archive ./ ${{ github.event.repository.name }}.zip
 
       - name: Unzip the archive (prevents double zip problem)
         run: unzip ${{ github.event.repository.name }}.zip -d zipfile
