@@ -84,12 +84,30 @@ class Response implements \JsonSerializable {
 	}
 
 	/**
+	 * Get the fields.
+	 *
+	 * @return array An array of fields.
+	 */
+	public function get_fields() {
+		return $this->fields;
+	}
+
+	/**
 	 * Set the groups.
 	 *
 	 * @param array $groups The groups.
 	 */
 	public function set_groups( $groups ) {
 		$this->groups = $groups;
+	}
+
+	/**
+	 * Get the groups.
+	 *
+	 * @return array An array of groups.
+	 */
+	public function get_groups() {
+		return $this->groups;
 	}
 
 	/**
