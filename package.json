@@ -12,7 +12,7 @@
 		"lint:css": "wp-scripts lint-style \"**/*.scss\" -f verbose",
 		"lint:js:fix": "npm run lint:js -- --fix",
 		"lint:js": "wp-scripts lint-js",
-		"prelint:php": "wp-env run --env-cwd=\"wp-content/plugins/${PWD##*/}\" cli composer update --no-interaction",
+		"prelint:php": "wp-env run --env-cwd=\"wp-content/plugins/${PWD##*/}\" cli composer install --no-interaction",
 		"lint:php": "wp-env run --env-cwd=\"wp-content/plugins/${PWD##*/}\" cli composer run-script lint",
 		"lint:php:prefixed": "wp-env run --env-cwd=\"wp-content/plugins/${PWD##*/}\" cli composer run-script lint-prefixed",
 		"mailhog": "docker run --rm --name mailhog -d -p 1025:1025 -p 8025:8025 mailhog/mailhog",
