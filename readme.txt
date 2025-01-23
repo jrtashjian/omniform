@@ -82,26 +82,17 @@ Manual installation method requires downloading the OmniForm plugin and uploadin
 
 == Changelog ==
 
-= 1.2.1 / 2024-04-10 =
+= 1.3.0 / 2025-01-22 =
 
-  * Fixed improper check for success/error message blocks
-  * Resolved array to string conversion warning
-
-= 1.2.0 / 2024-04-09 =
-
-  * Fixed Cloudflare Turnstile validation in Captcha block
-  * Added ability to customize email notification [#25](https://github.com/jrtashjian/omniform/pull/25)
-  * Introduced success and error message blocks [#23](https://github.com/jrtashjian/omniform/pull/23)
-  * Improved block splitting, replacing, removing, and merging of form blocks [#22](https://github.com/jrtashjian/omniform/pull/22)
-  * Introduced Hidden inputs with custom callbacks [#21](https://github.com/jrtashjian/omniform/pull/21)
-  * Fixed display of form blocks in the Style Book
-  * Allowed form to be rendered while previewing
-
-= 1.1.0 / 2024-04-01 =
-
-  * Improve validation for grouped fields [#18](https://github.com/jrtashjian/omniform/pull/18)
-  * Require WordPress version 6.3
-  * Upgrade blocks to API version 3
-  * Properly restrict nested blocks within the form block
-  * Use global content_width for preview viewportWidth, if available
-  * Add proper password protection for form rendering
+  * Introduced multiple form types with customizable submission methods and settings. [#28](https://github.com/jrtashjian/omniform/pull/28)
+  * Now forms can be added directly to any post or page, independent of default templates. [#32](https://github.com/jrtashjian/omniform/pull/32)
+  * Added comprehensive analytics to track form impressions, submissions, and conversions. [#30](https://github.com/jrtashjian/omniform/pull/30)
+  * Introduced a new onboarding experience to simplify setup, guiding users through CAPTCHA setup, form templates, and performance tracking. [#38](https://github.com/jrtashjian/omniform/pull/38)
+  * Convert the default core/post-comments-form block into an OmniForm for enhanced customization. [#37](https://github.com/jrtashjian/omniform/pull/37), [#33](https://github.com/jrtashjian/omniform/pull/33)
+  * Convert the default core/search block into an OmniForm for enhanced customization. [#36](https://github.com/jrtashjian/omniform/pull/36)
+  * Convert Jetpack Forms into OmniForms with ease.
+  * Tailored styling added for [Kanso](https://wordpress.org/themes/kanso/), [Twenty Twenty-Four](https://wordpress.org/themes/twentytwentyfour/), [Twenty Twenty-Five](https://wordpress.org/themes/twentytwentyfive/), [Ollie](https://wordpress.org/themes/ollie/), and [Rockbase](https://rockbase.co/) themes.
+  * Improved labeling and structure of form elements for better accessibility.
+  * Expanded pattern and block variations for more design flexibility.
+  * Corrected various issues with form submissions and improved error management.
+  * Fixed inconsistencies in buttons, textareas, and required field indicators.
