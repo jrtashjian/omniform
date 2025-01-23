@@ -18,41 +18,20 @@ OmniForm is a powerful WordPress plugin that allows you to create and manage for
 
 * Complete and steadfast support for the block editor and block themes.
 * Choose from 20+ form fields blocks, including text fields, checkboxes, radio buttons, and more
+* Comprehensive analytics for tracking form impressions, submissions, and conversions.
 * Choose from pre-built form templates or create your own from scratch
 * Manage form submissions within the admin dashboard
 * Email notifications for new form submissions
 * Customize form styling to match your website's design
 * Spam protection with Cloudflare Turnstile, hCaptcha, and Google reCAPTCHA.
+* Convert default WordPress blocks (like comments and search) into OmniForms for enhanced customization.
+* Specific styling adjustments for various themes including [Kanso](https://wordpress.org/themes/kanso/), [Twenty Twenty-Four](https://wordpress.org/themes/twentytwentyfour/), [Twenty Twenty-Five](https://wordpress.org/themes/twentytwentyfive/), [Ollie](https://wordpress.org/themes/ollie/), and [Rockbase](https://rockbase.co/).
 
 = 🚀 Getting Started =
 
 To get started with OmniForm, simply install and activate the plugin on your WordPress site. Once activated, you can create new forms by navigating to the OmniForm menu in your WordPress dashboard.
 
 From there, you can choose to create a new form from scratch or use one of the pre-built form templates. Once you've created your form, you can customize it to your liking using the block editor interface.
-
-= 🌈 What's Coming Next =
-
-OmniForm is designed to be your all-in-one form solution, and it's about to get even more powerful. On the immediate horizon:
-
-* **User Login & Registration Forms**: Enhance user experience with integrated login and registration capabilities.
-* **Site Search Forms**: Elevate website usability by implementing customizable site search features.
-
-These additions will lay the groundwork for an upcoming premium offering featuring advanced form types, including but not limited to:
-
-* Surveys
-* Polls
-* Quizzes
-* Conversational Forms
-
-Stay tuned — OmniForm aims to continually adapt and expand its functionalities to meet evolving user needs.
-
-= 📣 Share Your Ideas and Enhancements =
-
-OmniForm thrives on user engagement. If you have feature requests, ideas for improvements, or even want to contribute code, your input is more than welcome.
-
-* **GitHub Repository**: Join the discussion, report bugs, or contribute directly to the codebase through the [OmniForm GitHub Repository](https://github.com/jrtashjian/omniform).
-
-By sharing your ideas, you're actively participating in the future direction of OmniForm.
 
 = 🙏 A Special Thanks from OmniForm =
 
