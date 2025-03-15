@@ -61,6 +61,10 @@ Manual installation method requires downloading the OmniForm plugin and uploadin
 
 == Changelog ==
 
+= 1.3.2 / 2025-03-14 =
+
+  * Fixed a fatal error on PHP 7.4 servers by correcting data serialization [Bug Report](https://wordpress.org/support/topic/getting-a-php-fatal-error-2)
+
 = 1.3.0 / 2025-01-22 =
 
   * Introduced multiple form types with customizable submission methods and settings. [#28](https://github.com/jrtashjian/omniform/pull/28)
