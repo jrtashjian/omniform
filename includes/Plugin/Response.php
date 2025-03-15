@@ -215,7 +215,7 @@ class Response implements \JsonSerializable {
 	 *
 	 * @return array The response data.
 	 */
-	public function jsonSerialize(): mixed {
+	public function jsonSerialize(): array {
 		return array(
 			'response' => array_filter( $this->request_params, array( $this, 'filter_request_params' ), ARRAY_FILTER_USE_KEY ),
 			'fields'   => array_filter( $this->fields, array( $this, 'filter_request_params' ), ARRAY_FILTER_USE_KEY ),
