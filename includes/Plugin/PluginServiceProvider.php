@@ -34,6 +34,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			ResponseFactory::class,
 			QueryBuilder::class,
 			QueryBuilderFactory::class,
+			UsageTracking::class,
 		);
 
 		return in_array( $id, $services, true );
@@ -87,6 +88,8 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				return new QueryBuilderFactory( $wpdb );
 			}
 		);
+
+		$this->getContainer()->addShared( UsageTracking::class );
 	}
 
 	/**
@@ -105,6 +108,12 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		add_filter( 'the_content', array( $this, 'render_singular_template' ) );
 
 		add_action( 'admin_init', array( $this, 'dismiss_newsletter_notice' ) );
+
+		// add_action( 'init', array( $this, 'usage_tracking' ) );
+		add_action( 'omniform_usage_tracking', array( $this, 'usage_tracking' ) );
+		if ( ! wp_next_scheduled( 'omniform_usage_tracking' ) ) {
+			wp_schedule_event( time(), 'hourly', 'omniform_usage_tracking' );
+		}
 
 		// Send email notification when a response is created.
 		add_action(
@@ -776,6 +785,21 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			$container = $this->getContainer();
 			update_user_meta( get_current_user_id(), 'omniform_dismissed_newsletter_notice', $container->version() );
 		}
+	}
+
+	public function usage_tracking() {
+		$usage_tracking = $this->getContainer()->get( UsageTracking::class );
+
+		$response = wp_remote_post(
+			'http://host.docker.internal:8000/api/v1/plugin-reporting',
+			array( 'body' => $usage_tracking->get_data() )
+		);
+
+		// echo '<pre>';
+		// print_r( $usage_tracking->get_data() );
+		// print_r( wp_remote_retrieve_body( $response ) );
+		// echo '</pre>';
+		// exit;
 	}
 
 	/**
