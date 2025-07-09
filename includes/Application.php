@@ -61,7 +61,7 @@ class Application extends Container {
 	 *
 	 * @return \OmniForm\Dependencies\League\Container\DefinitionContainerInterface|static
 	 */
-	public static function set_instance( DefinitionContainerInterface $container = null ) {
+	public static function set_instance( ?DefinitionContainerInterface $container = null ) {
 		static::$instance = $container;
 		return static::$instance;
 	}
