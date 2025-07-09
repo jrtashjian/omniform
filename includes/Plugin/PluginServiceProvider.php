@@ -115,6 +115,13 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			wp_schedule_event( time(), 'hourly', 'omniform_usage_tracking' );
 		}
 
+		add_action(
+			'omniform_deactivate',
+			function () {
+				wp_clear_scheduled_hook( 'omniform_usage_tracking' );
+			}
+		);
+
 		// Send email notification when a response is created.
 		add_action(
 			'omniform_response_created',
