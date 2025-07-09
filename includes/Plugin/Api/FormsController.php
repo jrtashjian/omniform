@@ -42,6 +42,48 @@ class FormsController extends \WP_REST_Posts_Controller {
 	}
 
 	/**
+	 * Checks if a given request has access to read forms.
+	 *
+	 * @param \WP_REST_Request $request Full details about the request.
+	 *
+	 * @return true|\WP_Error True if the request has read access, WP_Error object otherwise.
+	 */
+	public function get_items_permissions_check( $request ) {
+		if ( current_user_can( 'edit_posts' ) ) {
+			return true;
+		}
+
+		return new \WP_Error(
+			'rest_cannot_manage_forms',
+			__( 'Sorry, you are not allowed to access the forms on this site.', 'omniform' ),
+			array(
+				'status' => rest_authorization_required_code(),
+			)
+		);
+	}
+
+	/**
+	 * Checks if a given request has access to read forms.
+	 *
+	 * @param \WP_REST_Request $request Full details about the request.
+
+	 * @return true|\WP_Error True if the request has read access, WP_Error object otherwise.
+	 */
+	public function get_item_permissions_check( $request ) {
+		if ( current_user_can( 'edit_posts' ) ) {
+			return true;
+		}
+
+		return new \WP_Error(
+			'rest_cannot_manage_forms',
+			__( 'Sorry, you are not allowed to access the forms on this site.', 'omniform' ),
+			array(
+				'status' => rest_authorization_required_code(),
+			)
+		);
+	}
+
+	/**
 	 * Creates a single response.
 	 *
 	 * @param \WP_REST_Request $request Full details about the request.
