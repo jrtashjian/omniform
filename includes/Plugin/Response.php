@@ -102,11 +102,15 @@ class Response implements \JsonSerializable {
 		$message       = array();
 
 		foreach ( $response_data['fields'] as $name => $label ) {
-			$value     = implode( ', ', (array) $response_data['content']->get( $name, '' ) );
+			$value = implode( ', ', (array) $response_data['content']->get( $name, '' ) );
+
+			// Handle lone checkboxes.
+			$display_value = ( $label === $value ) ? 'Checked' : $value;
+
 			$message[] = sprintf(
 				'<strong>%s:</strong> %s',
 				esc_html( $label ),
-				wp_kses_post( nl2br( $value ), array() )
+				wp_kses_post( nl2br( $display_value ), array() )
 			);
 		}
 
@@ -123,8 +127,12 @@ class Response implements \JsonSerializable {
 		$message       = array();
 
 		foreach ( $response_data['fields'] as $name => $label ) {
-			$value     = implode( ', ', (array) $response_data['content']->get( $name, '' ) );
-			$message[] = $label . ': ' . wp_kses( $value, array() );
+			$value = implode( ', ', (array) $response_data['content']->get( $name, '' ) );
+
+			// Handle lone checkboxes.
+			$display_value = ( $label === $value ) ? 'Checked' : $value;
+
+			$message[] = $label . ': ' . wp_kses( $display_value, array() );
 		}
 
 		$message[] = '';
