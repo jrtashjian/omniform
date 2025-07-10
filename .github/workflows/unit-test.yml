@@ -12,11 +12,10 @@ jobs:
       matrix:
         php:
           - "7.4"
-          - "8.0"
-          - "8.1"
-          - "8.2"
+          - "8.3"
+          - "8.4"
         multisite: [false]
-        wordpress: ["6.4","6.3"]
+        wordpress: ["6.8","6.7"]
     env:
       WP_ENV_PHP_VERSION: ${{ matrix.php }}
       WP_ENV_CORE: ${{ format( 'https://wordpress.org/wordpress-{0}.zip', matrix.wordpress ) }}
@@ -43,7 +42,14 @@ jobs:
         run: composer install
 
       - name: Start Docker environment
-        run: npm run wp-env start
+        run: |
+          for i in {1..3}; do
+            if npm run wp-env start; then
+              break;
+            fi
+            echo "Retrying...";
+            sleep 10;
+          done
 
       - name: Running single site unit tests
         if: ${{ ! matrix.multisite }}
