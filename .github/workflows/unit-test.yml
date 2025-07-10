@@ -42,7 +42,14 @@ jobs:
         run: composer install
 
       - name: Start Docker environment
-        run: npm run wp-env start
+        run: |
+          for i in {1..3}; do
+            if npm run wp-env start; then
+              break;
+            fi
+            echo "Retrying...";
+            sleep 10;
+          done
 
       - name: Running single site unit tests
         if: ${{ ! matrix.multisite }}
