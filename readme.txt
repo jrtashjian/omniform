@@ -61,6 +61,11 @@ Manual installation method requires downloading the OmniForm plugin and uploadin
 
 == Changelog ==
 
+= 1.3.3 / 2025-07-15 =
+
+  * Enhanced display of standalone checkboxes in response content. [#43](https://github.com/jrtashjian/omniform/pull/43)
+  * Implemented permission checks for form access in FormsController.
+
 = 1.3.2 / 2025-03-14 =
 
   * Fixed a fatal error on PHP 7.4 servers by correcting data serialization [Bug Report](https://wordpress.org/support/topic/getting-a-php-fatal-error-2)
