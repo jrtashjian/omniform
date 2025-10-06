@@ -2,7 +2,14 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Button, PanelBody, TextControl } from '@wordpress/components';
+import {
+	Button,
+	Flex,
+	Modal,
+	PanelBody,
+	__experimentalText as Text,
+	TextControl,
+} from '@wordpress/components';
 import {
 	InspectorControls,
 	store as blockEditorStore,
@@ -10,6 +17,7 @@ import {
 import { addQueryArgs } from '@wordpress/url';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { store as noticesStore } from '@wordpress/notices';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -83,6 +91,8 @@ function StandaloneFormInspectorControls( { blockObject } ) {
 	const { createSuccessNotice, createErrorNotice } = useDispatch( noticesStore );
 	const createFromBlocks = useCreateFormFromBlocks( blockObject.setAttributes, blockObject.attributes );
 
+	const [modalOpen, setModalOpen] = useState(false);
+
 	const createForm = async () => {
 		try {
 			await createFromBlocks(
@@ -127,12 +137,19 @@ function StandaloneFormInspectorControls( { blockObject } ) {
 					onChange={ ( newValue ) => setSetting( 'form_title', newValue ) }
 					help={ __( 'This name will not be visible to viewers and is only for identifying the form.', 'omniform' ) }
 				/>
-				<Button
-					variant="primary"
-					onClick={ () => createForm() }
-				>
-					{ __( 'Convert to Standard Form', 'omniform' ) }
-				</Button>
+				<Text>{ __( 'Looking to track the performance of your form?', 'omniform' ) } <Button variant="link" onClick={() => setModalOpen(true)}>{ __( 'Learn more', 'omniform' ) }</Button></Text>
+				{modalOpen && (
+					<Modal onRequestClose={() => setModalOpen(false)} size="medium">
+						<Flex>
+							<Text><strong>{ __( 'Standalone Form:', 'omniform' ) }</strong> { __( 'Inline form that handles submissions directly and sends email notifications. No separate form management or analytics.', 'omniform' ) }</Text>
+							<Text><strong>{ __( 'Standard Form:', 'omniform' ) }</strong> { __( 'Stored form with advanced features like analytics, response tracking, and dedicated form editor for management and sharing.', 'omniform' ) }</Text>
+						</Flex>
+						<Flex justify="space-between">
+							<Button variant="secondary" onClick={() => setModalOpen(false)}>{ __( 'Cancel', 'omniform' ) }</Button>
+							<Button variant="primary" onClick={() => { createForm(); setModalOpen(false); }}>{ __( 'Upgrade to Standard Form', 'omniform' ) }</Button>
+						</Flex>
+					</Modal>
+				)}
 			</PanelBody>
 			<EmailNotificationSettings
 				getSetting={ getSetting }
