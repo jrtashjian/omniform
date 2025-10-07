@@ -40,10 +40,12 @@ class Input extends BaseControlBlock {
 	protected function get_type(): string {
 		$field_type = $this->get_block_attribute( 'fieldType' ) ?? 'text';
 
-		return match ( $field_type ) {
-			'username-email' => 'text',
-			default => $field_type,
-		};
+		switch ( $field_type ) {
+			case 'username-email':
+				return 'text';
+			default:
+				return $field_type;
+		}
 	}
 
 	/**
