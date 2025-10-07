@@ -12,8 +12,4 @@ You can also choose the Conditional Group block from the "Block Inserter" (+) po
 
 ## Block Settings
 
-The Conditional Group block supports callback and reverse condition attributes, as well as Layout settings. See [omniform.prepareFormElementForSubmission](../hooks/js-hooks.md) for validation hooks.
-
-Official documentation for these settings controls are available on WordPress.org:
-
-- [Layout Settings](https://wordpress.org/documentation/article/layout-settings-overview/)
+The Conditional Group block supports callback and reverse condition attributes. See [omniform.prepareFormElementForSubmission](../hooks/js-hooks.md) for validation hooks.

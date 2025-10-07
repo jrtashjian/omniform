@@ -10,12 +10,11 @@ You can also choose the Response Notification block from the "Block Inserter" (+
 
 ## Block Settings
 
-The Response Notification block supports Color, Spacing, Border, and Layout settings. It also includes styles for info, success, and error notifications.
+The Response Notification block supports Color, Spacing, and Border settings. It also includes styles for info, success, and error notifications.
 
 Official documentation for these settings controls are available on WordPress.org:
 
 - [Colors Settings](https://wordpress.org/documentation/article/colors-settings-overview/)
 - [Dimension Settings](https://wordpress.org/documentation/article/dimension-controls-overview/)
 - [Border settings](https://wordpress.org/documentation/article/border-settings-overview/)
-- [Layout Settings](https://wordpress.org/documentation/article/layout-settings-overview/)
 - [Styles Overview](https://wordpress.org/documentation/article/styles-overview/)

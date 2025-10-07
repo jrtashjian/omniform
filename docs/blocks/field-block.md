@@ -12,10 +12,9 @@ You can also choose the Field block from the "Block Inserter" (+) pop-up window 
 
 ## Block Settings
 
-The Field block supports Color, Spacing, and Layout settings. Related: [Input](input-block.md), [Label](label-block.md), [Textarea](textarea-block.md).
+The Field block supports Color and Spacing settings. Related: [Input](input-block.md), [Label](label-block.md), [Textarea](textarea-block.md).
 
 Official documentation for these settings controls are available on WordPress.org:
 
 - [Colors Settings](https://wordpress.org/documentation/article/colors-settings-overview/)
 - [Dimension Settings](https://wordpress.org/documentation/article/dimension-controls-overview/)
-- [Layout Settings](https://wordpress.org/documentation/article/layout-settings-overview/)
