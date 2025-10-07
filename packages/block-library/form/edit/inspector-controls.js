@@ -129,6 +129,11 @@ function StandaloneFormInspectorControls( { blockObject } ) {
 		}
 	};
 
+	const handleConvertForm = async () => {
+		await createForm();
+		setModalOpen( false );
+	};
+
 	return (
 		<InspectorControls>
 			<PanelBody title={ __( 'Form Settings', 'omniform' ) }>
@@ -145,7 +150,11 @@ function StandaloneFormInspectorControls( { blockObject } ) {
 					</Button>
 				</Text>
 				{ modalOpen && (
-					<Modal title={ __( 'Convert to Standard Form', 'omniform' ) } onRequestClose={ () => setModalOpen( false ) } size="medium">
+					<Modal
+						title={ __( 'Convert to Standard Form', 'omniform' ) }
+						onRequestClose={ () => setModalOpen( false ) }
+						size="medium"
+					>
 						<VStack spacing={ 8 }>
 							<VStack spacing={ 4 }>
 								<Text>
@@ -173,9 +182,7 @@ function StandaloneFormInspectorControls( { blockObject } ) {
 								<Button variant="secondary" onClick={ () => setModalOpen( false ) }>
 									{ __( 'Cancel', 'omniform' ) }
 								</Button>
-								<Button variant="primary" onClick={ () => {
-									createForm(); setModalOpen( false );
-								} }>
+								<Button variant="primary" onClick={ handleConvertForm }>
 									{ __( 'Convert Form', 'omniform' ) }
 								</Button>
 							</Flex>
