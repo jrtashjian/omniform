@@ -1,6 +1,6 @@
 # Select Option Block
 
-An selectable option within a Select block.
+The Select Option block lets you add individual choices to a Select dropdown menu. Each option can have its own label and value. Use this block to add, remove, or reorder options in your Select field so users can pick from the choices you provide.
 
 To add a Select Option block, create a new form and open the Block Inserter tool. Use the search bar to find the Select Option block and click on its icon to insert it into the editor.
 

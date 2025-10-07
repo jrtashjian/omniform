@@ -1,6 +1,6 @@
 # Hidden Block
 
-A hidden form input for storing additional data.
+The Hidden block adds a form field that users can't see but is still included when the form is submitted. Use it to store extra information, like tracking codes or preset values, without showing them on the form.
 
 To add a Hidden block, create a new form and open the Block Inserter tool. Use the search bar to find the Hidden block and click on its icon to insert it into the editor.
 

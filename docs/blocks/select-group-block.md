@@ -1,6 +1,6 @@
 # Select Group Block
 
-Group Option blocks under a common label.
+Use the Select Group block to organize multiple [Option](select-option-block.md) blocks under a shared label. This helps group related choices together, making your form clearer and easier for users to navigate.
 
 To add a Select Group block, create a new form and open the Block Inserter tool. Use the search bar to find the Select Group block and click on its icon to insert it into the editor.
 

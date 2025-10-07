@@ -1,6 +1,6 @@
 # Captcha Block
 
-Add an extra layer of form protection against spam.
+The Captcha block adds an extra layer of protection to your forms by requiring users to complete a challenge before submission. This helps prevent automated bots and spam submissions, ensuring that only genuine users can submit your form. By integrating Captcha, you enhance the security and reliability of your forms.
 
 To add a Captcha block, create a new form and open the Block Inserter tool. Use the search bar to find the Captcha block and click on its icon to insert it into the editor.
 

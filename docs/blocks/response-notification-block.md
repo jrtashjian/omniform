@@ -1,6 +1,6 @@
 # Response Notification Block
 
-Notifies user of submission.
+The Response Notification block displays a message to users after they submit a form. It provides clear feedback about the outcome of their submission, such as success, error, or informational notifications. This helps users understand whether their form was submitted successfully or if any issues need to be addressed. The block can be customized to match your site's design and supports different notification styles for various response types.
 
 To add a Response Notification block, create a new form and open the Block Inserter tool. Use the search bar to find the Response Notification block and click on its icon to insert it into the editor.
 
