@@ -139,7 +139,7 @@ function StandaloneFormInspectorControls( { blockObject } ) {
 					help={ __( 'This name will not be visible to viewers and is only for identifying the form.', 'omniform' ) }
 				/>
 				<Text>
-					{ __( 'Want deeper insights into your form\'s performance?', 'omniform' ) }&nbsp;
+					{ __( 'Want deeper insights into your form\'s performance?', 'omniform' ) }{ ' ' }
 					<Button variant="link" onClick={ () => setModalOpen( true ) }>
 						{ __( 'Learn more', 'omniform' ) }
 					</Button>
@@ -156,15 +156,15 @@ function StandaloneFormInspectorControls( { blockObject } ) {
 								</Text>
 								<Flex>
 									<Text>
-										<strong>{ __( 'Analytics', 'omniform' ) }</strong>&nbsp;
+										<strong>{ __( 'Analytics', 'omniform' ) }</strong>{ ' ' }
 										{ __( 'for tracking submissions and engagement', 'omniform' ) }
 									</Text>
 									<Text>
-										<strong>{ __( 'Response tracking', 'omniform' ) }</strong>&nbsp;
+										<strong>{ __( 'Response tracking', 'omniform' ) }</strong>{ ' ' }
 										{ __( 'to manage and review form entries', 'omniform' ) }
 									</Text>
 									<Text>
-										<strong>{ __( 'Dedicated editor', 'omniform' ) }</strong>&nbsp;
+										<strong>{ __( 'Dedicated editor', 'omniform' ) }</strong>{ ' ' }
 										{ __( 'for easy customization and sharing', 'omniform' ) }
 									</Text>
 								</Flex>
