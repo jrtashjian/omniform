@@ -38,7 +38,35 @@ class InputTest extends FormBlockTestCase {
 	}
 
 	/**
-	 * Default values should be returned unless the block has a fieldValue attribute.
+	 * Test get_validation_rules for email field type.
+	 */
+	public function test_get_validation_rules_email() {
+		$this->apply_block_context( 'omniform/fieldIsRequired', true );
+		$this->render_block_with_attributes( array( 'fieldType' => 'email' ) );
+
+		$rules = $this->block_instance->get_validation_rules();
+
+		$this->assertCount( 2, $rules );
+		$this->assertInstanceOf( 'OmniForm\Dependencies\Respect\Validation\Rules\NotEmpty', $rules[0] );
+		$this->assertInstanceOf( 'OmniForm\Dependencies\Respect\Validation\Rules\Email', $rules[1] );
+	}
+
+	/**
+	 * Test get_validation_rules for username-email field type.
+	 */
+	public function test_get_validation_rules_username_email() {
+		$this->apply_block_context( 'omniform/fieldIsRequired', true );
+		$this->render_block_with_attributes( array( 'fieldType' => 'username-email' ) );
+
+		$rules = $this->block_instance->get_validation_rules();
+
+		$this->assertCount( 2, $rules );
+		$this->assertInstanceOf( 'OmniForm\Dependencies\Respect\Validation\Rules\NotEmpty', $rules[0] );
+		$this->assertInstanceOf( 'OmniForm\Validation\Rules\UsernameOrEmailRule', $rules[1] );
+	}
+
+	/**
+	 * Test get_validation_rules for url field type.
 	 */
 	public function test_get_control_value() {
 		$field_label = 'field label';
