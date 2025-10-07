@@ -8,7 +8,7 @@ You can also choose the Captcha block from the "Block Inserter" (+) pop-up windo
 
 [Detailed instructions on adding blocks](https://wordpress.org/documentation/article/adding-a-new-block/)
 
-[Screenshot: Captcha block settings panel]
+[Screenshot: Captcha block]
 
 ## Block Settings
 

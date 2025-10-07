@@ -8,7 +8,7 @@ You can also choose the Conditional Group block from the "Block Inserter" (+) po
 
 [Detailed instructions on adding blocks](https://wordpress.org/documentation/article/adding-a-new-block/)
 
-[Screenshot: Conditional Group block settings panel]
+[Screenshot: Conditional Group block]
 
 ## Block Settings
 

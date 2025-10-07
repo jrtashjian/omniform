@@ -8,7 +8,7 @@ You can also choose the Form block from the "Block Inserter" (+) pop-up window w
 
 [Detailed instructions on adding blocks](https://wordpress.org/documentation/article/adding-a-new-block/)
 
-[Screenshot: Form block settings panel]
+[Screenshot: Form block]
 
 ## Block Settings
 

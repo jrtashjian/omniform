@@ -8,7 +8,7 @@ You can also choose the Input block from the "Block Inserter" (+) pop-up window 
 
 [Detailed instructions on adding blocks](https://wordpress.org/documentation/article/adding-a-new-block/)
 
-[Screenshot: Input block settings panel]
+[Screenshot: Input block]
 
 ## Block Settings
 
