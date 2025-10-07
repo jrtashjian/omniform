@@ -139,7 +139,7 @@ function StandaloneFormInspectorControls( { blockObject } ) {
 					help={ __( 'This name will not be visible to viewers and is only for identifying the form.', 'omniform' ) }
 				/>
 				<Text>
-					{ __( 'Want deeper insights into your form\'s performance?', 'omniform' ) }{' '}
+					{ __( 'Want deeper insights into your form\'s performance?', 'omniform' ) }&nbsp;
 					<Button variant="link" onClick={ () => setModalOpen( true ) }>
 						{ __( 'Learn more', 'omniform' ) }
 					</Button>
