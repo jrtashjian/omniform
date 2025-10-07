@@ -1,6 +1,6 @@
 # Fieldset Block
 
-Organize and group related controls.
+Use the Fieldset block to group related form controls, such as [Input](input-block.md), [Textarea](textarea-block.md), and [Select](select-block.md) blocks, within a single `<fieldset>` element. This improves form organization and accessibility by clearly associating related fields, making it easier for users to understand and navigate grouped inputs.
 
 To add a Fieldset block, create a new form and open the Block Inserter tool. Use the search bar to find the Fieldset block and click on its icon to insert it into the editor.
 

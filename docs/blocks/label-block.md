@@ -1,6 +1,6 @@
 # Label Block
 
-A label associated with one form field.
+The Label block is used to associate descriptive text with a single form field, such as an input, textarea, or select element. It generates an accessible `<label>` element that links the label text to its corresponding form control, improving both usability and accessibility for all users.
 
 To add a Label block, create a new form and open the Block Inserter tool. Use the search bar to find the Label block and click on its icon to insert it into the editor.
 

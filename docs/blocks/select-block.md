@@ -1,6 +1,6 @@
 # Select Block
 
-Create dropdown menus for single or multiple choices.
+Use the Select block to add dropdown menus that let users choose one or more options. This block is essential for collecting input via a `<select>` element and supports both single-select and multi-select variations.
 
 To add a Select block, create a new form and open the Block Inserter tool. Use the search bar to find the Select block and click on its icon to insert it into the editor.
 

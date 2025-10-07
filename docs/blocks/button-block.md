@@ -1,6 +1,6 @@
 # Button Block
 
-The Button block is a button for form actions.
+The Button block adds a clickable button to your form, allowing users to submit or reset the information they have entered. It generates a `<button>` element and provides options to set its action as either "submit" or "reset," making it an essential component for form functionality.
 
 To add a Button block, create a new form and open the Block Inserter tool. Use the search bar to find the Button block and click on its icon to insert it into the editor.
 

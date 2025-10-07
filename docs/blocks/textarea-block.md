@@ -1,6 +1,6 @@
 # Textarea Block
 
-A field for long-form text responses.
+The Textarea block allows users to enter and edit multi-line text responses within a form. It uses a `<textarea>` element, making it ideal for collecting longer or more detailed input from users.
 
 To add a Textarea block, create a new form and open the Block Inserter tool. Use the search bar to find the Textarea block and click on its icon to insert it into the editor.
 
