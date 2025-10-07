@@ -66,7 +66,7 @@ class InputTest extends FormBlockTestCase {
 	}
 
 	/**
-	 * Test get_validation_rules for url field type.
+	 * Test get_control_value for various field types (checkbox, radio, date).
 	 */
 	public function test_get_control_value() {
 		$field_label = 'field label';
