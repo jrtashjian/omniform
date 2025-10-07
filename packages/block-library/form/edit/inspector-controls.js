@@ -9,6 +9,7 @@ import {
 	PanelBody,
 	__experimentalText as Text,
 	TextControl,
+	__experimentalVStack as VStack,
 } from '@wordpress/components';
 import {
 	InspectorControls,
@@ -137,19 +138,48 @@ function StandaloneFormInspectorControls( { blockObject } ) {
 					onChange={ ( newValue ) => setSetting( 'form_title', newValue ) }
 					help={ __( 'This name will not be visible to viewers and is only for identifying the form.', 'omniform' ) }
 				/>
-				<Text>{ __( 'Looking to track the performance of your form?', 'omniform' ) } <Button variant="link" onClick={ () => setModalOpen( true ) }>{ __( 'Learn more', 'omniform' ) }</Button></Text>
+				<Text>
+					{ __( 'Want deeper insights into your form\'s performance?', 'omniform' ) }{' '}
+					<Button variant="link" onClick={ () => setModalOpen( true ) }>
+						{ __( 'Learn more', 'omniform' ) }
+					</Button>
+				</Text>
 				{ modalOpen && (
-					<Modal onRequestClose={ () => setModalOpen( false ) } size="medium">
-						<Flex>
-							<Text><strong>{ __( 'Standalone Form:', 'omniform' ) }</strong> { __( 'Inline form that handles submissions directly and sends email notifications. No separate form management or analytics.', 'omniform' ) }</Text>
-							<Text><strong>{ __( 'Standard Form:', 'omniform' ) }</strong> { __( 'Stored form with advanced features like analytics, response tracking, and dedicated form editor for management and sharing.', 'omniform' ) }</Text>
-						</Flex>
-						<Flex justify="space-between">
-							<Button variant="secondary" onClick={ () => setModalOpen( false ) }>{ __( 'Cancel', 'omniform' ) }</Button>
-							<Button variant="primary" onClick={ () => {
-								createForm(); setModalOpen( false );
-							} }>{ __( 'Upgrade to Standard Form', 'omniform' ) }</Button>
-						</Flex>
+					<Modal title={ __( 'Convert to Standard Form', 'omniform' ) } onRequestClose={ () => setModalOpen( false ) } size="medium">
+						<VStack spacing={ 8 }>
+							<VStack spacing={ 4 }>
+								<Text>
+									{ __( 'Your current form supports direct submissions and email notifications, but converting unlocks advanced features to help you get more from your form.', 'omniform' ) }
+								</Text>
+								<Text>
+									{ __( 'Convert to access:', 'omniform' ) }
+								</Text>
+								<Flex>
+									<Text>
+										<strong>{ __( 'Analytics', 'omniform' ) }</strong>{ ' ' }
+										{ __( 'for tracking submissions and engagement', 'omniform' ) }
+									</Text>
+									<Text>
+										<strong>{ __( 'Response tracking', 'omniform' ) }</strong>{ ' ' }
+										{ __( 'to manage and review form entries', 'omniform' ) }
+									</Text>
+									<Text>
+										<strong>{ __( 'Dedicated editor', 'omniform' ) }</strong>{ ' ' }
+										{ __( 'for easy customization and sharing', 'omniform' ) }
+									</Text>
+								</Flex>
+							</VStack>
+							<Flex justify="space-between">
+								<Button variant="secondary" onClick={ () => setModalOpen( false ) }>
+									{ __( 'Cancel', 'omniform' ) }
+								</Button>
+								<Button variant="primary" onClick={ () => {
+									createForm(); setModalOpen( false );
+								} }>
+									{ __( 'Convert Form', 'omniform' ) }
+								</Button>
+							</Flex>
+						</VStack>
 					</Modal>
 				) }
 			</PanelBody>
