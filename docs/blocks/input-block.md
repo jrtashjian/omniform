@@ -2,6 +2,24 @@
 
 The Input block provides a basic field for text entry in forms, using an `<input>` element. It supports multiple input types, such as text, email, URL, and number, enabling you to define the expected format for user data.
 
+## Field Types
+
+The input block supports the following field types:
+
+- `text` - A single line text input.
+- `email` - An email input with email validation.
+- `url` - A URL input with URL validation.
+- `number` - A number input with number validation.
+- `tel` - A telephone number input with phone validation.
+- `password` - A password input.
+- `search` - A search input.
+- `date` - A date input with date validation.
+- `time` - A time input with time validation.
+- `month` - A month input with month validation.
+- `week` - A week input.
+- `hidden` - A hidden input.
+- `username-email` - A text input that accepts either a valid username or email address.
+
 To add a Input block, create a new form and open the Block Inserter tool. Use the search bar to find the Input block and click on its icon to insert it into the editor.
 
 You can also choose the Input block from the "Block Inserter" (+) pop-up window when you click on the (+) sign.
