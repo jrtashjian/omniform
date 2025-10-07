@@ -156,15 +156,15 @@ function StandaloneFormInspectorControls( { blockObject } ) {
 								</Text>
 								<Flex>
 									<Text>
-										<strong>{ __( 'Analytics', 'omniform' ) }</strong>{ ' ' }
+										<strong>{ __( 'Analytics', 'omniform' ) }</strong>&nbsp;
 										{ __( 'for tracking submissions and engagement', 'omniform' ) }
 									</Text>
 									<Text>
-										<strong>{ __( 'Response tracking', 'omniform' ) }</strong>{ ' ' }
+										<strong>{ __( 'Response tracking', 'omniform' ) }</strong>&nbsp;
 										{ __( 'to manage and review form entries', 'omniform' ) }
 									</Text>
 									<Text>
-										<strong>{ __( 'Dedicated editor', 'omniform' ) }</strong>{ ' ' }
+										<strong>{ __( 'Dedicated editor', 'omniform' ) }</strong>&nbsp;
 										{ __( 'for easy customization and sharing', 'omniform' ) }
 									</Text>
 								</Flex>
