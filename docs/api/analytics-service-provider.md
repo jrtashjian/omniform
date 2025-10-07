@@ -1,4 +1,4 @@
-# AnalyticsServiceProvider
+# Analytics Service Provider
 
 The `AnalyticsServiceProvider` is a service provider that registers the `AnalyticsManager` service for tracking and retrieving form analytics data.
 

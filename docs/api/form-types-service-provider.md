@@ -1,4 +1,4 @@
-# FormTypesServiceProvider
+# Form Types Service Provider
 
 The `FormTypesServiceProvider` is a service provider that registers the `FormTypesManager` service for managing different types of OmniForm forms.
 

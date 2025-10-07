@@ -1,4 +1,4 @@
-# omniform() Helper Function
+# omniform() Function
 
 The `omniform()` function is a global helper that returns the main application container instance (`\OmniForm\Application`), providing access to core services and utilities within the OmniForm plugin.
 

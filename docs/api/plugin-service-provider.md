@@ -1,4 +1,4 @@
-# PluginServiceProvider
+# Plugin Service Provider
 
 The `PluginServiceProvider` is the core service provider that registers essential OmniForm services and bootstraps the plugin's functionality within WordPress.
 

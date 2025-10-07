@@ -1,4 +1,4 @@
-# BlockLibraryServiceProvider
+# Block Library Service Provider
 
 The `BlockLibraryServiceProvider` is a service provider that registers the OmniForm block library, including blocks, patterns, categories, and global styles.
 
