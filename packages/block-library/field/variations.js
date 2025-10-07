@@ -89,6 +89,16 @@ const variations = [
 		innerBlocks: inputTextExample( 'email' ).innerBlocks,
 	},
 	{
+		name: 'field-username-email',
+		category: 'omniform-standard-fields',
+		icon: { src: fieldInput },
+		title: __( 'Username or Email', 'omniform' ),
+		description: __( 'A field for collecting a username or email address.', 'omniform' ),
+		keywords: [ 'input', 'username', 'email', 'login' ],
+		example: inputTextExample( 'username-email', __( 'Username or Email', 'omniform' ) ),
+		innerBlocks: inputTextExample( 'username-email' ).innerBlocks,
+	},
+	{
 		name: 'field-url',
 		category: 'omniform-standard-fields',
 		icon: { src: fieldUrl },
