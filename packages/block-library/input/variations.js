@@ -34,6 +34,13 @@ const variations = [
 		attributes: { fieldType: 'email' },
 	},
 	{
+		name: 'input-username-email',
+		icon: { src: fieldInput },
+		title: __( 'Username or Email', 'omniform' ),
+		description: __( 'A field for collecting a username or email address.', 'omniform' ),
+		attributes: { fieldType: 'username-email' },
+	},
+	{
 		name: 'input-url',
 		icon: { src: fieldUrl },
 		title: __( 'URL', 'omniform' ),
