@@ -12,7 +12,7 @@ use OmniForm\Application;
 /**
  * Tests the plugin bootstrap file.
  */
-class Bootstrap_Test extends \WP_UnitTestCase {
+class BootstrapTest extends \WP_UnitTestCase {
 
 	/**
 	 * Test that the plugin has been successfully loaded into the test suite.

@@ -10,7 +10,7 @@ namespace OmniForm\Tests;
 /**
  * Tests the CallbackSupport trait.
  */
-class CallbackSupport_Test extends \WP_UnitTestCase {
+class CallbackSupportTest extends \WP_UnitTestCase {
 	use \OmniForm\Traits\CallbackSupport;
 
 	/**

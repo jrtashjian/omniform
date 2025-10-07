@@ -24,7 +24,7 @@ class BaseBlockTest extends \WP_UnitTestCase {
 	}
 
 	/**
-	 * Ensure tthe block renders correctly.
+	 * Ensure the block renders correctly.
 	 */
 	public function test_render_block() {
 		$this->assertEquals(
