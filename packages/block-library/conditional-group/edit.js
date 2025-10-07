@@ -95,7 +95,7 @@ const Edit = ( {
 			</InspectorControls>
 			<div { ...blockProps }>
 				<div className="condition-label">
-					{ conditionLabel + ' ' + blockTitle.toLowerCase() }
+					{ conditionLabel + ' ' + ( blockTitle || 'condition' ).toLowerCase() }
 				</div>
 				<div { ...innerBlockProps } />
 			</div>
