@@ -215,6 +215,19 @@ const variations = [
 		innerBlocks: inputTextExample( 'time' ).innerBlocks,
 	},
 	{
+		name: 'field-color',
+		category: 'omniform-standard-fields',
+		icon: { src: fieldInput },
+		title: __( 'Color', 'omniform' ),
+		description: __( 'A field for selecting a color.', 'omniform' ),
+		keywords: [ 'input', 'color', 'picker' ],
+		attributes: {
+			className: 'is-style-inline',
+		},
+		example: inputTextExample( 'color', __( 'Color', 'omniform' ) ),
+		innerBlocks: inputTextExample( 'color' ).innerBlocks,
+	},
+	{
 		name: 'field-week',
 		category: 'omniform-standard-fields',
 		icon: { src: fieldDate },

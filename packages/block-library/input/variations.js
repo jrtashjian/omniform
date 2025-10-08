@@ -117,6 +117,13 @@ const variations = [
 		description: __( 'A field for collecting a formatted time.', 'omniform' ),
 		attributes: { fieldType: 'time' },
 	},
+	{
+		name: 'input-color',
+		icon: { src: fieldInput },
+		title: __( 'Color', 'omniform' ),
+		description: __( 'A field for selecting a color.', 'omniform' ),
+		attributes: { fieldType: 'color' },
+	},
 ];
 
 variations.forEach( ( variation ) => {
