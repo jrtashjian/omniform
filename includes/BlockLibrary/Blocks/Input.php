@@ -127,6 +127,7 @@ class Input extends BaseControlBlock {
 			'time'           => new Validation\Rules\Time( self::FORMAT_TIME ),
 			'month'          => new Validation\Rules\Date( self::FORMAT_MONTH ),
 			'username-email' => new UsernameOrEmailRule(),
+			'range'          => new Validation\Rules\Number(),
 		);
 
 		if ( isset( $validation_mapping[ $this->get_block_attribute( 'fieldType' ) ] ) ) {

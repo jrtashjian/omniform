@@ -4,6 +4,18 @@
 
 	@include field-control;
 
+	&[type="range"] {
+		margin: 0;
+		padding:0;
+
+		&::-moz-range-track,
+		&::-webkit-slider-runnable-track {
+			height: 0.9rem;
+			color: black;
+			background: black;
+		}
+	}
+
 	// Checkbox and Radio
 	&[type="checkbox"],
 	&[type="radio"] {

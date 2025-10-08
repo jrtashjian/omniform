@@ -52,6 +52,20 @@ class InputTest extends FormBlockTestCase {
 	}
 
 	/**
+	 * Test get_validation_rules for range field type.
+	 */
+	public function test_get_validation_rules_range() {
+		$this->apply_block_context( 'omniform/fieldIsRequired', true );
+		$this->render_block_with_attributes( array( 'fieldType' => 'range' ) );
+
+		$rules = $this->block_instance->get_validation_rules();
+
+		$this->assertCount( 2, $rules );
+		$this->assertInstanceOf( 'OmniForm\Dependencies\Respect\Validation\Rules\NotEmpty', $rules[0] );
+		$this->assertInstanceOf( 'OmniForm\Dependencies\Respect\Validation\Rules\Number', $rules[1] );
+	}
+
+	/**
 	 * Test get_validation_rules for username-email field type.
 	 */
 	public function test_get_validation_rules_username_email() {

@@ -55,6 +55,13 @@ const variations = [
 		attributes: { fieldType: 'number' },
 	},
 	{
+		name: 'input-range',
+		icon: { src: fieldNumber },
+		title: __( 'Range', 'omniform' ),
+		description: __( 'A field for selecting a value within a range.', 'omniform' ),
+		attributes: { fieldType: 'range' },
+	},
+	{
 		name: 'input-search',
 		icon: { src: fieldSearch },
 		title: __( 'Search', 'omniform' ),

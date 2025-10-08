@@ -225,6 +225,16 @@ const variations = [
 		innerBlocks: inputTextExample( 'week' ).innerBlocks,
 	},
 	{
+		name: 'field-range',
+		category: 'omniform-standard-fields',
+		icon: { src: fieldNumber },
+		title: __( 'Range', 'omniform' ),
+		description: __( 'A field for selecting a value within a range.', 'omniform' ),
+		keywords: [ 'input', 'number', 'slider', 'range' ],
+		example: inputTextExample( 'range', __( 'Range', 'omniform' ) ),
+		innerBlocks: inputTextExample( 'range' ).innerBlocks,
+	},
+	{
 		name: 'field-textarea',
 		category: 'omniform-standard-fields',
 		icon: { src: fieldTextarea },
