@@ -1,34 +1,27 @@
 {
-    "landingPage": "/wp-admin/post.php?post=4&action=edit",
-    "preferredVersions": {
-        "php": "8.0",
-        "wp": "latest"
-    },
-    "phpExtensionBundles": [
-        "kitchen-sink"
-    ],
-    "features": {
-        "networking": true
-    },
-    "steps": [
-        {
-            "step": "login",
-            "username": "admin",
-            "password": "password"
-        },
-        {
-            "step": "installPlugin",
-            "pluginZipFile": {
-                "resource": "wordpress.org/plugins",
-                "slug": "omniform"
-            },
-            "options": {
-                "activate": true
-            }
-        },
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"login": true,
+	"landingPage": "/wp-admin/post.php?post=4&action=edit",
+	"features": {
+		"networking": true
+	},
+	"steps": [
+		{
+			"step": "setSiteOptions",
+			"options": {
+				"blogname": "OmniForm Playground"
+			}
+		},
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "wordpress.org/plugins",
+				"slug": "omniform"
+			}
+		},
 		{
 			"step": "runPHP",
-			"code": "<?php require_once 'wordpress\/wp-load.php';wp_insert_post(array('post_type' => 'omniform','post_status' => 'publish','post_name' => 'contact','post_title' => 'Contact','post_content' => '<!-- wp:group {\"layout\":{\"type\":\"default\"}} --><div class=\"wp-block-group\"><!-- wp:omniform\/response-notification {\"messageContent\":\"Success! Your submission has been completed.\",\"className\":\"is-style-success\"} \/--><!-- wp:omniform\/response-notification {\"messageContent\":\"Unfortunately, your submission was not successful. Please ensure all fields are correctly filled out and try again.\",\"className\":\"is-style-error\"} \/--><!-- wp:paragraph --><p>If you have any questions or comments, or if you\\'d like to work with me or collaborate on a project, please don\\'t hesitate to get in touch. I look forward to hearing from you!<\/p><!-- \/wp:paragraph --><!-- wp:omniform\/field {\"fieldLabel\":\"Your email address\",\"fieldName\":\"your-email-address\"} --><!-- wp:omniform\/label \/--><!-- wp:omniform\/input \/--><!-- \/wp:omniform\/field --><!-- wp:omniform\/field {\"fieldLabel\":\"Your message\",\"fieldName\":\"your-message\"} --><!-- wp:omniform\/label \/--><!-- wp:omniform\/textarea \/--><!-- \/wp:omniform\/field --><!-- wp:group {\"layout\":{\"type\":\"flex\",\"flexWrap\":\"nowrap\"}} --><div class=\"wp-block-group\"><!-- wp:omniform\/button {\"buttonType\":\"submit\",\"buttonLabel\":\"Send Message\"} \/--><\/div><!-- \/wp:group --><\/div><!-- \/wp:group -->',)); ?>"
+			"code": "<?php require_once '\/wordpress\/wp-load.php';wp_insert_post(array('post_type' => 'omniform','post_status' => 'publish','post_name' => 'contact','post_title' => 'Contact','post_content' => '<!-- wp:group {\"layout\":{\"type\":\"default\"}} --><div class=\"wp-block-group\"><!-- wp:omniform\/response-notification {\"messageContent\":\"Success! Your submission has been completed.\",\"className\":\"is-style-success\"} \/--><!-- wp:omniform\/response-notification {\"messageContent\":\"Unfortunately, your submission was not successful. Please ensure all fields are correctly filled out and try again.\",\"className\":\"is-style-error\"} \/--><!-- wp:paragraph --><p>If you have any questions or comments, or if you\\'d like to work with me or collaborate on a project, please don\\'t hesitate to get in touch. I look forward to hearing from you!<\/p><!-- \/wp:paragraph --><!-- wp:omniform\/field {\"fieldLabel\":\"Your email address\",\"fieldName\":\"your-email-address\"} --><!-- wp:omniform\/label \/--><!-- wp:omniform\/input \/--><!-- \/wp:omniform\/field --><!-- wp:omniform\/field {\"fieldLabel\":\"Your message\",\"fieldName\":\"your-message\"} --><!-- wp:omniform\/label \/--><!-- wp:omniform\/textarea \/--><!-- \/wp:omniform\/field --><!-- wp:group {\"layout\":{\"type\":\"flex\",\"flexWrap\":\"nowrap\"}} --><div class=\"wp-block-group\"><!-- wp:omniform\/button {\"buttonType\":\"submit\",\"buttonLabel\":\"Send Message\"} \/--><\/div><!-- \/wp:group --><\/div><!-- \/wp:group -->',)); ?>"
 		}
-    ]
+	]
 }
