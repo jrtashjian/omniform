@@ -9,7 +9,7 @@ import {
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import { useMergeRefs } from '@wordpress/compose';
-import { useSelect } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
 import {
 	Fill,
 	PanelBody,
@@ -35,6 +35,10 @@ const Edit = ( {
 
 	const isTextInput = [ 'text', 'email', 'url', 'number', 'month', 'password', 'search', 'tel', 'week', 'hidden', 'username-email' ].includes( fieldType );
 	const isOptionInput = [ 'checkbox', 'radio' ].includes( fieldType );
+
+	const {
+		selectBlock,
+	} = useDispatch( blockEditorStore );
 
 	const { selectedBlockClientId, parentClientId } = useSelect( ( select ) => {
 		const { getSelectedBlockClientId, getBlockRootClientId } = select( blockEditorStore );
@@ -73,7 +77,20 @@ const Edit = ( {
 	} else {
 		blockElement = (
 			<input type={ fieldType } { ...blockProps } readOnly
+				// Prevent editing of the input field in the editor.
 				onClick={ ( event ) => event.preventDefault() }
+				onKeyDown={ ( event ) => {
+					event.preventDefault();
+					if ( event.key === 'ArrowLeft' || event.key === 'ArrowRight' ) {
+						if ( parentClientId ) {
+							selectBlock( parentClientId );
+						}
+					}
+				} }
+				onMouseDown={ ( event ) => {
+					event.preventDefault();
+					event.target.focus();
+				} }
 			/>
 		);
 	}
