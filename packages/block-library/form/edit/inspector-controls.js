@@ -52,6 +52,8 @@ function StandardFormInspectorControls( { formId } ) {
 					value={ getSetting( 'form_title' ) || '' }
 					onChange={ ( newValue ) => setSetting( 'form_title', newValue ) }
 					help={ __( 'This name will not be visible to viewers and is only for identifying the form.', 'omniform' ) }
+					__nextHasNoMarginBottom
+					__next40pxDefaultSize
 				/>
 				<Button
 					variant="primary"
@@ -142,6 +144,8 @@ function StandaloneFormInspectorControls( { blockObject } ) {
 					value={ getSetting( 'form_title' ) || '' }
 					onChange={ ( newValue ) => setSetting( 'form_title', newValue ) }
 					help={ __( 'This name will not be visible to viewers and is only for identifying the form.', 'omniform' ) }
+					__nextHasNoMarginBottom
+					__next40pxDefaultSize
 				/>
 				<Text>
 					{ __( 'Want deeper insights into your form\'s performance?', 'omniform' ) }{ ' ' }

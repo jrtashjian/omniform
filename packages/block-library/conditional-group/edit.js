@@ -83,6 +83,8 @@ const Edit = ( {
 						value={ callback || '' }
 						onChange={ ( newValue ) => setAttributes( { callback: newValue } ) }
 						help={ __( 'The callback to determine if this block should be shown.', 'omniform' ) }
+						__nextHasNoMarginBottom
+						__next40pxDefaultSize
 					/>
 
 					<ToggleControl

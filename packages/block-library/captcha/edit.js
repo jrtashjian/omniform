@@ -103,6 +103,8 @@ const Edit = ( {
 						value={ siteKey }
 						onChange={ setSiteKey }
 						type="password"
+						__nextHasNoMarginBottom
+						__next40pxDefaultSize
 					/>
 
 					<TextControl
@@ -110,6 +112,8 @@ const Edit = ( {
 						value={ secretKey }
 						onChange={ setSecretKey }
 						type="password"
+						__nextHasNoMarginBottom
+						__next40pxDefaultSize
 					/>
 
 					<ToggleGroupControl

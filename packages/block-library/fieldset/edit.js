@@ -135,6 +135,8 @@ const Edit = ( {
 							setAttributes( { fieldName: cleanFieldName( fieldName || fieldLabel ) } );
 						} }
 						help={ __( 'Name of the fieldset. Defaults to the fieldset\'s label.', 'omniform' ) }
+						__nextHasNoMarginBottom
+						__next40pxDefaultSize
 					/>
 
 				</PanelBody>
