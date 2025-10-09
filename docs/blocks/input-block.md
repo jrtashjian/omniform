@@ -1,6 +1,6 @@
 # Input Block
 
-The Input block provides a basic field for text entry in forms, using an `<input>` element. It supports multiple input types, such as text, email, URL, and number, enabling you to define the expected format for user data.
+The Input block provides a basic field for text entry in forms, using an `<input>` element. It supports multiple input types, such as text, email, URL, number, and color, enabling you to define the expected format for user data.
 
 ## Field Types
 
@@ -18,6 +18,7 @@ The input block supports the following field types:
 - `month` - A month input with month validation.
 - `week` - A week input.
 - `range` - A range input for selecting a value within a specified range.
+- `color` - A color input with hex color validation.
 - `hidden` - A hidden input.
 - `username-email` - A text input that accepts either a valid username or email address.
 

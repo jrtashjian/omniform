@@ -80,6 +80,20 @@ class InputTest extends FormBlockTestCase {
 	}
 
 	/**
+	 * Test get_validation_rules for color field type.
+	 */
+	public function test_get_validation_rules_color() {
+		$this->apply_block_context( 'omniform/fieldIsRequired', true );
+		$this->render_block_with_attributes( array( 'fieldType' => 'color' ) );
+
+		$rules = $this->block_instance->get_validation_rules();
+
+		$this->assertCount( 2, $rules );
+		$this->assertInstanceOf( 'OmniForm\Dependencies\Respect\Validation\Rules\NotEmpty', $rules[0] );
+		$this->assertInstanceOf( 'OmniForm\Dependencies\Respect\Validation\Rules\HexRgbColor', $rules[1] );
+	}
+
+	/**
 	 * Test get_control_value for various field types (checkbox, radio, date).
 	 */
 	public function test_get_control_value() {

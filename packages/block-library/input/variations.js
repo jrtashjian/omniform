@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import {
 	fieldCheckbox,
+	fieldColor,
 	fieldDate,
 	fieldEmail,
 	fieldInput,
@@ -124,6 +125,13 @@ const variations = [
 		title: __( 'Time', 'omniform' ),
 		description: __( 'A field for collecting a formatted time.', 'omniform' ),
 		attributes: { fieldType: 'time' },
+	},
+	{
+		name: 'input-color',
+		icon: { src: fieldColor },
+		title: __( 'Color', 'omniform' ),
+		description: __( 'A field for selecting a color.', 'omniform' ),
+		attributes: { fieldType: 'color' },
 	},
 ];
 

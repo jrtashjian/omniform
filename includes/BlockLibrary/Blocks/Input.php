@@ -128,6 +128,7 @@ class Input extends BaseControlBlock {
 			'month'          => new Validation\Rules\Date( self::FORMAT_MONTH ),
 			'username-email' => new UsernameOrEmailRule(),
 			'range'          => new Validation\Rules\Number(),
+			'color'          => new Validation\Rules\HexRgbColor(),
 		);
 
 		if ( isset( $validation_mapping[ $this->get_block_attribute( 'fieldType' ) ] ) ) {

@@ -83,6 +83,8 @@ const Edit = ( {
 						value={ callback || '' }
 						onChange={ ( newValue ) => setAttributes( { callback: newValue } ) }
 						help={ __( 'The callback to determine if this block should be shown.', 'omniform' ) }
+						__nextHasNoMarginBottom
+						__next40pxDefaultSize
 					/>
 
 					<ToggleControl
@@ -90,6 +92,7 @@ const Edit = ( {
 						checked={ !! reverseCondition }
 						onChange={ () => setAttributes( { reverseCondition: ! reverseCondition } ) }
 						help={ __( 'Show the block when the callback returns false.', 'omniform' ) }
+						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 			</InspectorControls>

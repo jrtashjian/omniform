@@ -9,6 +9,7 @@ import {
 	store as coreStore,
 } from '@wordpress/core-data';
 import { serialize } from '@wordpress/blocks';
+import { store as blockEditorStore } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -135,13 +136,15 @@ export function useStandardFormSettings( formId ) {
 /**
  * Retrieves the form settings.
  *
- * @param {Object} blockObject Props.
+ * @param {string} blockClientId The client ID of the block.
  */
-export function useStandaloneFormSettings( blockObject ) {
+export function useStandaloneFormSettings( blockClientId ) {
+	const { getBlock } = useSelect( blockEditorStore );
+
 	const {
 		attributes,
 		setAttributes,
-	} = blockObject;
+	} = getBlock( blockClientId ) || {};
 
 	/**
 	 * Retrieves the setting value.

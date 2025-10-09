@@ -1,7 +1,7 @@
 === OmniForm ===
 Contributors: jrtashjian
 Tags: contact form, block editor, form builder, forms, email
-Requires at least: 6.3
+Requires at least: 6.6
 Tested up to: 6.8
 Requires PHP: 7.4
 Stable tag: 1.3.3
