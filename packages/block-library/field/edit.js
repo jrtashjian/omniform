@@ -146,6 +146,7 @@ const Edit = ( {
 						checked={ isRequired }
 						onChange={ toggleRequired }
 						help={ __( 'A value is required or must be check for the form to be submittable.', 'omniform' ) }
+						__nextHasNoMarginBottom
 					/>
 
 					{ canHideLabel && (
@@ -154,6 +155,7 @@ const Edit = ( {
 							checked={ ! hasLabel }
 							onChange={ toggleLabel }
 							help={ __( 'Hide the field\'s label, current label becomes the field\'s placeholder.', 'omniform' ) }
+							__nextHasNoMarginBottom
 						/>
 					) }
 

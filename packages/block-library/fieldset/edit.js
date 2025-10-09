@@ -122,6 +122,7 @@ const Edit = ( {
 						checked={ isRequired }
 						onChange={ toggleRequired }
 						help={ __( 'Set default \'required\' state for all fields in the group.', 'omniform' ) }
+						__nextHasNoMarginBottom
 					/>
 
 					<TextControl

@@ -90,6 +90,7 @@ const Edit = ( {
 						checked={ !! reverseCondition }
 						onChange={ () => setAttributes( { reverseCondition: ! reverseCondition } ) }
 						help={ __( 'Show the block when the callback returns false.', 'omniform' ) }
+						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 			</InspectorControls>
