@@ -3,9 +3,11 @@
  */
 import { __ } from '@wordpress/i18n';
 import { PanelBody, TextControl, SelectControl } from '@wordpress/components';
-import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { useSelect } from '@wordpress/data';
-import { store as editorStore } from '@wordpress/editor';
+import {
+	PluginDocumentSettingPanel,
+	store as editorStore,
+} from '@wordpress/editor';
 
 export default function SubmissionMethodSettings( {
 	isDocumentPanel,
