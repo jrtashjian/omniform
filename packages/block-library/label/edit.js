@@ -23,36 +23,12 @@ const Edit = ( {
 	context,
 } ) => {
 	const {
-		getBlock,
 		getBlockRootClientId,
 	} = useSelect( blockEditorStore );
 
 	const {
 		updateBlockAttributes,
 	} = useDispatch( blockEditorStore );
-
-	const { formBlockObject } = useSelect(
-		( select ) => {
-			const {
-				getBlockParents,
-			} = select( blockEditorStore );
-
-			const parentBlocks = getBlockParents( clientId );
-
-			const rootBlock = parentBlocks.find( ( blockId ) => {
-				const block = getBlock( blockId );
-				return block?.name === 'omniform/form';
-			} );
-
-			return {
-				formBlockObject: {
-					...getBlock( rootBlock ),
-					setAttributes: ( value ) => updateBlockAttributes( rootBlock, value ),
-				},
-			};
-		},
-		[ clientId, getBlock, updateBlockAttributes ]
-	);
 
 	const { postId: contextPostId, postType: contextPostType } = context;
 
@@ -102,7 +78,7 @@ const Edit = ( {
 			{ context[ 'omniform/fieldIsRequired' ] && (
 				contextPostId && 'omniform' === contextPostType
 					? <StandardFormRequiredLabel clientId={ clientId } formId={ contextPostId } />
-					: <StandaloneFormRequiredLabel clientId={ clientId } blockObject={ formBlockObject } />
+					: <StandaloneFormRequiredLabel clientId={ clientId } />
 			) }
 		</div>
 	);
@@ -128,11 +104,34 @@ function StandardFormRequiredLabel( { clientId, formId } ) {
 	);
 }
 
-function StandaloneFormRequiredLabel( { clientId, blockObject } ) {
+function StandaloneFormRequiredLabel( { clientId } ) {
+	const {
+		getBlock,
+	} = useSelect( blockEditorStore );
+
+	// Find the client ID of the parent form block.
+	const blockClientId = useSelect(
+		( select ) => {
+			const {
+				getBlockParents,
+			} = select( blockEditorStore );
+
+			const parentBlocks = getBlockParents( clientId );
+
+			const rootBlock = parentBlocks.find( ( blockId ) => {
+				const block = getBlock( blockId );
+				return block?.name === 'omniform/form';
+			} );
+
+			return rootBlock;
+		},
+		[ clientId, getBlock ]
+	);
+
 	const {
 		getSetting,
 		setSetting,
-	} = useStandaloneFormSettings( blockObject );
+	} = useStandaloneFormSettings( blockClientId );
 
 	return (
 		<RichText

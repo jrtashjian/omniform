@@ -79,7 +79,7 @@ function StandaloneFormInspectorControls( { blockObject } ) {
 	const {
 		getSetting,
 		setSetting,
-	} = useStandaloneFormSettings( blockObject );
+	} = useStandaloneFormSettings( blockObject.clientId );
 
 	const innerBlocks = useSelect(
 		( select ) => {
