@@ -49,7 +49,7 @@ const Edit = ( {
 	}
 
 	return (
-		<input type={ fieldType } { ...blockProps } readOnly />
+		<input type={ fieldType } { ...blockProps } readOnly onClick={ ( event ) => event.preventDefault() } />
 	);
 };
 
