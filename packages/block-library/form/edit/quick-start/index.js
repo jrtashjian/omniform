@@ -449,6 +449,8 @@ const CaptchaSettingControls = ( { service } ) => {
 				value={ siteKey || '' }
 				onChange={ setSiteKey }
 				type="password"
+				__nextHasNoMarginBottom
+				__next40pxDefaultSize
 			/>
 
 			<TextControl
@@ -456,6 +458,8 @@ const CaptchaSettingControls = ( { service } ) => {
 				value={ secretKey || '' }
 				onChange={ setSecretKey }
 				type="password"
+				__nextHasNoMarginBottom
+				__next40pxDefaultSize
 			/>
 		</>
 	);

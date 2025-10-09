@@ -62,6 +62,8 @@ export default function EmailNotificationSettings( {
 				onChange={ ( newValue ) => setSetting( 'notify_email_subject', newValue ) }
 				placeholder={ placeholder }
 				help={ __( 'Write a short headline for the notification.', 'omniform' ) }
+				__nextHasNoMarginBottom
+				__next40pxDefaultSize
 			/>
 		</PanelComponent>
 	);

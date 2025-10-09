@@ -82,6 +82,8 @@ export default function CreateFormModal( { closeModal, onCreate } ) {
 					value={ title }
 					onChange={ setTitle }
 					required
+					__nextHasNoMarginBottom
+					__next40pxDefaultSize
 				/>
 				<BaseControl
 					label={ __( 'Type', 'omniform' ) }

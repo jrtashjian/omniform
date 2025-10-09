@@ -52,6 +52,8 @@ export default function SubmissionMethodSettings( {
 						value={ getSetting( 'submit_action' ) || '' }
 						onChange={ ( newValue ) => setSetting( 'submit_action', newValue ) }
 						help={ __( 'Enter the URL where the form data will be submitted.', 'omniform' ) }
+						__nextHasNoMarginBottom
+						__next40pxDefaultSize
 					/>
 					<SelectControl
 						label={ __( 'Submit Method', 'omniform' ) }

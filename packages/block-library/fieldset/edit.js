@@ -122,6 +122,7 @@ const Edit = ( {
 						checked={ isRequired }
 						onChange={ toggleRequired }
 						help={ __( 'Set default \'required\' state for all fields in the group.', 'omniform' ) }
+						__nextHasNoMarginBottom
 					/>
 
 					<TextControl
@@ -134,6 +135,8 @@ const Edit = ( {
 							setAttributes( { fieldName: cleanFieldName( fieldName || fieldLabel ) } );
 						} }
 						help={ __( 'Name of the fieldset. Defaults to the fieldset\'s label.', 'omniform' ) }
+						__nextHasNoMarginBottom
+						__next40pxDefaultSize
 					/>
 
 				</PanelBody>
