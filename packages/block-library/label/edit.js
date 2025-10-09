@@ -105,14 +105,11 @@ function StandardFormRequiredLabel( { clientId, formId } ) {
 }
 
 function StandaloneFormRequiredLabel( { clientId } ) {
-	const {
-		getBlock,
-	} = useSelect( blockEditorStore );
-
 	// Find the client ID of the parent form block.
 	const blockClientId = useSelect(
 		( select ) => {
 			const {
+				getBlock,
 				getBlockParents,
 			} = select( blockEditorStore );
 
@@ -125,7 +122,7 @@ function StandaloneFormRequiredLabel( { clientId } ) {
 
 			return rootBlock;
 		},
-		[ clientId, getBlock ]
+		[ clientId ]
 	);
 
 	const {
