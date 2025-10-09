@@ -19,6 +19,15 @@
 		},
 		"fieldValue": {
 			"type": "string"
+		},
+		"fieldMin": {
+			"type": "string"
+		},
+		"fieldMax": {
+			"type": "string"
+		},
+		"fieldStep": {
+			"type": "string"
 		}
 	},
 	"supports": {
