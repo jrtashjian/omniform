@@ -10,6 +10,7 @@ import {
 	fieldNumber,
 	fieldPassword,
 	fieldRadio,
+	fieldRange,
 	fieldSearch,
 	fieldTel,
 	fieldTime,
@@ -56,7 +57,7 @@ const variations = [
 	},
 	{
 		name: 'input-range',
-		icon: { src: fieldNumber },
+		icon: { src: fieldRange },
 		title: __( 'Range', 'omniform' ),
 		description: __( 'A field for selecting a value within a range.', 'omniform' ),
 		attributes: { fieldType: 'range' },

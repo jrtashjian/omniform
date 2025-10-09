@@ -91,6 +91,12 @@ export const fieldTime = (
 	</SVG>
 );
 
+export const fieldRange = (
+	<SVG viewBox="0 0 24 24">
+		<Path fill="#D92E83" d="M3 17v2h6v-2zM3 5v2h10V5zm10 16v-2h8v-2h-8v-2h-2v6zM7 9v2H3v2h4v2h2V9zm14 4v-2H11v2zm-6-4h2V7h4V5h-4V3h-2z" />
+	</SVG>
+);
+
 export const fieldHidden = (
 	<SVG viewBox="0 0 24 24">
 		<Path fill="#D92E83" fillRule="evenodd" d="M4.273 3 3 4.273 5.727 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h11.727l4.003 4.003 1.273-1.273L4.273 3ZM4 9h3.727l2 2H6v2h5.727l2 2H4V9Z" clipRule="evenodd" />
