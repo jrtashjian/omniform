@@ -5,7 +5,7 @@ import { __, sprintf } from '@wordpress/i18n';
 import { store as coreStore } from '@wordpress/core-data';
 import { useSelect } from '@wordpress/data';
 import { PanelBody, TextControl, FormTokenField } from '@wordpress/components';
-import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
+import { PluginDocumentSettingPanel } from '@wordpress/editor';
 
 export default function EmailNotificationSettings( {
 	isDocumentPanel,
