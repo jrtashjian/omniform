@@ -56,8 +56,8 @@ class Input extends BaseControlBlock {
 	public function get_extra_wrapper_attributes() {
 		$extra_attributes = wp_parse_args(
 			array(
-				'type'        => $this->get_type(),
-				'aria-label'  => esc_attr( wp_strip_all_tags( $this->get_field_label() ) ),
+				'type'       => $this->get_type(),
+				'aria-label' => esc_attr( wp_strip_all_tags( $this->get_field_label() ) ),
 			),
 			parent::get_extra_wrapper_attributes()
 		);
