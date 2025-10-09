@@ -16,6 +16,7 @@ import {
 	ToggleControl,
 	ToolbarButton,
 	ToolbarGroup,
+	Slot,
 } from '@wordpress/components';
 import { createBlock } from '@wordpress/blocks';
 
@@ -184,6 +185,7 @@ const Edit = ( {
 						__next40pxDefaultSize
 					/>
 
+					<Slot name="OmniformFieldInnerSettings" />
 				</PanelBody>
 			</InspectorControls>
 		</>
