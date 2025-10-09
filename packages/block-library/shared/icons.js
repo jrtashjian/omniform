@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { Circle, Path, SVG } from '@wordpress/primitives';
+import { Path, SVG } from '@wordpress/primitives';
 
 export const form = (
 	<SVG viewBox="0 0 24 24">

@@ -11,19 +11,19 @@
 		// Slider Track
 		&::-moz-range-track,
 		&::-webkit-slider-runnable-track {
-			background-color: currentColor;
+			background-color: currentcolor;
 		}
 
 		// Slider Thumb
 		&::-moz-range-thumb,
 		&::-webkit-slider-thumb {
-			background-color: currentColor;
+			background-color: currentcolor;
 			border: none;
 		}
 
 		// Progress (filled portion of the track)
 		&::-moz-range-progress {
-			background-color: currentColor;
+			background-color: currentcolor;
 		}
 	}
 
