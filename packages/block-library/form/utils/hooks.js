@@ -144,7 +144,7 @@ export function useStandaloneFormSettings( blockClientId ) {
 	const {
 		attributes,
 		setAttributes,
-	} = getBlock( blockClientId );
+	} = getBlock( blockClientId ) || {};
 
 	/**
 	 * Retrieves the setting value.
