@@ -5,14 +5,25 @@
 	@include field-control;
 
 	&[type="range"] {
-		margin: 0;
-		padding:0;
+		appearance: auto;
+		background-color: transparent;
 
+		// Slider Track
 		&::-moz-range-track,
 		&::-webkit-slider-runnable-track {
-			height: 0.9rem;
-			color: black;
-			background: black;
+			background-color: currentColor;
+		}
+
+		// Slider Thumb
+		&::-moz-range-thumb,
+		&::-webkit-slider-thumb {
+			background-color: currentColor;
+			border: none;
+		}
+
+		// Progress (filled portion of the track)
+		&::-moz-range-progress {
+			background-color: currentColor;
 		}
 	}
 
