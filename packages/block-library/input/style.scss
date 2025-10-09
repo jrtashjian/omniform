@@ -24,9 +24,9 @@
 		// Progress (filled portion of the track)
 		&::-moz-range-progress {
 			background-color: currentColor;
-    }
-  }
-  
+		}
+	}
+
 	// Color
 	&[type="color"] {
 		overflow: hidden;
