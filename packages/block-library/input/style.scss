@@ -4,6 +4,28 @@
 
 	@include field-control;
 
+	&[type="range"] {
+		appearance: auto;
+
+		// Slider Track
+		&::-moz-range-track,
+		&::-webkit-slider-runnable-track {
+			background-color: currentcolor;
+		}
+
+		// Slider Thumb
+		&::-moz-range-thumb,
+		&::-webkit-slider-thumb {
+			background-color: currentcolor;
+			border: none;
+		}
+
+		// Progress (filled portion of the track)
+		&::-moz-range-progress {
+			background-color: currentcolor;
+		}
+	}
+
 	// Color
 	&[type="color"] {
 		overflow: hidden;
@@ -14,13 +36,13 @@
 		height: 1.6em;
 		padding: 0;
 
-		&::-moz-color-swatch-wrapper,
+		// Color Swatch Wrapper
 		&::-webkit-color-swatch-wrapper {
-			display: block;
 			border: none;
 			padding: 0;
 		}
 
+		// Color Swatch
 		&::-moz-color-swatch,
 		&::-webkit-color-swatch {
 			border: none;

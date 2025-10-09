@@ -56,12 +56,24 @@ class Input extends BaseControlBlock {
 	public function get_extra_wrapper_attributes() {
 		$extra_attributes = wp_parse_args(
 			array(
-				'placeholder' => $this->get_block_attribute( 'fieldPlaceholder' ),
-				'type'        => $this->get_type(),
-				'aria-label'  => esc_attr( wp_strip_all_tags( $this->get_field_label() ) ),
+				'type'       => $this->get_type(),
+				'aria-label' => esc_attr( wp_strip_all_tags( $this->get_field_label() ) ),
 			),
 			parent::get_extra_wrapper_attributes()
 		);
+
+		$attribute_input_type_mapping = array(
+			'placeholder' => array( 'text', 'email', 'url', 'number', 'month', 'password', 'search', 'tel', 'week', 'hidden', 'username-email' ),
+			'min'         => array( 'range' ),
+			'max'         => array( 'range' ),
+			'step'        => array( 'range' ),
+		);
+
+		foreach ( $attribute_input_type_mapping as $attribute => $input_type ) {
+			if ( in_array( $this->get_type(), $input_type, true ) && $this->get_block_attribute( 'field' . ucfirst( $attribute ) ) ) {
+				$extra_attributes[ $attribute ] = $this->get_block_attribute( 'field' . ucfirst( $attribute ) );
+			}
+		}
 
 		return array_filter( $extra_attributes );
 	}
@@ -127,6 +139,7 @@ class Input extends BaseControlBlock {
 			'time'           => new Validation\Rules\Time( self::FORMAT_TIME ),
 			'month'          => new Validation\Rules\Date( self::FORMAT_MONTH ),
 			'username-email' => new UsernameOrEmailRule(),
+			'range'          => new Validation\Rules\Number(),
 			'color'          => new Validation\Rules\HexRgbColor(),
 		);
 

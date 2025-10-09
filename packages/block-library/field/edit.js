@@ -16,6 +16,7 @@ import {
 	ToggleControl,
 	ToolbarButton,
 	ToolbarGroup,
+	Slot,
 } from '@wordpress/components';
 import { createBlock } from '@wordpress/blocks';
 
@@ -47,7 +48,7 @@ const Edit = ( {
 				labelBlock: _labelBlock,
 				inputBlock: _inputBlock,
 				hasLabel: !! _labelBlock,
-				canHideLabel: _inputBlock && ! ( [ 'checkbox', 'radio' ].includes( _inputBlock.attributes?.fieldType ) || _inputBlock.attributes?.isMultiple ),
+				canHideLabel: _inputBlock && ! ( [ 'checkbox', 'radio', 'range' ].includes( _inputBlock.attributes?.fieldType ) || _inputBlock.attributes?.isMultiple ),
 			};
 		},
 		[ clientId ]
@@ -184,6 +185,7 @@ const Edit = ( {
 						__next40pxDefaultSize
 					/>
 
+					<Slot name="OmniformFieldInnerSettings" />
 				</PanelBody>
 			</InspectorControls>
 		</>

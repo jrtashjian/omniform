@@ -19,6 +19,15 @@
 		},
 		"fieldValue": {
 			"type": "string"
+		},
+		"fieldMin": {
+			"type": "string"
+		},
+		"fieldMax": {
+			"type": "string"
+		},
+		"fieldStep": {
+			"type": "string"
 		}
 	},
 	"supports": {
@@ -48,5 +57,6 @@
 		"omniform/fieldIsRequired"
 	],
 	"editorScript": "file:index.js",
-	"style": "file:style-index.css"
+	"style": "file:style-index.css",
+	"viewScript": "file:view.js"
 }

@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { Circle, Path, SVG } from '@wordpress/primitives';
+import { Path, SVG } from '@wordpress/primitives';
 
 export const form = (
 	<SVG viewBox="0 0 24 24">
@@ -88,6 +88,12 @@ export const fieldTel = (
 export const fieldTime = (
 	<SVG viewBox="0 0 24 24">
 		<Path fill="#D92E83" d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2ZM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8Zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7Z" />
+	</SVG>
+);
+
+export const fieldRange = (
+	<SVG viewBox="0 0 24 24">
+		<Path fill="#D92E83" d="M3 17v2h6v-2zM3 5v2h10V5zm10 16v-2h8v-2h-8v-2h-2v6zM7 9v2H3v2h4v2h2V9zm14 4v-2H11v2zm-6-4h2V7h4V5h-4V3h-2z" />
 	</SVG>
 );
 

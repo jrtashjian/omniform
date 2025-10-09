@@ -17,6 +17,7 @@ The input block supports the following field types:
 - `time` - A time input with time validation.
 - `month` - A month input with month validation.
 - `week` - A week input.
+- `range` - A range input for selecting a value within a specified range.
 - `color` - A color input with hex color validation.
 - `hidden` - A hidden input.
 - `username-email` - A text input that accepts either a valid username or email address.

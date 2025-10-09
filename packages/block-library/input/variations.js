@@ -11,6 +11,7 @@ import {
 	fieldNumber,
 	fieldPassword,
 	fieldRadio,
+	fieldRange,
 	fieldSearch,
 	fieldTel,
 	fieldTime,
@@ -54,6 +55,13 @@ const variations = [
 		title: __( 'Number', 'omniform' ),
 		description: __( 'A field for collecting a numerical value.', 'omniform' ),
 		attributes: { fieldType: 'number' },
+	},
+	{
+		name: 'input-range',
+		icon: { src: fieldRange },
+		title: __( 'Range', 'omniform' ),
+		description: __( 'A field for selecting a value within a range.', 'omniform' ),
+		attributes: { fieldType: 'range' },
 	},
 	{
 		name: 'input-search',
