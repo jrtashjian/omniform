@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useDispatch, useSelect } from '@wordpress/data';
+import { useEffect } from '@wordpress/element';
 import {
 	BlockControls,
 	InspectorControls,
@@ -16,6 +17,7 @@ import {
 	ToggleControl,
 	ToolbarButton,
 	ToolbarGroup,
+	Slot,
 } from '@wordpress/components';
 import { createBlock } from '@wordpress/blocks';
 
@@ -23,7 +25,7 @@ import { createBlock } from '@wordpress/blocks';
  * Internal dependencies
  */
 import { Required } from '../shared/icons';
-import { cleanFieldName } from '../shared/utils';
+import { cleanFieldName, generateShortId } from '../shared/utils';
 
 const Edit = ( {
 	attributes: { fieldLabel, fieldName, isRequired },
@@ -47,7 +49,7 @@ const Edit = ( {
 				labelBlock: _labelBlock,
 				inputBlock: _inputBlock,
 				hasLabel: !! _labelBlock,
-				canHideLabel: _inputBlock && ! ( [ 'checkbox', 'radio' ].includes( _inputBlock.attributes?.fieldType ) || _inputBlock.attributes?.isMultiple ),
+				canHideLabel: _inputBlock && ! ( [ 'checkbox', 'radio', 'range' ].includes( _inputBlock.attributes?.fieldType ) || _inputBlock.attributes?.isMultiple ),
 			};
 		},
 		[ clientId ]
@@ -59,6 +61,12 @@ const Edit = ( {
 		updateBlockAttributes,
 		updateBlockListSettings,
 	} = useDispatch( blockEditorStore );
+
+	useEffect( () => {
+		if ( ! fieldName ) {
+			setAttributes( { fieldName: 'omniform-' + generateShortId() } );
+		}
+	}, [] ); // eslint-disable-line react-hooks/exhaustive-deps -- Run only on mount to set initial fieldName
 
 	const blockProps = useBlockProps();
 
@@ -79,16 +87,7 @@ const Edit = ( {
 	 * @param {string} value The new field label.
 	 */
 	const updateLabel = ( value ) => {
-		const cleanLabel = cleanFieldName( fieldLabel );
-
-		if ( ! fieldName || fieldName === cleanLabel ) {
-			setAttributes( {
-				fieldLabel: value,
-				fieldName: cleanFieldName( value ),
-			} );
-		} else {
-			setAttributes( { fieldLabel: value } );
-		}
+		setAttributes( { fieldLabel: value } );
 	};
 
 	/**
@@ -146,6 +145,7 @@ const Edit = ( {
 						checked={ isRequired }
 						onChange={ toggleRequired }
 						help={ __( 'A value is required or must be check for the form to be submittable.', 'omniform' ) }
+						__nextHasNoMarginBottom
 					/>
 
 					{ canHideLabel && (
@@ -154,6 +154,7 @@ const Edit = ( {
 							checked={ ! hasLabel }
 							onChange={ toggleLabel }
 							help={ __( 'Hide the field\'s label, current label becomes the field\'s placeholder.', 'omniform' ) }
+							__nextHasNoMarginBottom
 						/>
 					) }
 
@@ -163,6 +164,8 @@ const Edit = ( {
 							value={ fieldLabel }
 							onChange={ updateLabel }
 							help={ __( 'Label for the form control.', 'omniform' ) }
+							__nextHasNoMarginBottom
+							__next40pxDefaultSize
 						/>
 					) }
 
@@ -176,8 +179,11 @@ const Edit = ( {
 							setAttributes( { fieldName: cleanFieldName( fieldName || fieldLabel ) } );
 						} }
 						help={ __( 'Name of the form control. Defaults to the label.', 'omniform' ) }
+						__nextHasNoMarginBottom
+						__next40pxDefaultSize
 					/>
 
+					<Slot name="OmniformFieldInnerSettings" />
 				</PanelBody>
 			</InspectorControls>
 		</>

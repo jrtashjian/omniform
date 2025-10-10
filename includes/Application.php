@@ -26,7 +26,7 @@ class Application extends Container {
 	 *
 	 * @var string
 	 */
-	const VERSION = '1.3.2';
+	const VERSION = '1.3.3';
 
 	/**
 	 * The base path for the plugin.
@@ -61,7 +61,7 @@ class Application extends Container {
 	 *
 	 * @return \OmniForm\Dependencies\League\Container\DefinitionContainerInterface|static
 	 */
-	public static function set_instance( DefinitionContainerInterface $container = null ) {
+	public static function set_instance( ?DefinitionContainerInterface $container = null ) {
 		static::$instance = $container;
 		return static::$instance;
 	}

@@ -32,13 +32,17 @@ class Number {
 			return number_format( $number, $precision );
 		}
 
-		$formatter = new \NumberFormatter( static::$locale, \NumberFormatter::DECIMAL );
+		try {
+			$formatter = new \NumberFormatter( static::$locale, \NumberFormatter::DECIMAL );
 
-		if ( null !== $precision ) {
-			$formatter->setAttribute( \NumberFormatter::FRACTION_DIGITS, $precision );
+			if ( null !== $precision ) {
+				$formatter->setAttribute( \NumberFormatter::FRACTION_DIGITS, $precision );
+			}
+
+			return $formatter->format( $number );
+		} catch ( \IntlException $e ) {
+			return number_format( $number, $precision );
 		}
-
-		return $formatter->format( $number );
 	}
 
 	/**
@@ -55,11 +59,15 @@ class Number {
 			return round( $number * 100, $precision ) . '%';
 		}
 
-		$formatter = new \NumberFormatter( static::$locale, \NumberFormatter::PERCENT );
+		try {
+			$formatter = new \NumberFormatter( static::$locale, \NumberFormatter::PERCENT );
 
-		$formatter->setAttribute( \NumberFormatter::FRACTION_DIGITS, $precision );
+			$formatter->setAttribute( \NumberFormatter::FRACTION_DIGITS, $precision );
 
-		return $formatter->format( $number );
+			return $formatter->format( $number );
+		} catch ( \IntlException $e ) {
+			return round( $number * 100, $precision ) . '%';
+		}
 	}
 
 	/**

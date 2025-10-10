@@ -8,6 +8,7 @@
 namespace OmniForm\BlockLibrary\Blocks;
 
 use OmniForm\Dependencies\Respect\Validation;
+use OmniForm\Validation\Rules\UsernameOrEmailRule;
 
 /**
  * The Input block class.
@@ -32,6 +33,22 @@ class Input extends BaseControlBlock {
 	}
 
 	/**
+	 * Gets the input type for the field.
+	 *
+	 * @return string
+	 */
+	protected function get_type(): string {
+		$field_type = $this->get_block_attribute( 'fieldType' ) ?? 'text';
+
+		switch ( $field_type ) {
+			case 'username-email':
+				return 'text';
+			default:
+				return $field_type;
+		}
+	}
+
+	/**
 	 * Gets the extra wrapper attributes for the field to be passed into get_block_wrapper_attributes().
 	 *
 	 * @return array
@@ -39,12 +56,24 @@ class Input extends BaseControlBlock {
 	public function get_extra_wrapper_attributes() {
 		$extra_attributes = wp_parse_args(
 			array(
-				'placeholder' => $this->get_block_attribute( 'fieldPlaceholder' ),
-				'type'        => $this->get_block_attribute( 'fieldType' ),
-				'aria-label'  => esc_attr( wp_strip_all_tags( $this->get_field_label() ) ),
+				'type'       => $this->get_type(),
+				'aria-label' => esc_attr( wp_strip_all_tags( $this->get_field_label() ) ),
 			),
 			parent::get_extra_wrapper_attributes()
 		);
+
+		$attribute_input_type_mapping = array(
+			'placeholder' => array( 'text', 'email', 'url', 'number', 'month', 'password', 'search', 'tel', 'week', 'hidden', 'username-email' ),
+			'min'         => array( 'range' ),
+			'max'         => array( 'range' ),
+			'step'        => array( 'range' ),
+		);
+
+		foreach ( $attribute_input_type_mapping as $attribute => $input_type ) {
+			if ( in_array( $this->get_type(), $input_type, true ) && $this->get_block_attribute( 'field' . ucfirst( $attribute ) ) ) {
+				$extra_attributes[ $attribute ] = $this->get_block_attribute( 'field' . ucfirst( $attribute ) );
+			}
+		}
 
 		return array_filter( $extra_attributes );
 	}
@@ -102,13 +131,16 @@ class Input extends BaseControlBlock {
 		$rules = parent::get_validation_rules();
 
 		$validation_mapping = array(
-			'email'  => new Validation\Rules\Email(),
-			'url'    => new Validation\Rules\Url(),
-			'tel'    => new Validation\Rules\Phone(),
-			'number' => new Validation\Rules\Number(),
-			'date'   => new Validation\Rules\Date( self::FORMAT_DATE ),
-			'time'   => new Validation\Rules\Time( self::FORMAT_TIME ),
-			'month'  => new Validation\Rules\Date( self::FORMAT_MONTH ),
+			'email'          => new Validation\Rules\Email(),
+			'url'            => new Validation\Rules\Url(),
+			'tel'            => new Validation\Rules\Phone(),
+			'number'         => new Validation\Rules\Number(),
+			'date'           => new Validation\Rules\Date( self::FORMAT_DATE ),
+			'time'           => new Validation\Rules\Time( self::FORMAT_TIME ),
+			'month'          => new Validation\Rules\Date( self::FORMAT_MONTH ),
+			'username-email' => new UsernameOrEmailRule(),
+			'range'          => new Validation\Rules\Number(),
+			'color'          => new Validation\Rules\HexRgbColor(),
 		);
 
 		if ( isset( $validation_mapping[ $this->get_block_attribute( 'fieldType' ) ] ) ) {

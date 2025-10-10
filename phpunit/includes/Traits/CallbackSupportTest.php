@@ -10,7 +10,7 @@ namespace OmniForm\Tests;
 /**
  * Tests the CallbackSupport trait.
  */
-class CallbackSupport_Test extends \WP_UnitTestCase {
+class CallbackSupportTest extends \WP_UnitTestCase {
 	use \OmniForm\Traits\CallbackSupport;
 
 	/**
@@ -22,60 +22,35 @@ class CallbackSupport_Test extends \WP_UnitTestCase {
 	}
 
 	/**
-	 * Test the process_callbacks method.
+	 * Data provider for test_process_callbacks.
 	 */
-	public function test_process_callbacks() {
-		// No callbacks.
-		$this->assertEquals( 'no callbacks here', $this->process_callbacks( 'no callbacks here' ) );
+	public static function provideCallbackData() {
+		return array(
+			array( 'no callbacks here', 'no callbacks here' ),
+			array( '{{omniform_existent_callback_return_string}}', 'callback string' ),
+			array( '{{omniform_existent_callback_return_array}}', '' ),
+			array( '{{omniform_existent_callback_return_object}}', '' ),
+			array( '{{omniform_existent_callback_return_false}}', '0' ),
+			array( '{{omniform_existent_callback_return_true}}', '1' ),
+			array( '{{omniform_existent_callback_return_number}}', '42' ),
+			array( 'text before {{omniform_existent_callback_return_string}} text after', 'text before callback string text after' ),
+			array( '{{omniform_existent_callback_return_string}} and {{omniform_existent_callback_return_number}}', 'callback string and 42' ),
+			array( '{{omniform_existent_callback_return_string}} and {{omniform_existent_callback_return_true}}', 'callback string and 1' ),
+			array( 'invalid {{callback', 'invalid {{callback' ),
+		);
+	}
 
-		// Single callback.
-		$callback_result = $this->process_callbacks( '{{omniform_existent_callback_return_string}}' );
-		$this->assertIsString( $callback_result );
-		$this->assertEquals( 'callback string', $callback_result );
-
-		// Callback returning array.
-		$callback_result = $this->process_callbacks( '{{omniform_existent_callback_return_array}}' );
-		$this->assertIsString( $callback_result );
-		$this->assertEquals( '', $callback_result );
-
-		// Callback returning object.
-		$callback_result = $this->process_callbacks( '{{omniform_existent_callback_return_object}}' );
-		$this->assertIsString( $callback_result );
-		$this->assertEquals( '', $callback_result );
-
-		// Callback returning false.
-		$callback_result = $this->process_callbacks( '{{omniform_existent_callback_return_false}}' );
-		$this->assertIsString( $callback_result );
-		$this->assertEquals( '0', $callback_result );
-
-		// Callback returning true.
-		$callback_result = $this->process_callbacks( '{{omniform_existent_callback_return_true}}' );
-		$this->assertIsString( $callback_result );
-		$this->assertEquals( '1', $callback_result );
-
-		// Callback returning number.
-		$callback_result = $this->process_callbacks( '{{omniform_existent_callback_return_number}}' );
-		$this->assertIsString( $callback_result );
-		$this->assertEquals( '42', $callback_result );
-
-		// Callback within text.
-		$callback_result = $this->process_callbacks( 'text before {{omniform_existent_callback_return_string}} text after' );
-		$this->assertIsString( $callback_result );
-		$this->assertEquals( 'text before callback string text after', $callback_result );
-
-		// Multiple callbacks.
-		$callback_result = $this->process_callbacks( '{{omniform_existent_callback_return_string}} and {{omniform_existent_callback_return_number}}' );
-		$this->assertIsString( $callback_result );
-		$this->assertEquals( 'callback string and 42', $callback_result );
-
-		// Nested callbacks (if applicable).
-		$callback_result = $this->process_callbacks( '{{omniform_existent_callback_return_string}} and {{omniform_existent_callback_return_true}}' );
-		$this->assertIsString( $callback_result );
-		$this->assertEquals( 'callback string and 1', $callback_result );
-
-		// Invalid callback format.
-		$callback_result = $this->process_callbacks( 'invalid {{callback' );
-		$this->assertIsString( $callback_result );
-		$this->assertEquals( 'invalid {{callback', $callback_result );
+	/**
+	 * Test the process_callbacks method.
+	 *
+	 * @dataProvider provideCallbackData
+	 *
+	 * @param string $input    The input string to process.
+	 * @param string $expected The expected output after processing callbacks.
+	 */
+	public function test_process_callbacks( $input, $expected ) {
+		$result = $this->process_callbacks( $input );
+		$this->assertIsString( $result );
+		$this->assertEquals( $expected, $result );
 	}
 }

@@ -3,8 +3,8 @@
  * Plugin Name: OmniForm
  * Plugin URI: https://omniform.io
  * Description: Easily create and manage custom forms with the block editor, customizable fields, and form submission management for your website.
- * Version: 1.3.2
- * Requires at least: 6.3
+ * Version: 1.3.3
+ * Requires at least: 6.6
  * Requires PHP: 7.4
  * Author: JR Tashjian
  * Author URI: https://jrtashjian.com

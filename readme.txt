@@ -1,10 +1,10 @@
 === OmniForm ===
 Contributors: jrtashjian
 Tags: contact form, block editor, form builder, forms, email
-Requires at least: 6.3
-Tested up to: 6.7
+Requires at least: 6.6
+Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.3.2
+Stable tag: 1.3.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,6 +60,11 @@ Manual installation method requires downloading the OmniForm plugin and uploadin
 5. OmniForm Keeps You Informed: Track Submissions and Get Email Notifications within WordPress.
 
 == Changelog ==
+
+= 1.3.3 / 2025-07-15 =
+
+  * Enhanced display of standalone checkboxes in response content. [#43](https://github.com/jrtashjian/omniform/pull/43)
+  * Implemented permission checks for form access in FormsController.
 
 = 1.3.2 / 2025-03-14 =
 

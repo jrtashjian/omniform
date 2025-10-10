@@ -4,12 +4,14 @@
 import { __ } from '@wordpress/i18n';
 import {
 	fieldCheckbox,
+	fieldColor,
 	fieldDate,
 	fieldEmail,
 	fieldInput,
 	fieldNumber,
 	fieldPassword,
 	fieldRadio,
+	fieldRange,
 	fieldSearch,
 	fieldTel,
 	fieldTime,
@@ -34,6 +36,13 @@ const variations = [
 		attributes: { fieldType: 'email' },
 	},
 	{
+		name: 'input-username-email',
+		icon: { src: fieldInput },
+		title: __( 'Username or Email', 'omniform' ),
+		description: __( 'A field for collecting a username or email address.', 'omniform' ),
+		attributes: { fieldType: 'username-email' },
+	},
+	{
 		name: 'input-url',
 		icon: { src: fieldUrl },
 		title: __( 'URL', 'omniform' ),
@@ -46,6 +55,13 @@ const variations = [
 		title: __( 'Number', 'omniform' ),
 		description: __( 'A field for collecting a numerical value.', 'omniform' ),
 		attributes: { fieldType: 'number' },
+	},
+	{
+		name: 'input-range',
+		icon: { src: fieldRange },
+		title: __( 'Range', 'omniform' ),
+		description: __( 'A field for selecting a value within a range.', 'omniform' ),
+		attributes: { fieldType: 'range' },
 	},
 	{
 		name: 'input-search',
@@ -109,6 +125,13 @@ const variations = [
 		title: __( 'Time', 'omniform' ),
 		description: __( 'A field for collecting a formatted time.', 'omniform' ),
 		attributes: { fieldType: 'time' },
+	},
+	{
+		name: 'input-color',
+		icon: { src: fieldColor },
+		title: __( 'Color', 'omniform' ),
+		description: __( 'A field for selecting a color.', 'omniform' ),
+		attributes: { fieldType: 'color' },
 	},
 ];
 
