@@ -17,25 +17,25 @@ return array(
 		<p>' . esc_html__( 'Join our community and take advantage of our member perks! Sign up for a membership and unlock access to special features and discounts.', 'omniform' ) . '</p>
 		<!-- /wp:paragraph -->
 
-		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'What\'s your name?', 'omniform' ) . '","fieldName":"' . esc_attr__( 'whats-your-name', 'omniform' ) . '"} -->
+		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'What\'s your name?', 'omniform' ) . '"} -->
 		<!-- wp:omniform/label /-->
 
 		<!-- wp:omniform/input /-->
 		<!-- /wp:omniform/field -->
 
-		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'What\'s your email address?', 'omniform' ) . '","fieldName":"' . esc_attr__( 'whats-your-email-address', 'omniform' ) . '"} -->
+		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'What\'s your email address?', 'omniform' ) . '"} -->
 		<!-- wp:omniform/label /-->
 
 		<!-- wp:omniform/input {"fieldType":"email"} /-->
 		<!-- /wp:omniform/field -->
 
-		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'What\'s your phone number?', 'omniform' ) . '","fieldName":"' . esc_attr__( 'whats-your-phone-number', 'omniform' ) . '"} -->
+		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'What\'s your phone number?', 'omniform' ) . '"} -->
 		<!-- wp:omniform/label /-->
 
 		<!-- wp:omniform/input {"fieldType":"tel"} /-->
 		<!-- /wp:omniform/field -->
 
-		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'How did you hear about us?', 'omniform' ) . '","fieldName":"' . esc_attr__( 'how-did-you-hear-about-us', 'omniform' ) . '"} -->
+		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'How did you hear about us?', 'omniform' ) . '"} -->
 		<!-- wp:omniform/label /-->
 
 		<!-- wp:omniform/select -->
@@ -59,7 +59,7 @@ return array(
 		<!-- /wp:omniform/select -->
 		<!-- /wp:omniform/field -->
 
-		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'Why do you want to be a member?', 'omniform' ) . '","fieldName":"' . esc_attr__( 'why-do-you-want-to-be-a-member', 'omniform' ) . '"} -->
+		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'Why do you want to be a member?', 'omniform' ) . '"} -->
 		<!-- wp:omniform/label /-->
 
 		<!-- wp:omniform/textarea /-->

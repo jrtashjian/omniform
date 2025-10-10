@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useDispatch, useSelect } from '@wordpress/data';
+import { useEffect } from '@wordpress/element';
 import {
 	BlockControls,
 	InspectorControls,
@@ -24,7 +25,7 @@ import { createBlock } from '@wordpress/blocks';
  * Internal dependencies
  */
 import { Required } from '../shared/icons';
-import { cleanFieldName } from '../shared/utils';
+import { cleanFieldName, generateShortId } from '../shared/utils';
 
 const Edit = ( {
 	attributes: { fieldLabel, fieldName, isRequired },
@@ -61,6 +62,12 @@ const Edit = ( {
 		updateBlockListSettings,
 	} = useDispatch( blockEditorStore );
 
+	useEffect( () => {
+		if ( ! fieldName ) {
+			setAttributes( { fieldName: 'omniform-' + generateShortId() } );
+		}
+	}, [] ); // eslint-disable-line react-hooks/exhaustive-deps -- Run only on mount to set initial fieldName
+
 	const blockProps = useBlockProps();
 
 	const innerBlockOptions = {
@@ -80,16 +87,7 @@ const Edit = ( {
 	 * @param {string} value The new field label.
 	 */
 	const updateLabel = ( value ) => {
-		const cleanLabel = cleanFieldName( fieldLabel );
-
-		if ( ! fieldName || fieldName === cleanLabel ) {
-			setAttributes( {
-				fieldLabel: value,
-				fieldName: cleanFieldName( value ),
-			} );
-		} else {
-			setAttributes( { fieldLabel: value } );
-		}
+		setAttributes( { fieldLabel: value } );
 	};
 
 	/**
