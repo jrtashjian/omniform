@@ -4,6 +4,15 @@
 import removeAccents from 'remove-accents';
 
 /**
+ * Generates a short unique ID.
+ *
+ * @return {string} The short ID.
+ */
+export function generateShortId() {
+	return window.crypto.getRandomValues( new Uint8Array( 6 ) ).reduce( ( a, b ) => a + b.toString( 36 ), '' ).substr( 0, 8 );
+}
+
+/**
  * Performs some basic cleanup of a string for use as a fieldName.
  *
  * @see https://github.com/WordPress/gutenberg/blob/wp/6.5/packages/url/src/clean-for-slug.js
