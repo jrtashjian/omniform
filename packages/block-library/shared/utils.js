@@ -9,7 +9,7 @@ import removeAccents from 'remove-accents';
  * @return {string} The short ID.
  */
 export function generateShortId() {
-	return window.crypto.getRandomValues( new Uint8Array( 6 ) ).reduce( ( a, b ) => a + b.toString( 36 ), '' ).substr( 0, 8 );
+	return window.crypto.getRandomValues( new Uint8Array( 6 ) ).reduce( ( a, b ) => a + b.toString( 36 ), '' ).substring( 0, 8 );
 }
 
 /**
