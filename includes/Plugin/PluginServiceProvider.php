@@ -109,11 +109,15 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 
 		add_action( 'admin_init', array( $this, 'dismiss_newsletter_notice' ) );
 
-		// add_action( 'init', array( $this, 'usage_tracking' ) );
-		add_action( 'omniform_usage_tracking', array( $this, 'usage_tracking' ) );
-		if ( ! wp_next_scheduled( 'omniform_usage_tracking' ) ) {
-			wp_schedule_event( time(), 'hourly', 'omniform_usage_tracking' );
+		$enabled = get_option( 'omniform_usage_tracking_enabled', false );
+
+		if ( $enabled && ! wp_next_scheduled( 'omniform_usage_tracking' ) ) {
+			wp_schedule_single_event( time() + WEEK_IN_SECONDS, 'omniform_usage_tracking' );
+		} elseif ( ! $enabled ) {
+			wp_clear_scheduled_hook( 'omniform_usage_tracking' );
 		}
+
+		add_action( 'omniform_usage_tracking', array( $this, 'usage_tracking' ) );
 
 		add_action(
 			'omniform_deactivate',
@@ -725,6 +729,20 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				)
 			);
 		}
+
+		register_setting(
+			'omniform',
+			'omniform_usage_tracking_enabled',
+			array(
+				'type'              => 'boolean',
+				'description'       => __( 'Enable anonymous usage tracking to help improve OmniForm.', 'omniform' ),
+				'sanitize_callback' => function ( $value ) {
+					return (bool) $value;
+				},
+				'show_in_rest'      => true,
+				'default'           => false,
+			)
+		);
 	}
 
 	/**
@@ -794,19 +812,27 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		}
 	}
 
+	/**
+	 * Handles usage tracking.
+	 */
 	public function usage_tracking() {
 		$usage_tracking = $this->getContainer()->get( UsageTracking::class );
 
 		$response = wp_remote_post(
-			'http://host.docker.internal:8000/api/v1/plugin-reporting',
+			'https://track.omniform.io/',
 			array( 'body' => $usage_tracking->get_data() )
 		);
 
-		// echo '<pre>';
-		// print_r( $usage_tracking->get_data() );
-		// print_r( wp_remote_retrieve_body( $response ) );
-		// echo '</pre>';
-		// exit;
+		// Clear any existing scheduled events to prevent duplicates.
+		wp_clear_scheduled_hook( 'omniform_usage_tracking' );
+
+		if ( is_wp_error( $response ) ) {
+			// Failure: reschedule for next day.
+			wp_schedule_single_event( time() + DAY_IN_SECONDS, 'omniform_usage_tracking' );
+		} else {
+			// Success: reschedule for next week.
+			wp_schedule_single_event( time() + WEEK_IN_SECONDS, 'omniform_usage_tracking' );
+		}
 	}
 
 	/**
