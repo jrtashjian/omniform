@@ -34,6 +34,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			ResponseFactory::class,
 			QueryBuilder::class,
 			QueryBuilderFactory::class,
+			UsageTracking::class,
 		);
 
 		return in_array( $id, $services, true );
@@ -87,6 +88,8 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				return new QueryBuilderFactory( $wpdb );
 			}
 		);
+
+		$this->getContainer()->addShared( UsageTracking::class );
 	}
 
 	/**
@@ -105,6 +108,23 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		add_filter( 'the_content', array( $this, 'render_singular_template' ) );
 
 		add_action( 'admin_init', array( $this, 'dismiss_newsletter_notice' ) );
+
+		$enabled = get_option( 'omniform_usage_tracking_enabled', false );
+
+		if ( $enabled && ! wp_next_scheduled( 'omniform_usage_tracking' ) ) {
+			wp_schedule_single_event( time() + WEEK_IN_SECONDS, 'omniform_usage_tracking' );
+		} elseif ( ! $enabled ) {
+			wp_clear_scheduled_hook( 'omniform_usage_tracking' );
+		}
+
+		add_action( 'omniform_usage_tracking', array( $this, 'usage_tracking' ) );
+
+		add_action(
+			'omniform_deactivate',
+			function () {
+				wp_clear_scheduled_hook( 'omniform_usage_tracking' );
+			}
+		);
 
 		// Send email notification when a response is created.
 		add_action(
@@ -709,6 +729,20 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				)
 			);
 		}
+
+		register_setting(
+			'omniform',
+			'omniform_usage_tracking_enabled',
+			array(
+				'type'              => 'boolean',
+				'description'       => __( 'Enable anonymous usage tracking to help improve OmniForm.', 'omniform' ),
+				'sanitize_callback' => function ( $value ) {
+					return (bool) $value;
+				},
+				'show_in_rest'      => true,
+				'default'           => false,
+			)
+		);
 	}
 
 	/**
@@ -775,6 +809,29 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			/** @var \OmniForm\Application */ // phpcs:ignore
 			$container = $this->getContainer();
 			update_user_meta( get_current_user_id(), 'omniform_dismissed_newsletter_notice', $container->version() );
+		}
+	}
+
+	/**
+	 * Handles usage tracking.
+	 */
+	public function usage_tracking() {
+		$usage_tracking = $this->getContainer()->get( UsageTracking::class );
+
+		$response = wp_remote_post(
+			'https://track.omniform.io/',
+			array( 'body' => $usage_tracking->get_data() )
+		);
+
+		// Clear any existing scheduled events to prevent duplicates.
+		wp_clear_scheduled_hook( 'omniform_usage_tracking' );
+
+		if ( is_wp_error( $response ) ) {
+			// Failure: reschedule for next day.
+			wp_schedule_single_event( time() + DAY_IN_SECONDS, 'omniform_usage_tracking' );
+		} else {
+			// Success: reschedule for next week.
+			wp_schedule_single_event( time() + WEEK_IN_SECONDS, 'omniform_usage_tracking' );
 		}
 	}
 
