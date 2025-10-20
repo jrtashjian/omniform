@@ -28,6 +28,12 @@
 		},
 		"fieldStep": {
 			"type": "string"
+		},
+		"fieldMinLength": {
+			"type": "integer"
+		},
+		"fieldMaxLength": {
+			"type": "integer"
 		}
 	},
 	"supports": {
