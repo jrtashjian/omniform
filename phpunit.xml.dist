@@ -9,8 +9,8 @@
 	convertDeprecationsToExceptions="true"
 	>
 	<testsuites>
-		<testsuite name="default">
-			<directory suffix="Test.php">./phpunit/</directory>
+		<testsuite name="unit">
+			<directory suffix="Test.php">./phpunit/unit/</directory>
 		</testsuite>
 	</testsuites>
 	<filter>

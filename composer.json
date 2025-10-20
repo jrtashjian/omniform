@@ -26,7 +26,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "OmniForm\\Tests\\": "phpunit/includes"
+            "OmniForm\\Tests\\": "phpunit"
         }
     },
     "require": {
@@ -35,12 +35,12 @@
         "respect/validation": "^2.2"
     },
     "require-dev": {
+        "10up/wp_mock": "^1.0",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
         "johnpbloch/wordpress-core": "^6.8",
         "phpcompatibility/phpcompatibility-wp": "^2.1",
         "wp-cli/wp-cli-bundle": "^2.6",
         "wp-coding-standards/wpcs": "^3.0",
-        "wp-phpunit/wp-phpunit": "^6.7",
         "yoast/phpunit-polyfills": "^1.0"
     },
     "config": {
