@@ -5,9 +5,10 @@
  * @package OmniForm
  */
 
-namespace OmniForm\Tests\Unit;
+namespace OmniForm\Tests\Unit\Traits;
 
 use WP_Mock;
+use OmniForm\Tests\Unit\BaseTestCase;
 
 /**
  * Test class for CallbackSupport trait.
