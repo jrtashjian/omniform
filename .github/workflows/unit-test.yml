@@ -5,7 +5,7 @@ on:
 
 jobs:
   test-php:
-    name: PHP ${{matrix.php}}${{ matrix.multisite && ' multisite' || '' }}${{ matrix.wordpress != '' && format( ' (WP {0}) ', matrix.wordpress ) || '' }}
+    name: PHP ${{ matrix.php }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
@@ -14,20 +14,12 @@ jobs:
           - "7.4"
           - "8.3"
           - "8.4"
-        multisite: [false]
-        wordpress: ["6.8","6.7"]
-    env:
-      WP_ENV_PHP_VERSION: ${{ matrix.php }}
-      WP_ENV_CORE: ${{ format( 'https://wordpress.org/wordpress-{0}.zip', matrix.wordpress ) }}
     steps:
       - uses: actions/checkout@v3
 
-      - name: Restore npm dependency cache
-        uses: ./.github/actions/restore-npm-cache
-      - run: npm install
-
-      - name: Build scripts
-        run: npm run build
+      - uses: actions/setup-php@v3
+        with:
+          php-version: ${{ matrix.php }}
 
       - name: Install PHP-Scoper
         run: composer global require humbug/php-scoper
@@ -41,18 +33,5 @@ jobs:
       - name: Install composer dependencies
         run: composer install
 
-      - name: Start Docker environment
-        run: |
-          for i in {1..3}; do
-            if npm run wp-env start; then
-              break;
-            fi
-            echo "Retrying...";
-            sleep 10;
-          done
-
-      - name: Running single site unit tests
-        if: ${{ ! matrix.multisite }}
-        run: |
-          set -o pipefail
-          npm run test:unit:php:base | tee phpunit.log
+      - name: Run unit tests
+        run: composer test
