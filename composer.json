@@ -66,7 +66,7 @@
         "phpscoper": [
             "rm -rf ./vendor ./vendor_prefixed",
             "@composer install --no-autoloader --no-dev --prefer-dist",
-            "php-scoper add-prefix --force",
+            "php-scoper add-prefix --force --config=./scoper.inc.php",
             "rm -rf ./vendor",
             "@composer dump-autoload --optimize"
         ]
