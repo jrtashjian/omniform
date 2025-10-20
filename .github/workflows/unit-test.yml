@@ -17,10 +17,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
-
       - name: Install PHP-Scoper
         run: composer global require humbug/php-scoper
 
@@ -32,6 +28,10 @@ jobs:
 
       - name: Install composer dependencies
         run: composer install
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
 
       - name: Run unit tests
         run: composer test
