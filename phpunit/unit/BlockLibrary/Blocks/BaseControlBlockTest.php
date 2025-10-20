@@ -11,15 +11,6 @@ use OmniForm\BlockLibrary\Blocks\BaseControlBlock;
 use OmniForm\Tests\Unit\BaseTestCase;
 
 /**
- * Concrete implementation for testing BaseControlBlock.
- */
-class TestBaseControlBlock extends BaseControlBlock {
-	public function render_control() {
-		return 'control output';
-	}
-}
-
-/**
  * Tests for BaseControlBlock.
  */
 class BaseControlBlockTest extends BaseTestCase {
@@ -266,5 +257,16 @@ class BaseControlBlockTest extends BaseTestCase {
 			),
 			$result
 		);
+	}
+}
+
+// phpcs:disable
+
+/**
+ * Concrete implementation for testing BaseControlBlock.
+ */
+class TestBaseControlBlock extends BaseControlBlock {
+	public function render_control() {
+		return 'control output';
 	}
 }
