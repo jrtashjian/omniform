@@ -13,6 +13,3 @@ WP_Mock::bootstrap();
 
 // Activate strict mode.
 WP_Mock::activateStrictMode();
-
-// Load callback functions for tests.
-require_once __DIR__ . '/includes/callback-functions.php';
