@@ -34,7 +34,7 @@ class BaseControlBlockTest extends BaseBlockTestCase {
 	/**
 	 * Data provider for context getter tests.
 	 */
-	public function contextGetterDataProvider() {
+	public function context_getter_data_provider() {
 		return array(
 			'get_field_label'                => array(
 				'context'  => array( 'omniform/fieldLabel' => 'Label' ),
@@ -67,7 +67,7 @@ class BaseControlBlockTest extends BaseBlockTestCase {
 	/**
 	 * Test context getters.
 	 *
-	 * @dataProvider contextGetterDataProvider
+	 * @dataProvider context_getter_data_provider
 	 * @param array  $context  Block context.
 	 * @param string $method   Method name.
 	 * @param string $expected Expected result.

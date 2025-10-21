@@ -38,7 +38,7 @@ class CaptchaTest extends BaseBlockTestCase {
 	/**
 	 * Data provider for render tests.
 	 */
-	public function renderDataProvider() {
+	public function render_data_provider() {
 		return array(
 			'hcaptcha'        => array(
 				'attributes' => array(
@@ -74,16 +74,13 @@ class CaptchaTest extends BaseBlockTestCase {
 	/**
 	 * Test render.
 	 *
-	 * @dataProvider renderDataProvider
+	 * @dataProvider render_data_provider
 	 * @param array $attributes Block attributes.
 	 * @param mixed $expects    Expected result.
 	 */
 	public function test_render( $attributes, $expects ) {
 		\WP_Mock::userFunction( 'get_option' )->andReturn( 'site_key_123' );
 		\WP_Mock::userFunction( 'wp_enqueue_script' )->andReturn( true );
-		$mock_app = \Mockery::mock();
-		$mock_app->shouldReceive( 'version' )->andReturn( '1.0.0' );
-		\WP_Mock::userFunction( 'omniform' )->andReturn( $mock_app );
 		\WP_Mock::userFunction( 'get_block_wrapper_attributes' )->andReturnUsing(
 			function ( $attrs ) {
 				$attr_str = '';
@@ -107,7 +104,7 @@ class CaptchaTest extends BaseBlockTestCase {
 	/**
 	 * Data provider for field label and name tests.
 	 */
-	public function fieldDataProvider() {
+	public function field_data_provider() {
 		return array(
 			'hcaptcha'    => array(
 				'service' => 'hcaptcha',
@@ -135,7 +132,7 @@ class CaptchaTest extends BaseBlockTestCase {
 	/**
 	 * Test get_field_label.
 	 *
-	 * @dataProvider fieldDataProvider
+	 * @dataProvider field_data_provider
 	 * @param string $service Service name.
 	 * @param string $label   Expected label.
 	 * @param string $name    Expected name.
@@ -148,7 +145,7 @@ class CaptchaTest extends BaseBlockTestCase {
 	/**
 	 * Test get_field_name.
 	 *
-	 * @dataProvider fieldDataProvider
+	 * @dataProvider field_data_provider
 	 * @param string $service Service name.
 	 * @param string $label   Expected label.
 	 * @param string $name    Expected name.

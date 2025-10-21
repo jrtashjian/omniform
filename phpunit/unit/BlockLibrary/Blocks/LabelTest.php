@@ -28,21 +28,6 @@ class LabelTest extends BaseBlockTestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		\WP_Mock::userFunction( 'sanitize_html_class' )->andReturnUsing(
-			function ( $str ) {
-				return strtolower( str_replace( ' ', '-', $str ) );
-			}
-		);
-		\WP_Mock::userFunction( 'esc_attr' )->andReturnUsing(
-			function ( $str ) {
-				return $str;
-			}
-		);
-		\WP_Mock::userFunction( 'wp_kses' )->andReturnUsing(
-			function ( $str ) {
-				return $str;
-			}
-		);
 		\WP_Mock::userFunction( 'esc_attr__' )->andReturn( 'required' );
 
 		$this->block = new Label();
