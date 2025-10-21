@@ -8,12 +8,12 @@
 namespace OmniForm\Tests\Unit\BlockLibrary\Blocks;
 
 use OmniForm\BlockLibrary\Blocks\BaseBlock;
-use OmniForm\Tests\Unit\BaseTestCase;
+use OmniForm\Tests\Unit\BaseBlockTestCase;
 
 /**
  * Tests for BaseBlock.
  */
-class BaseBlockTest extends BaseTestCase {
+class BaseBlockTest extends BaseBlockTestCase {
 
 	/**
 	 * Test block instance.
@@ -61,7 +61,7 @@ class BaseBlockTest extends BaseTestCase {
 	public function test_render_block() {
 		$attributes = array( 'key' => 'value' );
 		$content    = 'inner content';
-		$block      = \Mockery::mock( '\WP_Block' );
+		$block      = $this->createBlockWithContext();
 
 		$result = $this->block->render_block( $attributes, $content, $block );
 
@@ -73,7 +73,7 @@ class BaseBlockTest extends BaseTestCase {
 	 * Test get_block_attribute.
 	 */
 	public function test_get_block_attribute() {
-		$this->block->render_block( array( 'existing' => 'value' ), '', \Mockery::mock( '\WP_Block' ) );
+		$this->block->render_block( array( 'existing' => 'value' ), '', $this->createBlockWithContext() );
 
 		$this->assertEquals( 'value', $this->block->get_block_attribute( 'existing' ) );
 		$this->assertNull( $this->block->get_block_attribute( 'nonexistent' ) );
@@ -83,8 +83,7 @@ class BaseBlockTest extends BaseTestCase {
 	 * Test get_block_context.
 	 */
 	public function test_get_block_context() {
-		$block_with_context          = \Mockery::mock( '\WP_Block' );
-		$block_with_context->context = array( 'ctx_key' => 'ctx_value' );
+		$block_with_context = $this->createBlockWithContext( array( 'ctx_key' => 'ctx_value' ) );
 
 		$this->block->render_block( array(), '', $block_with_context );
 
@@ -92,7 +91,7 @@ class BaseBlockTest extends BaseTestCase {
 		$this->assertNull( $this->block->get_block_context( 'nonexistent' ) );
 
 		// Test without context property.
-		$block_without_context = \Mockery::mock( '\WP_Block' );
+		$block_without_context = $this->createBlockWithContext();
 		$this->block->render_block( array(), '', $block_without_context );
 
 		$this->assertNull( $this->block->get_block_context( 'any' ) );
