@@ -32,9 +32,9 @@ class ResponseNotificationTest extends BaseBlockTestCase {
 	}
 
 	/**
-	 * Data provider for test_render.
+	 * Data provider for success render tests.
 	 */
-	public function data_render() {
+	public function success_render_data_provider() {
 		return array(
 			'success hidden'               => array(
 				array(
@@ -56,39 +56,6 @@ class ResponseNotificationTest extends BaseBlockTestCase {
 					'validation_messages'  => array(),
 					'block_attributes'     => array( 'className' => 'is-style-success' ),
 					'expected_class'       => 'success-response-notification is-style-success',
-				),
-			),
-			'error hidden'                 => array(
-				array(
-					'message_type'         => 'error',
-					'validation_succeeded' => false,
-					'validation_failed'    => false,
-					'expected_display'     => 'display:none;',
-					'validation_messages'  => array(),
-					'block_attributes'     => array( 'className' => 'is-style-error' ),
-					'expected_class'       => 'error-response-notification is-style-error',
-				),
-			),
-			'error shown'                  => array(
-				array(
-					'message_type'         => 'error',
-					'validation_succeeded' => false,
-					'validation_failed'    => true,
-					'expected_display'     => 'display:block;',
-					'validation_messages'  => array(),
-					'block_attributes'     => array( 'className' => 'is-style-error' ),
-					'expected_class'       => 'error-response-notification is-style-error',
-				),
-			),
-			'info'                         => array(
-				array(
-					'message_type'         => 'info',
-					'validation_succeeded' => false,
-					'validation_failed'    => false,
-					'expected_display'     => '',
-					'validation_messages'  => array(),
-					'block_attributes'     => array( 'className' => 'is-style-info' ),
-					'expected_class'       => 'info-response-notification is-style-info',
 				),
 			),
 			'validation messages'          => array(
@@ -113,28 +80,6 @@ class ResponseNotificationTest extends BaseBlockTestCase {
 					'expected_class'       => 'success-response-notification is-style-success',
 				),
 			),
-			'fallback messageType error'   => array(
-				array(
-					'message_type'         => 'error',
-					'validation_succeeded' => false,
-					'validation_failed'    => false,
-					'expected_display'     => 'display:none;',
-					'validation_messages'  => array(),
-					'block_attributes'     => array( 'messageType' => 'error' ),
-					'expected_class'       => 'error-response-notification is-style-error',
-				),
-			),
-			'fallback messageType unknown' => array(
-				array(
-					'message_type'         => 'info',
-					'validation_succeeded' => false,
-					'validation_failed'    => false,
-					'expected_display'     => '',
-					'validation_messages'  => array(),
-					'block_attributes'     => array( 'messageType' => 'unknown' ),
-					'expected_class'       => 'info-response-notification is-style-info',
-				),
-			),
 			'fallback border success'      => array(
 				array(
 					'message_type'         => 'success',
@@ -154,7 +99,48 @@ class ResponseNotificationTest extends BaseBlockTestCase {
 					'expected_class'       => 'success-response-notification is-style-success',
 				),
 			),
-			'fallback border error'        => array(
+		);
+	}
+
+	/**
+	 * Data provider for error render tests.
+	 */
+	public function error_render_data_provider() {
+		return array(
+			'error hidden'               => array(
+				array(
+					'message_type'         => 'error',
+					'validation_succeeded' => false,
+					'validation_failed'    => false,
+					'expected_display'     => 'display:none;',
+					'validation_messages'  => array(),
+					'block_attributes'     => array( 'className' => 'is-style-error' ),
+					'expected_class'       => 'error-response-notification is-style-error',
+				),
+			),
+			'error shown'                => array(
+				array(
+					'message_type'         => 'error',
+					'validation_succeeded' => false,
+					'validation_failed'    => true,
+					'expected_display'     => 'display:block;',
+					'validation_messages'  => array(),
+					'block_attributes'     => array( 'className' => 'is-style-error' ),
+					'expected_class'       => 'error-response-notification is-style-error',
+				),
+			),
+			'fallback messageType error' => array(
+				array(
+					'message_type'         => 'error',
+					'validation_succeeded' => false,
+					'validation_failed'    => false,
+					'expected_display'     => 'display:none;',
+					'validation_messages'  => array(),
+					'block_attributes'     => array( 'messageType' => 'error' ),
+					'expected_class'       => 'error-response-notification is-style-error',
+				),
+			),
+			'fallback border error'      => array(
 				array(
 					'message_type'         => 'error',
 					'validation_succeeded' => false,
@@ -177,12 +163,71 @@ class ResponseNotificationTest extends BaseBlockTestCase {
 	}
 
 	/**
-	 * Test render.
+	 * Data provider for info render tests.
+	 */
+	public function info_render_data_provider() {
+		return array(
+			'info'                         => array(
+				array(
+					'message_type'         => 'info',
+					'validation_succeeded' => false,
+					'validation_failed'    => false,
+					'expected_display'     => '',
+					'validation_messages'  => array(),
+					'block_attributes'     => array( 'className' => 'is-style-info' ),
+					'expected_class'       => 'info-response-notification is-style-info',
+				),
+			),
+			'fallback messageType unknown' => array(
+				array(
+					'message_type'         => 'info',
+					'validation_succeeded' => false,
+					'validation_failed'    => false,
+					'expected_display'     => '',
+					'validation_messages'  => array(),
+					'block_attributes'     => array( 'messageType' => 'unknown' ),
+					'expected_class'       => 'info-response-notification is-style-info',
+				),
+			),
+		);
+	}
+
+	/**
+	 * Test render success.
 	 *
 	 * @param array $data Test data.
-	 * @dataProvider data_render
+	 * @dataProvider success_render_data_provider
 	 */
-	public function test_render( $data ) {
+	public function test_render_success( $data ) {
+		$this->run_render_test( $data );
+	}
+
+	/**
+	 * Test render error.
+	 *
+	 * @param array $data Test data.
+	 * @dataProvider error_render_data_provider
+	 */
+	public function test_render_error( $data ) {
+		$this->run_render_test( $data );
+	}
+
+	/**
+	 * Test render info.
+	 *
+	 * @param array $data Test data.
+	 * @dataProvider info_render_data_provider
+	 */
+	public function test_render_info( $data ) {
+		$this->run_render_test( $data );
+	}
+
+	/**
+	 * Helper method to run render test.
+	 *
+	 * @param array $data Test data.
+	 */
+	private function run_render_test( $data ) {
 		$mock_form = \Mockery::mock( '\OmniForm\Plugin\Form' );
 		$mock_form->shouldReceive( 'get_validation_messages' )->andReturn( $data['validation_messages'] );
 		$mock_form->shouldReceive( 'validation_failed' )->andReturn( $data['validation_failed'] );
