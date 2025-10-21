@@ -36,121 +36,143 @@ class ResponseNotificationTest extends BaseBlockTestCase {
 	 */
 	public function data_render() {
 		return array(
-			'success hidden' => array( array(
-				'message_type'         => 'success',
-				'validation_succeeded' => false,
-				'validation_failed'    => false,
-				'expected_display'     => 'display:none;',
-				'validation_messages'  => array(),
-				'block_attributes'     => array( 'className' => 'is-style-success' ),
-				'expected_class'       => 'success-response-notification is-style-success',
-			) ),
-			'success shown' => array( array(
-				'message_type'         => 'success',
-				'validation_succeeded' => true,
-				'validation_failed'    => false,
-				'expected_display'     => 'display:block;',
-				'validation_messages'  => array(),
-				'block_attributes'     => array( 'className' => 'is-style-success' ),
-				'expected_class'       => 'success-response-notification is-style-success',
-			) ),
-			'error hidden' => array( array(
-				'message_type'         => 'error',
-				'validation_succeeded' => false,
-				'validation_failed'    => false,
-				'expected_display'     => 'display:none;',
-				'validation_messages'  => array(),
-				'block_attributes'     => array( 'className' => 'is-style-error' ),
-				'expected_class'       => 'error-response-notification is-style-error',
-			) ),
-			'error shown' => array( array(
-				'message_type'         => 'error',
-				'validation_succeeded' => false,
-				'validation_failed'    => true,
-				'expected_display'     => 'display:block;',
-				'validation_messages'  => array(),
-				'block_attributes'     => array( 'className' => 'is-style-error' ),
-				'expected_class'       => 'error-response-notification is-style-error',
-			) ),
-			'info' => array( array(
-				'message_type'         => 'info',
-				'validation_succeeded' => false,
-				'validation_failed'    => false,
-				'expected_display'     => '',
-				'validation_messages'  => array(),
-				'block_attributes'     => array( 'className' => 'is-style-info' ),
-				'expected_class'       => 'info-response-notification is-style-info',
-			) ),
-			'validation messages' => array( array(
-				'message_type'         => 'success',
-				'validation_succeeded' => false,
-				'validation_failed'    => false,
-				'expected_display'     => 'display:none;',
-				'validation_messages'  => array( 'Error 1', 'Error 2' ),
-				'block_attributes'     => array( 'className' => 'is-style-success' ),
-				'expected_class'       => 'success-response-notification is-style-success',
-			) ),
-			'fallback messageType success' => array( array(
-				'message_type'         => 'success',
-				'validation_succeeded' => false,
-				'validation_failed'    => false,
-				'expected_display'     => 'display:none;',
-				'validation_messages'  => array(),
-				'block_attributes'     => array( 'messageType' => 'success' ),
-				'expected_class'       => 'success-response-notification is-style-success',
-			) ),
-			'fallback messageType error' => array( array(
-				'message_type'         => 'error',
-				'validation_succeeded' => false,
-				'validation_failed'    => false,
-				'expected_display'     => 'display:none;',
-				'validation_messages'  => array(),
-				'block_attributes'     => array( 'messageType' => 'error' ),
-				'expected_class'       => 'error-response-notification is-style-error',
-			) ),
-			'fallback messageType unknown' => array( array(
-				'message_type'         => 'info',
-				'validation_succeeded' => false,
-				'validation_failed'    => false,
-				'expected_display'     => '',
-				'validation_messages'  => array(),
-				'block_attributes'     => array( 'messageType' => 'unknown' ),
-				'expected_class'       => 'info-response-notification is-style-info',
-			) ),
-			'fallback border success' => array( array(
-				'message_type'         => 'success',
-				'validation_succeeded' => false,
-				'validation_failed'    => false,
-				'expected_display'     => 'display:none;',
-				'validation_messages'  => array(),
-				'block_attributes'     => array(
-					'style' => array(
-						'border' => array(
-							'left' => array(
-								'color' => 'var(--wp--preset--color--vivid-green-cyan,#00d084)',
+			'success hidden'               => array(
+				array(
+					'message_type'         => 'success',
+					'validation_succeeded' => false,
+					'validation_failed'    => false,
+					'expected_display'     => 'display:none;',
+					'validation_messages'  => array(),
+					'block_attributes'     => array( 'className' => 'is-style-success' ),
+					'expected_class'       => 'success-response-notification is-style-success',
+				),
+			),
+			'success shown'                => array(
+				array(
+					'message_type'         => 'success',
+					'validation_succeeded' => true,
+					'validation_failed'    => false,
+					'expected_display'     => 'display:block;',
+					'validation_messages'  => array(),
+					'block_attributes'     => array( 'className' => 'is-style-success' ),
+					'expected_class'       => 'success-response-notification is-style-success',
+				),
+			),
+			'error hidden'                 => array(
+				array(
+					'message_type'         => 'error',
+					'validation_succeeded' => false,
+					'validation_failed'    => false,
+					'expected_display'     => 'display:none;',
+					'validation_messages'  => array(),
+					'block_attributes'     => array( 'className' => 'is-style-error' ),
+					'expected_class'       => 'error-response-notification is-style-error',
+				),
+			),
+			'error shown'                  => array(
+				array(
+					'message_type'         => 'error',
+					'validation_succeeded' => false,
+					'validation_failed'    => true,
+					'expected_display'     => 'display:block;',
+					'validation_messages'  => array(),
+					'block_attributes'     => array( 'className' => 'is-style-error' ),
+					'expected_class'       => 'error-response-notification is-style-error',
+				),
+			),
+			'info'                         => array(
+				array(
+					'message_type'         => 'info',
+					'validation_succeeded' => false,
+					'validation_failed'    => false,
+					'expected_display'     => '',
+					'validation_messages'  => array(),
+					'block_attributes'     => array( 'className' => 'is-style-info' ),
+					'expected_class'       => 'info-response-notification is-style-info',
+				),
+			),
+			'validation messages'          => array(
+				array(
+					'message_type'         => 'success',
+					'validation_succeeded' => false,
+					'validation_failed'    => false,
+					'expected_display'     => 'display:none;',
+					'validation_messages'  => array( 'Error 1', 'Error 2' ),
+					'block_attributes'     => array( 'className' => 'is-style-success' ),
+					'expected_class'       => 'success-response-notification is-style-success',
+				),
+			),
+			'fallback messageType success' => array(
+				array(
+					'message_type'         => 'success',
+					'validation_succeeded' => false,
+					'validation_failed'    => false,
+					'expected_display'     => 'display:none;',
+					'validation_messages'  => array(),
+					'block_attributes'     => array( 'messageType' => 'success' ),
+					'expected_class'       => 'success-response-notification is-style-success',
+				),
+			),
+			'fallback messageType error'   => array(
+				array(
+					'message_type'         => 'error',
+					'validation_succeeded' => false,
+					'validation_failed'    => false,
+					'expected_display'     => 'display:none;',
+					'validation_messages'  => array(),
+					'block_attributes'     => array( 'messageType' => 'error' ),
+					'expected_class'       => 'error-response-notification is-style-error',
+				),
+			),
+			'fallback messageType unknown' => array(
+				array(
+					'message_type'         => 'info',
+					'validation_succeeded' => false,
+					'validation_failed'    => false,
+					'expected_display'     => '',
+					'validation_messages'  => array(),
+					'block_attributes'     => array( 'messageType' => 'unknown' ),
+					'expected_class'       => 'info-response-notification is-style-info',
+				),
+			),
+			'fallback border success'      => array(
+				array(
+					'message_type'         => 'success',
+					'validation_succeeded' => false,
+					'validation_failed'    => false,
+					'expected_display'     => 'display:none;',
+					'validation_messages'  => array(),
+					'block_attributes'     => array(
+						'style' => array(
+							'border' => array(
+								'left' => array(
+									'color' => 'var(--wp--preset--color--vivid-green-cyan,#00d084)',
+								),
 							),
 						),
 					),
+					'expected_class'       => 'success-response-notification is-style-success',
 				),
-				'expected_class' => 'success-response-notification is-style-success',
-			) ),
-			'fallback border error' => array( array(
-				'message_type'         => 'error',
-				'validation_succeeded' => false,
-				'validation_failed'    => false,
-				'expected_display'     => 'display:none;',
-				'validation_messages'  => array(),
-				'block_attributes'     => array(
-					'style' => array(
-						'border' => array(
-							'left' => array(
-								'color' => 'var(--wp--preset--color--vivid-red,#cf2e2e)',
+			),
+			'fallback border error'        => array(
+				array(
+					'message_type'         => 'error',
+					'validation_succeeded' => false,
+					'validation_failed'    => false,
+					'expected_display'     => 'display:none;',
+					'validation_messages'  => array(),
+					'block_attributes'     => array(
+						'style' => array(
+							'border' => array(
+								'left' => array(
+									'color' => 'var(--wp--preset--color--vivid-red,#cf2e2e)',
+								),
 							),
 						),
 					),
+					'expected_class'       => 'error-response-notification is-style-error',
 				),
-				'expected_class' => 'error-response-notification is-style-error',
-			) ),
+			),
 		);
 	}
 
@@ -175,10 +197,26 @@ class ResponseNotificationTest extends BaseBlockTestCase {
 				return sprintf( 'class="%s" style="%s"', $class, $style );
 			}
 		);
-		\WP_Mock::userFunction( 'wp_kses' )->andReturnUsing( function ( $str ) { return $str; } );
-		\WP_Mock::userFunction( 'do_blocks' )->andReturnUsing( function ( $content ) { return $content; } );
-		\WP_Mock::userFunction( 'esc_attr' )->andReturnUsing( function ( $str ) { return $str; } );
-		\WP_Mock::userFunction( 'esc_html' )->andReturnUsing( function ( $str ) { return $str; } );
+		\WP_Mock::userFunction( 'wp_kses' )->andReturnUsing(
+			function ( $str ) {
+				return $str;
+			}
+		);
+		\WP_Mock::userFunction( 'do_blocks' )->andReturnUsing(
+			function ( $content ) {
+				return $content;
+			}
+		);
+		\WP_Mock::userFunction( 'esc_attr' )->andReturnUsing(
+			function ( $str ) {
+				return $str;
+			}
+		);
+		\WP_Mock::userFunction( 'esc_html' )->andReturnUsing(
+			function ( $str ) {
+				return $str;
+			}
+		);
 
 		$this->block->render_block(
 			array_merge(
