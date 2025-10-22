@@ -116,18 +116,19 @@ class OAuthConnectionUI {
 	 * @return void
 	 */
 	private function render_buttons(): void {
-		?>
-		<form method="post">
-			<?php wp_nonce_field( 'connect_api' ); ?>
-			<button type="submit" name="connect_api" class="button button-primary">Connect to API</button>
-		</form>
-		<?php if ( $this->is_connected() ) : ?>
-		<form method="post">
-			<?php wp_nonce_field( 'disconnect_api' ); ?>
-			<button type="submit" name="disconnect_api" class="button" style="background-color: #dc3232; color: white;">Disconnect from API</button>
-		</form>
-		<?php endif; ?>
-		<?php
+		if ( $this->is_connected() ) :
+			?>
+			<form method="post">
+				<?php wp_nonce_field( 'disconnect_api' ); ?>
+				<button type="submit" name="disconnect_api" class="button">Disconnect from API</button>
+			</form>
+		<?php else : ?>
+			<form method="post">
+				<?php wp_nonce_field( 'connect_api' ); ?>
+				<button type="submit" name="connect_api" class="button button-primary">Connect to API</button>
+			</form>
+			<?php
+		endif;
 	}
 
 	/**
