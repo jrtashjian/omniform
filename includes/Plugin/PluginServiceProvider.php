@@ -568,10 +568,11 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 
 					if ( $client_id ) {
 						wp_redirect( $oauth_manager->get_authorization_url() );
+						exit;
 					} else {
-						wp_redirect( $oauth_manager->get_registration_url() );
+						wp_safe_redirect( $oauth_manager->get_registration_url() );
+						exit;
 					}
-					exit;
 				}
 
 				if ( isset( $_POST['disconnect_api'] ) && isset( $_GET['page'] ) && 'omniform' === $_GET['page'] ) {

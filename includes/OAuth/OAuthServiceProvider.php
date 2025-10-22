@@ -93,6 +93,7 @@ class OAuthServiceProvider extends AbstractServiceProvider implements BootableSe
 	public function boot(): void {
 		add_action( 'admin_init', array( $this, 'handle_oauth_callback' ) );
 		add_action( 'admin_init', array( $this, 'handle_registration_callback' ) );
+		add_action( 'allowed_redirect_hosts', array( $this, 'add_allowed_redirect_host' ) );
 	}
 
 	/**
@@ -126,7 +127,30 @@ class OAuthServiceProvider extends AbstractServiceProvider implements BootableSe
 
 		// Redirect to initiate OAuth flow.
 		$oauth_manager = $this->getContainer()->get( OAuthManager::class );
-		wp_redirect( $oauth_manager->get_authorization_url() );
+		wp_safe_redirect( $oauth_manager->get_authorization_url() );
 		exit;
+	}
+
+	/**
+	 * Adds allowed redirect hosts for OAuth authentication.
+	 *
+	 * @param array $hosts An array of hostnames to allow for redirects.
+	 * @return array The updated array of allowed redirect hosts.
+	 */
+	public function add_allowed_redirect_host( array $hosts ): array {
+		$urls = array(
+			$this->get_api_base_url(),
+			$this->get_account_base_url(),
+		);
+
+		$parsed_hosts = array_map(
+			function ( $url ) {
+				$parsed_url = wp_parse_url( $url );
+				return isset( $parsed_url['host'] ) ? $parsed_url['host'] : null;
+			},
+			$urls
+		);
+
+		return array_merge( $hosts, array_filter( $parsed_hosts ) );
 	}
 }
