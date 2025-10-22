@@ -70,6 +70,16 @@ class ApiClient {
 	}
 
 	/**
+	 * Perform a simple unauthenticated healthcheck.
+	 *
+	 * @return array|WP_Error
+	 */
+	public function healthcheck() {
+		$url = $this->api_base_url . '/up';
+		return wp_remote_get( $url );
+	}
+
+	/**
 	 * Make a request to the API.
 	 *
 	 * @param string $method   The HTTP method.

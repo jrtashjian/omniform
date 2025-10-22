@@ -74,16 +74,19 @@ class OAuthConnectionUI {
 		);
 		?>
 		<div id="omniform">
-			<form method="post">
-				<?php wp_nonce_field( 'connect_api' ); ?>
-				<button type="submit" name="connect_api">Connect to API</button>
-			</form>
-			<?php if ( $this->is_connected() ) : ?>
-			<form method="post">
-				<?php wp_nonce_field( 'disconnect_api' ); ?>
-				<button type="submit" name="disconnect_api" style="background-color: #dc3232; color: white; border: none; padding: 8px 16px; cursor: pointer;">Disconnect from API</button>
-			</form>
-			<?php endif; ?>
+			<?php $this->render_buttons(); ?>
+
+			<h3>API Health Check</h3>
+			<?php
+			$healthcheck = $this->get_health_status();
+
+			$status_message = $healthcheck['healthy']
+				/* translators: %s is the latency time */
+				? sprintf( __( 'The API is available (%s)', 'omniform' ), $healthcheck['latency'] )
+				: sprintf( __( 'The API is unavailable', 'omniform' ) );
+			?>
+			<p><?php echo esc_html( $status_message ); ?></p>
+
 			<h3>API Response</h3>
 			<pre>
 			<?php
@@ -105,5 +108,43 @@ class OAuthConnectionUI {
 			</pre>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Render the connect and disconnect buttons.
+	 *
+	 * @return void
+	 */
+	private function render_buttons(): void {
+		?>
+		<form method="post">
+			<?php wp_nonce_field( 'connect_api' ); ?>
+			<button type="submit" name="connect_api" class="button button-primary">Connect to API</button>
+		</form>
+		<?php if ( $this->is_connected() ) : ?>
+		<form method="post">
+			<?php wp_nonce_field( 'disconnect_api' ); ?>
+			<button type="submit" name="disconnect_api" class="button" style="background-color: #dc3232; color: white;">Disconnect from API</button>
+		</form>
+		<?php endif; ?>
+		<?php
+	}
+
+	/**
+	 * Get the API health status.
+	 *
+	 * @return array Health status data.
+	 */
+	private function get_health_status(): array {
+		$api_client = $this->container->get( ApiClient::class );
+
+		$start    = microtime( true );
+		$response = $api_client->healthcheck();
+		$latency  = microtime( true ) - $start;
+
+		return array(
+			'healthy' => ! is_wp_error( $response ) && wp_remote_retrieve_response_code( $response ) === 200,
+			'latency' => round( $latency * 1000 ) . 'ms',
+		);
 	}
 }
