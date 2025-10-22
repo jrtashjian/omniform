@@ -127,6 +127,4 @@ class SelectTest extends BaseBlockTestCase {
 		$attributes = $this->block->get_extra_wrapper_attributes();
 		$this->assertArrayNotHasKey( 'style', $attributes );
 	}
-
-
 }
