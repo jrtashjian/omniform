@@ -26,6 +26,7 @@ class OAuthServiceProvider extends AbstractServiceProvider implements BootableSe
 			OAuthManager::class,
 			TokenStorage::class,
 			ApiClient::class,
+			OAuthConnectionUI::class,
 		);
 
 		return in_array( $id, $services, true );
@@ -63,6 +64,13 @@ class OAuthServiceProvider extends AbstractServiceProvider implements BootableSe
 					$this->getContainer()->get( OAuthManager::class ),
 					$this->get_api_base_url()
 				);
+			}
+		);
+
+		$this->getContainer()->addShared(
+			OAuthConnectionUI::class,
+			function () {
+				return new OAuthConnectionUI( $this->getContainer() );
 			}
 		);
 	}
