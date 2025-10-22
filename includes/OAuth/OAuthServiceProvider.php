@@ -170,12 +170,17 @@ class OAuthServiceProvider extends AbstractServiceProvider implements BootableSe
 	 * @return void
 	 */
 	public function handle_connect(): void {
-		if ( ! isset( $_POST['connect_api'] ) || ! isset( $_GET['page'] ) || 'omniform' !== $_GET['page'] ) {
+		$action = 'connect_api';
+
+		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], $action ) ) {
+			if ( isset( $_POST[ $action ] ) ) {
+				wp_die( esc_html__( 'Security check failed.', 'omniform' ) );
+			}
 			return;
 		}
 
-		if ( ! wp_verify_nonce( $_POST['_wpnonce'], 'connect_api' ) ) {
-			wp_die( esc_html__( 'Security check failed.', 'omniform' ) );
+		if ( ! isset( $_POST[ $action ] ) || ! isset( $_GET['page'] ) || 'omniform' !== $_GET['page'] ) {
+			return;
 		}
 
 		$token_storage = $this->getContainer()->get( TokenStorage::class );
@@ -198,12 +203,17 @@ class OAuthServiceProvider extends AbstractServiceProvider implements BootableSe
 	 * @return void
 	 */
 	public function handle_disconnect(): void {
-		if ( ! isset( $_POST['disconnect_api'] ) || ! isset( $_GET['page'] ) || 'omniform' !== $_GET['page'] ) {
+		$action = 'disconnect_api';
+
+		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], $action ) ) {
+			if ( isset( $_POST[ $action ] ) ) {
+				wp_die( esc_html__( 'Security check failed.', 'omniform' ) );
+			}
 			return;
 		}
 
-		if ( ! wp_verify_nonce( $_POST['_wpnonce'], 'disconnect_api' ) ) {
-			wp_die( esc_html__( 'Security check failed.', 'omniform' ) );
+		if ( ! isset( $_POST[ $action ] ) || ! isset( $_GET['page'] ) || 'omniform' !== $_GET['page'] ) {
+			return;
 		}
 
 		$token_storage = $this->getContainer()->get( TokenStorage::class );
