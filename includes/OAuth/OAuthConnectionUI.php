@@ -79,12 +79,12 @@ class OAuthConnectionUI {
 			?>
 			<form method="post">
 				<?php wp_nonce_field( 'disconnect_api' ); ?>
-				<button type="submit" name="disconnect_api" class="button">Disconnect from API</button>
+				<button type="submit" name="disconnect_api" class="button"><?php esc_html_e( 'Disconnect from API', 'omniform' ); ?></button>
 			</form>
 		<?php else : ?>
 			<form method="post">
 				<?php wp_nonce_field( 'connect_api' ); ?>
-				<button type="submit" name="connect_api" class="button button-primary">Connect to API</button>
+				<button type="submit" name="connect_api" class="button button-primary"><?php esc_html_e( 'Connect to API', 'omniform' ); ?></button>
 			</form>
 			<?php
 		endif;

@@ -53,7 +53,6 @@ class OAuthManager {
 	public function get_registration_url(): string {
 		$params = array(
 			'redirect_uri' => $this->get_redirect_uri(),
-			'client_name'  => 'OmniForm WordPress Plugin',
 		);
 
 		return $this->account_base_url . '/register-client?' . http_build_query( $params );
