@@ -63,7 +63,7 @@ class OAuthConnectionUI {
 		$status_message = $healthcheck['healthy']
 			/* translators: %s is the latency time */
 			? sprintf( __( 'The API is available (%s)', 'omniform' ), $healthcheck['latency'] )
-			: sprintf( __( 'The API is unavailable', 'omniform' ) );
+			: __( 'The API is unavailable', 'omniform' );
 		?>
 		<p><?php echo esc_html( $status_message ); ?></p>
 		<?php
