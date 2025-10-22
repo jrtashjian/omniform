@@ -5,12 +5,15 @@
  * @package OmniForm
  */
 
-namespace OmniForm\Tests;
+namespace OmniForm\Tests\Unit\Traits;
+
+use WP_Mock;
+use OmniForm\Tests\Unit\BaseTestCase;
 
 /**
- * Tests the CallbackSupport trait.
+ * Test class for CallbackSupport trait.
  */
-class CallbackSupportTest extends \WP_UnitTestCase {
+class CallbackSupportTest extends BaseTestCase {
 	use \OmniForm\Traits\CallbackSupport;
 
 	/**
@@ -37,6 +40,7 @@ class CallbackSupportTest extends \WP_UnitTestCase {
 			array( '{{omniform_existent_callback_return_string}} and {{omniform_existent_callback_return_number}}', 'callback string and 42' ),
 			array( '{{omniform_existent_callback_return_string}} and {{omniform_existent_callback_return_true}}', 'callback string and 1' ),
 			array( 'invalid {{callback', 'invalid {{callback' ),
+			array( 'invalid {{non_existent_callback}}', 'invalid ' ),
 		);
 	}
 
@@ -49,6 +53,36 @@ class CallbackSupportTest extends \WP_UnitTestCase {
 	 * @param string $expected The expected output after processing callbacks.
 	 */
 	public function test_process_callbacks( $input, $expected ) {
+		WP_Mock::userFunction(
+			'omniform_existent_callback_return_string',
+			array( 'return' => 'callback string' )
+		);
+
+		WP_Mock::userFunction(
+			'omniform_existent_callback_return_array',
+			array( 'return' => array() )
+		);
+
+		WP_Mock::userFunction(
+			'omniform_existent_callback_return_object',
+			array( 'return' => new \stdClass() )
+		);
+
+		WP_Mock::userFunction(
+			'omniform_existent_callback_return_true',
+			array( 'return' => true )
+		);
+
+		WP_Mock::userFunction(
+			'omniform_existent_callback_return_false',
+			array( 'return' => false )
+		);
+
+		WP_Mock::userFunction(
+			'omniform_existent_callback_return_number',
+			array( 'return' => 42 )
+		);
+
 		$result = $this->process_callbacks( $input );
 		$this->assertIsString( $result );
 		$this->assertEquals( $expected, $result );
