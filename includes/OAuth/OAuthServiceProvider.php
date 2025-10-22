@@ -81,7 +81,7 @@ class OAuthServiceProvider extends AbstractServiceProvider implements BootableSe
 	 * @return string
 	 */
 	private function get_api_base_url(): string {
-		return defined( 'OMNIFORM_API_BASE_URL' ) ? constant( 'OMNIFORM_API_BASE_URL' ) : 'http://api.omniform.io';
+		return defined( 'OMNIFORM_API_BASE_URL' ) ? constant( 'OMNIFORM_API_BASE_URL' ) : 'https://api.omniform.io';
 	}
 
 	/**
@@ -90,7 +90,7 @@ class OAuthServiceProvider extends AbstractServiceProvider implements BootableSe
 	 * @return string
 	 */
 	private function get_account_base_url(): string {
-		return defined( 'OMNIFORM_ACCOUNT_BASE_URL' ) ? constant( 'OMNIFORM_ACCOUNT_BASE_URL' ) : 'http://account.omniform.io';
+		return defined( 'OMNIFORM_ACCOUNT_BASE_URL' ) ? constant( 'OMNIFORM_ACCOUNT_BASE_URL' ) : 'https://account.omniform.io';
 	}
 
 	/**
