@@ -12,11 +12,6 @@ namespace OmniForm\OAuth;
  */
 class ApiClient {
 	/**
-	 * The API base URL.
-	 */
-	const API_BASE_URL = 'http://api.omniform.io';
-
-	/**
 	 * Token storage.
 	 *
 	 * @var TokenStorage
@@ -31,14 +26,23 @@ class ApiClient {
 	private OAuthManager $oauth_manager;
 
 	/**
+	 * API base URL.
+	 *
+	 * @var string
+	 */
+	private string $api_base_url;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param TokenStorage $token_storage Token storage.
 	 * @param OAuthManager $oauth_manager OAuth manager.
+	 * @param string       $api_base_url  API base URL.
 	 */
-	public function __construct( TokenStorage $token_storage, OAuthManager $oauth_manager ) {
+	public function __construct( TokenStorage $token_storage, OAuthManager $oauth_manager, string $api_base_url ) {
 		$this->token_storage = $token_storage;
 		$this->oauth_manager = $oauth_manager;
+		$this->api_base_url  = $api_base_url;
 	}
 
 	/**
@@ -81,7 +85,7 @@ class ApiClient {
 			return new \WP_Error( 'oauth_no_token', __( 'No valid access token available.', 'omniform' ) );
 		}
 
-		$url = self::API_BASE_URL . $endpoint;
+		$url = $this->api_base_url . $endpoint;
 
 		$request_args = array_merge(
 			$args,

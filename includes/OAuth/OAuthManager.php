@@ -12,16 +12,6 @@ namespace OmniForm\OAuth;
  */
 class OAuthManager {
 	/**
-	 * The API base URL.
-	 */
-	const API_BASE_URL = 'http://api.omniform.io';
-
-	/**
-	 * The account base URL.
-	 */
-	const ACCOUNT_BASE_URL = 'http://account.omniform.io';
-
-	/**
 	 * Token storage.
 	 *
 	 * @var TokenStorage
@@ -29,12 +19,30 @@ class OAuthManager {
 	private TokenStorage $token_storage;
 
 	/**
+	 * API base URL.
+	 *
+	 * @var string
+	 */
+	private string $api_base_url;
+
+	/**
+	 * Account base URL.
+	 *
+	 * @var string
+	 */
+	private string $account_base_url;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param TokenStorage $token_storage Token storage.
+	 * @param TokenStorage $token_storage   Token storage.
+	 * @param string       $api_base_url    API base URL.
+	 * @param string       $account_base_url Account base URL.
 	 */
-	public function __construct( TokenStorage $token_storage ) {
-		$this->token_storage = $token_storage;
+	public function __construct( TokenStorage $token_storage, string $api_base_url, string $account_base_url ) {
+		$this->token_storage    = $token_storage;
+		$this->api_base_url     = $api_base_url;
+		$this->account_base_url = $account_base_url;
 	}
 
 	/**
@@ -48,7 +56,7 @@ class OAuthManager {
 			'client_name'  => 'OmniForm WordPress Plugin',
 		);
 
-		return self::ACCOUNT_BASE_URL . '/register-client?' . http_build_query( $params );
+		return $this->account_base_url . '/register-client?' . http_build_query( $params );
 	}
 
 	/**
@@ -79,7 +87,7 @@ class OAuthManager {
 			'code_challenge_method' => 'S256',
 		);
 
-		return self::ACCOUNT_BASE_URL . '/oauth/authorize?' . http_build_query( $params );
+		return $this->account_base_url . '/oauth/authorize?' . http_build_query( $params );
 	}
 
 	/**
@@ -129,7 +137,7 @@ class OAuthManager {
 		}
 
 		$response = wp_remote_post(
-			self::API_BASE_URL . '/oauth/token',
+			$this->api_base_url . '/oauth/token',
 			array(
 				'body' => array(
 					'grant_type'    => 'refresh_token',
@@ -182,7 +190,7 @@ class OAuthManager {
 	 * @return string
 	 */
 	private function generate_code_challenge( string $verifier ): string {
-		return rtrim( strtr( base64_encode( hash( 'sha256', $verifier, true ) ), '+/', '-_' ), '=' );
+		return rtrim( strtr( base64_encode( hash( 'sha256', $verifier, true ) ), '+/', '-_' ), '=' ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 	}
 
 	/**
@@ -201,7 +209,7 @@ class OAuthManager {
 		}
 
 		$response = wp_remote_post(
-			self::API_BASE_URL . '/oauth/token',
+			$this->api_base_url . '/oauth/token',
 			array(
 				'body' => array(
 					'grant_type'    => 'authorization_code',

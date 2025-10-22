@@ -48,7 +48,9 @@ class OAuthServiceProvider extends AbstractServiceProvider implements BootableSe
 			OAuthManager::class,
 			function () {
 				return new OAuthManager(
-					$this->getContainer()->get( TokenStorage::class )
+					$this->getContainer()->get( TokenStorage::class ),
+					$this->get_api_base_url(),
+					$this->get_account_base_url()
 				);
 			}
 		);
@@ -58,10 +60,29 @@ class OAuthServiceProvider extends AbstractServiceProvider implements BootableSe
 			function () {
 				return new ApiClient(
 					$this->getContainer()->get( TokenStorage::class ),
-					$this->getContainer()->get( OAuthManager::class )
+					$this->getContainer()->get( OAuthManager::class ),
+					$this->get_api_base_url()
 				);
 			}
 		);
+	}
+
+	/**
+	 * Get the API base URL.
+	 *
+	 * @return string
+	 */
+	private function get_api_base_url(): string {
+		return defined( 'OMNIFORM_API_BASE_URL' ) ? constant( 'OMNIFORM_API_BASE_URL' ) : 'http://api.omniform.io';
+	}
+
+	/**
+	 * Get the account base URL.
+	 *
+	 * @return string
+	 */
+	private function get_account_base_url(): string {
+		return defined( 'OMNIFORM_ACCOUNT_BASE_URL' ) ? constant( 'OMNIFORM_ACCOUNT_BASE_URL' ) : 'http://account.omniform.io';
 	}
 
 	/**
