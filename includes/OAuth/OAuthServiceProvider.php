@@ -93,6 +93,8 @@ class OAuthServiceProvider extends AbstractServiceProvider implements BootableSe
 	public function boot(): void {
 		add_action( 'admin_init', array( $this, 'handle_oauth_callback' ) );
 		add_action( 'admin_init', array( $this, 'handle_registration_callback' ) );
+		add_action( 'admin_init', array( $this, 'handle_connect' ) );
+		add_action( 'admin_init', array( $this, 'handle_disconnect' ) );
 		add_action( 'allowed_redirect_hosts', array( $this, 'add_allowed_redirect_host' ) );
 	}
 
@@ -152,5 +154,54 @@ class OAuthServiceProvider extends AbstractServiceProvider implements BootableSe
 		);
 
 		return array_merge( $hosts, array_filter( $parsed_hosts ) );
+	}
+
+	/**
+	 * Handle connect API action.
+	 *
+	 * @return void
+	 */
+	public function handle_connect(): void {
+		if ( ! isset( $_POST['connect_api'] ) || ! isset( $_GET['page'] ) || 'omniform' !== $_GET['page'] ) {
+			return;
+		}
+
+		if ( ! wp_verify_nonce( $_POST['_wpnonce'], 'connect_api' ) ) {
+			wp_die( esc_html__( 'Security check failed.', 'omniform' ) );
+		}
+
+		$token_storage = $this->getContainer()->get( TokenStorage::class );
+		$oauth_manager = $this->getContainer()->get( OAuthManager::class );
+
+		$client_id = $token_storage->get_client_id();
+
+		if ( $client_id ) {
+			wp_safe_redirect( $oauth_manager->get_authorization_url() );
+			exit;
+		} else {
+			wp_safe_redirect( $oauth_manager->get_registration_url() );
+			exit;
+		}
+	}
+
+	/**
+	 * Handle disconnect API action.
+	 *
+	 * @return void
+	 */
+	public function handle_disconnect(): void {
+		if ( ! isset( $_POST['disconnect_api'] ) || ! isset( $_GET['page'] ) || 'omniform' !== $_GET['page'] ) {
+			return;
+		}
+
+		if ( ! wp_verify_nonce( $_POST['_wpnonce'], 'disconnect_api' ) ) {
+			wp_die( esc_html__( 'Security check failed.', 'omniform' ) );
+		}
+
+		$token_storage = $this->getContainer()->get( TokenStorage::class );
+		$token_storage->clear_tokens();
+
+		wp_safe_redirect( admin_url( 'admin.php?page=omniform' ) );
+		exit;
 	}
 }
