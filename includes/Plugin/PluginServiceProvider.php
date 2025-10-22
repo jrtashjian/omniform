@@ -583,9 +583,33 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					function () {
 						?>
 						<div class="wrap">
-							<?php
-							omniform()->get( \OmniForm\OAuth\OAuthConnectionUI::class )->render();
-							?>
+							<h1><?php esc_html_e( 'Settings', 'omniform' ); ?></h1>
+							<table class="form-table indent-children" role="presentation">
+								<tr>
+									<th scope="row">
+										<?php esc_html_e( 'API Connection', 'omniform' ); ?>
+									</th>
+									<td>
+										<?php omniform()->get( \OmniForm\OAuth\OAuthConnectionUI::class )->render(); ?>
+									</td>
+								</tr>
+							</table>
+							<table class="form-table indent-children" role="presentation">
+								<tr>
+									<th scope="row">
+										<?php esc_html_e( 'Usage Tracking', 'omniform' ); ?>
+									</th>
+									<td>
+										<label for="omniform_usage_tracking_enabled">
+											<input type="checkbox" id="omniform_usage_tracking_enabled" name="omniform_usage_tracking_enabled" value="1" <?php checked( get_option( 'omniform_usage_tracking_enabled', false ) ); ?>>
+											<?php esc_html_e( 'Enable anonymous usage tracking to help improve OmniForm.', 'omniform' ); ?>
+										</label>
+									</td>
+								</tr>
+							</table>
+							<p class="submit">
+								<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php esc_attr_e( 'Save Changes', 'omniform' ); ?>">
+							</p>
 						</div>
 						<?php
 					},
