@@ -571,6 +571,28 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			)
 		);
 
+		add_action(
+			'admin_menu',
+			function () {
+				add_submenu_page(
+					'edit.php?post_type=omniform',
+					esc_html__( 'Settings', 'omniform' ),
+					esc_html__( 'Settings', 'omniform' ),
+					'manage_options',
+					'omniform',
+					function () {
+						?>
+						<div class="wrap">
+							<?php
+							omniform()->get( \OmniForm\OAuth\OAuthConnectionUI::class )->render();
+							?>
+						</div>
+						<?php
+					},
+				);
+			}
+		);
+
 		// If the current user can't edit_theme_options, bail.
 		if ( ! current_user_can( 'edit_theme_options' ) ) {
 			return;
