@@ -567,7 +567,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					$client_id = $token_storage->get_client_id();
 
 					if ( $client_id ) {
-						wp_redirect( $oauth_manager->get_authorization_url() );
+						wp_safe_redirect( $oauth_manager->get_authorization_url() );
 						exit;
 					} else {
 						wp_safe_redirect( $oauth_manager->get_registration_url() );
@@ -584,7 +584,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					$token_storage = omniform()->get( \OmniForm\OAuth\TokenStorage::class );
 					$token_storage->clear_tokens();
 
-					wp_redirect( admin_url( 'admin.php?page=omniform' ) );
+					wp_safe_redirect( admin_url( 'admin.php?page=omniform' ) );
 					exit;
 				}
 			}
