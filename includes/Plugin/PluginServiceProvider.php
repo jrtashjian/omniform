@@ -112,7 +112,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		$enabled = get_option( 'omniform_usage_tracking_enabled', false );
 
 		if ( $enabled && ! wp_next_scheduled( 'omniform_usage_tracking' ) ) {
-			wp_schedule_single_event( time() + WEEK_IN_SECONDS, 'omniform_usage_tracking' );
+			wp_schedule_single_event( time(), 'omniform_usage_tracking' );
 		} elseif ( ! $enabled ) {
 			wp_clear_scheduled_hook( 'omniform_usage_tracking' );
 		}
