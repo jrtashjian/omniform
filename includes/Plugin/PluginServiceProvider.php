@@ -584,35 +584,90 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 						?>
 						<div class="wrap">
 							<h1><?php esc_html_e( 'Settings', 'omniform' ); ?></h1>
-							<table class="form-table indent-children" role="presentation">
-								<tr>
-									<th scope="row">
-										<?php esc_html_e( 'API Connection', 'omniform' ); ?>
-									</th>
-									<td>
-										<?php omniform()->get( \OmniForm\OAuth\OAuthConnectionUI::class )->render(); ?>
-									</td>
-								</tr>
+
+							<?php settings_errors( 'omniform_settings' ); ?>
+
+							<table class="form-table" role="presentation">
+								<tbody>
+									<tr>
+										<th scope="row">
+											<?php esc_html_e( 'API Connection', 'omniform' ); ?>
+										</th>
+										<td>
+											<?php omniform()->get( \OmniForm\OAuth\OAuthConnectionUI::class )->render(); ?>
+										</td>
+									</tr>
+								</tbody>
 							</table>
-							<table class="form-table indent-children" role="presentation">
-								<tr>
-									<th scope="row">
-										<?php esc_html_e( 'Usage Tracking', 'omniform' ); ?>
-									</th>
-									<td>
-										<label for="omniform_usage_tracking_enabled">
-											<input type="checkbox" id="omniform_usage_tracking_enabled" name="omniform_usage_tracking_enabled" value="1" <?php checked( get_option( 'omniform_usage_tracking_enabled', false ) ); ?>>
-											<?php esc_html_e( 'Enable anonymous usage tracking to help improve OmniForm.', 'omniform' ); ?>
-										</label>
-									</td>
-								</tr>
-							</table>
-							<p class="submit">
-								<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php esc_attr_e( 'Save Changes', 'omniform' ); ?>">
-							</p>
+
+							<form method="post" action="<?php echo esc_url( admin_url( 'options.php' ) ); ?>">
+								<?php
+								settings_fields( 'omniform_settings' );
+								do_settings_sections( 'omniform_settings' );
+								submit_button();
+								?>
+							</form>
 						</div>
 						<?php
 					},
+				);
+
+				$options = array(
+					'hcaptcha'    => 'hCaptcha',
+					'recaptchav2' => 'reCAPTCHA v2',
+					'recaptchav3' => 'reCAPTCHA v3',
+					'turnstile'   => 'Turnstile',
+				);
+
+				// Add settings sections.
+				add_settings_section(
+					'omniform_general',
+					__( 'General Settings', 'omniform' ),
+					null,
+					'omniform_settings'
+				);
+
+				add_settings_section(
+					'omniform_captcha',
+					__( 'CAPTCHA Settings', 'omniform' ),
+					null,
+					'omniform_settings'
+				);
+
+				foreach ( $options as $option => $label ) {
+					add_settings_field(
+						'site_key_' . $option,
+						sprintf( __( '%s Site Key', 'omniform' ), $label ),
+						array( $this, 'render_captcha_field' ),
+						'omniform_settings',
+						'omniform_captcha',
+						array(
+							'option' => $option,
+							'type'   => 'site_key',
+							'label'  => $label,
+						)
+					);
+
+					add_settings_field(
+						'secret_key_' . $option,
+						sprintf( __( '%s Secret Key', 'omniform' ), $label ),
+						array( $this, 'render_captcha_field' ),
+						'omniform_settings',
+						'omniform_captcha',
+						array(
+							'option' => $option,
+							'type'   => 'secret_key',
+							'label'  => $label,
+						)
+					);
+				}
+
+				add_settings_field(
+					'usage_tracking',
+					__( 'Usage Tracking', 'omniform' ),
+					array( $this, 'render_usage_tracking_field' ),
+					'omniform_settings',
+					'omniform_general'
 				);
 			}
 		);
@@ -750,7 +805,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 
 		foreach ( $options as $option => $label ) {
 			register_setting(
-				'omniform',
+				'omniform_settings',
 				'omniform_' . $option . '_site_key',
 				array(
 					'type'              => 'string',
@@ -763,7 +818,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			);
 
 			register_setting(
-				'omniform',
+				'omniform_settings',
 				'omniform_' . $option . '_secret_key',
 				array(
 					'type'              => 'string',
@@ -777,7 +832,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		}
 
 		register_setting(
-			'omniform',
+			'omniform_settings',
 			'omniform_usage_tracking_enabled',
 			array(
 				'type'              => 'boolean',
@@ -789,6 +844,39 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				'default'           => false,
 			)
 		);
+	}
+
+	/**
+	 * Render the API connection field.
+	 */
+	public function render_api_connection_field() {
+		omniform()->get( \OmniForm\OAuth\OAuthConnectionUI::class )->render();
+	}
+
+	/**
+	 * Render a CAPTCHA field.
+	 *
+	 * @param array $args Field arguments.
+	 */
+	public function render_captcha_field( $args ) {
+		$option = $args['option'];
+		$type   = $args['type'];
+		$name   = 'omniform_' . $option . '_' . $type;
+		$value  = get_option( $name, '' );
+
+		echo '<input type="text" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '" class="regular-text" />';
+	}
+
+	/**
+	 * Render the usage tracking field.
+	 */
+	public function render_usage_tracking_field() {
+		$value = get_option( 'omniform_usage_tracking_enabled', false );
+
+		echo '<label for="omniform_usage_tracking_enabled">';
+		echo '<input type="checkbox" id="omniform_usage_tracking_enabled" name="omniform_usage_tracking_enabled" value="1" ' . checked( $value, true, false ) . ' />';
+		echo esc_html__( 'Enable anonymous usage tracking to help improve OmniForm.', 'omniform' );
+		echo '</label>';
 	}
 
 	/**
