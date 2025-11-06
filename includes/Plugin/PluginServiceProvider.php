@@ -855,6 +855,10 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 
 		$url_parts = wp_parse_url( $referer );
 
+		if ( false === $url_parts || empty( $url_parts['path'] ) ) {
+			return;
+		}
+
 		$query_args = array();
 		if ( ! empty( $url_parts['query'] ) ) {
 			parse_str( $url_parts['query'], $query_args );
