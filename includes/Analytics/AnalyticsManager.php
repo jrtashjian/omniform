@@ -58,7 +58,7 @@ class AnalyticsManager {
 	 * @return string The user agent.
 	 */
 	protected function get_user_agent() {
-		return isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '';
+		return isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( $_SERVER['HTTP_USER_AGENT'] ) : '';
 	}
 
 	/**
@@ -67,7 +67,7 @@ class AnalyticsManager {
 	 * @return string The IP address.
 	 */
 	protected function get_ip_address() {
-		return isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '';
+		return isset( $_SERVER['REMOTE_ADDR'] ) ? filter_var( $_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP ) ?: '' : '';
 	}
 
 	/**

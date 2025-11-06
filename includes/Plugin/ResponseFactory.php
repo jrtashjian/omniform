@@ -45,7 +45,7 @@ class ResponseFactory {
 			array_merge(
 				$form->get_request_params(),
 				array(
-					'_omniform_user_ip' => $_SERVER['REMOTE_ADDR'],
+					'_omniform_user_ip' => isset( $_SERVER['REMOTE_ADDR'] ) ? filter_var( $_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP ) ?: '' : '',
 				),
 			)
 		);

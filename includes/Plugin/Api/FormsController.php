@@ -143,7 +143,7 @@ class FormsController extends \WP_REST_Posts_Controller {
 				'post_parent'  => $form->get_id(),
 				'meta_input'   => array(
 					'_omniform_id'      => $form->get_id(),
-					'_omniform_user_ip' => sanitize_text_field( $_SERVER['REMOTE_ADDR'] ),
+					'_omniform_user_ip' => isset( $_SERVER['REMOTE_ADDR'] ) ? filter_var( $_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP ) ?: '' : '',
 					'_wp_http_referer'  => sanitize_url( $request->get_param( '_wp_http_referer' ) ),
 				),
 			),
