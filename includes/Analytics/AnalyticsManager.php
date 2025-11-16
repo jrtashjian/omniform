@@ -219,6 +219,34 @@ class AnalyticsManager {
 	}
 
 	/**
+	 * Get the count of recent submissions (success or failure) by the current visitor for a specific form within a time window.
+	 *
+	 * @param int $form_id The form ID.
+	 * @param int $seconds The time window in seconds (default: 3600 for 1 hour).
+	 *
+	 * @return int The count of recent submissions.
+	 */
+	public function get_recent_submissions_count( int $form_id, int $seconds = 3600 ) {
+		global $wpdb;
+
+		$visitor_id     = $this->get_visitor_id();
+		$time_threshold = gmdate( 'Y-m-d H:i:s', time() - $seconds );
+		$table          = $wpdb->prefix . self::EVENTS_TABLE;
+
+		// Use direct query for IN clause since QueryBuilder doesn't support it
+		$query = $wpdb->prepare(
+			"SELECT COUNT(event_id) FROM `{$table}` WHERE form_id = %d AND visitor_id = %d AND event_time >= %s AND event_type IN (%d, %d)",
+			$form_id,
+			$visitor_id,
+			$time_threshold,
+			EventType::SUBMISSION_SUCCESS,
+			EventType::SUBMISSION_FAILURE
+		);
+
+		return (int) $wpdb->get_var( $query ); // phpcs:ignore WordPress.DB
+	}
+
+	/**
 	 * Purge data for a form.
 	 *
 	 * @param int $form_id The form ID.
