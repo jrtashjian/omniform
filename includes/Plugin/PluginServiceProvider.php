@@ -844,11 +844,13 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 * Removes block patterns not specifically registered for the custom post type.
 	 */
 	public function filter_block_patterns_on_rest_api() {
-		if ( empty( $_SERVER['HTTP_REFERER'] ) ) {
+		$referer = wp_get_referer();
+
+		if ( ! $referer ) {
 			return;
 		}
 
-		$url_parts = wp_parse_url( esc_url_raw( $_SERVER['HTTP_REFERER'] ) );
+		$url_parts = wp_parse_url( $referer );
 
 		if ( false === $url_parts || empty( $url_parts['path'] ) ) {
 			return;
