@@ -24,7 +24,8 @@ class ReCaptchaV3Rule extends AbstractRule {
 		$secret = get_option( 'omniform_recaptchav3_secret_key' );
 
 		if ( ! $secret ) {
-			return true;
+			error_log( 'CAPTCHA secret key not configured - validation disabled' );
+			return false;
 		}
 
 		$response = wp_remote_post(

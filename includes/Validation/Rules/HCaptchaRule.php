@@ -24,7 +24,8 @@ class HCaptchaRule extends AbstractRule {
 		$secret = get_option( 'omniform_hcaptcha_secret_key' );
 
 		if ( ! $secret ) {
-			return true;
+			error_log( 'CAPTCHA secret key not configured - validation disabled' );
+			return false;
 		}
 
 		$response = wp_remote_post(
