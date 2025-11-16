@@ -233,7 +233,7 @@ class AnalyticsManager {
 		$time_threshold = gmdate( 'Y-m-d H:i:s', time() - $seconds );
 		$table          = $wpdb->prefix . self::EVENTS_TABLE;
 
-		// Use direct query for IN clause since QueryBuilder doesn't support it
+		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$query = $wpdb->prepare(
 			"SELECT COUNT(event_id) FROM `{$table}` WHERE form_id = %d AND visitor_id = %d AND event_time >= %s AND event_type IN (%d, %d)",
 			$form_id,
@@ -242,8 +242,9 @@ class AnalyticsManager {
 			EventType::SUBMISSION_SUCCESS,
 			EventType::SUBMISSION_FAILURE
 		);
+		// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
-		return (int) $wpdb->get_var( $query ); // phpcs:ignore WordPress.DB
+		return (int) $wpdb->get_var( $query ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 	}
 
 	/**
