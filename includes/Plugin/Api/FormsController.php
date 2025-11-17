@@ -134,6 +134,8 @@ class FormsController extends \WP_REST_Posts_Controller {
 		/** @var \OmniForm\Plugin\Response */ // phpcs:ignore
 		$response = omniform()->get( ResponseFactory::class )->create_with_form( $form );
 
+		$user_ip = filter_var( $_SERVER['REMOTE_ADDR'] ?? '', FILTER_VALIDATE_IP );
+
 		$response_id = wp_insert_post(
 			array(
 				'post_title'   => wp_generate_uuid4(),
@@ -143,7 +145,7 @@ class FormsController extends \WP_REST_Posts_Controller {
 				'post_parent'  => $form->get_id(),
 				'meta_input'   => array(
 					'_omniform_id'      => $form->get_id(),
-					'_omniform_user_ip' => sanitize_text_field( $_SERVER['REMOTE_ADDR'] ),
+					'_omniform_user_ip' => $user_ip ? $user_ip : '',
 					'_wp_http_referer'  => sanitize_url( $request->get_param( '_wp_http_referer' ) ),
 				),
 			),
