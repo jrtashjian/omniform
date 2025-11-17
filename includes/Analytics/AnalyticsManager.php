@@ -67,7 +67,8 @@ class AnalyticsManager {
 	 * @return string The IP address.
 	 */
 	protected function get_ip_address() {
-		return isset( $_SERVER['REMOTE_ADDR'] ) ? filter_var( $_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP ) ?: '' : '';
+		$ip = filter_var( $_SERVER['REMOTE_ADDR'] ?? '', FILTER_VALIDATE_IP );
+		return $ip ? $ip : '';
 	}
 
 	/**
