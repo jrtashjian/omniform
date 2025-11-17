@@ -41,12 +41,12 @@ class ResponseFactory {
 	public function create_with_form( Form $form ): Response {
 		$response = new Response();
 
+		$user_ip = filter_var( $_SERVER['REMOTE_ADDR'] ?? '', FILTER_VALIDATE_IP );
+
 		$response->set_request_params(
 			array_merge(
 				$form->get_request_params(),
-				array(
-					'_omniform_user_ip' => $_SERVER['REMOTE_ADDR'],
-				),
+				array( '_omniform_user_ip' => $user_ip ? $user_ip : '' ),
 			)
 		);
 
