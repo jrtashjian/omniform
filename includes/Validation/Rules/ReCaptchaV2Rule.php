@@ -24,7 +24,7 @@ class ReCaptchaV2Rule extends AbstractRule {
 		$secret = get_option( 'omniform_recaptchav2_secret_key' );
 
 		if ( ! $secret ) {
-			return true;
+			return false;
 		}
 
 		$response = wp_remote_post(
