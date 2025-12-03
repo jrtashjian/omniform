@@ -111,6 +111,18 @@ class FormsController extends \WP_REST_Posts_Controller {
 			);
 		}
 
+		// Check rate limiting - limit to 10 submissions per hour per visitor per form.
+		$analytics_manager  = omniform()->get( \OmniForm\Analytics\AnalyticsManager::class );
+		$recent_submissions = $analytics_manager->get_recent_submissions_count( $form->get_id(), 3600 );
+
+		if ( $recent_submissions >= 10 ) {
+			return new \WP_Error(
+				'rate_limit_exceeded',
+				esc_html__( 'Too many form submissions. Please try again later.', 'omniform' ),
+				array( 'status' => 429 )
+			);
+		}
+
 		// Validate the form.
 		$form->set_request_params( $request->get_params() );
 		$errors = $form->validate();
