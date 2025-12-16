@@ -385,11 +385,11 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 	/**
 	 * Register global block styles.
 	 *
-	 * @param WP_Theme_JSON_Data $theme_json The theme JSON data.
+	 * @param WP_Theme_JSON_Data|WP_Theme_JSON_Data_Gutenberg $theme_json The theme JSON data.
 	 *
-	 * @return WP_Theme_JSON_Data
+	 * @return WP_Theme_JSON_Data|WP_Theme_JSON_Data_Gutenberg
 	 */
-	public function register_global_block_styles( WP_Theme_JSON_Data $theme_json ) {
+	public function register_global_block_styles( $theme_json ) {
 		$data = $theme_json->update_with(
 			array(
 				'version' => 3,
