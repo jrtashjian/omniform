@@ -59,7 +59,8 @@ class BaseBlockTestCase extends BaseTestCase {
 	 * @return \WP_Block Mock block.
 	 */
 	protected function createBlockWithContext( array $context = array() ) {
-		$block          = \Mockery::mock( '\OmniForm\BlockLibrary\Blocks\BaseBlock' );
+		/** @var OmniForm\BlockLibrary\Blocks\BaseBlock $block */
+		$block          = \Mockery::mock( BaseBlock::class );
 		$block->context = $context;
 		return $block;
 	}
