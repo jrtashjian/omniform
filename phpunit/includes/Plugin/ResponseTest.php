@@ -75,7 +75,7 @@ class ResponseTest extends \WP_UnitTestCase {
 
 		$response->set_request_params(
 			array(
-				'comment' => "<img src=x onerror=alert('XSS')>\nSecond line with <b>bold</b>",
+				'comment' => "<img src=x onerror=\"alert('XSS')\">\nSecond line with <b>bold</b>",
 			)
 		);
 
