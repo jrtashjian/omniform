@@ -120,9 +120,11 @@ function InputSettingsPanel( {
 } ) {
 	const attributeInputTypes = {
 		placeholder: [ 'text', 'email', 'url', 'number', 'month', 'password', 'search', 'tel', 'week', 'hidden', 'username-email' ],
-		min: [ 'range' ],
-		max: [ 'range' ],
-		step: [ 'range' ],
+		min: [ 'range', 'number', 'date', 'datetime-local', 'time', 'month', 'week' ],
+		max: [ 'range', 'number', 'date', 'datetime-local', 'time', 'month', 'week' ],
+		step: [ 'range', 'number', 'date', 'datetime-local', 'time', 'month', 'week' ],
+		maxlength: [ 'text', 'email', 'url', 'tel', 'password', 'search' ],
+		minlength: [ 'text', 'email', 'url', 'tel', 'password', 'search' ],
 	};
 
 	return (
@@ -159,6 +161,24 @@ function InputSettingsPanel( {
 					label={ __( 'Step', 'omniform' ) }
 					value={ attributes.fieldStep || '' }
 					onChange={ ( value ) => setAttributes( { fieldStep: value } ) }
+					__nextHasNoMarginBottom
+					__next40pxDefaultSize
+				/>
+			) }
+			{ attributeInputTypes.minlength.includes( attributes.fieldType ) && (
+				<NumberControl
+					label={ __( 'Min Length', 'omniform' ) }
+					value={ attributes.fieldMinLength || '' }
+					onChange={ ( value ) => setAttributes( { fieldMinLength: value } ) }
+					__nextHasNoMarginBottom
+					__next40pxDefaultSize
+				/>
+			) }
+			{ attributeInputTypes.maxlength.includes( attributes.fieldType ) && (
+				<NumberControl
+					label={ __( 'Max Length', 'omniform' ) }
+					value={ attributes.fieldMaxLength || '' }
+					onChange={ ( value ) => setAttributes( { fieldMaxLength: value } ) }
 					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 				/>

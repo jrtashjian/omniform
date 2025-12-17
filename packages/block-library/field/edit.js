@@ -178,7 +178,7 @@ const Edit = ( {
 						onBlur={ () => {
 							setAttributes( { fieldName: cleanFieldName( fieldName || fieldLabel ) } );
 						} }
-						help={ __( 'Name of the form control. Defaults to the label.', 'omniform' ) }
+						help={ __( 'Name of the form control.', 'omniform' ) }
 						__nextHasNoMarginBottom
 						__next40pxDefaultSize
 					/>
