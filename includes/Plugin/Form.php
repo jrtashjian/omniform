@@ -199,10 +199,10 @@ class Form {
 		$labels = array();
 		foreach ( $this->fields as $key => $field_data ) {
 			if ( is_array( $field_data ) && isset( $field_data['label'] ) ) {
-				$labels[ $key ] = $field_data['label'];
+				$labels[ $key ] = sanitize_text_field( $field_data['label'] );
 			} elseif ( is_string( $field_data ) ) {
 				// Handle legacy format where fields were stored as strings.
-				$labels[ $key ] = $field_data;
+				$labels[ $key ] = sanitize_text_field( $field_data );
 			}
 		}
 		return $labels;
@@ -214,7 +214,8 @@ class Form {
 	 * @return array
 	 */
 	public function get_groups() {
-		return $this->groups;
+		// Sanitize group labels as they may be displayed.
+		return array_map( 'sanitize_text_field', $this->groups );
 	}
 
 	/**
