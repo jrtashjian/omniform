@@ -61,6 +61,10 @@ Manual installation method requires downloading the OmniForm plugin and uploadin
 
 == Changelog ==
 
+= 1.3.4 / 2025-12-16 =
+
+  * Fixed compatibility issue with Gutenberg plugin.
+
 = 1.3.3 / 2025-07-15 =
 
   * Enhanced display of standalone checkboxes in response content. [#43](https://github.com/jrtashjian/omniform/pull/43)
