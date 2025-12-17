@@ -29,6 +29,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 */
 	public function provides( string $id ): bool {
 		$services = array(
+			Validation\Validator::class,
 			Form::class,
 			FormFactory::class,
 			ResponseFactory::class,
@@ -46,20 +47,27 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 */
 	public function register(): void {
 		$this->getContainer()->addShared(
-			Form::class,
+			Validation\Validator::class,
 			function () {
+				return new Validation\Validator();
+			}
+		);
+
+		$this->getContainer()->addShared(
+			Form::class,
+			function ( $container ) {
 				return new Form(
-					new Validation\Validator()
+					$container->get( Validation\Validator::class )
 				);
 			}
 		);
 
 		$this->getContainer()->add(
 			FormFactory::class,
-			function () {
+			function ( $container ) {
 				return new FormFactory(
-					$this->getContainer(),
-					new Validation\Validator()
+					$container,
+					$container->get( Validation\Validator::class )
 				);
 			}
 		);
