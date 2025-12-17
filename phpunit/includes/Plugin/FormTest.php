@@ -224,6 +224,10 @@ class FormTest extends \WP_UnitTestCase {
 					'label' => 'Contact Email',
 					'type'  => 'email',
 				),
+				'contact.name'  => array(
+					'label' => 'Contact Name',
+					'type'  => 'text',
+				),
 			)
 		);
 
@@ -232,10 +236,25 @@ class FormTest extends \WP_UnitTestCase {
 			array(
 				'contact' => array(
 					'email' => 'test@example.com',
+					'name'  => '<b>John Doe</b>',
 				),
 			)
 		);
 		$params = $this->form->get_request_params();
 		$this->assertEquals( 'test@example.com', $params['contact']['email'] );
+		$this->assertEquals( 'John Doe', $params['contact']['name'] );
+
+		// Test with invalid email in nested data.
+		$this->form->set_request_params(
+			array(
+				'contact' => array(
+					'email' => 'invalid-email',
+					'name'  => 'Jane Doe',
+				),
+			)
+		);
+		$params = $this->form->get_request_params();
+		$this->assertEquals( '', $params['contact']['email'] );
+		$this->assertEquals( 'Jane Doe', $params['contact']['name'] );
 	}
 }
