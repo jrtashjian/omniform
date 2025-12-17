@@ -511,19 +511,19 @@ class Form {
 			return $this->sanitize_field_value( $data, 'text' );
 		}
 
-		return array_map(
-			function ( $value, $key ) use ( $prefix ) {
-				// Build the full field path for nested fields.
-				$full_key   = $prefix ? $prefix . '.' . $key : $key;
-				$field_type = $this->get_field_type( $full_key );
+		$sanitized = array();
+		foreach ( $data as $key => $value ) {
+			// Build the full field path for nested fields.
+			$full_key   = $prefix ? $prefix . '.' . $key : $key;
+			$field_type = $this->get_field_type( $full_key );
 
-				if ( is_array( $value ) ) {
-					return $this->sanitize_array( $value, $full_key );
-				}
-				return $this->sanitize_field_value( $value, $field_type );
-			},
-			$data,
-			array_keys( $data )
-		);
+			if ( is_array( $value ) ) {
+				$sanitized[ $key ] = $this->sanitize_array( $value, $full_key );
+			} else {
+				$sanitized[ $key ] = $this->sanitize_field_value( $value, $field_type );
+			}
+		}
+
+		return $sanitized;
 	}
 }

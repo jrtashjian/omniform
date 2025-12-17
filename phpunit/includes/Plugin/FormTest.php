@@ -31,15 +31,22 @@ class FormTest extends \WP_UnitTestCase {
 	}
 
 	/**
-	 * Test sanitize_array with email field type.
+	 * Helper method to set fields property using reflection.
+	 *
+	 * @param array $fields The fields to set.
 	 */
-	public function test_sanitize_array_with_email() {
-		// Use reflection to set fields property.
+	private function set_fields_property( $fields ) {
 		$reflection = new \ReflectionClass( $this->form );
 		$property   = $reflection->getProperty( 'fields' );
 		$property->setAccessible( true );
-		$property->setValue(
-			$this->form,
+		$property->setValue( $this->form, $fields );
+	}
+
+	/**
+	 * Test sanitize_array with email field type.
+	 */
+	public function test_sanitize_array_with_email() {
+		$this->set_fields_property(
 			array(
 				'email' => array(
 					'label' => 'Email Address',
@@ -63,12 +70,7 @@ class FormTest extends \WP_UnitTestCase {
 	 * Test sanitize_array with URL field type.
 	 */
 	public function test_sanitize_array_with_url() {
-		// Use reflection to set fields property.
-		$reflection = new \ReflectionClass( $this->form );
-		$property   = $reflection->getProperty( 'fields' );
-		$property->setAccessible( true );
-		$property->setValue(
-			$this->form,
+		$this->set_fields_property(
 			array(
 				'website' => array(
 					'label' => 'Website URL',
@@ -92,12 +94,7 @@ class FormTest extends \WP_UnitTestCase {
 	 * Test sanitize_array with number field type.
 	 */
 	public function test_sanitize_array_with_number() {
-		// Use reflection to set fields property.
-		$reflection = new \ReflectionClass( $this->form );
-		$property   = $reflection->getProperty( 'fields' );
-		$property->setAccessible( true );
-		$property->setValue(
-			$this->form,
+		$this->set_fields_property(
 			array(
 				'age' => array(
 					'label' => 'Age',
@@ -126,12 +123,7 @@ class FormTest extends \WP_UnitTestCase {
 	 * Test sanitize_array with textarea field type.
 	 */
 	public function test_sanitize_array_with_textarea() {
-		// Use reflection to set fields property.
-		$reflection = new \ReflectionClass( $this->form );
-		$property   = $reflection->getProperty( 'fields' );
-		$property->setAccessible( true );
-		$property->setValue(
-			$this->form,
+		$this->set_fields_property(
 			array(
 				'message' => array(
 					'label' => 'Message',
@@ -155,12 +147,7 @@ class FormTest extends \WP_UnitTestCase {
 	 * Test sanitize_array with text field type (default).
 	 */
 	public function test_sanitize_array_with_text() {
-		// Use reflection to set fields property.
-		$reflection = new \ReflectionClass( $this->form );
-		$property   = $reflection->getProperty( 'fields' );
-		$property->setAccessible( true );
-		$property->setValue(
-			$this->form,
+		$this->set_fields_property(
 			array(
 				'name' => array(
 					'label' => 'Name',
@@ -184,12 +171,7 @@ class FormTest extends \WP_UnitTestCase {
 	 * Test get_fields returns labels only for backward compatibility.
 	 */
 	public function test_get_fields_returns_labels() {
-		// Use reflection to set fields property.
-		$reflection = new \ReflectionClass( $this->form );
-		$property   = $reflection->getProperty( 'fields' );
-		$property->setAccessible( true );
-		$property->setValue(
-			$this->form,
+		$this->set_fields_property(
 			array(
 				'email' => array(
 					'label' => 'Email Address',
@@ -213,12 +195,7 @@ class FormTest extends \WP_UnitTestCase {
 	 * Test nested array sanitization.
 	 */
 	public function test_sanitize_nested_array() {
-		// Use reflection to set fields property.
-		$reflection = new \ReflectionClass( $this->form );
-		$property   = $reflection->getProperty( 'fields' );
-		$property->setAccessible( true );
-		$property->setValue(
-			$this->form,
+		$this->set_fields_property(
 			array(
 				'contact.email' => array(
 					'label' => 'Contact Email',
