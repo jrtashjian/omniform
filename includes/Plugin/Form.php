@@ -9,6 +9,9 @@ namespace OmniForm\Plugin;
 
 use OmniForm\BlockLibrary\Blocks\BaseControlBlock;
 use OmniForm\BlockLibrary\Blocks\Fieldset;
+use OmniForm\BlockLibrary\Blocks\Input;
+use OmniForm\BlockLibrary\Blocks\Select;
+use OmniForm\BlockLibrary\Blocks\Textarea;
 use OmniForm\Dependencies\Dflydev\DotAccessData;
 use OmniForm\Dependencies\Respect\Validation;
 
@@ -192,7 +195,17 @@ class Form {
 	 * @return array
 	 */
 	public function get_fields() {
-		return $this->sanitize_array( $this->fields );
+		// For backward compatibility, return only labels.
+		$labels = array();
+		foreach ( $this->fields as $key => $field_data ) {
+			if ( is_array( $field_data ) && isset( $field_data['label'] ) ) {
+				$labels[ $key ] = $field_data['label'];
+			} elseif ( is_string( $field_data ) ) {
+				// Handle legacy format where fields were stored as strings.
+				$labels[ $key ] = $field_data;
+			}
+		}
+		return $labels;
 	}
 
 	/**
@@ -201,7 +214,7 @@ class Form {
 	 * @return array
 	 */
 	public function get_groups() {
-		return $this->sanitize_array( $this->groups );
+		return $this->groups;
 	}
 
 	/**
@@ -355,12 +368,45 @@ class Form {
 				$this->validator->addRule( $rule );
 			}
 
-			$this->fields[ $flat_control_name ] = $block->is_grouped() && in_array( $block->get_block_attribute( 'fieldType' ), array( 'radio', 'checkbox' ), true )
-				? $block->get_field_group_label()
-				: $block->get_field_label();
+			// Determine field type based on block type.
+			$field_type = $this->determine_field_type( $block );
+
+			$this->fields[ $flat_control_name ] = array(
+				'label' => $block->is_grouped() && in_array( $block->get_block_attribute( 'fieldType' ), array( 'radio', 'checkbox' ), true )
+					? $block->get_field_group_label()
+					: $block->get_field_label(),
+				'type'  => $field_type,
+			);
 		}
 
 		return $block_content;
+	}
+
+	/**
+	 * Determine the field type from the block instance.
+	 *
+	 * @param BaseControlBlock $block The block instance.
+	 *
+	 * @return string The field type.
+	 */
+	protected function determine_field_type( BaseControlBlock $block ) {
+		// For Input blocks, use the fieldType attribute.
+		if ( $block instanceof Input ) {
+			return $block->get_block_attribute( 'fieldType' ) ?? 'text';
+		}
+
+		// For Textarea blocks.
+		if ( $block instanceof Textarea ) {
+			return 'textarea';
+		}
+
+		// For Select blocks.
+		if ( $block instanceof Select ) {
+			return 'select';
+		}
+
+		// Default to text for other control blocks.
+		return 'text';
 	}
 
 	/**
@@ -412,6 +458,46 @@ class Form {
 	}
 
 	/**
+	 * Get the field type for a given field key.
+	 *
+	 * @param string $key The field key.
+	 *
+	 * @return string The field type, defaulting to 'text' if not found.
+	 */
+	protected function get_field_type( $key ) {
+		// Handle nested field keys (e.g., "group.field").
+		if ( isset( $this->fields[ $key ] ) && is_array( $this->fields[ $key ] ) ) {
+			return $this->fields[ $key ]['type'] ?? 'text';
+		}
+
+		return 'text';
+	}
+
+	/**
+	 * Sanitize a field value based on its type.
+	 *
+	 * @param mixed  $value The value to sanitize.
+	 * @param string $type  The field type.
+	 *
+	 * @return mixed The sanitized value.
+	 */
+	private function sanitize_field_value( $value, $type ) {
+		switch ( $type ) {
+			case 'email':
+				return sanitize_email( $value );
+			case 'url':
+				return esc_url_raw( $value );
+			case 'number':
+			case 'range':
+				return is_numeric( $value ) ? (float) $value : 0;
+			case 'textarea':
+				return sanitize_textarea_field( $value );
+			default:
+				return sanitize_text_field( $value );
+		}
+	}
+
+	/**
 	 * Sanitizes an array of data.
 	 *
 	 * @param mixed $data The data to sanitize.
@@ -419,8 +505,20 @@ class Form {
 	 * @return array
 	 */
 	public function sanitize_array( $data ) {
-		return is_array( $data )
-			? array_map( array( $this, 'sanitize_array' ), $data )
-			: sanitize_textarea_field( $data );
+		if ( ! is_array( $data ) ) {
+			return $this->sanitize_field_value( $data, 'text' );
+		}
+
+		return array_map(
+			function ( $value, $key ) {
+				$field_type = $this->get_field_type( $key );
+				if ( is_array( $value ) ) {
+					return $this->sanitize_array( $value );
+				}
+				return $this->sanitize_field_value( $value, $field_type );
+			},
+			$data,
+			array_keys( $data )
+		);
 	}
 }
