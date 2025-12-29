@@ -54,10 +54,6 @@ class OAuthConnectionUI {
 	 * @return void
 	 */
 	public function render(): void {
-		$this->render_buttons();
-		?>
-		<h3>API Health Check</h3>
-		<?php
 		$healthcheck = $this->get_health_status();
 
 		$status_message = $healthcheck['healthy']
@@ -65,7 +61,10 @@ class OAuthConnectionUI {
 			? sprintf( __( 'The API is available (%s)', 'omniform' ), $healthcheck['latency'] )
 			: __( 'The API is unavailable', 'omniform' );
 		?>
-		<p><?php echo esc_html( $status_message ); ?></p>
+		<div style="display:flex; align-items: center; gap: 20px;">
+			<?php $this->render_buttons(); ?>
+			<?php echo esc_html( $status_message ); ?>
+		</div>
 		<?php
 	}
 
