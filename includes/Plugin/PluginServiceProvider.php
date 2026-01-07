@@ -34,6 +34,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			ResponseFactory::class,
 			QueryBuilder::class,
 			QueryBuilderFactory::class,
+			UsageTracking::class,
 		);
 
 		return in_array( $id, $services, true );
@@ -87,6 +88,8 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				return new QueryBuilderFactory( $wpdb );
 			}
 		);
+
+		$this->getContainer()->addShared( UsageTracking::class );
 	}
 
 	/**
@@ -105,6 +108,23 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		add_filter( 'the_content', array( $this, 'render_singular_template' ) );
 
 		add_action( 'admin_init', array( $this, 'dismiss_newsletter_notice' ) );
+
+		$enabled = get_option( 'omniform_usage_tracking_enabled', false );
+
+		if ( $enabled && ! wp_next_scheduled( 'omniform_usage_tracking' ) ) {
+			wp_schedule_single_event( time(), 'omniform_usage_tracking' );
+		} elseif ( ! $enabled ) {
+			wp_clear_scheduled_hook( 'omniform_usage_tracking' );
+		}
+
+		add_action( 'omniform_usage_tracking', array( $this, 'usage_tracking' ) );
+
+		add_action(
+			'omniform_deactivate',
+			function () {
+				wp_clear_scheduled_hook( 'omniform_usage_tracking' );
+			}
+		);
 
 		// Send email notification when a response is created.
 		add_action(
@@ -563,12 +583,91 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					function () {
 						?>
 						<div class="wrap">
-							<?php
-							omniform()->get( \OmniForm\OAuth\OAuthConnectionUI::class )->render();
-							?>
+							<h1><?php esc_html_e( 'Settings', 'omniform' ); ?></h1>
+
+							<?php settings_errors( 'omniform_settings' ); ?>
+
+							<table class="form-table" role="presentation">
+								<tbody>
+									<tr>
+										<th scope="row">
+											<?php esc_html_e( 'API Connection', 'omniform' ); ?>
+										</th>
+										<td>
+											<?php omniform()->get( \OmniForm\OAuth\OAuthConnectionUI::class )->render(); ?>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
+							<form method="post" action="<?php echo esc_url( admin_url( 'options.php' ) ); ?>">
+								<?php
+								settings_fields( 'omniform_settings' );
+								do_settings_sections( 'omniform_settings' );
+								submit_button();
+								?>
+							</form>
 						</div>
 						<?php
 					},
+				);
+
+				$options = array(
+					'hcaptcha'    => 'hCaptcha',
+					'recaptchav2' => 'reCAPTCHA v2',
+					'recaptchav3' => 'reCAPTCHA v3',
+					'turnstile'   => 'Turnstile',
+				);
+
+				// Add settings sections.
+				add_settings_section(
+					'omniform_general',
+					__( 'General Settings', 'omniform' ),
+					null,
+					'omniform_settings'
+				);
+
+				add_settings_section(
+					'omniform_captcha',
+					__( 'CAPTCHA Settings', 'omniform' ),
+					null,
+					'omniform_settings'
+				);
+
+				foreach ( $options as $option => $label ) {
+					add_settings_field(
+						'site_key_' . $option,
+						sprintf( __( '%s Site Key', 'omniform' ), $label ),
+						array( $this, 'render_captcha_field' ),
+						'omniform_settings',
+						'omniform_captcha',
+						array(
+							'option' => $option,
+							'type'   => 'site_key',
+							'label'  => $label,
+						)
+					);
+
+					add_settings_field(
+						'secret_key_' . $option,
+						sprintf( __( '%s Secret Key', 'omniform' ), $label ),
+						array( $this, 'render_captcha_field' ),
+						'omniform_settings',
+						'omniform_captcha',
+						array(
+							'option' => $option,
+							'type'   => 'secret_key',
+							'label'  => $label,
+						)
+					);
+				}
+
+				add_settings_field(
+					'usage_tracking',
+					__( 'Usage Tracking', 'omniform' ),
+					array( $this, 'render_usage_tracking_field' ),
+					'omniform_settings',
+					'omniform_general'
 				);
 			}
 		);
@@ -706,7 +805,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 
 		foreach ( $options as $option => $label ) {
 			register_setting(
-				'omniform',
+				'omniform_settings',
 				'omniform_' . $option . '_site_key',
 				array(
 					'type'              => 'string',
@@ -719,7 +818,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			);
 
 			register_setting(
-				'omniform',
+				'omniform_settings',
 				'omniform_' . $option . '_secret_key',
 				array(
 					'type'              => 'string',
@@ -731,6 +830,53 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				)
 			);
 		}
+
+		register_setting(
+			'omniform_settings',
+			'omniform_usage_tracking_enabled',
+			array(
+				'type'              => 'boolean',
+				'description'       => __( 'Enable anonymous usage tracking to help improve OmniForm.', 'omniform' ),
+				'sanitize_callback' => function ( $value ) {
+					return (bool) $value;
+				},
+				'show_in_rest'      => true,
+				'default'           => false,
+			)
+		);
+	}
+
+	/**
+	 * Render the API connection field.
+	 */
+	public function render_api_connection_field() {
+		omniform()->get( \OmniForm\OAuth\OAuthConnectionUI::class )->render();
+	}
+
+	/**
+	 * Render a CAPTCHA field.
+	 *
+	 * @param array $args Field arguments.
+	 */
+	public function render_captcha_field( $args ) {
+		$option = $args['option'];
+		$type   = $args['type'];
+		$name   = 'omniform_' . $option . '_' . $type;
+		$value  = get_option( $name, '' );
+
+		echo '<input type="text" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '" class="regular-text" />';
+	}
+
+	/**
+	 * Render the usage tracking field.
+	 */
+	public function render_usage_tracking_field() {
+		$value = get_option( 'omniform_usage_tracking_enabled', false );
+
+		echo '<label for="omniform_usage_tracking_enabled">';
+		echo '<input type="checkbox" id="omniform_usage_tracking_enabled" name="omniform_usage_tracking_enabled" value="1" ' . checked( $value, true, false ) . ' />';
+		echo esc_html__( 'Enable anonymous usage tracking to help improve OmniForm.', 'omniform' );
+		echo '</label>';
 	}
 
 	/**
@@ -797,6 +943,29 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			/** @var \OmniForm\Application */ // phpcs:ignore
 			$container = $this->getContainer();
 			update_user_meta( get_current_user_id(), 'omniform_dismissed_newsletter_notice', $container->version() );
+		}
+	}
+
+	/**
+	 * Handles usage tracking.
+	 */
+	public function usage_tracking() {
+		$usage_tracking = $this->getContainer()->get( UsageTracking::class );
+
+		$response = wp_remote_post(
+			'https://track.omniform.io/',
+			array( 'body' => $usage_tracking->get_data() )
+		);
+
+		// Clear any existing scheduled events to prevent duplicates.
+		wp_clear_scheduled_hook( 'omniform_usage_tracking' );
+
+		if ( is_wp_error( $response ) ) {
+			// Failure: reschedule for next day.
+			wp_schedule_single_event( time() + DAY_IN_SECONDS, 'omniform_usage_tracking' );
+		} else {
+			// Success: reschedule for next week.
+			wp_schedule_single_event( time() + WEEK_IN_SECONDS, 'omniform_usage_tracking' );
 		}
 	}
 
