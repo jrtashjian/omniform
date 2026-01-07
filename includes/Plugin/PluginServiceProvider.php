@@ -103,8 +103,23 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		add_action( 'init', array( $this, 'filter_block_patterns_on_admin' ), PHP_INT_MAX );
 		add_action( 'rest_api_init', array( $this, 'filter_block_patterns_on_rest_api' ), PHP_INT_MAX );
 		add_filter( 'the_content', array( $this, 'render_singular_template' ) );
-
 		add_action( 'admin_init', array( $this, 'dismiss_newsletter_notice' ) );
+
+		// Disable autosave for omniform_response.
+		add_action(
+			'admin_enqueue_scripts',
+			function () {
+				if (
+				! is_admin() ||
+				'post.php' !== $GLOBALS['pagenow'] ||
+				'omniform_response' !== get_post_type( (int) $_GET['post'] ) // phpcs:ignore WordPress.Security.NonceVerification
+				) {
+					return;
+				}
+
+				wp_deregister_script( 'autosave' );
+			}
+		);
 
 		// Send email notification when a response is created.
 		add_action(
@@ -391,7 +406,66 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				/** @var \OmniForm\Plugin\Response */ // phpcs:ignore
 				$response = $this->getContainer()->get( ResponseFactory::class )->create_with_id( $post->ID );
 
-				echo wp_kses_post( $response->text_content() );
+				echo '<div>';
+
+				$in_section    = false;
+				$current_group = null;
+
+				$request_params = $response->get_request_params();
+				$fields         = $response->get_fields();
+				$groups         = $response->get_groups();
+
+				foreach ( $fields as $field => $label ) {
+					$is_grouped = strpos( $field, '.' ) !== false;
+
+					$parts = explode( '.', $field );
+
+					$field_group = $parts[0];
+					$sub_field   = $parts[1] ?? null;
+
+					if ( $is_grouped && $current_group !== $field_group ) {
+						if ( $in_section ) {
+							echo '</dl>';
+							$in_section = false;
+						}
+
+						echo '<h2>' . esc_html( $groups[ $field_group ] ) . '</h2>';
+						echo '<dl>';
+
+						$current_group = $field_group;
+					} elseif ( ! $is_grouped && null !== $current_group ) {
+						echo '</dl>';
+						$current_group = null;
+					}
+
+					if ( ! $is_grouped && ! $in_section ) {
+						echo '<dl>';
+						$in_section = true;
+					}
+
+					echo '<dt>' . esc_html( $label ) . '</dt>';
+					$value = $request_params[ $field ] ?? null;
+
+					if ( ! empty( $sub_field ) ) {
+						$value = $request_params[ $field_group ][ $sub_field ] ?? null;
+					}
+
+					if ( is_array( $value ) ) {
+						echo '<dd>';
+						foreach ( $value as $sub_value ) {
+							echo esc_html( $sub_value ) . '<br>';
+						}
+						echo '</dd>';
+					} else {
+						echo '<dd>' . esc_html( $value ? $value : '(Empty)' ) . '</dd>';
+					}
+				}
+
+				if ( $in_section || $is_grouped ) {
+					echo '</dl>';
+				}
+
+				echo '</div>';
 			}
 		);
 
