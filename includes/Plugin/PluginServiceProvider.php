@@ -7,7 +7,6 @@
 
 namespace OmniForm\Plugin;
 
-use OmniForm\Plugin\Facades\DB;
 use OmniForm\Plugin\Support\Number;
 use OmniForm\Analytics\AnalyticsManager;
 use OmniForm\Dependencies\Respect\Validation;
@@ -15,6 +14,7 @@ use OmniForm\Dependencies\League\Container\ServiceProvider\AbstractServiceProvid
 use OmniForm\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
 use WP_Block_Type;
 use WP_Block_Type_Registry;
+use wpdb;
 
 /**
  * The PluginServiceProvider class.
@@ -29,6 +29,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 */
 	public function provides( string $id ): bool {
 		$services = array(
+			wpdb::class,
 			Form::class,
 			FormFactory::class,
 			ResponseFactory::class,
@@ -45,6 +46,8 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 * @return void
 	 */
 	public function register(): void {
+		$this->getContainer()->add( wpdb::class, $GLOBALS['wpdb'] );
+
 		$this->getContainer()->addShared(
 			Form::class,
 			function () {
@@ -76,15 +79,17 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		$this->getContainer()->add(
 			QueryBuilder::class,
 			function () {
-				global $wpdb;
-				return new QueryBuilder( $wpdb );
+				return new QueryBuilder(
+					$this->getContainer()->get( wpdb::class )
+				);
 			}
 		);
 		$this->getContainer()->add(
 			QueryBuilderFactory::class,
 			function () {
-				global $wpdb;
-				return new QueryBuilderFactory( $wpdb );
+				return new QueryBuilderFactory(
+					$this->getContainer()->get( wpdb::class )
+				);
 			}
 		);
 	}
@@ -95,8 +100,6 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 * @return void
 	 */
 	public function boot(): void {
-		DB::set_container( $this->getContainer() );
-
 		add_action( 'admin_enqueue_scripts', array( $this, 'disable_admin_notices' ) );
 		add_action( 'init', array( $this, 'register_post_type' ) );
 		add_action( 'init', array( $this, 'register_settings' ) );
