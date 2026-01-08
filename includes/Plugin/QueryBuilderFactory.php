@@ -18,7 +18,7 @@ class QueryBuilderFactory {
 	 *
 	 * @var wpdb
 	 */
-	protected $wpdb;
+	protected $database;
 
 	/**
 	 * The QueryBuilderFactory constructor.
@@ -26,7 +26,7 @@ class QueryBuilderFactory {
 	 * @param wpdb $wpdb The WordPress database object.
 	 */
 	public function __construct( wpdb $wpdb ) {
-		$this->wpdb = $wpdb;
+		$this->database = $wpdb;
 	}
 
 	/**
@@ -35,6 +35,6 @@ class QueryBuilderFactory {
 	 * @return QueryBuilder The newly created QueryBuilder instance.
 	 */
 	public function create(): QueryBuilder {
-		return new QueryBuilder( $this->wpdb );
+		return new QueryBuilder( $this->database );
 	}
 }
