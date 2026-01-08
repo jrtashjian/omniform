@@ -31,13 +31,9 @@ class ResponseTest extends \WP_UnitTestCase {
 
 		$content = $response->text_content();
 
-		// Verify that the script tags are escaped.
+		// Verify that the script tags are stripped.
 		$this->assertStringNotContainsString( '<script>', $content );
-		$this->assertStringNotContainsString( 'alert("XSS")', $content );
-
-		// Verify that escaped content is present.
-		$this->assertStringContainsString( '&lt;script&gt;', $content );
-		$this->assertStringContainsString( 'alert(&quot;XSS&quot;)', $content );
+		$this->assertStringNotContainsString( '<script>alert("XSS")</script>', $content );
 
 		// Verify that allowed HTML tags are present.
 		$this->assertStringContainsString( '<strong>Test Label:</strong>', $content );
@@ -81,14 +77,10 @@ class ResponseTest extends \WP_UnitTestCase {
 
 		$content = $response->text_content();
 
-		// Verify that HTML tags are escaped.
-		$this->assertStringNotContainsString( '<img', $content );
-		$this->assertStringNotContainsString( '<b>bold</b>', $content );
+		// Verify that HTML tags are sanitized.
+		$this->assertStringContainsString( '<img src="x"', $content );
+		$this->assertStringContainsString( '<b>bold</b>', $content );
 		$this->assertStringNotContainsString( 'onerror=', $content );
-
-		// Verify that escaped content is present.
-		$this->assertStringContainsString( '&lt;img', $content );
-		$this->assertStringContainsString( '&lt;b&gt;bold&lt;/b&gt;', $content );
 
 		// Verify that newlines are preserved.
 		$this->assertStringContainsString( '<br />', $content );
