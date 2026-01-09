@@ -12,8 +12,8 @@ require_once dirname( __DIR__ ) . '/vendor/autoload.php';
 WP_Mock::bootstrap();
 
 // Suppress deprecation errors from vendor dependencies.
-set_error_handler(
-	function( $errno, $errstr, $errfile ) {
+set_error_handler( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler
+	function ( $errno, $errstr, $errfile ) {
 		if ( E_DEPRECATED === $errno && false !== strpos( $errfile, '/vendor/' ) ) {
 			return true; // Suppress the error.
 		}
