@@ -106,6 +106,13 @@ class AnalyticsManager {
 	 * @return int The visitor ID.
 	 */
 	protected function get_visitor_id() {
+		$cache_key = 'omniform_visitor_id_' . $this->get_visitor_hash();
+		$cached_id = wp_cache_get( $cache_key );
+
+		if ( false !== $cached_id ) {
+			return $cached_id;
+		}
+
 		$query_builder = $this->query_builder_factory->create();
 
 		$visitor_results = $query_builder->table( self::VISITOR_TABLE )
@@ -121,10 +128,14 @@ class AnalyticsManager {
 					)
 				);
 
-			return $query_builder->get_last_insert_id();
+			$visitor_id = $query_builder->get_last_insert_id();
+			wp_cache_set( $cache_key, $visitor_id );
+			return $visitor_id;
 		}
 
-		return $visitor_results[0]->visitor_id;
+		$visitor_id = $visitor_results[0]->visitor_id;
+		wp_cache_set( $cache_key, $visitor_id );
+		return $visitor_id;
 	}
 
 	/**
