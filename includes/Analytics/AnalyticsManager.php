@@ -231,7 +231,7 @@ class AnalyticsManager {
 		global $wpdb;
 
 		$visitor_id     = $this->get_visitor_id();
-		$time_threshold = gmdate( 'Y-m-d H:i:s', time() - $seconds );
+		$time_threshold = date_i18n( 'Y-m-d H:i:s', time() - $seconds );
 		$table          = $wpdb->prefix . self::EVENTS_TABLE;
 
 		return (int) $wpdb->get_var(
