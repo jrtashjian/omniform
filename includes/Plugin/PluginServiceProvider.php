@@ -58,19 +58,19 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 
 		$this->getContainer()->addShared(
 			Form::class,
-			function ( $container ) {
+			function () {
 				return new Form(
-					$container->get( Validation\Validator::class )
+					$this->getContainer()->get( Validation\Validator::class )
 				);
 			}
 		);
 
 		$this->getContainer()->add(
 			FormFactory::class,
-			function ( $container ) {
+			function () {
 				return new FormFactory(
-					$container,
-					$container->get( Validation\Validator::class )
+					$this->getContainer(),
+					$this->getContainer()->get( Validation\Validator::class )
 				);
 			}
 		);
