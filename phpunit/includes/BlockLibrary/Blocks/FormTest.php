@@ -25,10 +25,17 @@ class FormTest extends FormBlockTestCase {
 	 */
 	public function set_up() {
 		omniform()->addShared(
+			\OmniForm\Dependencies\Respect\Validation\Validator::class,
+			function () {
+				return new \OmniForm\Dependencies\Respect\Validation\Validator();
+			}
+		);
+
+		omniform()->addShared(
 			\OmniForm\Plugin\Form::class,
 			function () {
 				return new \OmniForm\Plugin\Form(
-					new \OmniForm\Dependencies\Respect\Validation\Validator()
+					omniform()->get( \OmniForm\Dependencies\Respect\Validation\Validator::class )
 				);
 			}
 		);
@@ -38,7 +45,7 @@ class FormTest extends FormBlockTestCase {
 			function () {
 				return new \OmniForm\Plugin\FormFactory(
 					omniform(),
-					new \OmniForm\Dependencies\Respect\Validation\Validator()
+					omniform()->get( \OmniForm\Dependencies\Respect\Validation\Validator::class )
 				);
 			}
 		);
