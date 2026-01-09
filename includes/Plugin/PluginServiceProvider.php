@@ -29,6 +29,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 */
 	public function provides( string $id ): bool {
 		$services = array(
+			Validation\Validator::class,
 			wpdb::class,
 			Form::class,
 			FormFactory::class,
@@ -49,10 +50,17 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		$this->getContainer()->add( wpdb::class, $GLOBALS['wpdb'] );
 
 		$this->getContainer()->addShared(
+			Validation\Validator::class,
+			function () {
+				return new Validation\Validator();
+			}
+		);
+
+		$this->getContainer()->addShared(
 			Form::class,
 			function () {
 				return new Form(
-					new Validation\Validator()
+					$this->getContainer()->get( Validation\Validator::class )
 				);
 			}
 		);
@@ -62,7 +70,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			function () {
 				return new FormFactory(
 					$this->getContainer(),
-					new Validation\Validator()
+					$this->getContainer()->get( Validation\Validator::class )
 				);
 			}
 		);
