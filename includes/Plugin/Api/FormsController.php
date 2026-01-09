@@ -111,7 +111,7 @@ class FormsController extends \WP_REST_Posts_Controller {
 			);
 		}
 
-		// Check rate limiting - limit to 10 submissions per hour per visitor per form.
+		// Rate limit: Allow up to 10 submissions per hour, per unique visitor, per individual form.
 		$analytics_manager  = omniform()->get( \OmniForm\Analytics\AnalyticsManager::class );
 		$recent_submissions = $analytics_manager->get_recent_submissions_count( $form->get_id(), 3600 );
 
