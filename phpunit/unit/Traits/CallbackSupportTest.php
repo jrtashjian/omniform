@@ -151,14 +151,15 @@ class CallbackSupportTest extends BaseTestCase {
 		WP_Mock::userFunction(
 			'esc_attr',
 			array(
-				'args'   => array( '8.3.29' ),
-				'return' => '8.3.29',
+				'args'   => array( 'callback string' ),
+				'return' => 'callback string',
+				'times'  => 1,
 			)
 		);
 
 		$dummy  = new DummyCallbackSupport();
-		$result = $dummy->public_process_callbacks( '{{  phpversion  }}' );
-		$this->assertEquals( '8.3.29', $result );
+		$result = $dummy->public_process_callbacks( '{{  omniform_existent_callback_return_string  }}' );
+		$this->assertEquals( 'callback string', $result );
 	}
 }
 
