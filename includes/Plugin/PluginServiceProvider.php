@@ -123,21 +123,6 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			2
 		);
 
-		// Increment form response count.
-		add_action(
-			'omniform_response_created',
-			function ( Response $response, $form ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
-				if ( ! $form->is_published() ) {
-					return;
-				}
-
-				// Incremement form responses.
-				omniform()->get( AnalyticsManager::class )->record_submission_success( $form->get_id() );
-			},
-			10,
-			2
-		);
-
 		// Increment form impression count.
 		add_action(
 			'omniform_form_render',

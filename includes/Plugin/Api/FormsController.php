@@ -168,6 +168,10 @@ class FormsController extends \WP_REST_Posts_Controller {
 			return rest_ensure_response( $response_id );
 		}
 
+		if ( $form->is_published() ) {
+			omniform()->get( \OmniForm\Analytics\AnalyticsManager::class )->record_submission_success( $form->get_id() );
+		}
+
 		/**
 		 * Fires after a response has been created.
 		 *
