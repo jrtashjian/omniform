@@ -33,19 +33,19 @@ class FormTest extends FormBlockTestCase {
 
 		omniform()->addShared(
 			\OmniForm\Plugin\Form::class,
-			function ( $container ) {
+			function () {
 				return new \OmniForm\Plugin\Form(
-					$container->get( \OmniForm\Dependencies\Respect\Validation\Validator::class )
+					omniform()->get( \OmniForm\Dependencies\Respect\Validation\Validator::class )
 				);
 			}
 		);
 
 		omniform()->add(
 			\OmniForm\Plugin\FormFactory::class,
-			function ( $container ) {
+			function () {
 				return new \OmniForm\Plugin\FormFactory(
-					$container,
-					$container->get( \OmniForm\Dependencies\Respect\Validation\Validator::class )
+					omniform(),
+					omniform()->get( \OmniForm\Dependencies\Respect\Validation\Validator::class )
 				);
 			}
 		);
