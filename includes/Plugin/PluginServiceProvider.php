@@ -7,7 +7,6 @@
 
 namespace OmniForm\Plugin;
 
-use OmniForm\Plugin\Facades\DB;
 use OmniForm\Plugin\Support\Number;
 use OmniForm\Analytics\AnalyticsManager;
 use OmniForm\Dependencies\Respect\Validation;
@@ -15,6 +14,7 @@ use OmniForm\Dependencies\League\Container\ServiceProvider\AbstractServiceProvid
 use OmniForm\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
 use WP_Block_Type;
 use WP_Block_Type_Registry;
+use wpdb;
 
 /**
  * The PluginServiceProvider class.
@@ -30,6 +30,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	public function provides( string $id ): bool {
 		$services = array(
 			Validation\Validator::class,
+			wpdb::class,
 			Form::class,
 			FormFactory::class,
 			ResponseFactory::class,
@@ -46,6 +47,8 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 * @return void
 	 */
 	public function register(): void {
+		$this->getContainer()->add( wpdb::class, $GLOBALS['wpdb'] );
+
 		$this->getContainer()->addShared(
 			Validation\Validator::class,
 			function () {
@@ -84,15 +87,17 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		$this->getContainer()->add(
 			QueryBuilder::class,
 			function () {
-				global $wpdb;
-				return new QueryBuilder( $wpdb );
+				return new QueryBuilder(
+					$this->getContainer()->get( wpdb::class )
+				);
 			}
 		);
 		$this->getContainer()->add(
 			QueryBuilderFactory::class,
 			function () {
-				global $wpdb;
-				return new QueryBuilderFactory( $wpdb );
+				return new QueryBuilderFactory(
+					$this->getContainer()->get( wpdb::class )
+				);
 			}
 		);
 	}
@@ -103,8 +108,6 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 * @return void
 	 */
 	public function boot(): void {
-		DB::set_container( $this->getContainer() );
-
 		add_action( 'admin_enqueue_scripts', array( $this, 'disable_admin_notices' ) );
 		add_action( 'init', array( $this, 'register_post_type' ) );
 		add_action( 'init', array( $this, 'register_settings' ) );
@@ -123,21 +126,6 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					$form->get_notify_email_subject(),
 					wp_kses( $response->email_content(), array() )
 				);
-			},
-			10,
-			2
-		);
-
-		// Increment form response count.
-		add_action(
-			'omniform_response_created',
-			function ( Response $response, $form ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
-				if ( ! $form->is_published() ) {
-					return;
-				}
-
-				// Incremement form responses.
-				omniform()->get( AnalyticsManager::class )->record_submission_success( $form->get_id() );
 			},
 			10,
 			2

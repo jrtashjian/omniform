@@ -18,7 +18,7 @@ class QueryBuilder {
 	 *
 	 * @var wpdb
 	 */
-	protected $wpdb;
+	protected $database;
 
 	/**
 	 * The columns to select.
@@ -68,7 +68,7 @@ class QueryBuilder {
 	 * @param wpdb $wpdb The WordPress database class.
 	 */
 	public function __construct( wpdb $wpdb ) {
-		$this->wpdb = $wpdb;
+		$this->database = $wpdb;
 	}
 
 	/**
@@ -159,7 +159,7 @@ class QueryBuilder {
 	 * @return array|object|null The query results.
 	 */
 	public function get() {
-		$query = 'SELECT ' . implode( ', ', $this->selects ) . ' FROM `' . $this->wpdb->prefix . $this->table . '`';
+		$query = 'SELECT ' . implode( ', ', $this->selects ) . ' FROM `' . $this->database->prefix . $this->table . '`';
 
 		if ( ! empty( $this->wheres ) ) {
 			$query .= ' WHERE ' . $this->build_where_clause();
@@ -177,7 +177,7 @@ class QueryBuilder {
 			$query .= ' LIMIT ' . (int) $this->limit;
 		}
 
-		return $this->wpdb->get_results( $query ); // phpcs:ignore WordPress.DB -- Query has been prepared.
+		return $this->database->get_results( $query ); // phpcs:ignore WordPress.DB -- Query has been prepared.
 	}
 
 	/**
@@ -188,7 +188,7 @@ class QueryBuilder {
 	 * @return int The number of records.
 	 */
 	public function count( $select = '*' ) {
-		$query = 'SELECT COUNT(' . $select . ') FROM `' . $this->wpdb->prefix . $this->table . '`';
+		$query = 'SELECT COUNT(' . $select . ') FROM `' . $this->database->prefix . $this->table . '`';
 
 		if ( ! empty( $this->wheres ) ) {
 			$query .= ' WHERE ' . $this->build_where_clause();
@@ -198,7 +198,7 @@ class QueryBuilder {
 			$query .= ' GROUP BY ' . implode( ', ', $this->group_bys );
 		}
 
-		return (int) $this->wpdb->get_var( $query ); // phpcs:ignore WordPress.DB -- Query has been prepared.
+		return (int) $this->database->get_var( $query ); // phpcs:ignore WordPress.DB -- Query has been prepared.
 	}
 
 	/**
@@ -216,7 +216,7 @@ class QueryBuilder {
 			$values[]     = $where['value'];
 		}
 
-		return $this->wpdb->prepare( implode( ' ', $conditions ), $values ); // phpcs:ignore WordPress.DB
+		return $this->database->prepare( implode( ' ', $conditions ), $values ); // phpcs:ignore WordPress.DB
 	}
 
 	/**
@@ -242,7 +242,7 @@ class QueryBuilder {
 	 * @return int|bool The number of rows inserted or false on failure.
 	 */
 	public function insert( array $data ) {
-		return $this->wpdb->insert( $this->wpdb->prefix . $this->table, $data );
+		return $this->database->insert( $this->database->prefix . $this->table, $data );
 	}
 
 	/**
@@ -251,7 +251,7 @@ class QueryBuilder {
 	 * @return int The ID of the last inserted record.
 	 */
 	public function get_last_insert_id() {
-		return $this->wpdb->insert_id;
+		return $this->database->insert_id;
 	}
 
 	/**
@@ -266,7 +266,7 @@ class QueryBuilder {
 			return false; // Prevent updating all rows if no where clause is set.
 		}
 
-		return $this->wpdb->update( $this->wpdb->prefix . $this->table, $data, $this->extract_where_conditions() );
+		return $this->database->update( $this->database->prefix . $this->table, $data, $this->extract_where_conditions() );
 	}
 
 	/**
@@ -279,7 +279,7 @@ class QueryBuilder {
 			return false; // Prevent deleting all rows if no where clause is set.
 		}
 
-		return $this->wpdb->delete( $this->wpdb->prefix . $this->table, $this->extract_where_conditions() );
+		return $this->database->delete( $this->database->prefix . $this->table, $this->extract_where_conditions() );
 	}
 
 	/**
