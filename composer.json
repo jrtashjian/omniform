@@ -57,6 +57,7 @@
         "lint-prefixed": "phpcs --standard=phpcs-prefixed.xml.dist",
         "format": "phpcbf --standard=phpcs.xml.dist --report-summary --report-source",
         "test": "phpunit",
+		"test-coverage": "phpunit --verbose --coverage-html phpunit/coverage",
         "build-release": [
             "rm -r ./vendor",
             "@composer dump-autoload",
