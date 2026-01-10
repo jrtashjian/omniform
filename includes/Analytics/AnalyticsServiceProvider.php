@@ -11,6 +11,7 @@ use OmniForm\Dependencies\League\Container\ServiceProvider\AbstractServiceProvid
 use OmniForm\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
 use OmniForm\Plugin\QueryBuilder;
 use OmniForm\Plugin\Schema;
+use wpdb;
 
 /**
  * The AnalyticsServiceProvider class.
@@ -89,6 +90,8 @@ class AnalyticsServiceProvider extends AbstractServiceProvider implements Bootab
 	 * Initialize the analytics tables.
 	 */
 	public function activate() {
+		Schema::set_database( $this->getContainer()->get( wpdb::class ) );
+
 		$events_table_definition = array(
 			'`event_id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT',
 			'`form_id` BIGINT(20) UNSIGNED NOT NULL',
