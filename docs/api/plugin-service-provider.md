@@ -44,15 +44,6 @@ Provides database query building functionality using WordPress's `$wpdb`.
 $query_builder = omniform()->get( \OmniForm\Plugin\QueryBuilder::class );
 ```
 
-### QueryBuilderFactory
-
-Creates new QueryBuilder instances.
-
-```php
-$query_builder_factory = omniform()->get( \OmniForm\Plugin\QueryBuilderFactory::class );
-$query_builder = $query_builder_factory->create();
-```
-
 ## Post Types
 
 The service provider registers two custom post types:

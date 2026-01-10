@@ -35,7 +35,6 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			FormFactory::class,
 			ResponseFactory::class,
 			QueryBuilder::class,
-			QueryBuilderFactory::class,
 		);
 
 		return in_array( $id, $services, true );
@@ -88,14 +87,6 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			QueryBuilder::class,
 			function () {
 				return new QueryBuilder(
-					$this->getContainer()->get( wpdb::class )
-				);
-			}
-		);
-		$this->getContainer()->add(
-			QueryBuilderFactory::class,
-			function () {
-				return new QueryBuilderFactory(
 					$this->getContainer()->get( wpdb::class )
 				);
 			}
