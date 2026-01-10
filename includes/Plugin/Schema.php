@@ -7,10 +7,28 @@
 
 namespace OmniForm\Plugin;
 
+use wpdb;
+
 /**
  * The Schema class.
  */
 class Schema {
+	/**
+	 * The WordPress database class.
+	 *
+	 * @var wpdb
+	 */
+	protected static $database;
+
+	/**
+	 * Create a new Schema instance.
+	 *
+	 * @param wpdb $wpdb The WordPress database class.
+	 */
+	public static function set_database( wpdb $wpdb ) {
+		self::$database = $wpdb;
+	}
+
 	/**
 	 * Create a new table.
 	 *
@@ -18,11 +36,9 @@ class Schema {
 	 * @param array  $definition The table definition.
 	 */
 	public static function create( string $table, array $definition ) {
-		global $wpdb;
-
-		$table           = $wpdb->prefix . $table;
+		$table           = self::$database->prefix . $table;
 		$definition      = implode( ', ', $definition );
-		$charset_collate = $wpdb->get_charset_collate();
+		$charset_collate = self::$database->get_charset_collate();
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( "CREATE TABLE {$table} ({$definition}) $charset_collate;" );
@@ -34,11 +50,9 @@ class Schema {
 	 * @param string $table The table name.
 	 */
 	public static function drop( string $table ) {
-		global $wpdb;
+		$table = self::$database->prefix . $table;
 
-		$table = $wpdb->prefix . $table;
-
-		$wpdb->query( "DROP TABLE IF EXISTS {$table};" ); // phpcs:ignore WordPress.DB
+		self::$database->query( "DROP TABLE IF EXISTS {$table};" ); // phpcs:ignore WordPress.DB
 	}
 
 	/**
@@ -49,12 +63,10 @@ class Schema {
 	 * @return bool True if the table exists, false otherwise.
 	 */
 	public static function has_table( string $table ) {
-		global $wpdb;
-
-		return (bool) $wpdb->get_var(
-			$wpdb->prepare(
+		return (bool) self::$database->get_var(
+			self::$database->prepare(
 				'SHOW TABLES LIKE %s',
-				$wpdb->prefix . $table
+				self::$database->prefix . $table
 			)
 		);
 	}

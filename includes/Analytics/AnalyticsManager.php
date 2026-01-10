@@ -7,7 +7,7 @@
 
 namespace OmniForm\Analytics;
 
-use OmniForm\Plugin\QueryBuilderFactory;
+use OmniForm\Plugin\QueryBuilder;
 
 /**
  * The AnalyticsManager class.
@@ -32,7 +32,7 @@ class AnalyticsManager {
 	 *
 	 * @var QueryBuilder
 	 */
-	protected $query_builder_factory;
+	protected $query_builder;
 
 	/**
 	 * The daily salt.
@@ -44,12 +44,12 @@ class AnalyticsManager {
 	/**
 	 * The AnalyticsManager constructor.
 	 *
-	 * @param QueryBuilderFactory $query_builder_factory The QueryBuilderFactory instance.
-	 * @param string              $daily_salt The daily salt.
+	 * @param QueryBuilder $query_builder The QueryBuilder instance.
+	 * @param string       $daily_salt The daily salt.
 	 */
-	public function __construct( QueryBuilderFactory $query_builder_factory, string $daily_salt ) {
-		$this->query_builder_factory = $query_builder_factory;
-		$this->daily_salt            = $daily_salt;
+	public function __construct( QueryBuilder $query_builder, string $daily_salt ) {
+		$this->query_builder = $query_builder;
+		$this->daily_salt    = $daily_salt;
 	}
 
 	/**
@@ -87,14 +87,14 @@ class AnalyticsManager {
 	 * @param int $event_type The event type.
 	 */
 	protected function record_event( int $form_id, int $event_type ) {
-		$query_builder = $this->query_builder_factory->create();
+		$visitor_id = $this->get_visitor_id();
 
-		$query_builder->table( self::EVENTS_TABLE )
+		$this->query_builder->table( self::EVENTS_TABLE )
 			->insert(
 				array(
 					'form_id'    => $form_id,
 					'event_type' => $event_type,
-					'visitor_id' => $this->get_visitor_id(),
+					'visitor_id' => $visitor_id,
 					'event_time' => current_time( 'mysql' ),
 				)
 			);
@@ -113,22 +113,20 @@ class AnalyticsManager {
 			return $cached_id;
 		}
 
-		$query_builder = $this->query_builder_factory->create();
-
-		$visitor_results = $query_builder->table( self::VISITOR_TABLE )
+		$visitor_results = $this->query_builder->table( self::VISITOR_TABLE )
 			->select( 'visitor_id' )
 			->where( 'visitor_hash', '=', $this->get_visitor_hash() )
 			->get();
 
 		if ( empty( $visitor_results ) ) {
-			$query_builder->table( self::VISITOR_TABLE )
+			$this->query_builder->table( self::VISITOR_TABLE )
 				->insert(
 					array(
 						'visitor_hash' => $this->get_visitor_hash(),
 					)
 				);
 
-			$visitor_id = $query_builder->get_last_insert_id();
+			$visitor_id = $this->query_builder->get_last_insert_id();
 			wp_cache_set( $cache_key, $visitor_id );
 			return $visitor_id;
 		}
@@ -174,9 +172,7 @@ class AnalyticsManager {
 	 * @return int The impression count.
 	 */
 	public function get_impression_count( int $form_id, bool $unique = false ) {
-		$query_builder = $this->query_builder_factory->create();
-
-		return $query_builder->table( self::EVENTS_TABLE )
+		return $this->query_builder->table( self::EVENTS_TABLE )
 			->where( 'form_id', '=', $form_id )
 			->where( 'event_type', '=', EventType::IMPRESSION )
 			->count( $unique ? 'DISTINCT visitor_id' : 'event_id' );
@@ -191,9 +187,7 @@ class AnalyticsManager {
 	 * @return int The submission count.
 	 */
 	public function get_submission_count( int $form_id, bool $unique = false ) {
-		$query_builder = $this->query_builder_factory->create();
-
-		return $query_builder->table( self::EVENTS_TABLE )
+		return $this->query_builder->table( self::EVENTS_TABLE )
 			->where( 'form_id', '=', $form_id )
 			->where( 'event_type', '=', EventType::SUBMISSION_SUCCESS )
 			->count( $unique ? 'DISTINCT visitor_id' : 'event_id' );
@@ -208,9 +202,7 @@ class AnalyticsManager {
 	 * @return int The failed submission count.
 	 */
 	public function get_failed_submission_count( int $form_id, bool $unique = false ) {
-		$query_builder = $this->query_builder_factory->create();
-
-		return $query_builder->table( self::EVENTS_TABLE )
+		return $this->query_builder->table( self::EVENTS_TABLE )
 			->where( 'form_id', '=', $form_id )
 			->where( 'event_type', '=', EventType::SUBMISSION_FAILURE )
 			->count( $unique ? 'DISTINCT visitor_id' : 'event_id' );
@@ -264,9 +256,7 @@ class AnalyticsManager {
 	 * @param int $form_id The form ID.
 	 */
 	public function delete_form_data( int $form_id ) {
-		$query_builder = $this->query_builder_factory->create();
-
-		$query_builder->table( self::EVENTS_TABLE )
+		$this->query_builder->table( self::EVENTS_TABLE )
 			->where( 'form_id', '=', $form_id )
 			->delete();
 	}
