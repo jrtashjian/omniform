@@ -7,6 +7,7 @@
 
 namespace OmniForm\Plugin;
 
+use OmniForm\Dependencies\League\Container\Container;
 use OmniForm\Exceptions\FormNotFoundException;
 use OmniForm\Exceptions\InvalidFormIdException;
 
@@ -15,19 +16,19 @@ use OmniForm\Exceptions\InvalidFormIdException;
  */
 class FormFactory {
 	/**
-	 * The Form object.
+	 * The Container object.
 	 *
-	 * @var Form
+	 * @var Container
 	 */
-	protected $form;
+	protected $container;
 
 	/**
 	 * The FormFactory constructor.
 	 *
-	 * @param Form $form The Form object.
+	 * @param Container $container The Container object.
 	 */
-	public function __construct( Form $form ) {
-		$this->form = $form;
+	public function __construct( Container $container ) {
+		$this->container = $container;
 	}
 
 	/**
@@ -38,9 +39,10 @@ class FormFactory {
 	 * @return Form The newly created Form instance.
 	 */
 	public function create_with_content( $form_content ): Form {
-		$this->form->set_content( $form_content );
+		$form = $this->container->get( Form::class );
+		$form->set_content( $form_content );
 
-		return $this->form;
+		return $form;
 	}
 
 	/**
@@ -72,8 +74,9 @@ class FormFactory {
 			);
 		}
 
-		$this->form->set_post_data( $_form );
+		$form = $this->container->get( Form::class );
+		$form->set_post_data( $_form );
 
-		return $this->form;
+		return $form;
 	}
 }

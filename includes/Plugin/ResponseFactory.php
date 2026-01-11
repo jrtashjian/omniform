@@ -7,6 +7,7 @@
 
 namespace OmniForm\Plugin;
 
+use OmniForm\Dependencies\League\Container\Container;
 use OmniForm\Exceptions\ResponseNotFoundException;
 use OmniForm\Exceptions\InvalidResponseIdException;
 
@@ -15,19 +16,19 @@ use OmniForm\Exceptions\InvalidResponseIdException;
  */
 class ResponseFactory {
 	/**
-	 * The Response object.
+	 * The Container object.
 	 *
-	 * @var Response
+	 * @var Container
 	 */
-	protected $response;
+	protected $container;
 
 	/**
 	 * The ResponseFactory constructor.
 	 *
-	 * @param Response $response The Response object.
+	 * @param Container $container The Container object.
 	 */
-	public function __construct( Response $response ) {
-		$this->response = $response;
+	public function __construct( Container $container ) {
+		$this->container = $container;
 	}
 
 	/**
@@ -38,20 +39,22 @@ class ResponseFactory {
 	 * @return Response The newly created Response instance.
 	 */
 	public function create_with_form( Form $form ): Response {
+		$response = $this->container->get( Response::class );
+
 		$user_ip = filter_var( $_SERVER['REMOTE_ADDR'] ?? '', FILTER_VALIDATE_IP );
 
-		$this->response->set_request_params(
+		$response->set_request_params(
 			array_merge(
 				$form->get_request_params(),
 				array( '_omniform_user_ip' => $user_ip ? $user_ip : '' ),
 			)
 		);
 
-		$this->response->set_fields( $form->get_fields() );
-		$this->response->set_groups( $form->get_groups() );
-		$this->response->set_date( current_time( 'mysql' ) );
+		$response->set_fields( $form->get_fields() );
+		$response->set_groups( $form->get_groups() );
+		$response->set_date( current_time( 'mysql' ) );
 
-		return $this->response;
+		return $response;
 	}
 
 	/**
@@ -83,6 +86,8 @@ class ResponseFactory {
 			);
 		}
 
+		$response = $this->container->get( Response::class );
+
 		$data = json_decode( $_response->post_content, true );
 
 		// Fallback for old responses.
@@ -96,7 +101,7 @@ class ResponseFactory {
 
 		$post_meta = get_post_meta( $response_id );
 
-		$this->response->set_request_params(
+		$response->set_request_params(
 			array_merge(
 				$data['response'],
 				array(
@@ -106,11 +111,11 @@ class ResponseFactory {
 			)
 		);
 
-		$this->response->set_fields( $data['fields'] );
-		$this->response->set_groups( $data['groups'] );
+		$response->set_fields( $data['fields'] );
+		$response->set_groups( $data['groups'] );
 
-		$this->response->set_date( $_response->post_date );
+		$response->set_date( $_response->post_date );
 
-		return $this->response;
+		return $response;
 	}
 }

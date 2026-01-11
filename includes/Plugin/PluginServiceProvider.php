@@ -59,14 +59,14 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 
 		$this->getContainer()
 			->add( FormFactory::class )
-			->addArgument( Form::class );
+			->addArgument( $this->getContainer() );
 
 		$this->getContainer()
 			->add( Response::class );
 
 		$this->getContainer()
 			->add( ResponseFactory::class )
-			->addArgument( Response::class );
+			->addArgument( $this->getContainer() );
 
 		$this->getContainer()
 			->add( QueryBuilder::class )
