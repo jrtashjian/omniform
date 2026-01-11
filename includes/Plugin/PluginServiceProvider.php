@@ -33,9 +33,9 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			wpdb::class,
 			Form::class,
 			FormFactory::class,
+			Response::class,
 			ResponseFactory::class,
 			QueryBuilder::class,
-			QueryBuilderFactory::class,
 		);
 
 		return in_array( $id, $services, true );
@@ -47,59 +47,30 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->add( wpdb::class, $GLOBALS['wpdb'] );
+		$this->getContainer()
+			->add( wpdb::class, $GLOBALS['wpdb'] );
 
-		$this->getContainer()->addShared(
-			Validation\Validator::class,
-			function () {
-				return new Validation\Validator();
-			}
-		);
+		$this->getContainer()
+			->add( Validation\Validator::class );
 
-		$this->getContainer()->addShared(
-			Form::class,
-			function () {
-				return new Form(
-					$this->getContainer()->get( Validation\Validator::class )
-				);
-			}
-		);
+		$this->getContainer()
+			->add( Form::class )
+			->addArgument( Validation\Validator::class );
 
-		$this->getContainer()->add(
-			FormFactory::class,
-			function () {
-				return new FormFactory(
-					$this->getContainer(),
-					$this->getContainer()->get( Validation\Validator::class )
-				);
-			}
-		);
+		$this->getContainer()
+			->add( FormFactory::class )
+			->addArgument( $this->getContainer() );
 
-		$this->getContainer()->add(
-			ResponseFactory::class,
-			function () {
-				return new ResponseFactory(
-					$this->getContainer()
-				);
-			}
-		);
+		$this->getContainer()
+			->add( Response::class );
 
-		$this->getContainer()->add(
-			QueryBuilder::class,
-			function () {
-				return new QueryBuilder(
-					$this->getContainer()->get( wpdb::class )
-				);
-			}
-		);
-		$this->getContainer()->add(
-			QueryBuilderFactory::class,
-			function () {
-				return new QueryBuilderFactory(
-					$this->getContainer()->get( wpdb::class )
-				);
-			}
-		);
+		$this->getContainer()
+			->add( ResponseFactory::class )
+			->addArgument( $this->getContainer() );
+
+		$this->getContainer()
+			->add( QueryBuilder::class )
+			->addArgument( wpdb::class );
 	}
 
 	/**
