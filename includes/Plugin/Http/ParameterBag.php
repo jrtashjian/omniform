@@ -43,12 +43,12 @@ class ParameterBag implements \IteratorAggregate, \Countable {
 	 * Returns a parameter by name.
 	 *
 	 * @param string $key     The parameter name.
-	 * @param mixed  $default The default value if the parameter does not exist.
+	 * @param mixed  $default_value The default value if the parameter does not exist.
 	 *
 	 * @return mixed The parameter value.
 	 */
-	public function get( string $key, $default = null ) {
-		return \array_key_exists( $key, $this->parameters ) ? $this->parameters[ $key ] : $default;
+	public function get( string $key, $default_value = null ) {
+		return \array_key_exists( $key, $this->parameters ) ? $this->parameters[ $key ] : $default_value;
 	}
 
 	/**
