@@ -12,6 +12,7 @@ use OmniForm\Analytics\AnalyticsManager;
 use OmniForm\Dependencies\Respect\Validation;
 use OmniForm\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use OmniForm\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
+use OmniForm\Plugin\Http\Request;
 use WP_Block_Type;
 use WP_Block_Type_Registry;
 use wpdb;
@@ -36,6 +37,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			Response::class,
 			ResponseFactory::class,
 			QueryBuilder::class,
+			Request::class,
 		);
 
 		return in_array( $id, $services, true );
@@ -71,6 +73,14 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		$this->getContainer()
 			->add( QueryBuilder::class )
 			->addArgument( wpdb::class );
+
+		$this->getContainer()->add(
+			Request::class,
+			function () {
+				// phpcs:ignore WordPress.Security.NonceVerification
+				return new Request( $_GET, $_POST, $_FILES, $_SERVER );
+			}
+		);
 	}
 
 	/**
@@ -329,7 +339,9 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					return $query;
 				}
 
-				if ( empty( $_GET['omniform_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+				$request = $this->getContainer()->get( Request::class );
+
+				if ( empty( $request->query->get( 'omniform_id' ) ) ) {
 					return $query;
 				}
 
@@ -338,7 +350,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					array(
 						array(
 							'key'   => '_omniform_id',
-							'value' => (int) $_GET['omniform_id'], // phpcs:ignore WordPress.Security.NonceVerification
+							'value' => (int) $request->query->get( 'omniform_id' ),
 						),
 					)
 				);
@@ -427,9 +439,11 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					return $metadata;
 				}
 
+				$request = $this->getContainer()->get( Request::class );
+
 				if (
-					! empty( $_GET['post'] ) && // phpcs:ignore WordPress.Security.NonceVerification
-					'omniform' === get_post_type( (int) $_GET['post'] ) // phpcs:ignore WordPress.Security.NonceVerification
+					! empty( $request->query->get( 'post' ) ) &&
+					'omniform' === get_post_type( (int) $request->query->get( 'post' ) )
 				) {
 					return $metadata;
 				}
@@ -760,7 +774,9 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 * Dismiss the newsletter notice.
 	 */
 	public function dismiss_newsletter_notice() {
-		if ( isset( $_GET['dismiss_newsletter_notice'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+		$request = $this->getContainer()->get( Request::class );
+
+		if ( $request->query->has( 'dismiss_newsletter_notice' ) ) {
 			/** @var \OmniForm\Application */ // phpcs:ignore
 			$container = $this->getContainer();
 			update_user_meta( get_current_user_id(), 'omniform_dismissed_newsletter_notice', $container->version() );
@@ -788,14 +804,16 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			return;
 		}
 
+		$request = $this->getContainer()->get( Request::class );
+
 		if (
 			'post.php' !== $GLOBALS['pagenow'] ||
-			empty( $_GET['post'] ) // phpcs:ignore WordPress.Security.NonceVerification
+			! $request->query->has( 'post' )
 		) {
 			return;
 		}
 
-		if ( 'omniform' !== get_post_type( (int) $_GET['post'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+		if ( 'omniform' !== get_post_type( (int) $request->query->get( 'post' ) ) ) {
 			return;
 		}
 
