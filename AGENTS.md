@@ -17,11 +17,10 @@ OmniForm is a WordPress plugin that enables users to create and manage forms usi
 - **Watch mode**: `npm run start` (compiles and watches for changes)
 - **Lint JS**: `npm run lint:js` (fix: `npm run lint:js:fix`)
 - **Lint CSS**: `npm run lint:css` (fix: `npm run lint:css:fix`)
-- **Lint PHP**: `npm run lint:php` (prefixed: `npm run lint:php:prefixed`)
-- **Format PHP**: `npm run format:php`
-- **Test PHP**: `npm run test:php` (lint + unit tests)
-- **Unit tests**: `npm run test:unit:php`
-- **Single test**: `wp-env run --env-cwd="wp-content/plugins/${PWD##*/}" tests-wordpress vendor/bin/phpunit -c phpunit.xml.dist --verbose --filter TestClass::testMethod`
+- **Lint PHP**: `composer run lint`
+- **Format PHP**: `composer run format`
+- **Test PHP**: `composer run test`
+- **Single test**: `composer run test -- --filter TestClass::testMethod`
 
 ### Directory Structure
 - **Root level**: Config files, build artifacts, docs.
@@ -44,17 +43,19 @@ OmniForm is a WordPress plugin that enables users to create and manage forms usi
 - **Documentation**: PHPDoc for PHP classes/methods, JSDoc for complex JS functions
 
 ## Testing Instructions
-- Run full test suite with `npm run test:php` before commits.
-- For unit tests, use `npm run test:unit:php`.
+- Run full test suite with `composer run test` before commits.
+- If lint issues occur, run `composer run format` first to auto-fix where possible before manual corrections.
 - Check for PHP compatibility across supported versions.
 
 ## PR Instructions
 - Title format: [Feature/Bug] Brief description
-- Run `npm run lint:php`, `npm run lint:js`, and `npm run test:php` before submitting.
+- Run `composer run lint`, `npm run lint:js`, and `composer run test` before submitting.
+- Ensure all checks pass without errors before submitting.
 
 ## Security Considerations
 - Sanitize all user inputs using WordPress functions like `sanitize_text_field`.
 - Validate form data server-side; never rely solely on client-side validation.
 - Use nonces for form submissions to prevent CSRF.
+- Use prepared statements for database queries to prevent SQL injection.
 - Avoid exposing sensitive data in JS; handle secrets securely.
 - Follow WordPress security best practices for plugin development.
