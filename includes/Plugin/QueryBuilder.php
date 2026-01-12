@@ -229,9 +229,23 @@ class QueryBuilder {
 		$values     = array();
 
 		foreach ( $this->wheres as $index => $where ) {
-			$placeholder  = is_numeric( $where['value'] ) ? '%d' : '%s';
-			$conditions[] = ( $index > 0 ? $where['boolean'] . ' ' : '' ) . '`' . $where['column'] . '` ' . $where['operator'] . ' ' . $placeholder;
-			$values[]     = $where['value'];
+			$value_array  = is_array( $where['value'] ) ? $where['value'] : array( $where['value'] );
+			$placeholders = array_map(
+				function ( $v ) {
+					return is_numeric( $v ) ? '%d' : '%s';
+				},
+				$value_array
+			);
+
+			if ( in_array( strtoupper( $where['operator'] ), array( 'IN', 'NOT IN' ), true ) ) {
+				$clause = $where['operator'] . ' (' . implode( ', ', $placeholders ) . ')';
+				$values = array_merge( $values, $value_array );
+			} else {
+				$clause   = $where['operator'] . ' ' . $placeholders[0];
+				$values[] = $value_array[0];
+			}
+
+			$conditions[] = ( $index > 0 ? $where['boolean'] . ' ' : '' ) . '`' . $where['column'] . '` ' . $clause;
 		}
 
 		return $this->database->prepare( implode( ' ', $conditions ), $values ); // phpcs:ignore WordPress.DB

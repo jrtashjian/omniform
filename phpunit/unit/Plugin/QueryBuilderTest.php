@@ -91,6 +91,34 @@ class QueryBuilderTest extends TestCase {
 	}
 
 	/**
+	 * Test select query with IN operator.
+	 */
+	public function testSelectWithWhereIn() {
+		$this->query_builder->select( array( 'id', 'name' ) )->table( 'users' )->where( 'status', 'IN', array( 'active', 'pending' ) );
+
+		$this->wpdb->shouldReceive( 'prepare' )->once()->with( '`status` IN (%s, %s)', array( 'active', 'pending' ) )->andReturn( "`status` IN ('active', 'pending')" );
+		$this->wpdb->shouldReceive( 'get_results' )->once()->with( "SELECT id, name FROM `wp_users` WHERE `status` IN ('active', 'pending')" )->andReturn( array() );
+
+		$result = $this->query_builder->get();
+
+		$this->assertEquals( array(), $result );
+	}
+
+	/**
+	 * Test select query with NOT IN operator.
+	 */
+	public function testSelectWithWhereNotIn() {
+		$this->query_builder->select( array( 'id', 'name' ) )->table( 'users' )->where( 'status', 'NOT IN', array( 'inactive', 'banned' ) );
+
+		$this->wpdb->shouldReceive( 'prepare' )->once()->with( '`status` NOT IN (%s, %s)', array( 'inactive', 'banned' ) )->andReturn( "`status` NOT IN ('inactive', 'banned')" );
+		$this->wpdb->shouldReceive( 'get_results' )->once()->with( "SELECT id, name FROM `wp_users` WHERE `status` NOT IN ('inactive', 'banned')" )->andReturn( array() );
+
+		$result = $this->query_builder->get();
+
+		$this->assertEquals( array(), $result );
+	}
+
+	/**
 	 * Test select query with order by.
 	 */
 	public function testSelectWithOrderBy() {
