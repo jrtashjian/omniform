@@ -9,6 +9,7 @@ namespace OmniForm\Analytics;
 
 use OmniForm\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use OmniForm\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
+use OmniForm\Plugin\Http\Request;
 use OmniForm\Plugin\QueryBuilder;
 use OmniForm\Plugin\Schema;
 use wpdb;
@@ -45,15 +46,11 @@ class AnalyticsServiceProvider extends AbstractServiceProvider implements Bootab
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->add(
-			AnalyticsManager::class,
-			function () {
-				return new AnalyticsManager(
-					$this->getContainer()->get( QueryBuilder::class ),
-					$this->generate_daily_salt()
-				);
-			}
-		);
+		$this->getContainer()
+			->add( AnalyticsManager::class )
+			->addArgument( QueryBuilder::class )
+			->addArgument( Request::class )
+			->addArgument( $this->generate_daily_salt() );
 	}
 
 	/**

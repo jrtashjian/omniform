@@ -7,6 +7,7 @@
 
 namespace OmniForm\Analytics;
 
+use OmniForm\Plugin\Http\Request;
 use OmniForm\Plugin\QueryBuilder;
 
 /**
@@ -35,6 +36,13 @@ class AnalyticsManager {
 	protected $query_builder;
 
 	/**
+	 * The Request instance.
+	 *
+	 * @var Request
+	 */
+	protected $request;
+
+	/**
 	 * The daily salt.
 	 *
 	 * @var string
@@ -45,30 +53,13 @@ class AnalyticsManager {
 	 * The AnalyticsManager constructor.
 	 *
 	 * @param QueryBuilder $query_builder The QueryBuilder instance.
+	 * @param Request      $request The Request instance.
 	 * @param string       $daily_salt The daily salt.
 	 */
-	public function __construct( QueryBuilder $query_builder, string $daily_salt ) {
+	public function __construct( QueryBuilder $query_builder, Request $request, string $daily_salt ) {
 		$this->query_builder = $query_builder;
+		$this->request       = $request;
 		$this->daily_salt    = $daily_salt;
-	}
-
-	/**
-	 * Get the user agent.
-	 *
-	 * @return string The user agent.
-	 */
-	protected function get_user_agent() {
-		return isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( $_SERVER['HTTP_USER_AGENT'] ) : '';
-	}
-
-	/**
-	 * Get the IP address.
-	 *
-	 * @return string The IP address.
-	 */
-	protected function get_ip_address() {
-		$ip = filter_var( $_SERVER['REMOTE_ADDR'] ?? '', FILTER_VALIDATE_IP );
-		return $ip ? $ip : '';
 	}
 
 	/**
@@ -77,7 +68,7 @@ class AnalyticsManager {
 	 * @return string The visitor hash.
 	 */
 	protected function get_visitor_hash() {
-		return hash( 'sha256', $this->daily_salt . $this->get_ip_address() . $this->get_user_agent() );
+		return hash( 'sha256', $this->daily_salt . $this->request->get_ip_address() . $this->request->get_user_agent() );
 	}
 
 	/**

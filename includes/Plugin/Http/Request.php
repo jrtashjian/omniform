@@ -17,28 +17,28 @@ class Request {
 	/**
 	 * The $_GET parameters.
 	 *
-	 * @var array
+	 * @var ParameterBag
 	 */
 	public ParameterBag $query;
 
 	/**
 	 * The $_POST parameters.
 	 *
-	 * @var array
+	 * @var ParameterBag
 	 */
 	public ParameterBag $request;
 
 	/**
 	 * The $_FILES parameters.
 	 *
-	 * @var array
+	 * @var ParameterBag
 	 */
 	public ParameterBag $files;
 
 	/**
 	 * The $_SERVER parameters.
 	 *
-	 * @var array
+	 * @var ParameterBag
 	 */
 	public ParameterBag $server;
 
@@ -55,5 +55,24 @@ class Request {
 		$this->request = new ParameterBag( $request );
 		$this->files   = new ParameterBag( $files );
 		$this->server  = new ParameterBag( $server );
+	}
+
+	/**
+	 * Get the User-Agent string.
+	 *
+	 * @return string The User-Agent string.
+	 */
+	public function get_user_agent() {
+		return sanitize_text_field( $this->server->get( 'HTTP_USER_AGENT', '' ) );
+	}
+
+	/**
+	 * Get the IP address.
+	 *
+	 * @return string The IP address.
+	 */
+	public function get_ip_address() {
+		$ip = filter_var( $this->server->get( 'REMOTE_ADDR', '' ), FILTER_VALIDATE_IP );
+		return $ip ? $ip : '';
 	}
 }
