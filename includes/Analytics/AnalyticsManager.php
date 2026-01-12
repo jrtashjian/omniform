@@ -222,23 +222,15 @@ class AnalyticsManager {
 	 * @return int The count of recent submissions.
 	 */
 	public function get_recent_submissions_count( int $form_id, int $seconds = 3600 ) {
-		global $wpdb;
-
 		$visitor_id     = $this->get_visitor_id();
 		$time_threshold = date_i18n( 'Y-m-d H:i:s', time() - $seconds );
-		$table          = $wpdb->prefix . self::EVENTS_TABLE;
 
-		return (int) $wpdb->get_var(
-			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name is safe.
-				"SELECT COUNT(event_id) FROM {$table} WHERE form_id = %d AND visitor_id = %d AND event_time >= %s AND event_type IN (%d, %d)",
-				$form_id,
-				$visitor_id,
-				$time_threshold,
-				EventType::SUBMISSION_SUCCESS,
-				EventType::SUBMISSION_FAILURE
-			)
-		);
+		return (int) $this->query_builder->table( self::EVENTS_TABLE )
+			->where( 'form_id', '=', $form_id )
+			->where( 'visitor_id', '=', $visitor_id )
+			->where( 'event_time', '>=', $time_threshold )
+			->where( 'event_type', 'IN', array( EventType::SUBMISSION_SUCCESS, EventType::SUBMISSION_FAILURE ) )
+			->count( 'event_id' );
 	}
 
 	/**
