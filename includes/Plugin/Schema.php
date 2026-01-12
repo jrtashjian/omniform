@@ -40,7 +40,10 @@ class Schema {
 		$definition      = implode( ', ', $definition );
 		$charset_collate = self::$database->get_charset_collate();
 
-		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		if ( ! function_exists( 'dbDelta' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		}
+
 		dbDelta( "CREATE TABLE {$table} ({$definition}) $charset_collate;" );
 	}
 
