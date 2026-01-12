@@ -73,6 +73,18 @@ class QueryBuilder {
 	}
 
 	/**
+	 * Reset query-specific state to start a fresh query.
+	 */
+	protected function reset() {
+		$this->selects   = array();
+		$this->table     = null;
+		$this->wheres    = array();
+		$this->order_bys = array();
+		$this->group_bys = array();
+		$this->limit     = null;
+	}
+
+	/**
 	 * Set the columns to select.
 	 *
 	 * @param array|string $columns The columns to select.
@@ -93,6 +105,11 @@ class QueryBuilder {
 	 * @return QueryBuilder
 	 */
 	public function table( $table ) {
+		if ( null !== $this->table ) {
+			// Starting a new query — clear previous query-specific state.
+			$this->reset();
+		}
+
 		$this->table = $table;
 
 		return $this;

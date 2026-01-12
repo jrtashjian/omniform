@@ -130,6 +130,42 @@ class QueryBuilderTest extends TestCase {
 	}
 
 	/**
+	 * Test that starting a new query via table() resets previous clauses.
+	 */
+	public function testResetBetweenQueries() {
+		$this->query_builder->select( array( 'id', 'name' ) )->table( 'users' )->where( 'status', '=', 'active' )->order_by( 'name' )->limit( 10 );
+
+		$this->wpdb->shouldReceive( 'prepare' )->once()->with( '`status` = %s', array( 'active' ) )->andReturn( "`status` = 'active'" );
+		$this->wpdb->shouldReceive( 'get_results' )->once()->with( "SELECT id, name FROM `wp_users` WHERE `status` = 'active' ORDER BY `name` ASC LIMIT 10" )->andReturn( array() );
+
+		$result1 = $this->query_builder->get();
+
+		$this->assertEquals( array(), $result1 );
+
+		// Start a new query on the same builder; call table() first so reset() runs, then select().
+		$this->query_builder->table( 'posts' )->select( array( 'category' ) );
+
+		$this->wpdb->shouldReceive( 'get_results' )->once()->with( 'SELECT category FROM `wp_posts`' )->andReturn(
+			array(
+				(object) array(
+					'category' => 'news',
+				),
+			)
+		);
+
+		$result2 = $this->query_builder->get();
+
+		$this->assertEquals(
+			array(
+				(object) array(
+					'category' => 'news',
+				),
+			),
+			$result2
+		);
+	}
+
+	/**
 	 * Test count query.
 	 */
 	public function testCountQuery() {
