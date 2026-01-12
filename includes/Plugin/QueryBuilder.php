@@ -8,6 +8,7 @@
 namespace OmniForm\Plugin;
 
 use wpdb;
+use OmniForm\Exceptions\QueryBuilderException;
 
 /**
  * The QueryBuilder class.
@@ -260,10 +261,11 @@ class QueryBuilder {
 	 * @param array $data The data to update.
 	 *
 	 * @return int|bool The number of rows updated or false on failure.
+	 * @throws QueryBuilderException If no WHERE clause is set.
 	 */
 	public function update( array $data ) {
 		if ( empty( $this->wheres ) ) {
-			return false; // Prevent updating all rows if no where clause is set.
+			throw new QueryBuilderException( 'Cannot update records without a WHERE clause to prevent updating all rows.' );
 		}
 
 		return $this->database->update( $this->database->prefix . $this->table, $data, $this->extract_where_conditions() );
@@ -273,10 +275,11 @@ class QueryBuilder {
 	 * Delete records from the table.
 	 *
 	 * @return int|bool The number of rows deleted or false on failure.
+	 * @throws QueryBuilderException If no WHERE clause is set.
 	 */
 	public function delete() {
 		if ( empty( $this->wheres ) ) {
-			return false; // Prevent deleting all rows if no where clause is set.
+			throw new QueryBuilderException( 'Cannot delete records without a WHERE clause to prevent deleting all rows.' );
 		}
 
 		return $this->database->delete( $this->database->prefix . $this->table, $this->extract_where_conditions() );
