@@ -104,6 +104,10 @@ class OAuthManager {
 
 		if ( ! $code_verifier ) {
 			wp_die( esc_html__( 'OAuth code verifier not found. Please try again.', 'omniform' ) );
+			if ( defined( 'PHPUNIT_TESTING' ) && constant( 'PHPUNIT_TESTING' ) ) {
+				return;
+			}
+			exit;
 		}
 
 		delete_transient( 'omniform_oauth_code_verifier' );
@@ -115,10 +119,17 @@ class OAuthManager {
 			$this->token_storage->set_refresh_token( $tokens['refresh_token'] );
 		} else {
 			wp_die( esc_html__( 'Failed to exchange code for tokens.', 'omniform' ) );
+			if ( defined( 'PHPUNIT_TESTING' ) && constant( 'PHPUNIT_TESTING' ) ) {
+				return;
+			}
+			exit;
 		}
 
 		// Redirect back to the admin page.
 		wp_safe_redirect( admin_url( 'admin.php?page=omniform' ) );
+		if ( defined( 'PHPUNIT_TESTING' ) && constant( 'PHPUNIT_TESTING' ) ) {
+			return;
+		}
 		exit;
 	}
 

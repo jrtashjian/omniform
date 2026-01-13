@@ -8,6 +8,8 @@
 // Require composer dependencies.
 require_once dirname( __DIR__ ) . '/vendor/autoload.php';
 
+define( 'PHPUNIT_TESTING', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+
 // Initialize WP_Mock.
 WP_Mock::bootstrap();
 
