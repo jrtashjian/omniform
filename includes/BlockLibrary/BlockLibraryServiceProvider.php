@@ -94,6 +94,9 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 			Blocks\ConditionalGroup::class,
 		);
 
+		/** @var \OmniForm\Application */ // phpcs:ignore
+		$container = $this->getContainer();
+
 		foreach ( $blocks as $block ) {
 			/** @var Blocks\BaseBlock */ // phpcs:ignore
 			$block_object = new $block();
@@ -130,16 +133,13 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 			wp_reset_postdata();
 
 			register_block_type(
-				$block_object->block_type_metadata(),
+				$container->base_path( '/build/block-library/' . $block_object->block_type_name() ),
 				array(
 					'render_callback' => array( $block_object, 'render_block' ),
 					'variations'      => $variations,
 				)
 			);
 		}
-
-		/** @var \OmniForm\Application */ // phpcs:ignore
-		$container = $this->getContainer();
 
 		wp_add_inline_script(
 			'omniform-form-editor-script',

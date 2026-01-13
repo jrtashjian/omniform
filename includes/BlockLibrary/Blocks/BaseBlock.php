@@ -50,20 +50,11 @@ abstract class BaseBlock implements FormBlockInterface {
 	);
 
 	/**
-	 * The path to the JSON file with metadata definition for the block.
-	 *
-	 * @return string path to the JSON file with metadata definition for the block.
-	 */
-	public function block_type_metadata() {
-		return omniform()->base_path( '/build/block-library/' . $this->block_type_name() );
-	}
-
-	/**
 	 * The block type's name
 	 *
 	 * @return string
 	 */
-	protected function block_type_name() {
+	public function block_type_name() {
 		$calling_class = substr( strrchr( static::class, '\\' ), 1 );
 		return strtolower( preg_replace( '/([A-Z])/', '-$0', lcfirst( $calling_class ) ) );
 	}

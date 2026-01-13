@@ -13,13 +13,6 @@ namespace OmniForm\BlockLibrary\Blocks;
 interface FormBlockInterface {
 
 	/**
-	 * The path to the JSON file with metadata definition for the block.
-	 *
-	 * @return string path to the JSON file with metadata definition for the block.
-	 */
-	public function block_type_metadata();
-
-	/**
 	 * Renders the block on the server.
 	 *
 	 * @param array    $attributes Block attributes.
