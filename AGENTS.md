@@ -17,10 +17,12 @@ OmniForm is a WordPress plugin that enables users to create and manage forms usi
 - **Watch mode**: `npm run start` (compiles and watches for changes)
 - **Lint JS**: `npm run lint:js` (fix: `npm run lint:js:fix`)
 - **Lint CSS**: `npm run lint:css` (fix: `npm run lint:css:fix`)
-- **Lint PHP**: `composer run lint`
-- **Format PHP**: `composer run format`
-- **Test PHP**: `composer run test`
-- **Single test**: `composer run test -- --filter TestClass::testMethod`
+- **Lint PHP files**: `composer run lint`
+- **Lint Single PHP file**: `composer run lint ./path/to/file.php`
+- **Format PHP files**: `composer run format`
+- **Format Single PHP file**: `composer run format ./path/to/file.php`
+- **Test PHP files**: `composer run test`
+- **Test Single PHP file**: `composer run test ./path/to/file.php`
 
 ### Directory Structure
 - **Root level**: Config files, build artifacts, docs.
