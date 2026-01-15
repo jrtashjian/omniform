@@ -173,7 +173,7 @@ class ResponseFactoryTest extends BaseTestCase {
 		$_response               = Mockery::mock( 'WP_Post' );
 		$_response->ID           = $response_id;
 		$_response->post_type    = 'omniform_response';
-		$_response->post_content = json_encode(
+		$_response->post_content = json_encode( // phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode
 			array(
 				'response' => array( 'field1' => 'value1' ),
 				'fields'   => array( 'field1' => 'Field 1' ),
@@ -236,7 +236,7 @@ class ResponseFactoryTest extends BaseTestCase {
 		$_response               = Mockery::mock( 'WP_Post' );
 		$_response->ID           = $response_id;
 		$_response->post_type    = 'omniform_response';
-		$_response->post_content = json_encode( array( 'field1' => 'value1' ) );
+		$_response->post_content = json_encode( array( 'field1' => 'value1' ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode
 		$_response->post_date    = '2023-01-01 12:00:00';
 		$post_meta               = array(
 			'_wp_http_referer'  => array( 'http://example.com' ),
