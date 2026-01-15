@@ -41,12 +41,6 @@ class LabelTest extends BaseTestCase {
 
 		$this->wp_block_mock          = $this->createMock( \stdClass::class );
 		$this->wp_block_mock->context = array();
-
-		WP_Mock::userFunction( 'sanitize_html_class' )->andReturnArg( 0 );
-		WP_Mock::userFunction( 'wp_strip_all_tags' )->andReturnArg( 0 );
-		WP_Mock::userFunction( 'esc_attr' )->andReturnArg( 0 );
-		WP_Mock::userFunction( 'wp_kses' )->andReturnArg( 0 );
-		WP_Mock::userFunction( 'esc_attr__' )->andReturnArg( 0 );
 	}
 
 	/**
