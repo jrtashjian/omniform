@@ -41,17 +41,6 @@ class FieldsetTest extends BaseTestCase {
 
 		$this->wp_block_mock = $this->createMock( \stdClass::class );
 
-		WP_Mock::userFunction( 'sanitize_html_class' )->andReturnArg( 0 );
-		WP_Mock::userFunction( 'wp_strip_all_tags' )->andReturnArg( 0 );
-		WP_Mock::userFunction( 'esc_attr' )
-			->andReturnUsing(
-				function ( $value ) {
-					return $value ?? '';
-				}
-			);
-		WP_Mock::userFunction( 'wp_kses' )->andReturnArg( 0 );
-		WP_Mock::userFunction( 'esc_attr__' )->with( 'required', 'omniform' )->andReturn( 'required' );
-
 		// Mock omniform() function and its dependencies.
 		$form_mock = Mockery::mock();
 		$form_mock->shouldReceive( 'get_required_label' )->andReturn( '*' );
