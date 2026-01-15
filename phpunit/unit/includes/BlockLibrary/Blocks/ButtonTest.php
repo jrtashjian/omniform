@@ -41,11 +41,7 @@ class ButtonTest extends BaseTestCase {
 
 		$this->wp_block_mock = $this->createMock( \stdClass::class );
 
-		WP_Mock::userFunction( 'sanitize_html_class' )->andReturnArg( 0 );
-		WP_Mock::userFunction( 'wp_strip_all_tags' )->andReturnArg( 0 );
-		WP_Mock::userFunction( 'esc_attr' )->andReturnUsing( function( $value ) { return $value ?? ''; } );
 		WP_Mock::userFunction( 'wp_theme_get_element_class_name' )->with( 'button' )->andReturn( 'wp-element-button' );
-		WP_Mock::userFunction( 'wp_kses' )->andReturnArg( 0 );
 
 		// Mock WP_Block_Supports static method using Mockery.
 		$block_supports_mock = Mockery::mock( 'alias:WP_Block_Supports' );
@@ -65,7 +61,7 @@ class ButtonTest extends BaseTestCase {
 			$this->wp_block_mock
 		);
 
-		$this->assertEquals( '<button class="wp-element-button" type="">Submit</button>', $result );
+		$this->assertEquals( '<button class="wp-element-button" type="button">Submit</button>', $result );
 	}
 
 	/**
