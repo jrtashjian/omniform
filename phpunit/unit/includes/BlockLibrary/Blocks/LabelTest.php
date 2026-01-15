@@ -62,8 +62,6 @@ class LabelTest extends BaseTestCase {
 	public function testRenderWithFieldLabel() {
 		$this->wp_block_mock->context = array( 'omniform/fieldLabel' => 'Test Label' );
 
-		WP_Mock::userFunction( 'get_block_wrapper_attributes' )->andReturn( '' );
-
 		$result = $this->block->render_block(
 			array(),
 			'',
@@ -82,8 +80,6 @@ class LabelTest extends BaseTestCase {
 			'omniform/fieldName'  => 'test-field',
 		);
 
-		WP_Mock::userFunction( 'get_block_wrapper_attributes' )->andReturn( '' );
-
 		$result = $this->block->render_block(
 			array(),
 			'',
@@ -98,8 +94,6 @@ class LabelTest extends BaseTestCase {
 	 */
 	public function testRenderHidden() {
 		$this->wp_block_mock->context = array( 'omniform/fieldLabel' => 'Test Label' );
-
-		WP_Mock::userFunction( 'get_block_wrapper_attributes' )->andReturn( 'class="screen-reader-text"' );
 
 		$result = $this->block->render_block(
 			array( 'isHidden' => true ),
@@ -118,8 +112,6 @@ class LabelTest extends BaseTestCase {
 			'omniform/fieldLabel'      => 'Test Label',
 			'omniform/fieldIsRequired' => true,
 		);
-
-		WP_Mock::userFunction( 'get_block_wrapper_attributes' )->andReturn( '' );
 
 		// Mock the form get_required_label.
 		$form_mock = Mockery::mock( \OmniForm\Plugin\Form::class );
@@ -146,8 +138,6 @@ class LabelTest extends BaseTestCase {
 			'omniform/fieldLabel'      => 'Test Label',
 			'omniform/fieldIsRequired' => true,
 		);
-
-		WP_Mock::userFunction( 'get_block_wrapper_attributes' )->andReturn( '' );
 
 		// Mock the form get_required_label.
 		$form_mock = Mockery::mock( \OmniForm\Plugin\Form::class );

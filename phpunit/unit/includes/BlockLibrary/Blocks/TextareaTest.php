@@ -9,7 +9,6 @@ namespace OmniForm\Tests\Unit\BlockLibrary\Blocks;
 
 use OmniForm\BlockLibrary\Blocks\Textarea;
 use OmniForm\Tests\Unit\BaseTestCase;
-use WP_Mock;
 use Mockery;
 
 /**
@@ -69,8 +68,6 @@ class TextareaTest extends BaseTestCase {
 	public function testRenderBlockWithValue() {
 		$this->wp_block_mock->context = array( 'omniform/fieldLabel' => 'Test Label' );
 
-		WP_Mock::userFunction( 'get_block_wrapper_attributes' )->andReturn( 'id="Test-Label" name="Test-Label" value="Textarea content" aria-label="Test Label"' );
-
 		$result = $this->block->render_block(
 			array( 'fieldValue' => 'Textarea content' ),
 			'',
@@ -86,8 +83,6 @@ class TextareaTest extends BaseTestCase {
 	public function testRenderBlockPlaceholder() {
 		$this->wp_block_mock->context = array( 'omniform/fieldLabel' => 'Test Label' );
 
-		WP_Mock::userFunction( 'get_block_wrapper_attributes' )->andReturn( 'id="Test-Label" name="Test-Label" placeholder="Enter text" aria-label="Test Label"' );
-
 		$result = $this->block->render_block(
 			array( 'fieldPlaceholder' => 'Enter text' ),
 			'',
@@ -102,8 +97,6 @@ class TextareaTest extends BaseTestCase {
 	 */
 	public function testRenderBlockAriaLabel() {
 		$this->wp_block_mock->context = array( 'omniform/fieldLabel' => 'Test Label' );
-
-		WP_Mock::userFunction( 'get_block_wrapper_attributes' )->andReturn( 'id="Test-Label" name="Test-Label" aria-label="Test Label"' );
 
 		$result = $this->block->render_block(
 			array(),
