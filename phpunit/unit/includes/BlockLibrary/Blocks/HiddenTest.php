@@ -9,7 +9,6 @@ namespace OmniForm\Tests\Unit\BlockLibrary\Blocks;
 
 use OmniForm\BlockLibrary\Blocks\Hidden;
 use OmniForm\Tests\Unit\BaseTestCase;
-use WP_Mock;
 
 /**
  * Tests the Hidden block.
@@ -30,9 +29,6 @@ class HiddenTest extends BaseTestCase {
 		parent::setUp();
 
 		$this->block = new Hidden();
-
-		WP_Mock::userFunction( 'sanitize_html_class' )->andReturnArg( 0 );
-		WP_Mock::userFunction( 'esc_attr' )->andReturnArg( 0 );
 	}
 
 	/**
