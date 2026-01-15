@@ -10,7 +10,6 @@ namespace OmniForm\Tests\Unit\BlockLibrary\Blocks;
 use Mockery;
 use OmniForm\BlockLibrary\Blocks\SelectOption;
 use OmniForm\Tests\Unit\BaseTestCase;
-use WP_Mock;
 
 /**
  * Tests the SelectOption block.
@@ -41,9 +40,6 @@ class SelectOptionTest extends BaseTestCase {
 
 		$this->wp_block_mock          = $this->createMock( \stdClass::class );
 		$this->wp_block_mock->context = array( 'omniform/fieldLabel' => 'Test Option' );
-
-		WP_Mock::userFunction( 'sanitize_html_class' )->andReturnArg( 0 );
-		WP_Mock::userFunction( 'wp_strip_all_tags' )->andReturnArg( 0 );
 
 		// Mock WP_Block_Supports static method using Mockery.
 		$block_supports_mock = Mockery::mock( 'alias:WP_Block_Supports' );
