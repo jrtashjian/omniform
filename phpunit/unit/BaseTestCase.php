@@ -35,5 +35,24 @@ class BaseTestCase extends WP_Mock_TestCase {
 				return implode( ' ', $parts );
 			}
 		);
+
+		WP_Mock::userFunction( 'sanitize_html_class' )->andReturnUsing(
+			function ( $classname ) {
+				// simplified re-implementation of sanitize_html_class.
+				$sanitized = preg_replace( '|%[a-fA-F0-9][a-fA-F0-9]|', '', $classname );
+				$sanitized = preg_replace( '/[^A-Za-z0-9_-]/', '', $sanitized );
+				return $sanitized;
+			}
+		);
+
+		WP_Mock::userFunction( 'wp_strip_all_tags' )->andReturnUsing(
+			function ( $text ) {
+				$text = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', '', $text );
+				$text = strip_tags( $text ); // phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags
+				return trim( $text );
+			}
+		);
+
+		WP_Mock::userFunction( 'wp_kses' )->andReturnArg( 0 );
 	}
 }
