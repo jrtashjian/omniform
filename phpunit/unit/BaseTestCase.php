@@ -27,7 +27,7 @@ class BaseTestCase extends WP_Mock_TestCase {
 		);
 
 		WP_Mock::userFunction( 'get_block_wrapper_attributes' )->andReturnUsing(
-			function ( $attrs ) {
+			function ( $attrs = array() ) {
 				$parts = array();
 				foreach ( $attrs as $key => $value ) {
 					$parts[] = $key . '="' . $value . '"';
