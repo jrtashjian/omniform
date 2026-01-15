@@ -42,29 +42,6 @@ class TextareaTest extends BaseTestCase {
 		$this->wp_block_mock          = $this->createMock( \stdClass::class );
 		$this->wp_block_mock->context = array();
 
-		WP_Mock::userFunction( 'esc_textarea' )->andReturnUsing(
-			function ( $arg ) {
-
-				return is_null( $arg ) ? '' : $arg;
-			}
-		);
-
-		WP_Mock::userFunction( 'wp_strip_all_tags' )->andReturnUsing(
-			function ( $arg ) {
-
-				return is_null( $arg ) ? '' : $arg;
-			}
-		);
-
-		WP_Mock::userFunction( 'esc_attr' )->andReturnUsing(
-			function ( $arg ) {
-
-				return is_null( $arg ) ? '' : $arg;
-			}
-		);
-
-		WP_Mock::userFunction( 'sanitize_html_class' )->andReturnArg( 0 );
-
 		// Mock WP_Block_Supports static method using Mockery.
 		$block_supports_mock = Mockery::mock( 'alias:WP_Block_Supports' );
 		$block_supports_mock->shouldReceive( 'get_instance' )
