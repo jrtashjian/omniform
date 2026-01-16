@@ -9,7 +9,6 @@ namespace OmniForm\BlockLibrary;
 
 use OmniForm\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use OmniForm\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
-use WP_Query;
 use WP_Theme_JSON_Data;
 
 /**
