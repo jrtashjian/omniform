@@ -24,7 +24,7 @@ class TurnstileRule extends AbstractRule {
 		$secret = get_option( 'omniform_turnstile_secret_key' );
 
 		if ( ! $secret ) {
-			return true;
+			return false;
 		}
 
 		$response = wp_remote_post(

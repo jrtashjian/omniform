@@ -111,6 +111,18 @@ class FormsController extends \WP_REST_Posts_Controller {
 			);
 		}
 
+		// Rate limit: Allow up to 10 submissions per hour, per unique visitor, per individual form.
+		$analytics_manager  = omniform()->get( \OmniForm\Analytics\AnalyticsManager::class );
+		$recent_submissions = $analytics_manager->get_recent_submissions_count( $form->get_id(), 3600 );
+
+		if ( $recent_submissions >= 10 ) {
+			return new \WP_Error(
+				'rate_limit_exceeded',
+				esc_html__( 'Too many form submissions. Please try again later.', 'omniform' ),
+				array( 'status' => 429 )
+			);
+		}
+
 		// Validate the form.
 		$form->set_request_params( $request->get_params() );
 		$errors = $form->validate();
@@ -134,6 +146,8 @@ class FormsController extends \WP_REST_Posts_Controller {
 		/** @var \OmniForm\Plugin\Response */ // phpcs:ignore
 		$response = omniform()->get( ResponseFactory::class )->create_with_form( $form );
 
+		$user_ip = filter_var( $_SERVER['REMOTE_ADDR'] ?? '', FILTER_VALIDATE_IP );
+
 		$response_id = wp_insert_post(
 			array(
 				'post_title'   => wp_generate_uuid4(),
@@ -143,7 +157,7 @@ class FormsController extends \WP_REST_Posts_Controller {
 				'post_parent'  => $form->get_id(),
 				'meta_input'   => array(
 					'_omniform_id'      => $form->get_id(),
-					'_omniform_user_ip' => sanitize_text_field( $_SERVER['REMOTE_ADDR'] ),
+					'_omniform_user_ip' => $user_ip ? $user_ip : '',
 					'_wp_http_referer'  => sanitize_url( $request->get_param( '_wp_http_referer' ) ),
 				),
 			),
@@ -152,6 +166,10 @@ class FormsController extends \WP_REST_Posts_Controller {
 
 		if ( is_wp_error( $response_id ) ) {
 			return rest_ensure_response( $response_id );
+		}
+
+		if ( $form->is_published() ) {
+			omniform()->get( \OmniForm\Analytics\AnalyticsManager::class )->record_submission_success( $form->get_id() );
 		}
 
 		/**

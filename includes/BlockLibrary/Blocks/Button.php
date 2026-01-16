@@ -26,7 +26,7 @@ class Button extends BaseBlock {
 			get_block_wrapper_attributes(
 				array(
 					'class' => wp_theme_get_element_class_name( 'button' ),
-					'type'  => esc_attr( $this->get_block_attribute( 'buttonType' ) ),
+					'type'  => esc_attr( $this->get_block_attribute( 'buttonType' ) ?? 'button' ),
 				)
 			),
 			wp_kses( $this->get_block_attribute( 'buttonLabel' ), $this->allowed_html_for_labels )

@@ -10,7 +10,7 @@
  * Author URI: https://jrtashjian.com
  * Text Domain: omniform
  *
- * Copyright 2022-2025 OmniForm
+ * Copyright 2022-2026 OmniForm
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -55,6 +55,7 @@ omniform()->addServiceProvider( new \OmniForm\Plugin\PluginServiceProvider() );
 omniform()->addServiceProvider( new \OmniForm\FormTypes\FormTypesServiceProvider() );
 omniform()->addServiceProvider( new \OmniForm\Analytics\AnalyticsServiceProvider() );
 omniform()->addServiceProvider( new \OmniForm\BlockLibrary\BlockLibraryServiceProvider() );
+omniform()->addServiceProvider( new \OmniForm\OAuth\OAuthServiceProvider() );
 
 register_activation_hook( __FILE__, array( omniform(), 'activation' ) );
 register_deactivation_hook( __FILE__, array( omniform(), 'deactivation' ) );

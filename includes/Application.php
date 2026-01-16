@@ -93,6 +93,9 @@ class Application extends Container {
 	 * @return string
 	 */
 	public function base_path( $path = '' ) {
+		if ( ! isset( $this->base_path ) ) {
+			return '';
+		}
 		return rtrim( $this->base_path, DIRECTORY_SEPARATOR ) . ( '' !== $path ? DIRECTORY_SEPARATOR . ltrim( $path, DIRECTORY_SEPARATOR ) : '' );
 	}
 
@@ -104,6 +107,9 @@ class Application extends Container {
 	 * @return string
 	 */
 	public function base_url( $path = '' ) {
+		if ( ! isset( $this->base_url ) ) {
+			return '';
+		}
 		return rtrim( $this->base_url, '/' ) . ( '' !== $path ? '/' . ltrim( $path, '/' ) : '' );
 	}
 
