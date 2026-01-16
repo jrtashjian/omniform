@@ -101,14 +101,9 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 			/** @var Blocks\BaseBlock */ // phpcs:ignore
 			$block_object = new $block();
 
-			$variations = array();
-
 			register_block_type(
 				$container->base_path( '/build/block-library/' . $block_object->block_type_name() ),
-				array(
-					'render_callback' => array( $block_object, 'render_block' ),
-					'variations'      => $variations,
-				)
+				array( 'render_callback' => array( $block_object, 'render_block' ) )
 			);
 		}
 
