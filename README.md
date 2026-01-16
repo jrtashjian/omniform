@@ -17,15 +17,15 @@ To do an automatic install of OmniForm, log in to your WordPress dashboard, navi
 
 In the search field type “OmniForm,” then click “Search Plugins.” Once you’ve found us, you can click “Install Now” and WordPress will take it from there.
 
-**WP CLI Installation**
+**Manual installation**
+
+Manual installation method requires [downloading the OmniForm plugin](https://wordpress.org/plugins/omniform) and uploading it to your web server via your favorite FTP application. The WordPress codex contains [instructions on how to do this here](https://wordpress.org/support/article/managing-plugins/#manual-plugin-installation).
+
+**[WP-CLI](https://wp-cli.org) Installation**
 
 ```bash
 wp plugin install omniform --activate
 ```
-
-**Manual installation**
-
-Manual installation method requires [downloading the OmniForm plugin](https://wordpress.org/plugins/omniform) and uploading it to your web server via your favorite FTP application. The WordPress codex contains [instructions on how to do this here](https://wordpress.org/support/article/managing-plugins/#manual-plugin-installation).
 
 ## Documentation
 

@@ -39,7 +39,7 @@ class ResponseFactory {
 	 * @return Response The newly created Response instance.
 	 */
 	public function create_with_form( Form $form ): Response {
-		$response = new Response();
+		$response = $this->container->get( Response::class );
 
 		$user_ip = filter_var( $_SERVER['REMOTE_ADDR'] ?? '', FILTER_VALIDATE_IP );
 
@@ -86,7 +86,7 @@ class ResponseFactory {
 			);
 		}
 
-		$response = new Response();
+		$response = $this->container->get( Response::class );
 
 		$data = json_decode( $_response->post_content, true );
 

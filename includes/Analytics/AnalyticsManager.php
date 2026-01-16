@@ -7,7 +7,8 @@
 
 namespace OmniForm\Analytics;
 
-use OmniForm\Plugin\QueryBuilderFactory;
+use OmniForm\Plugin\Http\Request;
+use OmniForm\Plugin\QueryBuilder;
 
 /**
  * The AnalyticsManager class.
@@ -32,7 +33,14 @@ class AnalyticsManager {
 	 *
 	 * @var QueryBuilder
 	 */
-	protected $query_builder_factory;
+	protected $query_builder;
+
+	/**
+	 * The Request instance.
+	 *
+	 * @var Request
+	 */
+	protected $request;
 
 	/**
 	 * The daily salt.
@@ -44,31 +52,14 @@ class AnalyticsManager {
 	/**
 	 * The AnalyticsManager constructor.
 	 *
-	 * @param QueryBuilderFactory $query_builder_factory The QueryBuilderFactory instance.
-	 * @param string              $daily_salt The daily salt.
+	 * @param QueryBuilder $query_builder The QueryBuilder instance.
+	 * @param Request      $request The Request instance.
+	 * @param string       $daily_salt The daily salt.
 	 */
-	public function __construct( QueryBuilderFactory $query_builder_factory, string $daily_salt ) {
-		$this->query_builder_factory = $query_builder_factory;
-		$this->daily_salt            = $daily_salt;
-	}
-
-	/**
-	 * Get the user agent.
-	 *
-	 * @return string The user agent.
-	 */
-	protected function get_user_agent() {
-		return isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( $_SERVER['HTTP_USER_AGENT'] ) : '';
-	}
-
-	/**
-	 * Get the IP address.
-	 *
-	 * @return string The IP address.
-	 */
-	protected function get_ip_address() {
-		$ip = filter_var( $_SERVER['REMOTE_ADDR'] ?? '', FILTER_VALIDATE_IP );
-		return $ip ? $ip : '';
+	public function __construct( QueryBuilder $query_builder, Request $request, string $daily_salt ) {
+		$this->query_builder = $query_builder;
+		$this->request       = $request;
+		$this->daily_salt    = $daily_salt;
 	}
 
 	/**
@@ -77,7 +68,7 @@ class AnalyticsManager {
 	 * @return string The visitor hash.
 	 */
 	protected function get_visitor_hash() {
-		return hash( 'sha256', $this->daily_salt . $this->get_ip_address() . $this->get_user_agent() );
+		return hash( 'sha256', $this->daily_salt . $this->request->get_ip_address() . $this->request->get_user_agent() );
 	}
 
 	/**
@@ -87,14 +78,14 @@ class AnalyticsManager {
 	 * @param int $event_type The event type.
 	 */
 	protected function record_event( int $form_id, int $event_type ) {
-		$query_builder = $this->query_builder_factory->create();
+		$visitor_id = $this->get_visitor_id();
 
-		$query_builder->table( self::EVENTS_TABLE )
+		$this->query_builder->table( self::EVENTS_TABLE )
 			->insert(
 				array(
 					'form_id'    => $form_id,
 					'event_type' => $event_type,
-					'visitor_id' => $this->get_visitor_id(),
+					'visitor_id' => $visitor_id,
 					'event_time' => current_time( 'mysql' ),
 				)
 			);
@@ -106,25 +97,34 @@ class AnalyticsManager {
 	 * @return int The visitor ID.
 	 */
 	protected function get_visitor_id() {
-		$query_builder = $this->query_builder_factory->create();
+		$cache_key = 'omniform_visitor_id_' . $this->get_visitor_hash();
+		$cached_id = wp_cache_get( $cache_key );
 
-		$visitor_results = $query_builder->table( self::VISITOR_TABLE )
+		if ( false !== $cached_id ) {
+			return $cached_id;
+		}
+
+		$visitor_results = $this->query_builder->table( self::VISITOR_TABLE )
 			->select( 'visitor_id' )
 			->where( 'visitor_hash', '=', $this->get_visitor_hash() )
 			->get();
 
 		if ( empty( $visitor_results ) ) {
-			$query_builder->table( self::VISITOR_TABLE )
+			$this->query_builder->table( self::VISITOR_TABLE )
 				->insert(
 					array(
 						'visitor_hash' => $this->get_visitor_hash(),
 					)
 				);
 
-			return $query_builder->get_last_insert_id();
+			$visitor_id = $this->query_builder->get_last_insert_id();
+			wp_cache_set( $cache_key, $visitor_id );
+			return $visitor_id;
 		}
 
-		return $visitor_results[0]->visitor_id;
+		$visitor_id = $visitor_results[0]->visitor_id;
+		wp_cache_set( $cache_key, $visitor_id );
+		return $visitor_id;
 	}
 
 	/**
@@ -163,9 +163,7 @@ class AnalyticsManager {
 	 * @return int The impression count.
 	 */
 	public function get_impression_count( int $form_id, bool $unique = false ) {
-		$query_builder = $this->query_builder_factory->create();
-
-		return $query_builder->table( self::EVENTS_TABLE )
+		return $this->query_builder->table( self::EVENTS_TABLE )
 			->where( 'form_id', '=', $form_id )
 			->where( 'event_type', '=', EventType::IMPRESSION )
 			->count( $unique ? 'DISTINCT visitor_id' : 'event_id' );
@@ -180,9 +178,7 @@ class AnalyticsManager {
 	 * @return int The submission count.
 	 */
 	public function get_submission_count( int $form_id, bool $unique = false ) {
-		$query_builder = $this->query_builder_factory->create();
-
-		return $query_builder->table( self::EVENTS_TABLE )
+		return $this->query_builder->table( self::EVENTS_TABLE )
 			->where( 'form_id', '=', $form_id )
 			->where( 'event_type', '=', EventType::SUBMISSION_SUCCESS )
 			->count( $unique ? 'DISTINCT visitor_id' : 'event_id' );
@@ -197,9 +193,7 @@ class AnalyticsManager {
 	 * @return int The failed submission count.
 	 */
 	public function get_failed_submission_count( int $form_id, bool $unique = false ) {
-		$query_builder = $this->query_builder_factory->create();
-
-		return $query_builder->table( self::EVENTS_TABLE )
+		return $this->query_builder->table( self::EVENTS_TABLE )
 			->where( 'form_id', '=', $form_id )
 			->where( 'event_type', '=', EventType::SUBMISSION_FAILURE )
 			->count( $unique ? 'DISTINCT visitor_id' : 'event_id' );
@@ -220,14 +214,32 @@ class AnalyticsManager {
 	}
 
 	/**
+	 * Get the count of recent submissions (success or failure) by the current visitor for a specific form within a time window.
+	 *
+	 * @param int $form_id The form ID.
+	 * @param int $seconds The time window in seconds (default: 3600 for 1 hour).
+	 *
+	 * @return int The count of recent submissions.
+	 */
+	public function get_recent_submissions_count( int $form_id, int $seconds = 3600 ) {
+		$visitor_id     = $this->get_visitor_id();
+		$time_threshold = date_i18n( 'Y-m-d H:i:s', time() - $seconds );
+
+		return (int) $this->query_builder->table( self::EVENTS_TABLE )
+			->where( 'form_id', '=', $form_id )
+			->where( 'visitor_id', '=', $visitor_id )
+			->where( 'event_time', '>=', $time_threshold )
+			->where( 'event_type', 'IN', array( EventType::SUBMISSION_SUCCESS, EventType::SUBMISSION_FAILURE ) )
+			->count( 'event_id' );
+	}
+
+	/**
 	 * Purge data for a form.
 	 *
 	 * @param int $form_id The form ID.
 	 */
 	public function delete_form_data( int $form_id ) {
-		$query_builder = $this->query_builder_factory->create();
-
-		$query_builder->table( self::EVENTS_TABLE )
+		$this->query_builder->table( self::EVENTS_TABLE )
 			->where( 'form_id', '=', $form_id )
 			->delete();
 	}

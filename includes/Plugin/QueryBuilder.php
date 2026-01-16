@@ -8,6 +8,7 @@
 namespace OmniForm\Plugin;
 
 use wpdb;
+use OmniForm\Exceptions\QueryBuilderException;
 
 /**
  * The QueryBuilder class.
@@ -18,7 +19,7 @@ class QueryBuilder {
 	 *
 	 * @var wpdb
 	 */
-	protected $wpdb;
+	protected $database;
 
 	/**
 	 * The columns to select.
@@ -68,7 +69,19 @@ class QueryBuilder {
 	 * @param wpdb $wpdb The WordPress database class.
 	 */
 	public function __construct( wpdb $wpdb ) {
-		$this->wpdb = $wpdb;
+		$this->database = $wpdb;
+	}
+
+	/**
+	 * Reset query-specific state to start a fresh query.
+	 */
+	protected function reset() {
+		$this->selects   = array();
+		$this->table     = null;
+		$this->wheres    = array();
+		$this->order_bys = array();
+		$this->group_bys = array();
+		$this->limit     = null;
 	}
 
 	/**
@@ -92,6 +105,11 @@ class QueryBuilder {
 	 * @return QueryBuilder
 	 */
 	public function table( $table ) {
+		if ( null !== $this->table ) {
+			// Starting a new query — clear previous query-specific state.
+			$this->reset();
+		}
+
 		$this->table = $table;
 
 		return $this;
@@ -159,7 +177,7 @@ class QueryBuilder {
 	 * @return array|object|null The query results.
 	 */
 	public function get() {
-		$query = 'SELECT ' . implode( ', ', $this->selects ) . ' FROM `' . $this->wpdb->prefix . $this->table . '`';
+		$query = 'SELECT ' . implode( ', ', $this->selects ) . ' FROM `' . $this->database->prefix . $this->table . '`';
 
 		if ( ! empty( $this->wheres ) ) {
 			$query .= ' WHERE ' . $this->build_where_clause();
@@ -177,7 +195,7 @@ class QueryBuilder {
 			$query .= ' LIMIT ' . (int) $this->limit;
 		}
 
-		return $this->wpdb->get_results( $query ); // phpcs:ignore WordPress.DB -- Query has been prepared.
+		return $this->database->get_results( $query ); // phpcs:ignore WordPress.DB -- Query has been prepared.
 	}
 
 	/**
@@ -188,7 +206,7 @@ class QueryBuilder {
 	 * @return int The number of records.
 	 */
 	public function count( $select = '*' ) {
-		$query = 'SELECT COUNT(' . $select . ') FROM `' . $this->wpdb->prefix . $this->table . '`';
+		$query = 'SELECT COUNT(' . $select . ') FROM `' . $this->database->prefix . $this->table . '`';
 
 		if ( ! empty( $this->wheres ) ) {
 			$query .= ' WHERE ' . $this->build_where_clause();
@@ -198,7 +216,7 @@ class QueryBuilder {
 			$query .= ' GROUP BY ' . implode( ', ', $this->group_bys );
 		}
 
-		return (int) $this->wpdb->get_var( $query ); // phpcs:ignore WordPress.DB -- Query has been prepared.
+		return (int) $this->database->get_var( $query ); // phpcs:ignore WordPress.DB -- Query has been prepared.
 	}
 
 	/**
@@ -211,12 +229,26 @@ class QueryBuilder {
 		$values     = array();
 
 		foreach ( $this->wheres as $index => $where ) {
-			$placeholder  = is_numeric( $where['value'] ) ? '%d' : '%s';
-			$conditions[] = ( $index > 0 ? $where['boolean'] . ' ' : '' ) . '`' . $where['column'] . '` ' . $where['operator'] . ' ' . $placeholder;
-			$values[]     = $where['value'];
+			$value_array  = is_array( $where['value'] ) ? $where['value'] : array( $where['value'] );
+			$placeholders = array_map(
+				function ( $v ) {
+					return is_numeric( $v ) ? '%d' : '%s';
+				},
+				$value_array
+			);
+
+			if ( in_array( strtoupper( $where['operator'] ), array( 'IN', 'NOT IN' ), true ) ) {
+				$clause = $where['operator'] . ' (' . implode( ', ', $placeholders ) . ')';
+				$values = array_merge( $values, $value_array );
+			} else {
+				$clause   = $where['operator'] . ' ' . $placeholders[0];
+				$values[] = $value_array[0];
+			}
+
+			$conditions[] = ( $index > 0 ? $where['boolean'] . ' ' : '' ) . '`' . $where['column'] . '` ' . $clause;
 		}
 
-		return $this->wpdb->prepare( implode( ' ', $conditions ), $values ); // phpcs:ignore WordPress.DB
+		return $this->database->prepare( implode( ' ', $conditions ), $values ); // phpcs:ignore WordPress.DB
 	}
 
 	/**
@@ -242,7 +274,7 @@ class QueryBuilder {
 	 * @return int|bool The number of rows inserted or false on failure.
 	 */
 	public function insert( array $data ) {
-		return $this->wpdb->insert( $this->wpdb->prefix . $this->table, $data );
+		return $this->database->insert( $this->database->prefix . $this->table, $data );
 	}
 
 	/**
@@ -251,7 +283,7 @@ class QueryBuilder {
 	 * @return int The ID of the last inserted record.
 	 */
 	public function get_last_insert_id() {
-		return $this->wpdb->insert_id;
+		return $this->database->insert_id;
 	}
 
 	/**
@@ -260,26 +292,28 @@ class QueryBuilder {
 	 * @param array $data The data to update.
 	 *
 	 * @return int|bool The number of rows updated or false on failure.
+	 * @throws QueryBuilderException If no WHERE clause is set.
 	 */
 	public function update( array $data ) {
 		if ( empty( $this->wheres ) ) {
-			return false; // Prevent updating all rows if no where clause is set.
+			throw new QueryBuilderException( 'Cannot update records without a WHERE clause to prevent updating all rows.' );
 		}
 
-		return $this->wpdb->update( $this->wpdb->prefix . $this->table, $data, $this->extract_where_conditions() );
+		return $this->database->update( $this->database->prefix . $this->table, $data, $this->extract_where_conditions() );
 	}
 
 	/**
 	 * Delete records from the table.
 	 *
 	 * @return int|bool The number of rows deleted or false on failure.
+	 * @throws QueryBuilderException If no WHERE clause is set.
 	 */
 	public function delete() {
 		if ( empty( $this->wheres ) ) {
-			return false; // Prevent deleting all rows if no where clause is set.
+			throw new QueryBuilderException( 'Cannot delete records without a WHERE clause to prevent deleting all rows.' );
 		}
 
-		return $this->wpdb->delete( $this->wpdb->prefix . $this->table, $this->extract_where_conditions() );
+		return $this->database->delete( $this->database->prefix . $this->table, $this->extract_where_conditions() );
 	}
 
 	/**

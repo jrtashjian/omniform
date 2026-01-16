@@ -37,7 +37,7 @@ class TokenStorage {
 	 * @return string|null
 	 */
 	public function get_access_token(): ?string {
-		return get_option( self::ACCESS_TOKEN_KEY );
+		return get_option( self::ACCESS_TOKEN_KEY, null );
 	}
 
 	/**
@@ -59,7 +59,7 @@ class TokenStorage {
 	 * @return string|null
 	 */
 	public function get_refresh_token(): ?string {
-		return get_option( self::REFRESH_TOKEN_KEY );
+		return get_option( self::REFRESH_TOKEN_KEY, null );
 	}
 
 	/**
@@ -89,7 +89,7 @@ class TokenStorage {
 	 * @return string|null
 	 */
 	public function get_client_id(): ?string {
-		return get_option( self::CLIENT_ID_KEY );
+		return get_option( self::CLIENT_ID_KEY, null );
 	}
 
 	/**
