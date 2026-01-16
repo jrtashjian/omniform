@@ -103,35 +103,6 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 
 			$variations = array();
 
-			if ( Blocks\Form::class === $block ) {
-				$wp_query_args   = array(
-					'post_status'    => array( 'draft', 'publish' ),
-					'post_type'      => 'omniform',
-					'posts_per_page' => -1,
-					'no_found_rows'  => true,
-				);
-				$variation_query = new WP_Query( $wp_query_args );
-
-				foreach ( $variation_query->posts as $post ) {
-					$variations[] = array(
-						'name'       => 'omniform//' . $post->post_name,
-						'title'      => $post->post_title,
-						'attributes' => array(
-							'ref' => $post->ID,
-						),
-						'scope'      => array( 'inserter', 'transform' ),
-						'example'    => array(
-							'attributes'    => array(
-								'ref' => $post->ID,
-							),
-							'viewportWidth' => (int) ( $GLOBALS['content_width'] ?? 768 ),
-						),
-					);
-				}
-			}
-
-			wp_reset_postdata();
-
 			register_block_type(
 				$container->base_path( '/build/block-library/' . $block_object->block_type_name() ),
 				array(
