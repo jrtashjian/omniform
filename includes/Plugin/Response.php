@@ -120,11 +120,15 @@ class Response implements \JsonSerializable {
 		$message       = array();
 
 		foreach ( $response_data['fields'] as $name => $label ) {
-			$value     = implode( ', ', (array) $response_data['content']->get( $name, '' ) );
+			$value = implode( ', ', (array) $response_data['content']->get( $name, '' ) );
+
+			// Handle lone checkboxes.
+			$display_value = ( $label === $value ) ? 'Checked' : $value;
+
 			$message[] = sprintf(
 				'<strong>%s:</strong> %s',
 				esc_html( $label ),
-				wp_kses( $value, array() )
+				wp_kses_post( nl2br( $display_value ), array() )
 			);
 		}
 
@@ -141,8 +145,12 @@ class Response implements \JsonSerializable {
 		$message       = array();
 
 		foreach ( $response_data['fields'] as $name => $label ) {
-			$value     = implode( ', ', (array) $response_data['content']->get( $name, '' ) );
-			$message[] = $label . ': ' . wp_kses( $value, array() );
+			$value = implode( ', ', (array) $response_data['content']->get( $name, '' ) );
+
+			// Handle lone checkboxes.
+			$display_value = ( $label === $value ) ? 'Checked' : $value;
+
+			$message[] = $label . ': ' . wp_kses( $display_value, array() );
 		}
 
 		$message[] = '';
@@ -169,6 +177,14 @@ class Response implements \JsonSerializable {
 		$fields = array_combine(
 			array_keys( $this->flatten( $content->export() ) ),
 			array_keys( $this->flatten( $content->export() ) )
+		);
+
+		// Map the fields to the original field names.
+		$fields = array_map(
+			function ( $field ) {
+				return $this->fields[ $field ] ?? $field;
+			},
+			$fields
 		);
 
 		return array(
@@ -225,7 +241,7 @@ class Response implements \JsonSerializable {
 	 *
 	 * @return array The response data.
 	 */
-	public function jsonSerialize(): mixed {
+	public function jsonSerialize(): array {
 		return array(
 			'response' => array_filter( $this->request_params, array( $this, 'filter_request_params' ), ARRAY_FILTER_USE_KEY ),
 			'fields'   => array_filter( $this->fields, array( $this, 'filter_request_params' ), ARRAY_FILTER_USE_KEY ),

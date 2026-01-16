@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useEffect } from '@wordpress/element';
 import {
 	BlockControls,
 	InspectorControls,
@@ -24,7 +25,7 @@ import { useMergeRefs } from '@wordpress/compose';
  * Internal dependencies
  */
 import { Required } from '../shared/icons';
-import { cleanFieldName } from '../shared/utils';
+import { cleanFieldName, generateShortId } from '../shared/utils';
 import { useStandaloneFormSettings, useStandardFormSettings } from '../form/utils/hooks';
 import useEnter from '../shared/hooks';
 
@@ -62,6 +63,12 @@ const Edit = ( {
 		[ clientId, updateBlockAttributes ]
 	);
 
+	useEffect( () => {
+		if ( ! fieldName ) {
+			setAttributes( { fieldName: 'omniform-' + generateShortId() } );
+		}
+	}, [] ); // eslint-disable-line react-hooks/exhaustive-deps -- Run only on mount to set initial fieldName
+
 	// Manage the required label.
 	const { postId: contextPostId, postType: contextPostType } = context;
 
@@ -86,10 +93,7 @@ const Edit = ( {
 					placeholder={ __( 'Enter a title to the field…', 'omniform' ) }
 					multiple={ false }
 					value={ fieldLabel || '' }
-					onChange={ ( html ) => ! fieldName || fieldName === cleanFieldName( fieldLabel )
-						? setAttributes( { fieldLabel: html, fieldName: cleanFieldName( html ) } )
-						: setAttributes( { fieldLabel: html } )
-					}
+					onChange={ ( html ) => setAttributes( { fieldLabel: html } ) }
 					withoutInteractiveFormatting
 					allowedFormats={ [ 'core/bold', 'core/italic', 'core/image' ] }
 				/>
@@ -122,6 +126,7 @@ const Edit = ( {
 						checked={ isRequired }
 						onChange={ toggleRequired }
 						help={ __( 'Set default \'required\' state for all fields in the group.', 'omniform' ) }
+						__nextHasNoMarginBottom
 					/>
 
 					<TextControl
@@ -134,6 +139,8 @@ const Edit = ( {
 							setAttributes( { fieldName: cleanFieldName( fieldName || fieldLabel ) } );
 						} }
 						help={ __( 'Name of the fieldset. Defaults to the fieldset\'s label.', 'omniform' ) }
+						__nextHasNoMarginBottom
+						__next40pxDefaultSize
 					/>
 
 				</PanelBody>

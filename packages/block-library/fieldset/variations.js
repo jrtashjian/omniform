@@ -18,7 +18,6 @@ const variations = [
 		description: __( 'A fieldset containing multiple radio fields for exclusive choices.', 'omniform' ),
 		attributes: {
 			fieldLabel: __( 'Multiple Choice', 'omniform' ),
-			fieldName: 'multiple-choice',
 		},
 		innerBlocks: [
 			createInputField( __( 'Option One', 'omniform' ), 'radio' ),
@@ -31,7 +30,6 @@ const variations = [
 		title: __( 'Address - United States', 'omniform' ),
 		attributes: {
 			fieldLabel: sprintf( '<strong>%s</strong>', __( 'Address', 'omniform' ) ),
-			fieldName: 'address',
 		},
 		innerBlocks: [
 			createInputField( __( 'Street Address', 'omniform' ), 'text', true ),
@@ -132,7 +130,6 @@ const variations = [
 		title: __( 'Address - Canada', 'omniform' ),
 		attributes: {
 			fieldLabel: sprintf( '<strong>%s</strong>', __( 'Address', 'omniform' ) ),
-			fieldName: 'address',
 		},
 		innerBlocks: [
 			createInputField( __( 'Street Address', 'omniform' ), 'text', true ),
@@ -199,7 +196,6 @@ const variations = [
 		title: __( 'Address - International', 'omniform' ),
 		attributes: {
 			fieldLabel: sprintf( '<strong>%s</strong>', __( 'Address', 'omniform' ) ),
-			fieldName: 'address',
 		},
 		innerBlocks: [
 			createInputField( __( 'Street Address', 'omniform' ), 'text', true ),

@@ -7,8 +7,6 @@
 
 namespace OmniForm\BlockLibrary\Blocks;
 
-use OmniForm\Plugin\Form;
-
 /**
  * The Fieldset block class.
  */
@@ -46,7 +44,7 @@ class Fieldset extends BaseBlock {
 	 * @return string|null
 	 */
 	public function get_field_group_name() {
-		return sanitize_html_class( $this->get_block_attribute( 'fieldName' ) ?? $this->get_field_group_label() ?? '' );
+		return sanitize_html_class( preg_replace( '/\s+/', '-', $this->get_block_attribute( 'fieldName' ) ?? $this->get_field_group_label() ?? '' ) );
 	}
 
 	/**

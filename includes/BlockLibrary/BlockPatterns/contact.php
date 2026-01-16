@@ -17,13 +17,13 @@ return array(
 		<p>' . esc_html__( 'If you have any questions or comments, or if you\'d like to work with me or collaborate on a project, please don\'t hesitate to get in touch. I look forward to hearing from you!', 'omniform' ) . '</p>
 		<!-- /wp:paragraph -->
 
-		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'Your email address', 'omniform' ) . '","fieldName":"' . esc_attr__( 'your-email-address', 'omniform' ) . '"} -->
+		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'Your email address', 'omniform' ) . '"} -->
 		<!-- wp:omniform/label /-->
 
 		<!-- wp:omniform/input /-->
 		<!-- /wp:omniform/field -->
 
-		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'Your message', 'omniform' ) . '","fieldName":"' . esc_attr__( 'your-message', 'omniform' ) . '"} -->
+		<!-- wp:omniform/field {"fieldLabel":"' . esc_html__( 'Your message', 'omniform' ) . '"} -->
 		<!-- wp:omniform/label /-->
 
 		<!-- wp:omniform/textarea /-->

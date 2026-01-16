@@ -9,6 +9,13 @@ label.wp-block-omniform-label > * {
 		vertical-align: middle;
 		margin: 0 0.25em;
 	}
+
+	&[data-range-value]::after {
+		content: '(' attr(data-range-value) ')';
+		display: inline-block;
+		font-size: .8em;
+		margin-left: 0.25em;
+	}
 }
 
 .wp-block-omniform-label .omniform-field-required {

@@ -39,14 +39,14 @@ class ResponseFactory {
 	 * @return Response The newly created Response instance.
 	 */
 	public function create_with_form( Form $form ): Response {
-		$response = new Response();
+		$response = $this->container->get( Response::class );
+
+		$user_ip = filter_var( $_SERVER['REMOTE_ADDR'] ?? '', FILTER_VALIDATE_IP );
 
 		$response->set_request_params(
 			array_merge(
 				$form->get_request_params(),
-				array(
-					'_omniform_user_ip' => $_SERVER['REMOTE_ADDR'],
-				),
+				array( '_omniform_user_ip' => $user_ip ? $user_ip : '' ),
 			)
 		);
 
@@ -86,9 +86,18 @@ class ResponseFactory {
 			);
 		}
 
-		$response = new Response();
+		$response = $this->container->get( Response::class );
 
 		$data = json_decode( $_response->post_content, true );
+
+		// Fallback for old responses.
+		if ( empty( $data['response'] ) ) {
+			$data = array(
+				'response' => $data,
+				'fields'   => array_combine( array_keys( $data ), array_keys( $data ) ),
+				'groups'   => array_combine( array_keys( $data ), array_keys( $data ) ),
+			);
+		}
 
 		$post_meta = get_post_meta( $response_id );
 

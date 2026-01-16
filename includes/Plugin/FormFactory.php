@@ -8,7 +8,6 @@
 namespace OmniForm\Plugin;
 
 use OmniForm\Dependencies\League\Container\Container;
-use OmniForm\Dependencies\Respect\Validation\Validator;
 use OmniForm\Exceptions\FormNotFoundException;
 use OmniForm\Exceptions\InvalidFormIdException;
 
@@ -24,21 +23,12 @@ class FormFactory {
 	protected $container;
 
 	/**
-	 * The Validator object.
-	 *
-	 * @var Validator
-	 */
-	protected $validator;
-
-	/**
 	 * The FormFactory constructor.
 	 *
 	 * @param Container $container The Container object.
-	 * @param Validator $validator The Validator object.
 	 */
-	public function __construct( Container $container, Validator $validator ) {
+	public function __construct( Container $container ) {
 		$this->container = $container;
-		$this->validator = $validator;
 	}
 
 	/**
@@ -49,7 +39,7 @@ class FormFactory {
 	 * @return Form The newly created Form instance.
 	 */
 	public function create_with_content( $form_content ): Form {
-		$form = $this->container->getNew( Form::class );
+		$form = $this->container->get( Form::class );
 		$form->set_content( $form_content );
 
 		return $form;
@@ -84,7 +74,7 @@ class FormFactory {
 			);
 		}
 
-		$form = $this->container->getNew( Form::class );
+		$form = $this->container->get( Form::class );
 		$form->set_post_data( $_form );
 
 		return $form;

@@ -4,12 +4,14 @@
 import { __ } from '@wordpress/i18n';
 import {
 	fieldCheckbox,
+	fieldColor,
 	fieldDate,
 	fieldEmail,
 	fieldInput,
 	fieldNumber,
 	fieldPassword,
 	fieldRadio,
+	fieldRange,
 	fieldSearch,
 	fieldSelect,
 	fieldTel,
@@ -87,6 +89,16 @@ const variations = [
 		keywords: [ 'input', 'address', 'mail' ],
 		example: inputTextExample( 'email', __( 'Email Address', 'omniform' ) ),
 		innerBlocks: inputTextExample( 'email' ).innerBlocks,
+	},
+	{
+		name: 'field-username-email',
+		category: 'omniform-standard-fields',
+		icon: { src: fieldInput },
+		title: __( 'Username or Email', 'omniform' ),
+		description: __( 'A field for collecting a username or email address.', 'omniform' ),
+		keywords: [ 'input', 'username', 'email', 'login' ],
+		example: inputTextExample( 'username-email', __( 'Username or Email', 'omniform' ) ),
+		innerBlocks: inputTextExample( 'username-email' ).innerBlocks,
 	},
 	{
 		name: 'field-url',
@@ -205,6 +217,19 @@ const variations = [
 		innerBlocks: inputTextExample( 'time' ).innerBlocks,
 	},
 	{
+		name: 'field-color',
+		category: 'omniform-standard-fields',
+		icon: { src: fieldColor },
+		title: __( 'Color', 'omniform' ),
+		description: __( 'A field for selecting a color.', 'omniform' ),
+		keywords: [ 'input', 'color', 'picker' ],
+		attributes: {
+			className: 'is-style-inline',
+		},
+		example: inputTextExample( 'color', __( 'Color', 'omniform' ) ),
+		innerBlocks: inputTextExample( 'color' ).innerBlocks,
+	},
+	{
 		name: 'field-week',
 		category: 'omniform-standard-fields',
 		icon: { src: fieldDate },
@@ -213,6 +238,16 @@ const variations = [
 		keywords: [ 'input', 'date', 'calendar', 'time' ],
 		example: inputTextExample( 'week', __( 'Week', 'omniform' ) ),
 		innerBlocks: inputTextExample( 'week' ).innerBlocks,
+	},
+	{
+		name: 'field-range',
+		category: 'omniform-standard-fields',
+		icon: { src: fieldRange },
+		title: __( 'Range', 'omniform' ),
+		description: __( 'A field for selecting a value within a range.', 'omniform' ),
+		keywords: [ 'input', 'number', 'slider', 'range' ],
+		example: inputTextExample( 'range', __( 'Range', 'omniform' ) ),
+		innerBlocks: inputTextExample( 'range' ).innerBlocks,
 	},
 	{
 		name: 'field-textarea',

@@ -8,15 +8,25 @@
 namespace OmniForm\BlockLibrary\Blocks;
 
 use OmniForm\Dependencies\Respect\Validation;
-use OmniForm\HCaptchaRule;
-use OmniForm\ReCaptchaV2Rule;
-use OmniForm\ReCaptchaV3Rule;
-use OmniForm\TurnstileRule;
+use OmniForm\Validation\Rules\HCaptchaRule;
+use OmniForm\Validation\Rules\ReCaptchaV2Rule;
+use OmniForm\Validation\Rules\ReCaptchaV3Rule;
+use OmniForm\Validation\Rules\TurnstileRule;
 
 /**
  * The Captcha block class.
  */
 class Captcha extends BaseControlBlock {
+	/**
+	 * An array of available CAPTCHA services.
+	 */
+	const SERVICES = array(
+		'hcaptcha'    => 'hCaptcha',
+		'recaptchav2' => 'reCAPTCHA',
+		'recaptchav3' => 'reCAPTCHA',
+		'turnstile'   => 'Turnstile',
+	);
+
 	/**
 	 * Constructor.
 	 */
@@ -96,14 +106,7 @@ class Captcha extends BaseControlBlock {
 	 * @return string|null
 	 */
 	public function get_field_label() {
-		$service_labels = array(
-			'hcaptcha'    => esc_attr__( 'hCaptcha', 'omniform' ),
-			'recaptchav2' => esc_attr__( 'reCAPTCHA', 'omniform' ),
-			'recaptchav3' => esc_attr__( 'reCAPTCHA', 'omniform' ),
-			'turnstile'   => esc_attr__( 'Turnstile', 'omniform' ),
-		);
-
-		return $service_labels[ $this->get_block_attribute( 'service' ) ];
+		return self::SERVICES[ $this->get_block_attribute( 'service' ) ];
 	}
 
 	/**

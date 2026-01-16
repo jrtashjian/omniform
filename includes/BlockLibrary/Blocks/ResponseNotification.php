@@ -37,7 +37,13 @@ class ResponseNotification extends BaseBlock {
 			'<div %s><p>%s</p>%s</div>',
 			get_block_wrapper_attributes(
 				array(
-					'class' => esc_attr( $this->get_message_type() . '-response-notification' ),
+					'class' => implode(
+						' ',
+						array(
+							esc_attr( $this->get_message_type() . '-response-notification' ),
+							esc_attr( 'is-style-' . $this->get_message_type() ),
+						)
+					),
 					'style' => $this->notification_display( $form ),
 				)
 			),
@@ -56,6 +62,20 @@ class ResponseNotification extends BaseBlock {
 
 		if ( preg_match( '/is-style-([^\s]+)/', $classname, $matches ) ) {
 			return $matches[1];
+		}
+
+		// Fallback for success messageType pre-'is-style-'.
+		$has_success_border = isset( $this->attributes['style']['border']['left']['color'] )
+			&& 'var(--wp--preset--color--vivid-green-cyan,#00d084)' === $this->attributes['style']['border']['left']['color'];
+		if ( $this->get_block_attribute( 'messageType' ) === 'success' || $has_success_border ) {
+			return 'success';
+		}
+
+		// Fallback for error messageType pre-'is-style-'.
+		$has_error_border = isset( $this->attributes['style']['border']['left']['color'] )
+			&& 'var(--wp--preset--color--vivid-red,#cf2e2e)' === $this->attributes['style']['border']['left']['color'];
+		if ( $this->get_block_attribute( 'messageType' ) === 'error' || $has_error_border ) {
+			return 'error';
 		}
 
 		return 'info';

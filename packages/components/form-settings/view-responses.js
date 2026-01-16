@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { PanelBody, Button } from '@wordpress/components';
 import { addQueryArgs } from '@wordpress/url';
 import { commentContent } from '@wordpress/icons';
-import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
+import { PluginDocumentSettingPanel } from '@wordpress/editor';
 
 /**
  * Internal dependencies

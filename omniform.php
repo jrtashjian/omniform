@@ -3,14 +3,14 @@
  * Plugin Name: OmniForm
  * Plugin URI: https://omniform.io
  * Description: Easily create and manage custom forms with the block editor, customizable fields, and form submission management for your website.
- * Version: 1.2.1
- * Requires at least: 6.3
+ * Version: 1.3.3
+ * Requires at least: 6.6
  * Requires PHP: 7.4
  * Author: JR Tashjian
  * Author URI: https://jrtashjian.com
  * Text Domain: omniform
  *
- * Copyright 2022-2023 OmniForm
+ * Copyright 2022-2026 OmniForm
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -55,6 +55,7 @@ omniform()->addServiceProvider( new \OmniForm\Plugin\PluginServiceProvider() );
 omniform()->addServiceProvider( new \OmniForm\FormTypes\FormTypesServiceProvider() );
 omniform()->addServiceProvider( new \OmniForm\Analytics\AnalyticsServiceProvider() );
 omniform()->addServiceProvider( new \OmniForm\BlockLibrary\BlockLibraryServiceProvider() );
+omniform()->addServiceProvider( new \OmniForm\OAuth\OAuthServiceProvider() );
 
 register_activation_hook( __FILE__, array( omniform(), 'activation' ) );
 register_deactivation_hook( __FILE__, array( omniform(), 'deactivation' ) );

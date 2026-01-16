@@ -68,25 +68,6 @@ registerBlockType( name, {
 	},
 } );
 
-// Prevent form block from being inserted into an omniform post type unless editing the template.
-addFilter(
-	'blockEditor.__unstableCanInsertBlockType',
-	'omniform/with-block-insertion-restrictions',
-	(
-		canInsert,
-		blockType,
-	) => {
-		if (
-			'omniform/form' !== blockType.name ||
-			'omniform' !== select( 'core/editor' ).getCurrentPostType()
-		) {
-			return canInsert;
-		}
-
-		return select( 'core/edit-post' ).isEditingTemplate();
-	}
-);
-
 // Show "Replace with OmniForm" in Ollie Pro Placeholder Forms.
 addFilter(
 	'editor.BlockEdit',

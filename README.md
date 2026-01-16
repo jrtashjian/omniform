@@ -7,7 +7,7 @@ OmniForm is a powerful WordPress plugin that allows you to create and manage for
 ## Requirements
 
 - PHP 7.4+
-- [WordPress](http://wordpress.org/) 6.3+
+- [WordPress](http://wordpress.org/) 6.6+
 
 ## Installation
 
@@ -20,6 +20,16 @@ In the search field type “OmniForm,” then click “Search Plugins.” Once y
 **Manual installation**
 
 Manual installation method requires [downloading the OmniForm plugin](https://wordpress.org/plugins/omniform) and uploading it to your web server via your favorite FTP application. The WordPress codex contains [instructions on how to do this here](https://wordpress.org/support/article/managing-plugins/#manual-plugin-installation).
+
+**[WP-CLI](https://wp-cli.org) Installation**
+
+```bash
+wp plugin install omniform --activate
+```
+
+## Documentation
+
+For detailed documentation on using and extending OmniForm, see [docs/README.md](docs/README.md).
 
 ## Development
 

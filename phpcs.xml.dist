@@ -18,6 +18,8 @@
 	<rule ref="WordPress-Extra">
 		<exclude name="WordPress.Files.FileName"/>
 		<exclude name="WordPress.WP.DeprecatedFunctions.sanitize_urlFound" />
+		<exclude name="Squiz.PHP.EmbeddedPhp.ContentBeforeEnd" />
+		<exclude name="Squiz.PHP.EmbeddedPhp.ContentAfterOpen" />
 	</rule>
 
 	<!-- Let's also check that everything is properly documented. -->

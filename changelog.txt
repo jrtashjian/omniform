@@ -1,10 +1,36 @@
 
+1.3.3 / 2025-07-15
+==================
+
+  * Enhanced display of standalone checkboxes in response content. [#43](https://github.com/jrtashjian/omniform/pull/43)
+  * Implemented permission checks for form access in FormsController.
+
+1.3.2 / 2025-03-14
+==================
+
+  * Fixed a fatal error on PHP 7.4 servers by correcting data serialization [Bug Report](https://wordpress.org/support/topic/getting-a-php-fatal-error-2)
+
+1.3.0 / 2025-01-22
+==================
+
+  * Introduced multiple form types with customizable submission methods and settings. [#28](https://github.com/jrtashjian/omniform/pull/28)
+  * Now forms can be added directly to any post or page, independent of default templates. [#32](https://github.com/jrtashjian/omniform/pull/32)
+  * Added comprehensive analytics to track form impressions, submissions, and conversions. [#30](https://github.com/jrtashjian/omniform/pull/30)
+  * Introduced a new onboarding experience to simplify setup, guiding users through CAPTCHA setup, form templates, and performance tracking. [#38](https://github.com/jrtashjian/omniform/pull/38)
+  * Convert the default core/post-comments-form block into an OmniForm for enhanced customization. [#37](https://github.com/jrtashjian/omniform/pull/37), [#33](https://github.com/jrtashjian/omniform/pull/33)
+  * Convert the default core/search block into an OmniForm for enhanced customization. [#36](https://github.com/jrtashjian/omniform/pull/36)
+  * Convert Jetpack Forms into OmniForms with ease.
+  * Tailored styling added for [Kanso](https://wordpress.org/themes/kanso/), [Twenty Twenty-Four](https://wordpress.org/themes/twentytwentyfour/), [Twenty Twenty-Five](https://wordpress.org/themes/twentytwentyfive/), [Ollie](https://wordpress.org/themes/ollie/), and [Rockbase](https://rockbase.co/) themes.
+  * Improved labeling and structure of form elements for better accessibility.
+  * Expanded pattern and block variations for more design flexibility.
+  * Corrected various issues with form submissions and improved error management.
+  * Fixed inconsistencies in buttons, textareas, and required field indicators.
+
 1.2.1 / 2024-04-10
 ==================
 
   * Fixed improper check for success/error message blocks
   * Resolved array to string conversion warning
-
 
 1.2.0 / 2024-04-09
 ==================
@@ -16,7 +42,6 @@
   * Introduced Hidden inputs with custom callbacks [#21](https://github.com/jrtashjian/omniform/pull/21)
   * Fixed display of form blocks in the Style Book
   * Allowed form to be rendered while previewing
-
 
 1.1.0 / 2024-04-01
 ==================

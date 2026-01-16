@@ -1,10 +1,10 @@
 === OmniForm ===
 Contributors: jrtashjian
 Tags: contact form, block editor, form builder, forms, email
-Requires at least: 6.3
-Tested up to: 6.5
+Requires at least: 6.6
+Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.2.1
+Stable tag: 1.3.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,41 +18,20 @@ OmniForm is a powerful WordPress plugin that allows you to create and manage for
 
 * Complete and steadfast support for the block editor and block themes.
 * Choose from 20+ form fields blocks, including text fields, checkboxes, radio buttons, and more
+* Comprehensive analytics for tracking form impressions, submissions, and conversions.
 * Choose from pre-built form templates or create your own from scratch
 * Manage form submissions within the admin dashboard
 * Email notifications for new form submissions
 * Customize form styling to match your website's design
 * Spam protection with Cloudflare Turnstile, hCaptcha, and Google reCAPTCHA.
+* Convert default WordPress blocks (like comments and search) into OmniForms for enhanced customization.
+* Specific styling adjustments for various themes including [Kanso](https://wordpress.org/themes/kanso/), [Twenty Twenty-Four](https://wordpress.org/themes/twentytwentyfour/), [Twenty Twenty-Five](https://wordpress.org/themes/twentytwentyfive/), [Ollie](https://wordpress.org/themes/ollie/), and [Rockbase](https://rockbase.co/).
 
 = 🚀 Getting Started =
 
 To get started with OmniForm, simply install and activate the plugin on your WordPress site. Once activated, you can create new forms by navigating to the OmniForm menu in your WordPress dashboard.
 
 From there, you can choose to create a new form from scratch or use one of the pre-built form templates. Once you've created your form, you can customize it to your liking using the block editor interface.
-
-= 🌈 What's Coming Next =
-
-OmniForm is designed to be your all-in-one form solution, and it's about to get even more powerful. On the immediate horizon:
-
-* **User Login & Registration Forms**: Enhance user experience with integrated login and registration capabilities.
-* **Site Search Forms**: Elevate website usability by implementing customizable site search features.
-
-These additions will lay the groundwork for an upcoming premium offering featuring advanced form types, including but not limited to:
-
-* Surveys
-* Polls
-* Quizzes
-* Conversational Forms
-
-Stay tuned — OmniForm aims to continually adapt and expand its functionalities to meet evolving user needs.
-
-= 📣 Share Your Ideas and Enhancements =
-
-OmniForm thrives on user engagement. If you have feature requests, ideas for improvements, or even want to contribute code, your input is more than welcome.
-
-* **GitHub Repository**: Join the discussion, report bugs, or contribute directly to the codebase through the [OmniForm GitHub Repository](https://github.com/jrtashjian/omniform).
-
-By sharing your ideas, you're actively participating in the future direction of OmniForm.
 
 = 🙏 A Special Thanks from OmniForm =
 
@@ -82,26 +61,26 @@ Manual installation method requires downloading the OmniForm plugin and uploadin
 
 == Changelog ==
 
-= 1.2.1 / 2024-04-10 =
+= 1.3.3 / 2025-07-15 =
 
-  * Fixed improper check for success/error message blocks
-  * Resolved array to string conversion warning
+  * Enhanced display of standalone checkboxes in response content. [#43](https://github.com/jrtashjian/omniform/pull/43)
+  * Implemented permission checks for form access in FormsController.
 
-= 1.2.0 / 2024-04-09 =
+= 1.3.2 / 2025-03-14 =
 
-  * Fixed Cloudflare Turnstile validation in Captcha block
-  * Added ability to customize email notification [#25](https://github.com/jrtashjian/omniform/pull/25)
-  * Introduced success and error message blocks [#23](https://github.com/jrtashjian/omniform/pull/23)
-  * Improved block splitting, replacing, removing, and merging of form blocks [#22](https://github.com/jrtashjian/omniform/pull/22)
-  * Introduced Hidden inputs with custom callbacks [#21](https://github.com/jrtashjian/omniform/pull/21)
-  * Fixed display of form blocks in the Style Book
-  * Allowed form to be rendered while previewing
+  * Fixed a fatal error on PHP 7.4 servers by correcting data serialization [Bug Report](https://wordpress.org/support/topic/getting-a-php-fatal-error-2)
 
-= 1.1.0 / 2024-04-01 =
+= 1.3.0 / 2025-01-22 =
 
-  * Improve validation for grouped fields [#18](https://github.com/jrtashjian/omniform/pull/18)
-  * Require WordPress version 6.3
-  * Upgrade blocks to API version 3
-  * Properly restrict nested blocks within the form block
-  * Use global content_width for preview viewportWidth, if available
-  * Add proper password protection for form rendering
+  * Introduced multiple form types with customizable submission methods and settings. [#28](https://github.com/jrtashjian/omniform/pull/28)
+  * Now forms can be added directly to any post or page, independent of default templates. [#32](https://github.com/jrtashjian/omniform/pull/32)
+  * Added comprehensive analytics to track form impressions, submissions, and conversions. [#30](https://github.com/jrtashjian/omniform/pull/30)
+  * Introduced a new onboarding experience to simplify setup, guiding users through CAPTCHA setup, form templates, and performance tracking. [#38](https://github.com/jrtashjian/omniform/pull/38)
+  * Convert the default core/post-comments-form block into an OmniForm for enhanced customization. [#37](https://github.com/jrtashjian/omniform/pull/37), [#33](https://github.com/jrtashjian/omniform/pull/33)
+  * Convert the default core/search block into an OmniForm for enhanced customization. [#36](https://github.com/jrtashjian/omniform/pull/36)
+  * Convert Jetpack Forms into OmniForms with ease.
+  * Tailored styling added for [Kanso](https://wordpress.org/themes/kanso/), [Twenty Twenty-Four](https://wordpress.org/themes/twentytwentyfour/), [Twenty Twenty-Five](https://wordpress.org/themes/twentytwentyfive/), [Ollie](https://wordpress.org/themes/ollie/), and [Rockbase](https://rockbase.co/) themes.
+  * Improved labeling and structure of form elements for better accessibility.
+  * Expanded pattern and block variations for more design flexibility.
+  * Corrected various issues with form submissions and improved error management.
+  * Fixed inconsistencies in buttons, textareas, and required field indicators.
