@@ -72,6 +72,7 @@ class AnalyticsManagerTest extends BaseTestCase {
 	private function invokeGetVisitorId() {
 		$reflection = new ReflectionClass( $this->analytics_manager );
 		$method     = $reflection->getMethod( 'get_visitor_id' );
+		$method->setAccessible( true );
 		return $method->invoke( $this->analytics_manager );
 	}
 
