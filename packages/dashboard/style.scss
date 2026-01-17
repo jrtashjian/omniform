@@ -1,4 +1,20 @@
+@import "~@wordpress/base-styles/colors";
 @import "~@wordpress/base-styles/variables";
 @import "~@wordpress/base-styles/mixins";
 @import "~@wordpress/base-styles/breakpoints";
 @import "~@wordpress/interface/src/style";
+
+.omniform-page__header {
+	padding: $grid-unit-20 $grid-unit-30;
+	background: $white;
+	position: sticky;
+	top: 0;
+	z-index: 1;
+}
+
+.omniform-page__header-subtitle {
+	padding-block-end: $grid-unit-10;
+	color: $gray-700;
+	@include body-medium();
+	margin: 0;
+}
