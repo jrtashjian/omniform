@@ -2,7 +2,7 @@
  * WordPress dependencies.
  */
 import '@wordpress/dom-ready';
-import { render } from '@wordpress/element';
+import { createRoot } from '@wordpress/element';
 
 /**
  * Internal dependencies.
@@ -18,5 +18,8 @@ import './style.scss';
  */
 export function initialize( id, settings ) {
 	const target = document.getElementById( id );
-	render( <App settings={ settings } />, target );
+	const root = createRoot( target );
+
+	root.render( <App settings={ settings } /> );
+	return root;
 }
