@@ -494,10 +494,6 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 						?>
 						<div id="omniform" class="hide-if-no-js"></div>
 
-						<div class="wrap">
-							<?php omniform()->get( \OmniForm\OAuth\OAuthConnectionUI::class )->render(); ?>
-						</div>
-
 						<?php // JavaScript is disabled. ?>
 						<div class="wrap hide-if-js">
 							<h1 class="wp-heading-inline">OmniForm</h1>
@@ -509,6 +505,57 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					},
 					0
 				);
+			}
+		);
+
+		add_action(
+			'admin_enqueue_scripts',
+			function () {
+				$current_screen = get_current_screen();
+
+				if ( 'toplevel_page_omniform' !== $current_screen->base ) {
+					return;
+				}
+
+				// Prevent default hooks rendering content to the page.
+				remove_all_actions( 'network_admin_notices' );
+				remove_all_actions( 'user_admin_notices' );
+				remove_all_actions( 'admin_notices' );
+				remove_all_actions( 'all_admin_notices' );
+
+				$asset_file = include omniform()->base_path( 'build/dashboard/index.asset.php' );
+
+				wp_enqueue_script(
+					'dashboard-script',
+					omniform()->base_url( 'build/dashboard/index.js' ),
+					$asset_file['dependencies'],
+					$asset_file['version'],
+					true
+				);
+
+				wp_enqueue_style(
+					'dashboard-style',
+					omniform()->base_url( 'build/dashboard/style-index.css' ),
+					array( 'wp-components' ),
+					$asset_file['version'],
+				);
+
+				$init_script = <<<'JS'
+					( function() {
+						window._loadOmniform = new Promise( function( resolve ) {
+							wp.domReady( function() {
+								resolve( omniform.dashboard.initialize( 'omniform', %s ) );
+							} );
+						} );
+					} )();
+				JS;
+
+				$script = sprintf(
+					$init_script,
+					wp_json_encode( array() )
+				);
+
+				wp_add_inline_script( 'dashboard-script', $script );
 			}
 		);
 	}
