@@ -469,6 +469,48 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				return $metadata;
 			},
 		);
+
+		add_action(
+			'admin_menu',
+			function () {
+				add_menu_page(
+					esc_html__( 'OmniForm', 'omniform' ),
+					esc_html__( 'OmniForm', 'omniform' ),
+					'manage_options',
+					'omniform',
+					'',
+					// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+					'data:image/svg+xml;base64,' . base64_encode( '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M3.33 15.424a4.842 4.842 0 0 1 0-6.848l.207-.208v-2.42a2.421 2.421 0 0 1 2.421-2.422H8.38l.086-.086a4.842 4.842 0 0 1 6.848 0l.086.086h2.665a2.421 2.421 0 0 1 2.421 2.421v2.665a4.842 4.842 0 0 1 0 6.776v2.665a2.421 2.421 0 0 1-2.421 2.42h-2.665l-.086.087a4.842 4.842 0 0 1-6.848 0l-.086-.086H5.96a2.421 2.421 0 0 1-2.422-2.421v-2.421l-.207-.208ZM12 5a7 7 0 0 1 7 7h-1.604A5.396 5.396 0 0 0 12 6.604V5Zm0 12.396V19a7 7 0 0 1-7-7h1.604A5.396 5.396 0 0 0 12 17.396ZM15.5 12A3.5 3.5 0 0 0 12 8.5v1.896c.886 0 1.604.718 1.604 1.604H15.5Zm-5.104 0c0 .886.718 1.604 1.604 1.604V15.5A3.5 3.5 0 0 1 8.5 12h1.896Z" clip-rule="evenodd"/></svg>' ),
+					2
+				);
+
+				add_submenu_page(
+					'omniform',
+					esc_html__( 'Dashboard', 'omniform' ),
+					esc_html__( 'Dashboard', 'omniform' ),
+					'manage_options',
+					'omniform',
+					function () {
+						?>
+						<div id="omniform" class="hide-if-no-js"></div>
+
+						<div class="wrap">
+							<?php omniform()->get( \OmniForm\OAuth\OAuthConnectionUI::class )->render(); ?>
+						</div>
+
+						<?php // JavaScript is disabled. ?>
+						<div class="wrap hide-if-js">
+							<h1 class="wp-heading-inline">OmniForm</h1>
+							<div class="notice notice-error notice-alt">
+								<p><?php esc_html_e( 'OmniForm requires JavaScript. Please enable JavaScript in your browser settings.', 'omniform' ); ?></p>
+							</div>
+						</div>
+						<?php
+					},
+					0
+				);
+			}
+		);
 	}
 
 	/**
@@ -479,14 +521,14 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			'omniform',
 			array(
 				'labels'                => array(
-					'name'                     => _x( 'OmniForm', 'post type general name', 'omniform' ),
-					'singular_name'            => _x( 'OmniForm', 'post type singular name', 'omniform' ),
+					'name'                     => _x( 'Forms', 'post type general name', 'omniform' ),
+					'singular_name'            => _x( 'Form', 'post type singular name', 'omniform' ),
 					'add_new'                  => _x( 'Create a Form', 'Form', 'omniform' ),
 					'add_new_item'             => __( 'Create a Form', 'omniform' ),
 					'new_item'                 => __( 'Create a Form', 'omniform' ),
 					'edit_item'                => __( 'Edit Form', 'omniform' ),
 					'view_item'                => __( 'View Form', 'omniform' ),
-					'all_items'                => __( 'All Forms', 'omniform' ),
+					'all_items'                => __( 'Forms', 'omniform' ),
 					'search_items'             => __( 'Search Forms', 'omniform' ),
 					'not_found'                => __( 'No forms found.', 'omniform' ),
 					'not_found_in_trash'       => __( 'No forms found in Trash.', 'omniform' ),
@@ -501,8 +543,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				),
 				'public'                => true,
 				'show_ui'               => true,
-				// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
-				'menu_icon'             => 'data:image/svg+xml;base64,' . base64_encode( '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M3.33 15.424a4.842 4.842 0 0 1 0-6.848l.207-.208v-2.42a2.421 2.421 0 0 1 2.421-2.422H8.38l.086-.086a4.842 4.842 0 0 1 6.848 0l.086.086h2.665a2.421 2.421 0 0 1 2.421 2.421v2.665a4.842 4.842 0 0 1 0 6.776v2.665a2.421 2.421 0 0 1-2.421 2.42h-2.665l-.086.087a4.842 4.842 0 0 1-6.848 0l-.086-.086H5.96a2.421 2.421 0 0 1-2.422-2.421v-2.421l-.207-.208ZM12 5a7 7 0 0 1 7 7h-1.604A5.396 5.396 0 0 0 12 6.604V5Zm0 12.396V19a7 7 0 0 1-7-7h1.604A5.396 5.396 0 0 0 12 17.396ZM15.5 12A3.5 3.5 0 0 0 12 8.5v1.896c.886 0 1.604.718 1.604 1.604H15.5Zm-5.104 0c0 .886.718 1.604 1.604 1.604V15.5A3.5 3.5 0 0 1 8.5 12h1.896Z" clip-rule="evenodd"/></svg>' ),
+				'show_in_menu'          => 'omniform',
 				'show_in_rest'          => true,
 				'rest_namespace'        => 'omniform/v1',
 				'rest_base'             => 'forms',
@@ -530,28 +571,6 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					'custom-fields',
 				),
 			)
-		);
-
-		add_action(
-			'admin_menu',
-			function () {
-				add_submenu_page(
-					'edit.php?post_type=omniform',
-					esc_html__( 'Settings', 'omniform' ),
-					esc_html__( 'Settings', 'omniform' ),
-					'manage_options',
-					'omniform',
-					function () {
-						?>
-						<div class="wrap">
-							<?php
-							omniform()->get( \OmniForm\OAuth\OAuthConnectionUI::class )->render();
-							?>
-						</div>
-						<?php
-					},
-				);
-			}
 		);
 
 		// If the current user can't edit_theme_options, bail.
@@ -629,7 +648,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				'labels'                          => array(
 					'name'               => _x( 'Responses', 'post type general name', 'omniform' ),
 					'singular_name'      => _x( 'Response', 'post type singular name', 'omniform' ),
-					'all_items'          => __( 'View responses', 'omniform' ),
+					'all_items'          => __( 'Responses', 'omniform' ),
 					'edit_item'          => __( 'Edit response', 'omniform' ),
 					'filter_items_list'  => __( 'Filter responses list', 'omniform' ),
 					'not_found_in_trash' => __( 'No responses found in Trash.', 'omniform' ),
@@ -639,7 +658,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				),
 				'public'                          => false,
 				'show_ui'                         => true,
-				'show_in_menu'                    => 'edit.php?post_type=omniform',
+				'show_in_menu'                    => 'omniform',
 				'show_in_admin_bar'               => false,
 				'rewrite'                         => false,
 				'show_in_rest'                    => true,
