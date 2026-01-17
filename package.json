@@ -33,6 +33,7 @@
 		"@wordpress/blocks": "^14.8.2",
 		"@wordpress/components": "^29.5.4",
 		"@wordpress/data": "^10.19.2",
+		"@wordpress/dataviews": "^4.15.4",
 		"@wordpress/dom-ready": "^4.19.1",
 		"@wordpress/element": "^6.19.1",
 		"@wordpress/html-entities": "^4.19.1",
