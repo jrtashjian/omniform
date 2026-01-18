@@ -38,6 +38,13 @@ export default function App( { settings } ) {
 			id: 'date',
 			label: __( 'Date', 'omniform' ),
 			type: 'date',
+			enableHiding: false,
+		},
+		{
+			id: 'omniform_form.title',
+			label: __( 'Form', 'omniform' ),
+			type: 'text',
+			enableHiding: false,
 		},
 	];
 

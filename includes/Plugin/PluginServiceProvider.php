@@ -94,6 +94,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		add_action( 'init', array( $this, 'register_settings' ) );
 		add_action( 'init', array( $this, 'filter_block_patterns_on_admin' ), PHP_INT_MAX );
 		add_action( 'rest_api_init', array( $this, 'filter_block_patterns_on_rest_api' ), PHP_INT_MAX );
+		add_action( 'rest_api_init', array( $this, 'register_rest_fields' ) );
 		add_filter( 'the_content', array( $this, 'render_singular_template' ) );
 
 		add_action( 'admin_init', array( $this, 'dismiss_newsletter_notice' ) );
@@ -730,6 +731,43 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				),
 				'supports'                        => array(
 					'custom-fields',
+				),
+			)
+		);
+	}
+
+	/**
+	 * Registers custom REST API fields.
+	 */
+	public function register_rest_fields() {
+		register_rest_field(
+			'omniform_response',
+			'omniform_form',
+			array(
+				'get_callback' => function ( $post ) {
+					$form_id = (int) get_post_meta( $post['id'], '_omniform_id', true );
+
+					try {
+						/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
+						$form = omniform()->get( FormFactory::class )->create_with_id( $form_id );
+					} catch ( \Exception $e ) {
+						echo esc_html( $e->getMessage() );
+						return;
+					}
+
+					$form_title = empty( $form->get_title() )
+						? __( '(no title)', 'omniform' )
+						: $form->get_title();
+
+					return array(
+						'id'    => $form->get_id(),
+						'title' => $form_title,
+					);
+				},
+				'schema'       => array(
+					'description' => __( 'The ID of the form associated with the response.', 'omniform' ),
+					'type'        => 'object',
+					'context'     => array( 'edit' ),
 				),
 			)
 		);
