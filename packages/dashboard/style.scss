@@ -28,3 +28,10 @@
 #omniform .interface-interface-skeleton {
 	background-color: $white;
 }
+
+#omniform .field__avatar img {
+	border-radius: 100%;
+	height: 32px;
+	width: 32px;
+	object-fit: cover;
+}

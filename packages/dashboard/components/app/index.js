@@ -30,14 +30,22 @@ export const logo = (
 export default function App( { settings } ) {
 	const fields = [
 		{
-			id: 'id',
-			label: __( 'ID', 'omniform' ),
-			type: 'number',
-		},
-		{
-			id: 'date',
-			label: __( 'Date', 'omniform' ),
-			type: 'date',
+			id: 'omniform_form.sender_email',
+			label: __( 'Sender', 'omniform' ),
+			type: 'text',
+			render: ( { item } ) => (
+				<HStack alignment="left">
+					<div className="field__avatar">
+						<img
+							alt={ __( 'Author avatar' ) }
+							src={ item.omniform_form.sender_gravatar }
+						/>
+					</div>
+					<span className="field__email">
+						{ item.omniform_form.sender_email }
+					</span>
+				</HStack>
+			),
 			enableHiding: false,
 		},
 		{
@@ -46,9 +54,15 @@ export default function App( { settings } ) {
 			type: 'text',
 			enableHiding: false,
 		},
+		{
+			id: 'date',
+			label: __( 'Date', 'omniform' ),
+			type: 'date',
+			enableHiding: false,
+		},
 	];
 
-	const titleField = 'id';
+	const titleField = 'sender';
 
 	const [ view, setView ] = useState( {
 		type: 'table',
