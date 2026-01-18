@@ -74,7 +74,12 @@ export default function App( { settings } ) {
 		};
 	}, [ view ] );
 
-	const { records = [], totalItems, totalPages } = useEntityRecords( 'postType', 'omniform_response', queryArgs );
+	const {
+		records = [],
+		isResolving: isLoadingData,
+		totalItems,
+		totalPages,
+	} = useEntityRecords( 'postType', 'omniform_response', queryArgs );
 
 	return (
 		<SlotFillProvider>
@@ -106,16 +111,15 @@ export default function App( { settings } ) {
 				) }
 				content={ (
 					<>
-						{ records && (
-							<DataViews
-								data={ records }
-								view={ view }
-								onChangeView={ setView }
-								fields={ fields }
-								paginationInfo={ { totalItems, totalPages } }
-								defaultLayouts={ { table: {} } }
-							/>
-						) }
+						<DataViews
+							data={ records || [] }
+							isLoading={ isLoadingData }
+							view={ view }
+							onChangeView={ setView }
+							fields={ fields }
+							paginationInfo={ { totalItems, totalPages } }
+							defaultLayouts={ { table: {} } }
+						/>
 					</>
 				) }
 			/>
