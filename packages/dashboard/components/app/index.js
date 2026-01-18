@@ -9,11 +9,19 @@ import {
 	__experimentalHStack as HStack,
 	__experimentalVStack as VStack,
 	Button,
+	Icon,
 } from '@wordpress/components';
 import {
 	FullscreenMode,
 	InterfaceSkeleton,
 } from '@wordpress/interface';
+
+import { Path, SVG } from '@wordpress/primitives';
+export const logo = (
+	<SVG viewBox="0 0 24 24">
+		<Path fill="#D92E83" fillRule="evenodd" d="M3.33 15.424a4.842 4.842 0 0 1 0-6.848l.207-.208v-2.42a2.421 2.421 0 0 1 2.421-2.422H8.38l.086-.086a4.842 4.842 0 0 1 6.848 0l.086.086h2.665a2.421 2.421 0 0 1 2.421 2.421v2.665a4.842 4.842 0 0 1 0 6.776v2.665a2.421 2.421 0 0 1-2.421 2.42h-2.665l-.086.087a4.842 4.842 0 0 1-6.848 0l-.086-.086H5.96a2.421 2.421 0 0 1-2.422-2.421v-2.421l-.207-.208ZM12 5a7 7 0 0 1 7 7h-1.604A5.396 5.396 0 0 0 12 6.604V5Zm0 12.396V19a7 7 0 0 1-7-7h1.604A5.396 5.396 0 0 0 12 17.396ZM15.5 12A3.5 3.5 0 0 0 12 8.5v1.896c.886 0 1.604.718 1.604 1.604H15.5Zm-5.104 0c0 .886.718 1.604 1.604 1.604V15.5A3.5 3.5 0 0 1 8.5 12h1.896Z" clipRule="evenodd" />
+	</SVG>
+);
 
 export default function App( { settings } ) {
 	return (
@@ -24,6 +32,7 @@ export default function App( { settings } ) {
 					<VStack className="omniform-page__header" as="header">
 						<HStack justify="space-between" spacing={ 2 }>
 							<HStack spacing={ 2 } justify="left">
+								<Icon icon={ logo } size={ 24 } />
 								<Heading as="h2" level={ 3 } weight={ 500 } truncate>
 									{ __( 'OmniForm', 'omniform' ) }
 								</Heading>
