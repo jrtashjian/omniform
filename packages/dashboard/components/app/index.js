@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies.
  */
+import { useState, useMemo } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import {
 	Popover,
@@ -16,6 +17,9 @@ import {
 	InterfaceSkeleton,
 } from '@wordpress/interface';
 
+import { DataViews } from '@wordpress/dataviews/wp';
+import { useEntityRecords } from '@wordpress/core-data';
+
 import { Path, SVG } from '@wordpress/primitives';
 export const logo = (
 	<SVG viewBox="0 0 24 24">
@@ -24,6 +28,47 @@ export const logo = (
 );
 
 export default function App( { settings } ) {
+	const fields = [
+		{
+			id: 'id',
+			label: __( 'ID', 'omniform' ),
+			type: 'number',
+		},
+		{
+			id: 'date',
+			label: __( 'Date', 'omniform' ),
+			type: 'date',
+		},
+	];
+
+	const titleField = 'id';
+
+	const [ view, setView ] = useState( {
+		type: 'table',
+		search: '',
+		page: 1,
+		perPage: 2,
+		sort: {
+			field: 'id',
+			direction: 'desc',
+		},
+		titleField,
+		fields: fields.map( ( field ) => field.id ).filter( ( id ) => id !== titleField ),
+		layout: {},
+	} );
+
+	const queryArgs = useMemo( () => {
+		return {
+			per_page: view.perPage,
+			page: view.page,
+			order: view.sort?.direction,
+			orderby: view.sort?.field,
+			search: view.search,
+		};
+	}, [ view ] );
+
+	const { records = [], totalItems, totalPages } = useEntityRecords( 'postType', 'omniform_response', queryArgs );
+
 	return (
 		<SlotFillProvider>
 			<FullscreenMode isActive={ false } />
@@ -53,12 +98,18 @@ export default function App( { settings } ) {
 					</VStack>
 				) }
 				content={ (
-					<div style={ { padding: '1rem' } }>
-						<pre style={ { margin: '0' } }>
-							{ __( 'Initial Settings', 'omniform' ) }:<br />
-							{ JSON.stringify( settings, null, 2 ) }
-						</pre>
-					</div>
+					<>
+						{ records && (
+							<DataViews
+								data={ records }
+								view={ view }
+								onChangeView={ setView }
+								fields={ fields }
+								paginationInfo={ { totalItems, totalPages } }
+								defaultLayouts={ { table: {} } }
+							/>
+						) }
+					</>
 				) }
 			/>
 			<Popover.Slot />
