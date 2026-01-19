@@ -2,7 +2,7 @@
  * WordPress dependencies.
  */
 import { useState, useMemo } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import {
 	Popover,
 	SlotFillProvider,
@@ -22,9 +22,41 @@ import { EditorSnackbars } from '@wordpress/editor';
 /**
  * Internal dependencies.
  */
-import { iconItemMarkRead, iconItemMarkUnread, iconItemView, iconItemTrash } from '../../../block-library/shared/icons';
+import {
+	iconItemMarkRead,
+	iconItemMarkSpam,
+	iconItemMarkUnread,
+	iconItemTrash,
+	iconItemView,
+} from '../../../block-library/shared/icons';
 
-export default function App( { settings } ) {
+const STATUS_CONFIG = {
+	publish: {
+		display: __( 'Unread', 'omniform' ),
+	},
+	omniform_unread: {
+		display: __( 'Unread', 'omniform' ),
+		action: __( 'Marked as unread', 'omniform' ),
+		error: __( 'marking as unread', 'omniform' ),
+	},
+	omniform_read: {
+		display: __( 'Read', 'omniform' ),
+		action: __( 'Marked as read', 'omniform' ),
+		error: __( 'marking as read', 'omniform' ),
+	},
+	omniform_spam: {
+		display: __( 'Spam', 'omniform' ),
+		action: __( 'Marked as spam', 'omniform' ),
+		error: __( 'marking as spam', 'omniform' ),
+	},
+	trash: {
+		display: __( 'Trashed', 'omniform' ),
+		action: __( 'Moved to trash', 'omniform' ),
+		error: __( 'moving to trash', 'omniform' ),
+	},
+};
+
+export default function App() {
 	const fields = [
 		{
 			id: 'omniform_form.sender_email',
@@ -53,6 +85,7 @@ export default function App( { settings } ) {
 		{
 			id: 'status',
 			label: __( 'Status', 'omniform' ),
+			render: ( { item } ) => STATUS_CONFIG[ item.status ]?.display || item.status,
 			enableHiding: false,
 		},
 		{
@@ -89,7 +122,7 @@ export default function App( { settings } ) {
 			order: view.sort?.direction,
 			orderby: view.sort?.field,
 			search: view.search,
-			status: [ 'publish', 'omniform_unread', 'omniform_read' ],
+			status: [ 'publish', 'omniform_unread', 'omniform_read', 'omniform_spam' ],
 		};
 	}, [ view ] );
 
@@ -105,16 +138,16 @@ export default function App( { settings } ) {
 	const { createSuccessNotice, createErrorNotice } = useDispatch( noticesStore );
 
 	async function onChangeStatus( items, status ) {
-		console.debug( 'change-status', items, status );
-
 		try {
 			for ( const item of items ) {
 				await editEntityRecord( 'postType', item.type, item.id, { status } );
 				await saveEditedEntityRecord( 'postType', item.type, item.id, { throwOnError: true } );
 			}
-			createSuccessNotice( __( 'Status updated successfully.', 'omniform' ), { type: 'snackbar' } );
+			/* translators: %s: action description */
+			createSuccessNotice( sprintf( __( '%s successfully.', 'omniform' ), STATUS_CONFIG[ status ].action ), { type: 'snackbar' } );
 		} catch ( error ) {
-			createErrorNotice( __( 'Error updating status.', 'omniform' ), { type: 'snackbar' } );
+			/* translators: %s: action description */
+			createErrorNotice( sprintf( __( 'Error %s.', 'omniform' ), STATUS_CONFIG[ status ].error ), { type: 'snackbar' } );
 		}
 	}
 
@@ -144,24 +177,44 @@ export default function App( { settings } ) {
 							id: 'view',
 							icon: iconItemView,
 							label: __( 'View', 'omniform' ),
-							isPrimary: true,
-							callback: ( items ) => console.debug( 'view', items ),
+							// eslint-disable-next-line no-unused-vars
+							callback: ( items ) => {},
 						},
 						{
 							id: 'mark-read',
 							icon: iconItemMarkRead,
 							label: __( 'Mark Read', 'omniform' ),
 							isPrimary: true,
-							isEligible: ( item ) => item.status !== 'omniform_read',
+							isEligible: ( item ) => item.status !== 'omniform_read' && item.status !== 'omniform_spam',
 							callback: ( items ) => onChangeStatus( items, 'omniform_read' ),
+							supportsBulk: true,
 						},
 						{
 							id: 'mark-unread',
 							icon: iconItemMarkUnread,
 							label: __( 'Mark Unread', 'omniform' ),
 							isPrimary: true,
-							isEligible: ( item ) => ! [ 'omniform_unread', 'publish' ].includes( item.status ),
+							isEligible: ( item ) => item.status === 'omniform_read' && item.status !== 'omniform_spam',
 							callback: ( items ) => onChangeStatus( items, 'omniform_unread' ),
+							supportsBulk: true,
+						},
+						{
+							id: 'mark-spam',
+							icon: iconItemMarkSpam,
+							label: __( 'Spam', 'omniform' ),
+							isPrimary: true,
+							isEligible: ( item ) => item.status !== 'omniform_spam',
+							callback: ( items ) => onChangeStatus( items, 'omniform_spam' ),
+							supportsBulk: true,
+						},
+						{
+							id: 'mark-unspam',
+							icon: iconItemMarkSpam,
+							label: __( 'Not Spam', 'omniform' ),
+							isPrimary: true,
+							isEligible: ( item ) => item.status === 'omniform_spam',
+							callback: ( items ) => onChangeStatus( items, 'omniform_unread' ),
+							supportsBulk: true,
 						},
 						{
 							id: 'trash',
@@ -172,7 +225,8 @@ export default function App( { settings } ) {
 						},
 					] }
 					isItemClickable={ () => true }
-					onClickItem={ ( item ) => console.debug( 'view', item ) }
+					// eslint-disable-next-line no-unused-vars
+					onClickItem={ ( item ) => {} }
 				/>
 			</Page>
 			<Popover.Slot />
