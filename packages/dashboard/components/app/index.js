@@ -11,7 +11,11 @@ import {
 } from '@wordpress/components';
 import { Page } from '@wordpress/admin-ui';
 import { DataViews } from '@wordpress/dataviews/wp';
-import { useEntityRecords } from '@wordpress/core-data';
+
+/**
+ * Internal dependencies.
+ */
+import { iconItemMarkRead, iconItemMarkUnread, iconItemView, iconItemTrash } from '../../../block-library/shared/icons';
 
 export default function App( { settings } ) {
 	const fields = [
@@ -106,15 +110,32 @@ export default function App( { settings } ) {
 					actions={ [
 						{
 							id: 'view',
+							icon: iconItemView,
 							label: __( 'View', 'omniform' ),
 							isPrimary: true,
 							callback: ( items ) => console.debug( 'view', items ),
 						},
 						{
+							id: 'mark-read',
+							icon: iconItemMarkRead,
+							label: __( 'Mark Read', 'omniform' ),
+							isPrimary: true,
+							isEligible: ( item ) => item.status !== 'omniform_read',
+							callback: ( items ) => onChangeStatus( items, 'omniform_read' ),
+						},
+						{
+							id: 'mark-unread',
+							icon: iconItemMarkUnread,
+							label: __( 'Mark Unread', 'omniform' ),
+							isPrimary: true,
+							isEligible: ( item ) => ! [ 'omniform_unread', 'publish' ].includes( item.status ),
+							callback: ( items ) => onChangeStatus( items, 'omniform_unread' ),
+						},
+						{
 							id: 'trash',
 							label: __( 'Trash', 'omniform' ),
-							isPrimary: true,
-							callback: ( items ) => console.debug( 'trash', items ),
+							icon: iconItemTrash,
+							callback: ( items ) => onChangeStatus( items, 'trash' ),
 							supportsBulk: true,
 						},
 					] }
