@@ -1,8 +1,8 @@
-@use "~@wordpress/base-styles/colors" as *;
-@use "~@wordpress/base-styles/variables" as *;
-@use "~@wordpress/base-styles/mixins" as *;
-@use "~@wordpress/base-styles/breakpoints" as *;
-@use "~@wordpress/dataviews/build-style/style" as *;
+@use "@wordpress/base-styles/colors" as *;
+@use "@wordpress/base-styles/variables" as *;
+@use "@wordpress/base-styles/mixins" as *;
+@use "@wordpress/base-styles/breakpoints" as *;
+@use "@wordpress/dataviews/build-style/style.css" as dataviews;
 
 @import "@wordpress/admin-ui/build-style/style.css";
 
