@@ -32,15 +32,11 @@ export default function App( { settings } ) {
 				</HStack>
 			),
 			enableHiding: false,
+			enableSorting: false,
 		},
 		{
 			id: 'omniform_form.title',
 			label: __( 'Form', 'omniform' ),
-			render: ( { item } ) => (
-				<Button href={ item.omniform_form.form_edit_url } size="compact" style={ { position: 'relative', left: '-12px' } }>
-					{ item.omniform_form.title }
-				</Button>
-			),
 			enableHiding: false,
 		},
 		{
@@ -52,7 +48,7 @@ export default function App( { settings } ) {
 		},
 	];
 
-	const titleField = 'sender';
+	const titleField = 'omniform_form.sender_email';
 
 	const [ view, setView ] = useState( {
 		type: 'table',
@@ -122,6 +118,8 @@ export default function App( { settings } ) {
 							supportsBulk: true,
 						},
 					] }
+					isItemClickable={ () => true }
+					onClickItem={ ( item ) => console.debug( 'view', item ) }
 				/>
 			</Page>
 			<Popover.Slot />
