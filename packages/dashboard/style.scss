@@ -2,30 +2,13 @@
 @use "~@wordpress/base-styles/variables" as *;
 @use "~@wordpress/base-styles/mixins" as *;
 @use "~@wordpress/base-styles/breakpoints" as *;
-@use "~@wordpress/dataviews/build-style/style";
+@use "~@wordpress/dataviews/build-style/style" as *;
 
-.omniform-page__header {
-	padding: $grid-unit-20 $grid-unit-30;
-	background: $white;
-	position: sticky;
-	top: 0;
-	z-index: 1;
-}
-
-.omniform-page__header-subtitle {
-	padding-block-end: $grid-unit-10;
-	color: $gray-700;
-	@include body-medium();
-	margin: 0;
-}
+@import "@wordpress/admin-ui/build-style/style.css";
 
 #omniform {
 	position: relative;
 	z-index: 1;
-}
-
-#omniform .interface-interface-skeleton {
-	background-color: $white;
 }
 
 #omniform .field__avatar img {

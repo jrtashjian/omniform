@@ -28,6 +28,7 @@
 		"postversion": "git push && git push --tags"
 	},
 	"dependencies": {
+		"@wordpress/admin-ui": "^1.1.4",
 		"@wordpress/base-styles": "^6.9.1",
 		"@wordpress/block-editor": "^15.6.8",
 		"@wordpress/blocks": "^15.6.2",
@@ -39,7 +40,6 @@
 		"@wordpress/html-entities": "^4.33.1",
 		"@wordpress/i18n": "^6.6.1",
 		"@wordpress/icons": "^11.0.1",
-		"@wordpress/interface": "^9.18.4",
 		"@wordpress/plugins": "^7.33.4",
 		"@wordpress/url": "^4.33.1",
 		"change-case": "^4.1.2",
