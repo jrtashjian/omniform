@@ -621,6 +621,9 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			)
 		);
 
+		register_post_status( 'omniform_read', array( 'public' => true ) );
+		register_post_status( 'omniform_unread', array( 'public' => true ) );
+
 		// If the current user can't edit_theme_options, bail.
 		if ( ! current_user_can( 'edit_theme_options' ) ) {
 			return;

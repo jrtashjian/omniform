@@ -51,6 +51,11 @@ export default function App( { settings } ) {
 			enableHiding: false,
 		},
 		{
+			id: 'status',
+			label: __( 'Status', 'omniform' ),
+			enableHiding: false,
+		},
+		{
 			id: 'date',
 			label: __( 'Date', 'omniform' ),
 			type: 'date',
@@ -84,6 +89,7 @@ export default function App( { settings } ) {
 			order: view.sort?.direction,
 			orderby: view.sort?.field,
 			search: view.search,
+			status: [ 'publish', 'omniform_unread', 'omniform_read' ],
 		};
 	}, [ view ] );
 
