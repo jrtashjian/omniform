@@ -32,7 +32,6 @@ export default function App( { settings } ) {
 		{
 			id: 'omniform_form.sender_email',
 			label: __( 'Sender', 'omniform' ),
-			type: 'text',
 			render: ( { item } ) => (
 				<HStack alignment="left">
 					<div className="field__avatar">
@@ -51,7 +50,11 @@ export default function App( { settings } ) {
 		{
 			id: 'omniform_form.title',
 			label: __( 'Form', 'omniform' ),
-			type: 'text',
+			render: ( { item } ) => (
+				<Button href={ item.omniform_form.form_edit_url } size="compact" style={ { position: 'relative', left: '-12px' } }>
+					{ item.omniform_form.title }
+				</Button>
+			),
 			enableHiding: false,
 		},
 		{
@@ -68,14 +71,16 @@ export default function App( { settings } ) {
 		type: 'table',
 		search: '',
 		page: 1,
-		perPage: 2,
+		perPage: 10,
 		sort: {
-			field: 'id',
+			field: 'date',
 			direction: 'desc',
 		},
 		titleField,
 		fields: fields.map( ( field ) => field.id ).filter( ( id ) => id !== titleField ),
-		layout: {},
+		layout: {
+			enableMoving: false,
+		},
 	} );
 
 	const queryArgs = useMemo( () => {
@@ -133,6 +138,20 @@ export default function App( { settings } ) {
 							fields={ fields }
 							paginationInfo={ { totalItems, totalPages } }
 							defaultLayouts={ { table: {} } }
+							actions={ [
+								{
+									id: 'view',
+									label: __( 'View', 'omniform' ),
+									isPrimary: true,
+									callback: () => console.debug( 'view' ),
+								},
+								{
+									id: 'trash',
+									label: __( 'Trash', 'omniform' ),
+									isPrimary: true,
+									callback: () => console.debug( 'trash' ),
+								},
+							] }
 						/>
 					</>
 				) }

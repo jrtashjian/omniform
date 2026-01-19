@@ -764,6 +764,8 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 								}
 							}
 						}
+
+						$form_admin_url = sanitize_url( admin_url( sprintf( 'post.php?post=%d&action=edit', $form->get_id() ) ) );
 					} catch ( \Exception $e ) {
 						echo esc_html( $e->getMessage() );
 						return;
@@ -774,7 +776,8 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 						: $form->get_title();
 
 					return array(
-						'id'              => $form->get_id(),
+						'form_id'         => $form->get_id(),
+						'form_edit_url'   => $form_admin_url,
 						'title'           => $form_title,
 						'sender_gravatar' => sanitize_url( 'https://www.gravatar.com/avatar/' . hash( 'sha256', strtolower( trim( $sender_email ) ) ) ),
 						'sender_email'    => $sender_email,
