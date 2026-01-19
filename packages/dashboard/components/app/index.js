@@ -4,8 +4,6 @@
 import { useState, useMemo } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import {
-	Popover,
-	SlotFillProvider,
 	__experimentalHStack as HStack,
 	Button,
 } from '@wordpress/components';
@@ -152,7 +150,7 @@ export default function App() {
 	}
 
 	return (
-		<SlotFillProvider>
+		<>
 			<EditorSnackbars />
 			<Page
 				title={ __( 'OmniForm', 'omniform' ) }
@@ -229,7 +227,6 @@ export default function App() {
 					onClickItem={ ( item ) => {} }
 				/>
 			</Page>
-			<Popover.Slot />
-		</SlotFillProvider>
+		</>
 	);
 }
