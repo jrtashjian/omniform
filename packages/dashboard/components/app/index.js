@@ -61,6 +61,7 @@ export default function App( { settings } ) {
 			id: 'date',
 			label: __( 'Date', 'omniform' ),
 			type: 'date',
+			render: ( { item } ) => ( new Date( item.date ) ).toLocaleDateString(),
 			enableHiding: false,
 		},
 	];
@@ -143,13 +144,14 @@ export default function App( { settings } ) {
 									id: 'view',
 									label: __( 'View', 'omniform' ),
 									isPrimary: true,
-									callback: () => console.debug( 'view' ),
+									callback: ( items ) => console.debug( 'view', items ),
 								},
 								{
 									id: 'trash',
 									label: __( 'Trash', 'omniform' ),
 									isPrimary: true,
-									callback: () => console.debug( 'trash' ),
+									callback: ( items ) => console.debug( 'trash', items ),
+									supportsBulk: true,
 								},
 							] }
 						/>
