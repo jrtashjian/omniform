@@ -41,3 +41,10 @@ body.js.toplevel_page_omniform #wpfooter {
 	width: 32px;
 	object-fit: cover;
 }
+
+#omniform .components-editor-notices__snackbar {
+	position: absolute;
+	bottom: 16px;
+	padding-left: 16px;
+	padding-right: 16px;
+}

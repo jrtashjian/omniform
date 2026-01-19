@@ -11,6 +11,13 @@ import {
 } from '@wordpress/components';
 import { Page } from '@wordpress/admin-ui';
 import { DataViews } from '@wordpress/dataviews/wp';
+import {
+	useEntityRecords,
+	store as coreStore,
+} from '@wordpress/core-data';
+import { useDispatch } from '@wordpress/data';
+import { store as noticesStore } from '@wordpress/notices';
+import { EditorSnackbars } from '@wordpress/editor';
 
 /**
  * Internal dependencies.
@@ -87,8 +94,27 @@ export default function App( { settings } ) {
 		totalPages,
 	} = useEntityRecords( 'postType', 'omniform_response', queryArgs );
 
+	// Change Status Action
+	const { editEntityRecord, saveEditedEntityRecord } = useDispatch( coreStore );
+	const { createSuccessNotice, createErrorNotice } = useDispatch( noticesStore );
+
+	async function onChangeStatus( items, status ) {
+		console.debug( 'change-status', items, status );
+
+		try {
+			for ( const item of items ) {
+				await editEntityRecord( 'postType', item.type, item.id, { status } );
+				await saveEditedEntityRecord( 'postType', item.type, item.id, { throwOnError: true } );
+			}
+			createSuccessNotice( __( 'Status updated successfully.', 'omniform' ), { type: 'snackbar' } );
+		} catch ( error ) {
+			createErrorNotice( __( 'Error updating status.', 'omniform' ), { type: 'snackbar' } );
+		}
+	}
+
 	return (
 		<SlotFillProvider>
+			<EditorSnackbars />
 			<Page
 				title={ __( 'OmniForm', 'omniform' ) }
 				actions={

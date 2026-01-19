@@ -36,6 +36,7 @@
 		"@wordpress/data": "^10.33.1",
 		"@wordpress/dataviews": "^10.1.6",
 		"@wordpress/dom-ready": "^4.33.1",
+		"@wordpress/editor": "^14.33.10",
 		"@wordpress/element": "^6.33.1",
 		"@wordpress/html-entities": "^4.33.1",
 		"@wordpress/i18n": "^6.6.1",
