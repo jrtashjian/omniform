@@ -63,7 +63,7 @@ const Edit = ( {
 		return (
 			<>
 				{ sprintf(
-					/* translators: 1: captcha service name */
+					/* translators: %s: captcha service name */
 					__( 'To start using %s, you need to sign up for an API key pair for your site. The key pair consists of a site key and secret key.', 'omniform' ),
 					services[ service ].label
 				) }
