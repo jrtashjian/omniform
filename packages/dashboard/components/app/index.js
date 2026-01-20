@@ -66,7 +66,9 @@ export default function App() {
 							src={ item.omniform_form.sender_gravatar }
 						/>
 					</div>
-					<span className="field__email">
+					<span className="field__email" style={ {
+						fontWeight: [ 'omniform_unread', 'publish' ].includes( item.status ) ? 'bold' : 'normal',
+					} }>
 						{ item.omniform_form.sender_email }
 					</span>
 				</HStack>
