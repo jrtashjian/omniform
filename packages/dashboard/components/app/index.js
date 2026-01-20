@@ -22,7 +22,6 @@ import { EditorSnackbars } from '@wordpress/editor';
  */
 import {
 	iconItemMarkRead,
-	iconItemMarkSpam,
 	iconItemMarkUnread,
 	iconItemTrash,
 	iconItemView,
@@ -193,24 +192,6 @@ export default function App() {
 							label: __( 'Mark Unread', 'omniform' ),
 							isPrimary: true,
 							isEligible: ( item ) => item.status === 'omniform_read' && item.status !== 'omniform_spam',
-							callback: ( items ) => onChangeStatus( items, 'omniform_unread' ),
-							supportsBulk: true,
-						},
-						{
-							id: 'mark-spam',
-							icon: iconItemMarkSpam,
-							label: __( 'Spam', 'omniform' ),
-							isPrimary: true,
-							isEligible: ( item ) => item.status !== 'omniform_spam',
-							callback: ( items ) => onChangeStatus( items, 'omniform_spam' ),
-							supportsBulk: true,
-						},
-						{
-							id: 'mark-unspam',
-							icon: iconItemMarkSpam,
-							label: __( 'Not Spam', 'omniform' ),
-							isPrimary: true,
-							isEligible: ( item ) => item.status === 'omniform_spam',
 							callback: ( items ) => onChangeStatus( items, 'omniform_unread' ),
 							supportsBulk: true,
 						},
