@@ -9,6 +9,7 @@
 body.js.toplevel_page_omniform #wpcontent {
 	padding-left: 0;
 }
+
 body.js.toplevel_page_omniform #wpfooter {
 	display: none;
 }
@@ -20,6 +21,39 @@ body.js.toplevel_page_omniform #wpfooter {
 	right: 0;
 	top: 0;
 	height: calc(100vh - 32px);
+	background-color: #1d2327; // default admin theme background
+}
+
+.admin-color-light #omniform {
+	background-color: #e5e5e5;
+}
+
+.admin-color-modern #omniform {
+	background-color: #1e1e1e;
+}
+
+.admin-color-blue #omniform {
+	background-color: #52accc;
+}
+
+.admin-color-coffee #omniform {
+	background-color: #59524c;
+}
+
+.admin-color-ectoplasm #omniform {
+	background-color: #523f6d;
+}
+
+.admin-color-midnight #omniform {
+	background-color: #363b3f;
+}
+
+.admin-color-ocean #omniform {
+	background-color: #738e96;
+}
+
+.admin-color-sunrise #omniform {
+	background-color: #cf4944;
 }
 
 #omniform header h2.components-heading {
