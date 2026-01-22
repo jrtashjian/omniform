@@ -63,15 +63,20 @@ class Input extends BaseControlBlock {
 		);
 
 		$attribute_input_type_mapping = array(
-			'placeholder' => array( 'text', 'email', 'url', 'number', 'month', 'password', 'search', 'tel', 'week', 'hidden', 'username-email' ),
-			'min'         => array( 'range' ),
-			'max'         => array( 'range' ),
-			'step'        => array( 'range' ),
+			'Placeholder' => array( 'text', 'email', 'url', 'number', 'month', 'password', 'search', 'tel', 'week' ),
+			'Min'         => array( 'range', 'number', 'date', 'datetime-local', 'time', 'month', 'week' ),
+			'Max'         => array( 'range', 'number', 'date', 'datetime-local', 'time', 'month', 'week' ),
+			'Step'        => array( 'range', 'number', 'date', 'datetime-local', 'time', 'month', 'week' ),
+			'MaxLength'   => array( 'text', 'email', 'url', 'tel', 'password', 'search' ),
+			'MinLength'   => array( 'text', 'email', 'url', 'tel', 'password', 'search' ),
 		);
 
 		foreach ( $attribute_input_type_mapping as $attribute => $input_type ) {
-			if ( in_array( $this->get_type(), $input_type, true ) && $this->get_block_attribute( 'field' . ucfirst( $attribute ) ) ) {
-				$extra_attributes[ $attribute ] = $this->get_block_attribute( 'field' . ucfirst( $attribute ) );
+			$block_attribute_name = 'field' . $attribute;
+			$attribute_name       = strtolower( $attribute );
+
+			if ( in_array( $this->get_type(), $input_type, true ) && $this->get_block_attribute( $block_attribute_name ) ) {
+				$extra_attributes[ strtolower( $attribute_name ) ] = $this->get_block_attribute( $block_attribute_name );
 			}
 		}
 
