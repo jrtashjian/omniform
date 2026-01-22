@@ -758,7 +758,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 
 						$response_data = json_decode( $post->post_content, true );
 						$sender_email = null;
-						$sender_ip = get_post_meta( $post->ID, '_omniform_sender_ip', true );
+						$sender_ip = get_post_meta( $post->ID, '_omniform_user_ip', true );
 
 						if ( isset( $response_data['response'] ) && is_array( $response_data['response'] ) ) {
 							foreach ( $response_data['response'] as $value ) {
