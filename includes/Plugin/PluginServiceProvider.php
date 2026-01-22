@@ -783,7 +783,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 						'form_id'         => $form->get_id(),
 						'form_edit_url'   => $form_admin_url,
 						'title'           => $form_title,
-						'sender_gravatar' => sanitize_url( 'https://www.gravatar.com/avatar/' . hash( 'sha256', strtolower( trim( $sender_email ) ) ) ),
+						'sender_gravatar' => sanitize_url( 'https://www.gravatar.com/avatar/' . hash( 'sha256', strtolower( trim( $sender_email ) ) ) . '?d=mp' ),
 						'sender_email'    => $sender_email,
 						'sender_ip'       => $sender_ip,
 					);
