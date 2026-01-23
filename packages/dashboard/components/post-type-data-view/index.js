@@ -35,6 +35,7 @@ const abbreviateNumber = ( num ) => {
 export default function PostTypeDataView( {
 	pageTitle,
 	fields,
+	actions,
 	postType,
 	titleField = fields[ 0 ]?.id,
 	initialSortField = 'date',
@@ -112,9 +113,10 @@ export default function PostTypeDataView( {
 				view={ view }
 				onChangeView={ setView }
 				fields={ fields }
+				actions={ actions }
 				paginationInfo={ { totalItems, totalPages } }
 				defaultLayouts={ { table: {} } }
-				isItemClickable={ () => true }
+				onClickItem={ ( item ) => console.debug( 'Clicked item:', item ) }
 			>
 				<HStack
 					alignment="top"
