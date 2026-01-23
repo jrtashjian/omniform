@@ -14,13 +14,43 @@ export default function FormList() {
 			id: 'title.rendered',
 			label: __( 'Form', 'omniform' ),
 			enableHiding: false,
+			filterBy: false,
+		},
+		{
+			id: 'modified',
+			label: __( 'Modified', 'omniform' ),
+			type: 'datetime',
+			enableHiding: false,
+			filterBy: false,
 		},
 		{
 			id: 'date',
-			label: __( 'Date', 'omniform' ),
+			label: __( 'Created', 'omniform' ),
 			type: 'date',
-			render: ( { item } ) => ( new Date( item.date ) ).toLocaleDateString(),
 			enableHiding: false,
+			filterBy: false,
+		},
+	];
+
+	const actions = [
+		{
+			id: 'edit',
+			label: __( 'Edit', 'omniform' ),
+			callback: ( items ) => console.debug( 'Edit action on items:', items[ 0 ] ),
+			isPrimary: true,
+		},
+		{
+			id: 'view',
+			label: __( 'View', 'omniform' ),
+			callback: ( items ) => console.debug( 'View action on items:', items[ 0 ] ),
+			isPrimary: true,
+		},
+		{
+			id: 'trash',
+			label: __( 'Trash', 'omniform' ),
+			callback: ( items ) => console.debug( 'Trash action on items:', items ),
+			isPrimary: true,
+			supportsBulk: true,
 		},
 	];
 
@@ -28,6 +58,7 @@ export default function FormList() {
 		<PostTypeDataView
 			pageTitle={ __( 'Forms', 'omniform' ) }
 			fields={ fields }
+			actions={ actions }
 			postType="omniform"
 			filterStatuses={ [ 'publish', 'draft', 'trash' ] }
 		/>

@@ -31,19 +31,37 @@ export default function ResponseList() {
 			),
 			enableHiding: false,
 			enableSorting: false,
+			filterBy: false,
 		},
 		{
 			id: 'omniform_form.title',
 			label: __( 'Form', 'omniform' ),
 			enableHiding: false,
 			enableSorting: false,
+			filterBy: false,
 		},
 		{
 			id: 'date',
 			label: __( 'Date', 'omniform' ),
 			type: 'date',
-			render: ( { item } ) => ( new Date( item.date ) ).toLocaleDateString(),
 			enableHiding: false,
+			filterBy: false,
+		},
+	];
+
+	const actions = [
+		{
+			id: 'view',
+			label: __( 'View', 'omniform' ),
+			callback: ( items ) => console.debug( 'View action on items:', items[ 0 ] ),
+			isPrimary: true,
+		},
+		{
+			id: 'trash',
+			label: __( 'Trash', 'omniform' ),
+			callback: ( items ) => console.debug( 'Trash action on items:', items ),
+			isPrimary: true,
+			supportsBulk: true,
 		},
 	];
 
@@ -51,6 +69,7 @@ export default function ResponseList() {
 		<PostTypeDataView
 			pageTitle={ __( 'Responses', 'omniform' ) }
 			fields={ fields }
+			actions={ actions }
 			postType="omniform_response"
 			statuses={ [ 'publish', 'omniform_unread', 'omniform_read' ] }
 			filterStatuses={ [ 'omniform_unread', 'trash' ] }
