@@ -11,21 +11,15 @@ import PostTypeDataView from '../post-type-data-view';
 export default function FormList() {
 	const fields = [
 		{
-			id: 'title.rendered',
+			id: 'title',
 			label: __( 'Form', 'omniform' ),
+			render: ( { item } ) => item.title.rendered,
 			enableHiding: false,
 			filterBy: false,
 		},
 		{
 			id: 'modified',
-			label: __( 'Modified', 'omniform' ),
-			type: 'datetime',
-			enableHiding: false,
-			filterBy: false,
-		},
-		{
-			id: 'date',
-			label: __( 'Created', 'omniform' ),
+			label: __( 'Date', 'omniform' ),
 			type: 'date',
 			enableHiding: false,
 			filterBy: false,
@@ -61,6 +55,7 @@ export default function FormList() {
 			actions={ actions }
 			postType="omniform"
 			filterStatuses={ [ 'publish', 'draft', 'trash' ] }
+			initialSortField="modified"
 		/>
 	);
 }
