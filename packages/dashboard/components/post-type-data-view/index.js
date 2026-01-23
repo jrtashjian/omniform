@@ -95,6 +95,7 @@ export default function PostTypeDataView( {
 			page: view.page,
 			order: view.sort?.direction,
 			orderby: view.sort?.field,
+			search: view.search,
 			...filters,
 		};
 	}, [ view ] );
@@ -154,6 +155,7 @@ export default function PostTypeDataView( {
 						expanded={ false }
 						style={ { flexShrink: 0 } }
 					>
+						<DataViews.Search />
 						<DataViews.ViewConfig />
 					</HStack>
 				</HStack>
