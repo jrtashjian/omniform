@@ -5,7 +5,11 @@ import { useState, useMemo } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import {
 	__experimentalHStack as HStack,
+	__experimentalVStack as VStack,
 	Button,
+	Card,
+	CardBody,
+	CardDivider,
 } from '@wordpress/components';
 import { Page } from '@wordpress/admin-ui';
 import { DataViews } from '@wordpress/dataviews/wp';
@@ -13,6 +17,7 @@ import {
 	useEntityRecords,
 	store as coreStore,
 } from '@wordpress/core-data';
+import { close } from '@wordpress/icons';
 import { useDispatch } from '@wordpress/data';
 import { store as noticesStore } from '@wordpress/notices';
 import { EditorSnackbars } from '@wordpress/editor';
@@ -54,6 +59,8 @@ const STATUS_CONFIG = {
 };
 
 export default function App() {
+	const [ activeItem, setActiveItem ] = useState( null );
+
 	const fields = [
 		{
 			id: 'omniform_form.sender_email',
@@ -79,12 +86,6 @@ export default function App() {
 		{
 			id: 'omniform_form.title',
 			label: __( 'Form', 'omniform' ),
-			enableHiding: false,
-		},
-		{
-			id: 'status',
-			label: __( 'Status', 'omniform' ),
-			render: ( { item } ) => STATUS_CONFIG[ item.status ]?.display || item.status,
 			enableHiding: false,
 		},
 		{
@@ -153,63 +154,110 @@ export default function App() {
 	return (
 		<>
 			<EditorSnackbars />
-			<Page
-				title={ __( 'OmniForm', 'omniform' ) }
-				actions={
-					<>
-						<Button variant="primary">
-							{ __( 'Primary Action', 'omniform' ) }
-						</Button>
-					</>
-				}
-			>
-				<DataViews
-					data={ records || [] }
-					isLoading={ isLoadingData }
-					view={ view }
-					onChangeView={ setView }
-					fields={ fields }
-					paginationInfo={ { totalItems, totalPages } }
-					defaultLayouts={ { table: {} } }
-					actions={ [
-						{
-							id: 'view',
-							icon: iconItemView,
-							label: __( 'View', 'omniform' ),
-							// eslint-disable-next-line no-unused-vars
-							callback: ( items ) => {},
-						},
-						{
-							id: 'mark-read',
-							icon: iconItemMarkRead,
-							label: __( 'Mark Read', 'omniform' ),
-							isPrimary: true,
-							isEligible: ( item ) => item.status !== 'omniform_read' && item.status !== 'omniform_spam',
-							callback: ( items ) => onChangeStatus( items, 'omniform_read' ),
-							supportsBulk: true,
-						},
-						{
-							id: 'mark-unread',
-							icon: iconItemMarkUnread,
-							label: __( 'Mark Unread', 'omniform' ),
-							isPrimary: true,
-							isEligible: ( item ) => item.status === 'omniform_read' && item.status !== 'omniform_spam',
-							callback: ( items ) => onChangeStatus( items, 'omniform_unread' ),
-							supportsBulk: true,
-						},
-						{
-							id: 'trash',
-							label: __( 'Trash', 'omniform' ),
-							icon: iconItemTrash,
-							callback: ( items ) => onChangeStatus( items, 'trash' ),
-							supportsBulk: true,
-						},
-					] }
-					isItemClickable={ () => true }
-					// eslint-disable-next-line no-unused-vars
-					onClickItem={ ( item ) => {} }
-				/>
-			</Page>
+
+			<div className="omniform-layout">
+				<div className="omniform-layout__container">
+					<div className="omniform-layout__content">
+						<Page
+							title={ __( 'OmniForm', 'omniform' ) }
+							actions={
+								<>
+									<Button variant="primary">
+										{ __( 'Primary Action', 'omniform' ) }
+									</Button>
+								</>
+							}
+						>
+							<DataViews
+								data={ records || [] }
+								isLoading={ isLoadingData }
+								view={ view }
+								onChangeView={ setView }
+								fields={ fields }
+								paginationInfo={ { totalItems, totalPages } }
+								defaultLayouts={ { table: {} } }
+								actions={ [
+									{
+										id: 'view',
+										icon: iconItemView,
+										label: __( 'View', 'omniform' ),
+										callback: ( items ) => setActiveItem( items[ 0 ] ),
+									},
+									{
+										id: 'mark-read',
+										icon: iconItemMarkRead,
+										label: __( 'Mark Read', 'omniform' ),
+										isPrimary: true,
+										isEligible: ( item ) => item.status !== 'omniform_read' && item.status !== 'omniform_spam',
+										callback: ( items ) => onChangeStatus( items, 'omniform_read' ),
+									},
+									{
+										id: 'mark-unread',
+										icon: iconItemMarkUnread,
+										label: __( 'Mark Unread', 'omniform' ),
+										isPrimary: true,
+										isEligible: ( item ) => item.status === 'omniform_read' && item.status !== 'omniform_spam',
+										callback: ( items ) => onChangeStatus( items, 'omniform_unread' ),
+									},
+									{
+										id: 'trash',
+										label: __( 'Trash', 'omniform' ),
+										icon: iconItemTrash,
+										callback: ( items ) => onChangeStatus( items, 'trash' ),
+									},
+								] }
+								isItemClickable={ () => true }
+								onClickItem={ ( item ) => setActiveItem( item ) }
+							/>
+						</Page>
+					</div>
+
+					{ activeItem && (
+						<div className="omniform-layout__panel">
+							<Page
+								title={ __( 'Response Details', 'omniform' ) }
+								actions={
+									<>
+										<Button
+											icon={ close }
+											label={ __( 'Close panel', 'omniform' ) }
+											onClick={ () => setActiveItem( null ) }
+										/>
+									</>
+								}
+							>
+								<Card>
+									<CardBody>
+										<HStack>
+											<HStack alignment="left">
+												<div className="field__avatar">
+													<img
+														alt={ __( 'Author avatar' ) }
+														src={ activeItem.omniform_form.sender_gravatar }
+													/>
+												</div>
+												<span className="field__email">
+													{ activeItem.omniform_form.sender_email }
+												</span>
+											</HStack>
+											<VStack alignment="right" spacing={ 0 } style={ { flexShrink: 0 } }>
+												<span>{ ( new Date( activeItem.date ) ).toLocaleDateString( 'en-US', { month: 'long', day: 'numeric', year: 'numeric' } ) }</span>
+												<span>at { ( new Date( activeItem.date ) ).toLocaleTimeString( 'en-US', { hour: 'numeric', minute: '2-digit', hour12: true } ).toLowerCase() }</span>
+											</VStack>
+										</HStack>
+									</CardBody>
+
+									<CardDivider />
+
+									<CardBody>
+										<pre>{ JSON.stringify( activeItem, null, 2 ) }</pre>
+									</CardBody>
+								</Card>
+							</Page>
+						</div>
+					) }
+				</div>
+			</div>
 		</>
 	);
 }
