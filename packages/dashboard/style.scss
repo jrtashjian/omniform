@@ -75,8 +75,16 @@ body.js.toplevel_page_omniform #wpfooter {
 	overflow: hidden;
 }
 
-.omniform-layout__content,
 .omniform-layout__panel {
+	visibility: hidden;
+	max-width: 570px;
+	overflow-y: scroll;
+	width: 0;
+	transition: width 0.3s ease;
+}
+
+.omniform-layout__content,
+.omniform-layout__panel:has(> div) {
 	border-radius: 8px;
 	margin: 16px 16px 16px 0;
 	width: 100%;
@@ -84,6 +92,7 @@ body.js.toplevel_page_omniform #wpfooter {
 	flex-grow: 1;
 	display: flex;
 	flex-direction: column;
+	visibility: visible;
 }
 
 .omniform-layout .field__avatar img {
@@ -110,9 +119,4 @@ body.js.toplevel_page_omniform #wpfooter {
 	display: block;
 	height: 24px;
 	width: 24px;
-}
-
-.omniform-layout__panel {
-	max-width: 570px;
-	overflow-y: scroll;
 }

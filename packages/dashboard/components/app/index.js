@@ -212,8 +212,8 @@ export default function App() {
 						</Page>
 					</div>
 
-					{ activeItem && (
-						<div className="omniform-layout__panel">
+					<div className="omniform-layout__panel">
+						{ activeItem && (
 							<Page
 								title={ __( 'Response Details', 'omniform' ) }
 								actions={
@@ -254,8 +254,8 @@ export default function App() {
 									</CardBody>
 								</Card>
 							</Page>
-						</div>
-					) }
+						) }
+					</div>
 				</div>
 			</div>
 		</>
