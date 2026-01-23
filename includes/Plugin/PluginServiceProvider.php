@@ -621,9 +621,27 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			)
 		);
 
-		register_post_status( 'omniform_read', array( 'public' => true ) );
-		register_post_status( 'omniform_unread', array( 'public' => true ) );
-		register_post_status( 'omniform_spam', array( 'public' => true ) );
+		register_post_status(
+			'omniform_read',
+			array(
+				'public' => true,
+				'label'  => __( 'Read', 'omniform' ),
+			)
+		);
+		register_post_status(
+			'omniform_unread',
+			array(
+				'public' => true,
+				'label'  => __( 'Unread', 'omniform' ),
+			)
+		);
+		register_post_status(
+			'omniform_spam',
+			array(
+				'public' => true,
+				'label'  => __( 'Spam', 'omniform' ),
+			)
+		);
 
 		// If the current user can't edit_theme_options, bail.
 		if ( ! current_user_can( 'edit_theme_options' ) ) {
