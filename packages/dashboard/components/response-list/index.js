@@ -9,7 +9,9 @@ import { __experimentalHStack as HStack } from '@wordpress/components';
  */
 import PostTypeDataView from '../post-type-data-view';
 
-export default function ResponseList() {
+export default function ResponseList( {
+	setActiveItem,
+} ) {
 	const fields = [
 		{
 			id: 'omniform_form.sender_email',
@@ -53,7 +55,7 @@ export default function ResponseList() {
 		{
 			id: 'view',
 			label: __( 'View', 'omniform' ),
-			callback: ( items ) => console.debug( 'View action on items:', items[ 0 ] ),
+			callback: ( items ) => setActiveItem( items[ 0 ] ),
 			isPrimary: true,
 		},
 		{
@@ -73,6 +75,7 @@ export default function ResponseList() {
 			postType="omniform_response"
 			statuses={ [ 'publish', 'omniform_unread', 'omniform_read' ] }
 			filterStatuses={ [ 'omniform_unread', 'trash' ] }
+			onClickItem={ ( item ) => setActiveItem( item ) }
 		/>
 	);
 }

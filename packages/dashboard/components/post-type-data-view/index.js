@@ -43,6 +43,7 @@ export default function PostTypeDataView( {
 	initialPerPage = 10,
 	statuses = [ 'draft', 'future', 'pending', 'private', 'publish' ],
 	filterStatuses = [],
+	onClickItem = () => {},
 } ) {
 	const postStatuses = useSelect( ( select ) => select( 'core' ).getStatuses(), [] );
 
@@ -116,7 +117,7 @@ export default function PostTypeDataView( {
 				actions={ actions }
 				paginationInfo={ { totalItems, totalPages } }
 				defaultLayouts={ { table: {} } }
-				onClickItem={ ( item ) => console.debug( 'Clicked item:', item ) }
+				onClickItem={ ( item ) => onClickItem( item ) }
 			>
 				<HStack
 					alignment="top"
