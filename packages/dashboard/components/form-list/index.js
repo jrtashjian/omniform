@@ -2,6 +2,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
+import { addQueryArgs } from '@wordpress/url';
 
 /**
  * Internal dependencies.
@@ -30,13 +31,13 @@ export default function FormList() {
 		{
 			id: 'edit',
 			label: __( 'Edit', 'omniform' ),
-			callback: ( items ) => console.debug( 'Edit action on items:', items[ 0 ] ),
+			callback: ( items ) => document.location.href = addQueryArgs( 'post.php', { post: items[ 0 ].id, action: 'edit' } ),
 			isPrimary: true,
 		},
 		{
 			id: 'view',
 			label: __( 'View', 'omniform' ),
-			callback: ( items ) => console.debug( 'View action on items:', items[ 0 ] ),
+			callback: ( items ) => document.location.href = addQueryArgs( '/', { post_type: 'omniform', p: items[ 0 ].id } ),
 			isPrimary: true,
 		},
 		{
@@ -56,6 +57,7 @@ export default function FormList() {
 			postType="omniform"
 			filterStatuses={ [ 'publish', 'draft', 'trash' ] }
 			initialSortField="modified"
+			onClickItem={ ( item ) => document.location.href = addQueryArgs( 'post.php', { post: item.id, action: 'edit' } ) }
 		/>
 	);
 }
