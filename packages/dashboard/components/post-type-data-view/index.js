@@ -6,7 +6,10 @@ import {
 	__experimentalHStack as HStack,
 	Button,
 } from '@wordpress/components';
-import { useEntityRecords } from '@wordpress/core-data';
+import {
+	useEntityRecords,
+	store as coreStore,
+} from '@wordpress/core-data';
 import { useSelect } from '@wordpress/data';
 import { DataViews } from '@wordpress/dataviews/wp';
 import { useMemo, useState } from '@wordpress/element';
@@ -45,12 +48,12 @@ export default function PostTypeDataView( {
 	filterStatuses = [],
 	onClickItem = () => {},
 } ) {
-	const postStatuses = useSelect( ( select ) => select( 'core' ).getStatuses(), [] );
+	const postStatuses = useSelect( ( select ) => select( coreStore ).getStatuses(), [] );
 
 	const itemCounts = useSelect( ( select ) => {
-		const all = select( 'core' ).getEntityRecordsTotalItems( 'postType', postType, { status: statuses } );
+		const all = select( coreStore ).getEntityRecordsTotalItems( 'postType', postType, { status: statuses } );
 		const statusCounts = filterStatuses.reduce( ( acc, status ) => {
-			acc[ status ] = select( 'core' ).getEntityRecordsTotalItems( 'postType', postType, { status: [ status ] } );
+			acc[ status ] = select( coreStore ).getEntityRecordsTotalItems( 'postType', postType, { status: [ status ] } );
 			return acc;
 		}, {} );
 		return { all, ...statusCounts };
