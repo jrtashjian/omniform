@@ -2,10 +2,8 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import {
-	__experimentalHStack as HStack,
-	Button,
-} from '@wordpress/components';
+import { Button } from '@wordpress/components';
+import { dateField } from '@wordpress/fields';
 
 /**
  * Internal dependencies.
@@ -15,24 +13,37 @@ import PostTypeDataView from '../post-type-data-view';
 export default function ResponseList( {
 	setActiveItem,
 } ) {
+	const STATUSES = [
+		{ value: 'trash', label: __( 'Trash', 'omniform' ) },
+		{ value: 'omniform_read', label: __( 'Read', 'omniform' ) },
+		{ value: 'omniform_unread', label: __( 'Unread', 'omniform' ) },
+	];
+
 	const fields = [
 		{
 			id: 'omniform_form.sender_email',
 			label: __( 'Sender', 'omniform' ),
 			render: ( { item } ) => (
-				<HStack alignment="left">
-					<div className="field__avatar">
-						<img
-							alt={ __( 'Author avatar' ) }
-							src={ item.omniform_form.sender_gravatar }
-						/>
-					</div>
-					<span className="field__email" style={ {
-						fontWeight: [ 'omniform_unread', 'publish' ].includes( item.status ) ? 'bold' : 'normal',
-					} }>
-						{ item.omniform_form.sender_email }
-					</span>
-				</HStack>
+				<span style={ {
+					fontWeight: item.status === 'omniform_unread' ? 'bold' : 'normal',
+				} }>
+					{ item.omniform_form.sender_email }
+				</span>
+			),
+			enableHiding: false,
+			enableSorting: false,
+			filterBy: false,
+		},
+		{
+			id: 'omniform_form.sender_ip',
+			label: __( 'Sender IP', 'omniform' ),
+		},
+		{
+			id: 'omniform_form.sender_gravatar',
+			label: __( 'Avatar', 'omniform' ),
+			isVisible: () => false,
+			render: ( { item } ) => (
+				<img alt={ __( 'Sender avatar', 'omniform' ) } src={ item.omniform_form.sender_gravatar } style={ { width: '40px', height: '40px' } } />
 			),
 			enableHiding: false,
 			enableSorting: false,
@@ -46,12 +57,15 @@ export default function ResponseList( {
 			filterBy: false,
 		},
 		{
-			id: 'date',
-			label: __( 'Date', 'omniform' ),
-			type: 'date',
-			enableHiding: false,
-			filterBy: false,
+			id: 'status',
+			label: __( 'Status', 'omniform' ),
+			elements: STATUSES,
+			filterBy: {
+				operators: [ 'isAny' ],
+			},
+			enableSorting: false,
 		},
+		dateField,
 	];
 
 	const actions = [
@@ -84,12 +98,15 @@ export default function ResponseList( {
 	return (
 		<PostTypeDataView
 			pageTitle={ __( 'Responses', 'omniform' ) }
+			pageSubTitle={ __( 'Manage your form responses.', 'omniform' ) }
 			pageActions={ pageActions }
 			fields={ fields }
 			actions={ actions }
 			postType="omniform_response"
-			statuses={ [ 'publish', 'omniform_unread', 'omniform_read' ] }
+			statuses={ [ 'omniform_unread', 'omniform_read' ] }
 			filterStatuses={ [ 'omniform_unread', 'trash' ] }
+			mediaField="omniform_form.sender_gravatar"
+			descriptionField="omniform_form.sender_ip"
 			onClickItem={ ( item ) => setActiveItem( item ) }
 		/>
 	);
