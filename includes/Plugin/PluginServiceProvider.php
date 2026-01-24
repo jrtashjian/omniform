@@ -15,6 +15,7 @@ use OmniForm\Dependencies\League\Container\ServiceProvider\BootableServiceProvid
 use OmniForm\Plugin\Http\Request;
 use WP_Block_Type;
 use WP_Block_Type_Registry;
+use WP_REST_Response;
 use wpdb;
 
 /**
@@ -557,6 +558,34 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				);
 
 				wp_add_inline_script( 'dashboard-script', $script );
+			}
+		);
+
+		// Backwards compatibility: Treat old 'publish' status as 'omniform_unread' for omniform_response post type.
+		add_filter(
+			'rest_omniform_response_query',
+			function ( $args ) {
+				if (
+					in_array( 'publish', $args['post_status'], true ) &&
+					! in_array( 'omniform_unread', $args['post_status'], true )
+				) {
+					$args['post_status'][] = 'omniform_unread';
+				}
+
+				return $args;
+			}
+		);
+		add_filter(
+			'rest_prepare_omniform_response',
+			function ( WP_REST_Response $response ) {
+				$data = $response->get_data();
+
+				if ( 'publish' === $data['status'] ) {
+					$data['status'] = 'omniform_unread';
+				}
+
+				$response->set_data( $data );
+				return $response;
 			}
 		);
 	}
