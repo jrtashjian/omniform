@@ -6,6 +6,7 @@ import { addQueryArgs } from '@wordpress/url';
 import { Button } from '@wordpress/components';
 import {
 	titleField,
+	statusField,
 	dateField,
 } from '@wordpress/fields';
 
@@ -17,6 +18,7 @@ import PostTypeDataView from '../post-type-data-view';
 export default function FormList() {
 	const fields = [
 		titleField,
+		statusField,
 		dateField,
 	];
 
