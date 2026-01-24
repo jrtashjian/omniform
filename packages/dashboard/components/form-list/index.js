@@ -2,7 +2,20 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
+import { useSelect } from '@wordpress/data';
+import { store as coreStore } from '@wordpress/core-data';
 import { addQueryArgs } from '@wordpress/url';
+import {
+	__experimentalHStack as HStack,
+	Icon,
+} from '@wordpress/components';
+import {
+	drafts as draftsIcon,
+	scheduled as scheduledIcon,
+	pending as pendingIcon,
+	notAllowed as notAllowedIcon,
+	published as publishedIcon,
+} from '@wordpress/icons';
 
 /**
  * Internal dependencies.
@@ -10,6 +23,15 @@ import { addQueryArgs } from '@wordpress/url';
 import PostTypeDataView from '../post-type-data-view';
 
 export default function FormList() {
+	const postStatuses = useSelect( ( select ) => select( coreStore ).getStatuses(), [] );
+	const iconMapping = {
+		draft: draftsIcon,
+		future: scheduledIcon,
+		pending: pendingIcon,
+		private: notAllowedIcon,
+		publish: publishedIcon,
+	};
+
 	const fields = [
 		{
 			id: 'title',
@@ -19,9 +41,18 @@ export default function FormList() {
 			filterBy: false,
 		},
 		{
-			id: 'modified',
-			label: __( 'Date', 'omniform' ),
-			type: 'date',
+			id: 'status',
+			label: __( 'Status', 'omniform' ),
+			render: ( { item } ) => {
+				const statusName = postStatuses?.find( ( s ) => s.slug === item.status )?.name || item.status;
+				return (
+					<HStack gap="2" justify="start">
+						<Icon icon={ iconMapping[ item.status ] } style={ { fill: 'currentColor' } } />
+						<span>{ statusName }</span>
+					</HStack>
+				);
+			},
+			type: 'text',
 			enableHiding: false,
 			filterBy: false,
 		},
