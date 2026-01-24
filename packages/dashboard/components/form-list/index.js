@@ -7,6 +7,7 @@ import { store as coreStore } from '@wordpress/core-data';
 import { addQueryArgs } from '@wordpress/url';
 import {
 	__experimentalHStack as HStack,
+	Button,
 	Icon,
 } from '@wordpress/components';
 import {
@@ -80,9 +81,21 @@ export default function FormList() {
 		},
 	];
 
+	const pageActions = (
+		<>
+			<Button
+				variant="primary"
+				onClick={ () => document.location.href = addQueryArgs( 'post-new.php', { post_type: 'omniform' } ) }
+			>
+				{ __( 'Create Form', 'omniform' ) }
+			</Button>
+		</>
+	);
+
 	return (
 		<PostTypeDataView
 			pageTitle={ __( 'Forms', 'omniform' ) }
+			pageActions={ pageActions }
 			fields={ fields }
 			actions={ actions }
 			postType="omniform"

@@ -37,6 +37,7 @@ const abbreviateNumber = ( num ) => {
 
 export default function PostTypeDataView( {
 	pageTitle,
+	pageActions,
 	fields,
 	actions,
 	postType,
@@ -111,7 +112,10 @@ export default function PostTypeDataView( {
 	} = useEntityRecords( 'postType', postType, queryArgs );
 
 	return (
-		<Page title={ pageTitle }>
+		<Page
+			title={ pageTitle }
+			actions={ pageActions }
+		>
 			<DataViews
 				data={ records || [] }
 				isLoading={ isLoadingData }

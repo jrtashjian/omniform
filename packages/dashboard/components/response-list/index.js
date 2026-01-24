@@ -2,7 +2,10 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { __experimentalHStack as HStack } from '@wordpress/components';
+import {
+	__experimentalHStack as HStack,
+	Button,
+} from '@wordpress/components';
 
 /**
  * Internal dependencies.
@@ -67,9 +70,21 @@ export default function ResponseList( {
 		},
 	];
 
+	const pageActions = (
+		<>
+			<Button
+				variant="primary"
+				onClick={ () => {} }
+			>
+				{ __( 'Export', 'omniform' ) }
+			</Button>
+		</>
+	);
+
 	return (
 		<PostTypeDataView
 			pageTitle={ __( 'Responses', 'omniform' ) }
+			pageActions={ pageActions }
 			fields={ fields }
 			actions={ actions }
 			postType="omniform_response"
