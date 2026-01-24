@@ -565,11 +565,10 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		add_filter(
 			'rest_omniform_response_query',
 			function ( $args ) {
-				if (
-					in_array( 'publish', $args['post_status'], true ) &&
-					! in_array( 'omniform_unread', $args['post_status'], true )
-				) {
-					$args['post_status'][] = 'omniform_unread';
+				$compat = array( 'publish', 'omniform_unread' );
+
+				if ( array_intersect( $compat, $args['post_status'] ) ) {
+					$args['post_status'] = array_unique( array_merge( $args['post_status'], $compat ) );
 				}
 
 				return $args;
