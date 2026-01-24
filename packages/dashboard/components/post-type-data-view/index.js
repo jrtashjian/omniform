@@ -42,6 +42,8 @@ export default function PostTypeDataView( {
 	actions,
 	postType,
 	titleField = fields[ 0 ]?.id,
+	mediaField = null,
+	descriptionField = null,
 	initialSortField = 'date',
 	initialSortDirection = 'desc',
 	initialPerPage = 10,
@@ -70,7 +72,9 @@ export default function PostTypeDataView( {
 			direction: initialSortDirection,
 		},
 		titleField,
-		fields: fields.map( ( field ) => field.id ).filter( ( id ) => id !== titleField ),
+		mediaField,
+		descriptionField,
+		fields: fields.map( ( field ) => field.id ).filter( ( id ) => id !== titleField && id !== mediaField && id !== descriptionField ),
 		layout: {
 			enableMoving: false,
 		},
@@ -81,7 +85,7 @@ export default function PostTypeDataView( {
 				value: statuses,
 			},
 		],
-	} ), [ fields, titleField, initialSortField, initialSortDirection, initialPerPage, statuses ] );
+	} ), [ fields, titleField, mediaField, descriptionField, initialSortField, initialSortDirection, initialPerPage, statuses ] );
 
 	const [ view, setView ] = useState( defaultView );
 
@@ -115,6 +119,32 @@ export default function PostTypeDataView( {
 		<Page
 			title={ pageTitle }
 			actions={ pageActions }
+			subTitle={ (
+				<HStack
+					justify="start"
+					expanded={ false }
+				>
+					<Button size="compact" onClick={ () => setView( { ...view, filters: defaultView.filters } ) }>
+						{ itemCounts.all
+							? sprintf(
+								/* translators: %s: Total number of items. */
+								__( 'All (%s)', 'omniform' ),
+								abbreviateNumber( itemCounts.all )
+							)
+							: __( 'All', 'omniform' )
+						}
+					</Button>
+					{ filterStatuses.map( ( status ) => (
+						<Button
+							key={ status }
+							size="compact"
+							onClick={ () => setView( { ...view, filters: [ { field: 'status', operator: 'isAny', value: [ status ] } ] } ) }
+						>
+							{ ( postStatuses?.find( ( s ) => s.slug === status )?.name || status ) + ( itemCounts[ status ] ? ` (${ abbreviateNumber( itemCounts[ status ] ) })` : '' ) }
+						</Button>
+					) ) }
+				</HStack>
+			) }
 		>
 			<DataViews
 				data={ records || [] }
@@ -126,49 +156,7 @@ export default function PostTypeDataView( {
 				paginationInfo={ { totalItems, totalPages } }
 				defaultLayouts={ { table: {} } }
 				onClickItem={ ( item ) => onClickItem( item ) }
-			>
-				<HStack
-					alignment="top"
-					justify="space-between"
-					className="dataviews__view-actions"
-					spacing={ 1 }
-				>
-					<HStack
-						justify="start"
-						expanded={ false }
-					>
-						<Button size="compact" onClick={ () => setView( { ...view, filters: defaultView.filters } ) }>
-							{ itemCounts.all
-								? sprintf(
-									/* translators: %s: Total number of items. */
-									__( 'All (%s)', 'omniform' ),
-									abbreviateNumber( itemCounts.all )
-								)
-								: __( 'All', 'omniform' )
-							}
-						</Button>
-						{ filterStatuses.map( ( status ) => (
-							<Button
-								key={ status }
-								size="compact"
-								onClick={ () => setView( { ...view, filters: [ { field: 'status', operator: 'isAny', value: [ status ] } ] } ) }
-							>
-								{ ( postStatuses?.find( ( s ) => s.slug === status )?.name || status ) + ( itemCounts[ status ] ? ` (${ abbreviateNumber( itemCounts[ status ] ) })` : '' ) }
-							</Button>
-						) ) }
-					</HStack>
-					<HStack
-						spacing={ 1 }
-						expanded={ false }
-						style={ { flexShrink: 0 } }
-					>
-						<DataViews.Search />
-						<DataViews.ViewConfig />
-					</HStack>
-				</HStack>
-				<DataViews.Layout />
-				<DataViews.Footer />
-			</DataViews>
+			/>
 		</Page>
 	);
 }
