@@ -2,21 +2,12 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { useSelect } from '@wordpress/data';
-import { store as coreStore } from '@wordpress/core-data';
 import { addQueryArgs } from '@wordpress/url';
+import { Button } from '@wordpress/components';
 import {
-	__experimentalHStack as HStack,
-	Button,
-	Icon,
-} from '@wordpress/components';
-import {
-	drafts as draftsIcon,
-	scheduled as scheduledIcon,
-	pending as pendingIcon,
-	notAllowed as notAllowedIcon,
-	published as publishedIcon,
-} from '@wordpress/icons';
+	titleField,
+	dateField,
+} from '@wordpress/fields';
 
 /**
  * Internal dependencies.
@@ -24,39 +15,9 @@ import {
 import PostTypeDataView from '../post-type-data-view';
 
 export default function FormList() {
-	const postStatuses = useSelect( ( select ) => select( coreStore ).getStatuses(), [] );
-	const iconMapping = {
-		draft: draftsIcon,
-		future: scheduledIcon,
-		pending: pendingIcon,
-		private: notAllowedIcon,
-		publish: publishedIcon,
-	};
-
 	const fields = [
-		{
-			id: 'title',
-			label: __( 'Form', 'omniform' ),
-			render: ( { item } ) => item.title.rendered,
-			enableHiding: false,
-			filterBy: false,
-		},
-		{
-			id: 'status',
-			label: __( 'Status', 'omniform' ),
-			render: ( { item } ) => {
-				const statusName = postStatuses?.find( ( s ) => s.slug === item.status )?.name || item.status;
-				return (
-					<HStack gap="2" justify="start">
-						<Icon icon={ iconMapping[ item.status ] } style={ { fill: 'currentColor' } } />
-						<span>{ statusName }</span>
-					</HStack>
-				);
-			},
-			type: 'text',
-			enableHiding: false,
-			filterBy: false,
-		},
+		titleField,
+		dateField,
 	];
 
 	const actions = [
@@ -100,7 +61,6 @@ export default function FormList() {
 			actions={ actions }
 			postType="omniform"
 			filterStatuses={ [ 'publish', 'draft', 'trash' ] }
-			initialSortField="modified"
 			onClickItem={ ( item ) => document.location.href = addQueryArgs( 'post.php', { post: item.id, action: 'edit' } ) }
 		/>
 	);
