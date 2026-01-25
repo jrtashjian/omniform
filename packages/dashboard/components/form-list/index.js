@@ -3,17 +3,22 @@
  */
 import { __ } from '@wordpress/i18n';
 import { addQueryArgs } from '@wordpress/url';
-import { Button } from '@wordpress/components';
+import {
+	Button,
+} from '@wordpress/components';
 import {
 	titleField,
 	statusField,
 	dateField,
+	viewPost,
+	duplicatePost,
 } from '@wordpress/fields';
 
 /**
  * Internal dependencies.
  */
 import PostTypeDataView from '../post-type-data-view';
+import editPost from '../../actions/edit-post';
 
 export default function FormList() {
 	const fields = [
@@ -23,25 +28,9 @@ export default function FormList() {
 	];
 
 	const actions = [
-		{
-			id: 'edit',
-			label: __( 'Edit', 'omniform' ),
-			callback: ( items ) => document.location.href = addQueryArgs( 'post.php', { post: items[ 0 ].id, action: 'edit' } ),
-			isPrimary: true,
-		},
-		{
-			id: 'view',
-			label: __( 'View', 'omniform' ),
-			callback: ( items ) => document.location.href = addQueryArgs( '/', { post_type: 'omniform', p: items[ 0 ].id } ),
-			isPrimary: true,
-		},
-		{
-			id: 'trash',
-			label: __( 'Trash', 'omniform' ),
-			callback: ( items ) => console.debug( 'Trash action on items:', items ),
-			isPrimary: true,
-			supportsBulk: true,
-		},
+		editPost,
+		viewPost,
+		duplicatePost,
 	];
 
 	const pageActions = (
