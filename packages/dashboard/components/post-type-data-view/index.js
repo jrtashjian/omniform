@@ -132,33 +132,32 @@ export default function PostTypeDataView( {
 		<Page
 			title={ pageTitle }
 			actions={ pageActions }
-			subTitle={ (
-				<HStack
-					justify="start"
-					expanded={ false }
-				>
-					<Button size="compact" onClick={ () => setView( { ...view, filters: defaultView.filters } ) }>
-						{ itemCounts.all
-							? sprintf(
-								/* translators: %s: Total number of items. */
-								__( 'All (%s)', 'omniform' ),
-								abbreviateNumber( itemCounts.all )
-							)
-							: __( 'All', 'omniform' )
-						}
-					</Button>
-					{ filterStatuses.map( ( status ) => (
-						<Button
-							key={ status }
-							size="compact"
-							onClick={ () => setView( { ...view, filters: [ { field: 'status', operator: 'isAny', value: [ status ] } ] } ) }
-						>
-							{ ( postStatuses?.find( ( s ) => s.slug === status )?.name || status ) + ( itemCounts[ status ] ? ` (${ abbreviateNumber( itemCounts[ status ] ) })` : '' ) }
-						</Button>
-					) ) }
-				</HStack>
-			) }
 		>
+			<HStack
+				justify="start"
+				expanded={ false }
+			>
+				<Button size="compact" onClick={ () => setView( { ...view, filters: defaultView.filters } ) }>
+					{ itemCounts.all
+						? sprintf(
+							/* translators: %s: Total number of items. */
+							__( 'All (%s)', 'omniform' ),
+							abbreviateNumber( itemCounts.all )
+						)
+						: __( 'All', 'omniform' )
+					}
+				</Button>
+				{ filterStatuses.map( ( status ) => (
+					<Button
+						key={ status }
+						size="compact"
+						onClick={ () => setView( { ...view, filters: [ { field: 'status', operator: 'isAny', value: [ status ] } ] } ) }
+					>
+						{ ( postStatuses?.find( ( s ) => s.slug === status )?.name || status ) + ( itemCounts[ status ] ? ` (${ abbreviateNumber( itemCounts[ status ] ) })` : '' ) }
+					</Button>
+				) ) }
+			</HStack>
+
 			<DataViews
 				data={ records || [] }
 				isLoading={ isLoadingData }
