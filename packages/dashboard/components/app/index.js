@@ -54,7 +54,7 @@ import ResponseList from '../response-list';
 // 	},
 // };
 
-export default function App() {
+export default function App( { settings } ) {
 	const [ activeItem, setActiveItem ] = useState( null );
 
 	// // Change Status Action
@@ -82,9 +82,17 @@ export default function App() {
 			<div className="omniform-layout">
 				<div className="omniform-layout__container">
 					<div className="omniform-layout__content">
-						<Page title={ __( 'OmniForm', 'omniform' ) } />
+						{ settings.screen === 'dashboard' && (
+							<Page title={ __( 'OmniForm', 'omniform' ) } />
+						) }
 
-						<ResponseList setActiveItem={ setActiveItem } />
+						{ settings.screen === 'forms' && (
+							<FormList />
+						) }
+
+						{ settings.screen === 'responses' && (
+							<ResponseList setActiveItem={ setActiveItem } />
+						) }
 
 						{ /* <Page
 							title={ __( 'Responses', 'omniform' ) }
@@ -138,8 +146,6 @@ export default function App() {
 								onClickItem={ ( item ) => setActiveItem( item ) }
 							/>
 						</Page> */ }
-
-						<FormList />
 					</div>
 
 					<div className="omniform-layout__panel">
