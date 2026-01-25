@@ -99,17 +99,16 @@ body.js.omniform_page_omniform_responses {
 	visibility: visible;
 }
 
-.omniform-layout .field__avatar img {
+.omniform-layout__panel .admin-ui-page {
+	overflow: scroll;
+}
+
+.omniform-layout__panel .field__avatar {
 	display: block;
 	border-radius: 100%;
 	height: 32px;
 	width: 32px;
 	object-fit: cover;
-}
-
-.omniform-layout__panel .field__avatar img {
-	height: 48px;
-	width: 48px;
 }
 
 .omniform-layout__content header h2.components-heading {

@@ -7,9 +7,6 @@ import {
 	__experimentalHStack as HStack,
 	__experimentalVStack as VStack,
 	Button,
-	Card,
-	CardBody,
-	CardDivider,
 } from '@wordpress/components';
 import { Page } from '@wordpress/admin-ui';
 // import { DataViews } from '@wordpress/dataviews/wp';
@@ -27,6 +24,7 @@ import { EditorSnackbars } from '@wordpress/editor';
  */
 import FormList from '../form-list';
 import ResponseList from '../response-list';
+import ResponsePreview from '../response-preview';
 
 // const STATUS_CONFIG = {
 // 	publish: {
@@ -151,9 +149,27 @@ export default function App( { settings } ) {
 					<div className="omniform-layout__panel">
 						{ activeItem && (
 							<Page
-								title={ __( 'Response Details', 'omniform' ) }
+								title={
+									<HStack as="span" alightment="left" expanded={ false }>
+										<img
+											className="field__avatar"
+											alt={ __( 'Author avatar' ) }
+											src={ activeItem.omniform_form.sender_gravatar }
+										/>
+										<span className="field__email">
+											{ activeItem.omniform_form.sender_email }
+										</span>
+									</HStack>
+								}
+								subTitle={ ( new Date( activeItem.date ) ).toLocaleString( 'en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true } ) }
 								actions={
 									<>
+										<Button
+											__next40pxDefaultSize
+											variant="secondary"
+										>
+											Action Button
+										</Button>
 										<Button
 											icon={ close }
 											label={ __( 'Close panel', 'omniform' ) }
@@ -162,33 +178,7 @@ export default function App( { settings } ) {
 									</>
 								}
 							>
-								<Card>
-									<CardBody>
-										<HStack>
-											<HStack alignment="left">
-												<div className="field__avatar">
-													<img
-														alt={ __( 'Author avatar' ) }
-														src={ activeItem.omniform_form.sender_gravatar }
-													/>
-												</div>
-												<span className="field__email">
-													{ activeItem.omniform_form.sender_email }
-												</span>
-											</HStack>
-											<VStack alignment="right" spacing={ 0 } style={ { flexShrink: 0 } }>
-												<span>{ ( new Date( activeItem.date ) ).toLocaleDateString( 'en-US', { month: 'long', day: 'numeric', year: 'numeric' } ) }</span>
-												<span>at { ( new Date( activeItem.date ) ).toLocaleTimeString( 'en-US', { hour: 'numeric', minute: '2-digit', hour12: true } ).toLowerCase() }</span>
-											</VStack>
-										</HStack>
-									</CardBody>
-
-									<CardDivider />
-
-									<CardBody>
-										<pre>{ JSON.stringify( activeItem, null, 2 ) }</pre>
-									</CardBody>
-								</Card>
+								<ResponsePreview id={ activeItem.id } />
 							</Page>
 						) }
 					</div>
