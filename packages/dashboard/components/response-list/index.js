@@ -74,13 +74,7 @@ export default function ResponseList( {
 			label: __( 'View', 'omniform' ),
 			callback: ( items ) => setActiveItem( items[ 0 ] ),
 			isPrimary: true,
-		},
-		{
-			id: 'trash',
-			label: __( 'Trash', 'omniform' ),
-			callback: ( items ) => console.debug( 'Trash action on items:', items ),
-			isPrimary: true,
-			supportsBulk: true,
+			isEligible: ( item ) => item.status !== 'trash',
 		},
 	];
 
