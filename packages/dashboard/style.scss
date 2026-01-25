@@ -6,12 +6,16 @@
 
 @import "@wordpress/admin-ui/build-style/style.css";
 
-body.js.toplevel_page_omniform #wpcontent {
-	padding-left: 0;
-}
+body.js.toplevel_page_omniform,
+body.js.omniform_page_omniform_forms,
+body.js.omniform_page_omniform_responses {
+	#wpcontent {
+		padding-left: 0;
+	}
 
-body.js.toplevel_page_omniform #wpfooter {
-	display: none;
+	#wpfooter {
+		display: none;
+	}
 }
 
 #omniform {

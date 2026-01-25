@@ -486,26 +486,45 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					2
 				);
 
+				$app_page = function () {
+					?>
+					<div id="omniform" class="hide-if-no-js"></div>
+
+					<?php // JavaScript is disabled. ?>
+					<div class="wrap hide-if-js">
+						<h1 class="wp-heading-inline">OmniForm</h1>
+						<div class="notice notice-error notice-alt">
+							<p><?php esc_html_e( 'OmniForm requires JavaScript. Please enable JavaScript in your browser settings.', 'omniform' ); ?></p>
+						</div>
+					</div>
+					<?php
+				};
+
 				add_submenu_page(
 					'omniform',
 					esc_html__( 'Dashboard', 'omniform' ),
 					esc_html__( 'Dashboard', 'omniform' ),
 					'manage_options',
 					'omniform',
-					function () {
-						?>
-						<div id="omniform" class="hide-if-no-js"></div>
+					$app_page
+				);
 
-						<?php // JavaScript is disabled. ?>
-						<div class="wrap hide-if-js">
-							<h1 class="wp-heading-inline">OmniForm</h1>
-							<div class="notice notice-error notice-alt">
-								<p><?php esc_html_e( 'OmniForm requires JavaScript. Please enable JavaScript in your browser settings.', 'omniform' ); ?></p>
-							</div>
-						</div>
-						<?php
-					},
-					0
+				add_submenu_page(
+					'omniform',
+					esc_html__( 'Forms', 'omniform' ),
+					esc_html__( 'Forms', 'omniform' ),
+					'manage_options',
+					'omniform_forms',
+					$app_page
+				);
+
+				add_submenu_page(
+					'omniform',
+					esc_html__( 'Responses', 'omniform' ),
+					esc_html__( 'Responses', 'omniform' ),
+					'manage_options',
+					'omniform_responses',
+					$app_page
 				);
 			}
 		);
@@ -515,7 +534,13 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			function () {
 				$current_screen = get_current_screen();
 
-				if ( 'toplevel_page_omniform' !== $current_screen->base ) {
+				$admin_pages = array(
+					'toplevel_page_omniform'           => 'dashboard',
+					'omniform_page_omniform_forms'     => 'forms',
+					'omniform_page_omniform_responses' => 'responses',
+				);
+
+				if ( ! array_key_exists( $current_screen->base, $admin_pages ) ) {
 					return;
 				}
 
@@ -554,7 +579,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 
 				$script = sprintf(
 					$init_script,
-					wp_json_encode( array() )
+					wp_json_encode( array( 'screen' => $admin_pages[ $current_screen->base ] ) )
 				);
 
 				wp_add_inline_script( 'dashboard-script', $script );
@@ -618,8 +643,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					'item_updated'             => __( 'Form updated.', 'omniform' ),
 				),
 				'public'                => true,
-				'show_ui'               => true,
-				'show_in_menu'          => 'omniform',
+				'show_ui'               => false,
 				'show_in_rest'          => true,
 				'rest_namespace'        => 'omniform/v1',
 				'rest_base'             => 'forms',
@@ -755,8 +779,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					'view_item'          => __( 'View response', 'omniform' ),
 				),
 				'public'                          => false,
-				'show_ui'                         => true,
-				'show_in_menu'                    => 'omniform',
+				'show_ui'                         => false,
 				'show_in_admin_bar'               => false,
 				'rewrite'                         => false,
 				'show_in_rest'                    => true,
