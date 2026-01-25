@@ -16,6 +16,13 @@ import { useMemo, useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 
 /**
+ * Internal dependencies.
+ */
+import trashPost from '../../actions/trash-post';
+import permanentlyDeletePost from '../../actions/permanently-delete-post';
+import restorePost from '../../actions/restore-post';
+
+/**
  * Abbreviates a number for display, e.g., 19545 becomes '19.5k'.
  *
  * @param {number} num The number to abbreviate.
@@ -115,6 +122,12 @@ export default function PostTypeDataView( {
 		totalPages,
 	} = useEntityRecords( 'postType', postType, queryArgs );
 
+	const defaultActions = [
+		trashPost,
+		permanentlyDeletePost,
+		restorePost,
+	];
+
 	return (
 		<Page
 			title={ pageTitle }
@@ -152,7 +165,7 @@ export default function PostTypeDataView( {
 				view={ view }
 				onChangeView={ setView }
 				fields={ fields }
-				actions={ actions }
+				actions={ [ ...actions, ...defaultActions ] }
 				paginationInfo={ { totalItems, totalPages } }
 				defaultLayouts={ { table: {} } }
 				onClickItem={ ( item ) => onClickItem( item ) }
