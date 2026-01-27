@@ -92,7 +92,6 @@ export default function ResponseList( {
 	return (
 		<PostTypeDataView
 			pageTitle={ __( 'Responses', 'omniform' ) }
-			pageSubTitle={ __( 'Manage your form responses.', 'omniform' ) }
 			pageActions={ pageActions }
 			fields={ fields }
 			actions={ actions }
