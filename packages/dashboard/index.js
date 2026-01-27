@@ -11,9 +11,9 @@ import App from './components/app';
 import './style.scss';
 
 /**
- * Initializes and returns an instance of PluginWP.
+ * Initializes the dashboard app and returns the React root instance.
  *
- * @param {string}  id       Unique identifier for the editor instance.
+ * @param {string}  id       Unique identifier for the DOM element.
  * @param {?Object} settings Settings object.
  */
 export function initialize( id, settings ) {
