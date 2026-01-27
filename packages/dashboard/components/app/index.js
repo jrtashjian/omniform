@@ -45,7 +45,7 @@ export default function App( { settings } ) {
 						{ activeItem && (
 							<Page
 								title={
-									<HStack as="span" alightment="left" expanded={ false }>
+									<HStack as="span" alignment="left" expanded={ false }>
 										<img
 											className="field__avatar"
 											alt={ __( 'Author avatar' ) }
