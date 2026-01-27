@@ -1,0 +1,14 @@
+@use "@wordpress/base-styles/variables" as *;
+
+// .omniform-response-preview {}
+// .omniform-response-preview__field {}
+// .omniform-response-preview__field-label {}
+// .omniform-response-preview__field-value {}
+
+.omniform-response-preview__field {
+	padding-left: $grid-unit-40;
+}
+
+.omniform-response-preview__field-label {
+	margin-left: -$grid-unit-40;
+}

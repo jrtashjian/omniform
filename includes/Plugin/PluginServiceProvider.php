@@ -15,6 +15,7 @@ use OmniForm\Dependencies\League\Container\ServiceProvider\BootableServiceProvid
 use OmniForm\Plugin\Http\Request;
 use WP_Block_Type;
 use WP_Block_Type_Registry;
+use WP_REST_Response;
 use wpdb;
 
 /**
@@ -94,6 +95,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		add_action( 'init', array( $this, 'register_settings' ) );
 		add_action( 'init', array( $this, 'filter_block_patterns_on_admin' ), PHP_INT_MAX );
 		add_action( 'rest_api_init', array( $this, 'filter_block_patterns_on_rest_api' ), PHP_INT_MAX );
+		add_action( 'rest_api_init', array( $this, 'register_rest_fields' ) );
 		add_filter( 'the_content', array( $this, 'render_singular_template' ) );
 
 		add_action( 'admin_init', array( $this, 'dismiss_newsletter_notice' ) );
@@ -252,128 +254,6 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			2
 		);
 
-		// Add custom columns to Responses CPT.
-		add_filter(
-			'manage_omniform_response_posts_columns',
-			function ( $columns ) {
-				return array(
-					'cb'       => $columns['cb'],
-					'title'    => $columns['title'],
-					'form'     => esc_html__( 'Form', 'omniform' ),
-					'formdata' => esc_html__( 'Form Data', 'omniform' ),
-					'date'     => $columns['date'],
-				);
-			}
-		);
-
-		// Add "Form" column to Responses CPT.
-		add_action(
-			'manage_omniform_response_posts_custom_column',
-			function ( $column_key, $post_id ) {
-				if ( 'form' !== $column_key ) {
-					return;
-				}
-
-				$form_id = (int) get_post_meta( $post_id, '_omniform_id', true );
-
-				try {
-					/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
-					$form = omniform()->get( FormFactory::class )->create_with_id( $form_id );
-				} catch ( \Exception $e ) {
-					echo esc_html( $e->getMessage() );
-					return;
-				}
-
-				$form_title = empty( $form->get_title() )
-					? __( '(no title)', 'omniform' )
-					: $form->get_title();
-
-				printf(
-					'<a href="%s" aria-label="%s">%s</a>',
-					esc_url( admin_url( sprintf( 'post.php?post=%d&action=edit', $form->get_id() ) ) ),
-					/* translators: %s: Form title. */
-					esc_attr( sprintf( __( 'View &#8220;%s&#8221; responses', 'omniform' ), $form_title ) ),
-					esc_attr( $form_title ),
-				);
-			},
-			10,
-			2
-		);
-
-		// Add "Form Data" column to Responses CPT.
-		add_action(
-			'manage_omniform_response_posts_custom_column',
-			function ( $column_key, $post_id ) {
-				if ( 'formdata' !== $column_key ) {
-					return;
-				}
-
-				/** @var \OmniForm\Plugin\Response */ // phpcs:ignore
-				$response = $this->getContainer()->get( ResponseFactory::class )->create_with_id( $post_id );
-
-				echo wp_kses_post( $response->text_content() );
-			},
-			10,
-			2
-		);
-
-		// Remove default meta boxes.
-		add_action(
-			'add_meta_boxes_omniform_response',
-			function () {
-				remove_meta_box( 'submitdiv', 'omniform_response', 'side' );
-				remove_meta_box( 'postcustom', 'omniform_response', 'normal' );
-				remove_meta_box( 'slugdiv', 'omniform_response', 'normal' );
-			}
-		);
-
-		// Filter responses by form id.
-		add_filter(
-			'parse_query',
-			function ( $query ) {
-				if ( ! ( is_admin() && $query->is_main_query() ) ) {
-					return $query;
-				}
-
-				if ( 'omniform_response' !== $query->query['post_type'] ) {
-					return $query;
-				}
-
-				$request = $this->getContainer()->get( Request::class );
-
-				if ( empty( $request->query->get( 'omniform_id' ) ) ) {
-					return $query;
-				}
-
-				$query->set(
-					'meta_query',
-					array(
-						array(
-							'key'   => '_omniform_id',
-							'value' => (int) $request->query->get( 'omniform_id' ),
-						),
-					)
-				);
-
-				return $query;
-			}
-		);
-
-		// Render response data instead of the editor.
-		add_action(
-			'edit_form_after_editor',
-			function ( $post ) {
-				if ( 'omniform_response' !== $post->post_type ) {
-					return;
-				}
-
-				/** @var \OmniForm\Plugin\Response */ // phpcs:ignore
-				$response = $this->getContainer()->get( ResponseFactory::class )->create_with_id( $post->ID );
-
-				echo wp_kses_post( $response->text_content() );
-			}
-		);
-
 		// Filter allowed blocks in the editor.
 		add_filter(
 			'allowed_block_types_all',
@@ -469,6 +349,147 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				return $metadata;
 			},
 		);
+
+		add_action(
+			'admin_menu',
+			function () {
+				add_menu_page(
+					esc_html__( 'OmniForm', 'omniform' ),
+					esc_html__( 'OmniForm', 'omniform' ),
+					'manage_options',
+					'omniform',
+					'',
+					// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+					'data:image/svg+xml;base64,' . base64_encode( '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M3.33 15.424a4.842 4.842 0 0 1 0-6.848l.207-.208v-2.42a2.421 2.421 0 0 1 2.421-2.422H8.38l.086-.086a4.842 4.842 0 0 1 6.848 0l.086.086h2.665a2.421 2.421 0 0 1 2.421 2.421v2.665a4.842 4.842 0 0 1 0 6.776v2.665a2.421 2.421 0 0 1-2.421 2.42h-2.665l-.086.087a4.842 4.842 0 0 1-6.848 0l-.086-.086H5.96a2.421 2.421 0 0 1-2.422-2.421v-2.421l-.207-.208ZM12 5a7 7 0 0 1 7 7h-1.604A5.396 5.396 0 0 0 12 6.604V5Zm0 12.396V19a7 7 0 0 1-7-7h1.604A5.396 5.396 0 0 0 12 17.396ZM15.5 12A3.5 3.5 0 0 0 12 8.5v1.896c.886 0 1.604.718 1.604 1.604H15.5Zm-5.104 0c0 .886.718 1.604 1.604 1.604V15.5A3.5 3.5 0 0 1 8.5 12h1.896Z" clip-rule="evenodd"/></svg>' ),
+					2
+				);
+
+				$app_page = function () {
+					?>
+					<div id="omniform" class="hide-if-no-js"></div>
+
+					<?php // JavaScript is disabled. ?>
+					<div class="wrap hide-if-js">
+						<h1 class="wp-heading-inline">OmniForm</h1>
+						<div class="notice notice-error notice-alt">
+							<p><?php esc_html_e( 'OmniForm requires JavaScript. Please enable JavaScript in your browser settings.', 'omniform' ); ?></p>
+						</div>
+					</div>
+					<?php
+				};
+
+				add_submenu_page(
+					'omniform',
+					esc_html__( 'Dashboard', 'omniform' ),
+					esc_html__( 'Dashboard', 'omniform' ),
+					'manage_options',
+					'omniform',
+					$app_page
+				);
+
+				add_submenu_page(
+					'omniform',
+					esc_html__( 'Forms', 'omniform' ),
+					esc_html__( 'Forms', 'omniform' ),
+					'manage_options',
+					'omniform_forms',
+					$app_page
+				);
+
+				add_submenu_page(
+					'omniform',
+					esc_html__( 'Responses', 'omniform' ),
+					esc_html__( 'Responses', 'omniform' ),
+					'manage_options',
+					'omniform_responses',
+					$app_page
+				);
+			}
+		);
+
+		add_action(
+			'admin_enqueue_scripts',
+			function () {
+				$current_screen = get_current_screen();
+
+				$admin_pages = array(
+					'toplevel_page_omniform'           => 'dashboard',
+					'omniform_page_omniform_forms'     => 'forms',
+					'omniform_page_omniform_responses' => 'responses',
+				);
+
+				if ( ! array_key_exists( $current_screen->base, $admin_pages ) ) {
+					return;
+				}
+
+				// Prevent default hooks rendering content to the page.
+				remove_all_actions( 'network_admin_notices' );
+				remove_all_actions( 'user_admin_notices' );
+				remove_all_actions( 'admin_notices' );
+				remove_all_actions( 'all_admin_notices' );
+
+				$asset_file = include omniform()->base_path( 'build/dashboard/index.asset.php' );
+
+				wp_enqueue_script(
+					'dashboard-script',
+					omniform()->base_url( 'build/dashboard/index.js' ),
+					$asset_file['dependencies'],
+					$asset_file['version'],
+					true
+				);
+
+				wp_enqueue_style(
+					'dashboard-style',
+					omniform()->base_url( 'build/dashboard/style-index.css' ),
+					array( 'wp-components' ),
+					$asset_file['version'],
+				);
+
+				$init_script = <<<'JS'
+					( function() {
+						window._loadOmniform = new Promise( function( resolve ) {
+							wp.domReady( function() {
+								resolve( omniform.dashboard.initialize( 'omniform', %s ) );
+							} );
+						} );
+					} )();
+				JS;
+
+				$script = sprintf(
+					$init_script,
+					wp_json_encode( array( 'screen' => $admin_pages[ $current_screen->base ] ) )
+				);
+
+				wp_add_inline_script( 'dashboard-script', $script );
+			}
+		);
+
+		// Backwards compatibility: Treat old 'publish' status as 'omniform_unread' for omniform_response post type.
+		add_filter(
+			'rest_omniform_response_query',
+			function ( $args ) {
+				$compat = array( 'publish', 'omniform_unread' );
+
+				if ( array_intersect( $compat, $args['post_status'] ) ) {
+					$args['post_status'] = array_unique( array_merge( $args['post_status'], $compat ) );
+				}
+
+				return $args;
+			}
+		);
+		add_filter(
+			'rest_prepare_omniform_response',
+			function ( WP_REST_Response $response ) {
+				$data = $response->get_data();
+
+				if ( 'publish' === $data['status'] ) {
+					$data['status'] = 'omniform_unread';
+				}
+
+				$response->set_data( $data );
+				return $response;
+			}
+		);
 	}
 
 	/**
@@ -479,14 +500,14 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			'omniform',
 			array(
 				'labels'                => array(
-					'name'                     => _x( 'OmniForm', 'post type general name', 'omniform' ),
-					'singular_name'            => _x( 'OmniForm', 'post type singular name', 'omniform' ),
+					'name'                     => _x( 'Forms', 'post type general name', 'omniform' ),
+					'singular_name'            => _x( 'Form', 'post type singular name', 'omniform' ),
 					'add_new'                  => _x( 'Create a Form', 'Form', 'omniform' ),
 					'add_new_item'             => __( 'Create a Form', 'omniform' ),
 					'new_item'                 => __( 'Create a Form', 'omniform' ),
 					'edit_item'                => __( 'Edit Form', 'omniform' ),
 					'view_item'                => __( 'View Form', 'omniform' ),
-					'all_items'                => __( 'All Forms', 'omniform' ),
+					'all_items'                => __( 'Forms', 'omniform' ),
 					'search_items'             => __( 'Search Forms', 'omniform' ),
 					'not_found'                => __( 'No forms found.', 'omniform' ),
 					'not_found_in_trash'       => __( 'No forms found in Trash.', 'omniform' ),
@@ -501,8 +522,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				),
 				'public'                => true,
 				'show_ui'               => true,
-				// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
-				'menu_icon'             => 'data:image/svg+xml;base64,' . base64_encode( '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M3.33 15.424a4.842 4.842 0 0 1 0-6.848l.207-.208v-2.42a2.421 2.421 0 0 1 2.421-2.422H8.38l.086-.086a4.842 4.842 0 0 1 6.848 0l.086.086h2.665a2.421 2.421 0 0 1 2.421 2.421v2.665a4.842 4.842 0 0 1 0 6.776v2.665a2.421 2.421 0 0 1-2.421 2.42h-2.665l-.086.087a4.842 4.842 0 0 1-6.848 0l-.086-.086H5.96a2.421 2.421 0 0 1-2.422-2.421v-2.421l-.207-.208ZM12 5a7 7 0 0 1 7 7h-1.604A5.396 5.396 0 0 0 12 6.604V5Zm0 12.396V19a7 7 0 0 1-7-7h1.604A5.396 5.396 0 0 0 12 17.396ZM15.5 12A3.5 3.5 0 0 0 12 8.5v1.896c.886 0 1.604.718 1.604 1.604H15.5Zm-5.104 0c0 .886.718 1.604 1.604 1.604V15.5A3.5 3.5 0 0 1 8.5 12h1.896Z" clip-rule="evenodd"/></svg>' ),
+				'show_in_menu'          => false,
 				'show_in_rest'          => true,
 				'rest_namespace'        => 'omniform/v1',
 				'rest_base'             => 'forms',
@@ -532,26 +552,26 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			)
 		);
 
-		add_action(
-			'admin_menu',
-			function () {
-				add_submenu_page(
-					'edit.php?post_type=omniform',
-					esc_html__( 'Settings', 'omniform' ),
-					esc_html__( 'Settings', 'omniform' ),
-					'manage_options',
-					'omniform',
-					function () {
-						?>
-						<div class="wrap">
-							<?php
-							omniform()->get( \OmniForm\OAuth\OAuthConnectionUI::class )->render();
-							?>
-						</div>
-						<?php
-					},
-				);
-			}
+		register_post_status(
+			'omniform_read',
+			array(
+				'public' => true,
+				'label'  => __( 'Read', 'omniform' ),
+			)
+		);
+		register_post_status(
+			'omniform_unread',
+			array(
+				'public' => true,
+				'label'  => __( 'Unread', 'omniform' ),
+			)
+		);
+		register_post_status(
+			'omniform_spam',
+			array(
+				'public' => true,
+				'label'  => __( 'Spam', 'omniform' ),
+			)
 		);
 
 		// If the current user can't edit_theme_options, bail.
@@ -629,7 +649,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				'labels'                          => array(
 					'name'               => _x( 'Responses', 'post type general name', 'omniform' ),
 					'singular_name'      => _x( 'Response', 'post type singular name', 'omniform' ),
-					'all_items'          => __( 'View responses', 'omniform' ),
+					'all_items'          => __( 'Responses', 'omniform' ),
 					'edit_item'          => __( 'Edit response', 'omniform' ),
 					'filter_items_list'  => __( 'Filter responses list', 'omniform' ),
 					'not_found_in_trash' => __( 'No responses found in Trash.', 'omniform' ),
@@ -639,7 +659,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				),
 				'public'                          => false,
 				'show_ui'                         => true,
-				'show_in_menu'                    => 'edit.php?post_type=omniform',
+				'show_in_menu'                    => false,
 				'show_in_admin_bar'               => false,
 				'rewrite'                         => false,
 				'show_in_rest'                    => true,
@@ -664,6 +684,65 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				),
 				'supports'                        => array(
 					'custom-fields',
+				),
+			)
+		);
+	}
+
+	/**
+	 * Registers custom REST API fields.
+	 */
+	public function register_rest_fields() {
+		register_rest_field(
+			'omniform_response',
+			'omniform_form',
+			array(
+				'get_callback' => function ( $post ) {
+					$form_id = (int) get_post_meta( $post['id'], '_omniform_id', true );
+
+					try {
+						/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
+						$form = omniform()->get( FormFactory::class )->create_with_id( $form_id );
+						$post_object = get_post( $post['id'] );
+
+						$response_data = json_decode( $post_object->post_content, true );
+						$sender_email = null;
+						$sender_ip = get_post_meta( $post_object->ID, '_omniform_user_ip', true );
+
+						if ( isset( $response_data['response'] ) && is_array( $response_data['response'] ) ) {
+							foreach ( $response_data['response'] as $value ) {
+								if ( is_email( $value ) ) {
+									$sender_email = $value;
+									break;
+								}
+							}
+						}
+
+						$form_admin_url = sanitize_url( admin_url( sprintf( 'post.php?post=%d&action=edit', $form->get_id() ) ) );
+					} catch ( \Exception $e ) {
+						echo esc_html( $e->getMessage() );
+						return;
+					}
+
+					$form_title = empty( $form->get_title() )
+						? __( '(no title)', 'omniform' )
+						: $form->get_title();
+
+					$email_for_hash = is_string( $sender_email ) ? $sender_email : '';
+
+					return array(
+						'form_id'         => $form->get_id(),
+						'form_edit_url'   => $form_admin_url,
+						'title'           => $form_title,
+						'sender_gravatar' => sanitize_url( 'https://www.gravatar.com/avatar/' . hash( 'sha256', strtolower( trim( $email_for_hash ) ) ) . '?d=mp' ),
+						'sender_email'    => $sender_email,
+						'sender_ip'       => $sender_ip,
+					);
+				},
+				'schema'       => array(
+					'description' => __( 'The ID of the form associated with the response.', 'omniform' ),
+					'type'        => 'object',
+					'context'     => array( 'edit' ),
 				),
 			)
 		);
@@ -740,13 +819,6 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 * If the dismissed version is greater than or equal to the current version, the notice is not shown.
 	 */
 	public function render_newsletter_notice() {
-		$current_screen = get_current_screen();
-
-		// Don't show the notice on response editor screens.
-		if ( 'omniform_response' === $current_screen->id ) {
-			return;
-		}
-
 		/** @var \OmniForm\Application */ // phpcs:ignore
 		$container = $this->getContainer();
 

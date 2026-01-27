@@ -153,7 +153,7 @@ class FormsController extends \WP_REST_Posts_Controller {
 				'post_title'   => wp_generate_uuid4(),
 				'post_content' => addslashes( wp_json_encode( $response, JSON_UNESCAPED_UNICODE ) ),
 				'post_type'    => 'omniform_response',
-				'post_status'  => 'publish',
+				'post_status'  => 'omniform_unread',
 				'post_parent'  => $form->get_id(),
 				'meta_input'   => array(
 					'_omniform_id'      => $form->get_id(),

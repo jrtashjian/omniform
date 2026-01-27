@@ -1,0 +1,126 @@
+@use "@wordpress/base-styles/colors" as *;
+@use "@wordpress/base-styles/variables" as *;
+@use "@wordpress/base-styles/mixins" as *;
+@use "@wordpress/base-styles/breakpoints" as *;
+@use "@wordpress/dataviews/build-style/style.css" as dataviews;
+@use "./components/response-preview/style.scss" as response-preview;
+@import "@wordpress/admin-ui/build-style/style.css";
+
+body.js.toplevel_page_omniform,
+body.js.omniform_page_omniform_forms,
+body.js.omniform_page_omniform_responses {
+
+	#wpcontent {
+		padding-left: 0;
+	}
+
+	#wpfooter {
+		display: none;
+	}
+}
+
+#omniform {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	top: 0;
+	height: calc(100vh - 32px);
+	background-color: #1d2327; // default admin theme background
+}
+
+.admin-color-light #omniform {
+	background-color: #e5e5e5;
+}
+
+.admin-color-modern #omniform {
+	background-color: #1e1e1e;
+}
+
+.admin-color-blue #omniform {
+	background-color: #52accc;
+}
+
+.admin-color-coffee #omniform {
+	background-color: #59524c;
+}
+
+.admin-color-ectoplasm #omniform {
+	background-color: #523f6d;
+}
+
+.admin-color-midnight #omniform {
+	background-color: #363b3f;
+}
+
+.admin-color-ocean #omniform {
+	background-color: #738e96;
+}
+
+.admin-color-sunrise #omniform {
+	background-color: #cf4944;
+}
+
+#omniform .components-editor-notices__snackbar {
+	position: absolute;
+	bottom: 32px;
+	padding-left: 16px;
+	padding-right: 16px;
+}
+
+.omniform-layout {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+.omniform-layout__container {
+	flex-grow: 1;
+	display: flex;
+	overflow: hidden;
+}
+
+.omniform-layout__panel {
+	visibility: hidden;
+	max-width: 570px;
+	overflow-y: scroll;
+	width: 0;
+	transition: width 0.3s ease;
+}
+
+.omniform-layout__content,
+.omniform-layout__panel:has(> div) {
+	border-radius: 8px;
+	margin: 16px 16px 16px 0;
+	width: 100%;
+	overflow: hidden;
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	visibility: visible;
+}
+
+.omniform-layout__panel .admin-ui-page {
+	overflow: scroll;
+}
+
+.omniform-layout__panel .field__avatar {
+	display: block;
+	border-radius: 100%;
+	height: 32px;
+	width: 32px;
+	object-fit: cover;
+}
+
+.omniform-layout__content header h2.components-heading {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.omniform-layout__content header h2.components-heading::before {
+	content: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="%23D92E83" fill-rule="evenodd" d="M3.33 15.424a4.842 4.842 0 0 1 0-6.848l.207-.208v-2.42a2.421 2.421 0 0 1 2.421-2.422H8.38l.086-.086a4.842 4.842 0 0 1 6.848 0l.086.086h2.665a2.421 2.421 0 0 1 2.421 2.421v2.665a4.842 4.842 0 0 1 0 6.776v2.665a2.421 2.421 0 0 1-2.421 2.42h-2.665l-.086.087a4.842 4.842 0 0 1-6.848 0l-.086-.086H5.96a2.421 2.421 0 0 1-2.422-2.421v-2.421l-.207-.208ZM12 5a7 7 0 0 1 7 7h-1.604A5.396 5.396 0 0 0 12 6.604V5Zm0 12.396V19a7 7 0 0 1-7-7h1.604A5.396 5.396 0 0 0 12 17.396ZM15.5 12A3.5 3.5 0 0 0 12 8.5v1.896c.886 0 1.604.718 1.604 1.604H15.5Zm-5.104 0c0 .886.718 1.604 1.604 1.604V15.5A3.5 3.5 0 0 1 8.5 12h1.896Z" clip-rule="evenodd"/></svg>');
+	display: block;
+	height: 24px;
+	width: 24px;
+}
