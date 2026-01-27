@@ -703,11 +703,11 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					try {
 						/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
 						$form = omniform()->get( FormFactory::class )->create_with_id( $form_id );
-						$post = get_post( $post['id'] );
+						$post_object = get_post( $post['id'] );
 
-						$response_data = json_decode( $post->post_content, true );
+						$response_data = json_decode( $post_object->post_content, true );
 						$sender_email = null;
-						$sender_ip = get_post_meta( $post->ID, '_omniform_user_ip', true );
+						$sender_ip = get_post_meta( $post_object->ID, '_omniform_user_ip', true );
 
 						if ( isset( $response_data['response'] ) && is_array( $response_data['response'] ) ) {
 							foreach ( $response_data['response'] as $value ) {
