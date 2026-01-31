@@ -23,6 +23,7 @@ import FormList from '../form-list';
 import ResponseList from '../response-list';
 import ResponsePreview from '../response-preview';
 import MetricsPanel from '../metrics-panel';
+import DataViewTopForms from './dataview-top-forms';
 
 export default function App( { settings } ) {
 	const [ activeItem, setActiveItem ] = useState( null );
@@ -44,14 +45,7 @@ export default function App( { settings } ) {
 										setPeriod={ setPeriod }
 									/>
 
-									<Card isBorderless>
-										<CardHeader>
-											<Heading level={ 2 }>{ __( 'Top Performing Forms', 'omniform' ) }</Heading>
-										</CardHeader>
-										<CardBody>
-											DATAVIEW
-										</CardBody>
-									</Card>
+									<DataViewTopForms period={ period } />
 
 									<Card isBorderless>
 										<CardHeader>
