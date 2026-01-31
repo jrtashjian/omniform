@@ -29,6 +29,12 @@ body.js.omniform_page_omniform_responses {
 	background-color: #1d2327; // default admin theme background
 }
 
+@media screen and (max-width: 600px) {
+  #omniform {
+    top: 46px;
+  }
+}
+
 .admin-color-light #omniform {
 	background-color: #e5e5e5;
 }
@@ -74,6 +80,14 @@ body.js.omniform_page_omniform_responses {
 	height: 100%;
 }
 
+.omniform-layout .admin-ui-page {
+	overflow: scroll;
+}
+
+.omniform-layout .admin-ui-page header {
+	z-index: 2;
+}
+
 .omniform-layout__container {
 	flex-grow: 1;
 	display: flex;
@@ -98,10 +112,6 @@ body.js.omniform_page_omniform_responses {
 	display: flex;
 	flex-direction: column;
 	visibility: visible;
-}
-
-.omniform-layout__panel .admin-ui-page {
-	overflow: scroll;
 }
 
 .omniform-layout__panel .field__avatar {
