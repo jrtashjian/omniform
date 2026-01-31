@@ -68,6 +68,25 @@ class RestApiController extends WP_REST_Controller {
 				),
 			)
 		);
+
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/top-forms',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'get_top_forms' ),
+				'permission_callback' => array( $this, 'get_overview_permissions_check' ),
+				'args'                => array(
+					'period' => array(
+						'description'       => __( 'The time period for analytics data (1d, 7d, or 30d).', 'omniform' ),
+						'type'              => 'string',
+						'enum'              => array( '1d', '7d', '30d' ),
+						'default'           => '7d',
+						'sanitize_callback' => 'sanitize_text_field',
+					),
+				),
+			)
+		);
 	}
 
 	/**
@@ -109,6 +128,40 @@ class RestApiController extends WP_REST_Controller {
 		}
 
 		$response = $this->fetch_overview_data( $current_period, $period );
+
+		set_transient( $cache_key, $response, HOUR_IN_SECONDS );
+
+		return rest_ensure_response( $response );
+	}
+
+	/**
+	 * Retrieves the top forms by response count.
+	 *
+	 * @param \WP_REST_Request $request Full details about the request.
+	 *
+	 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+	 */
+	public function get_top_forms( \WP_REST_Request $request ) {
+		$period = $this->validate_period( $request->get_param( 'period' ) );
+
+		$current_period = $this->get_current_period( $period );
+		$cache_key      = 'omniform_analytics_top_forms_' . $period . '_' . $current_period['local']['start'] . '_' . $current_period['local']['end'];
+
+		$cached_response = get_transient( $cache_key );
+
+		if ( false !== $cached_response ) {
+			return rest_ensure_response( $cached_response );
+		}
+
+		$forms = $this->analytics_manager->get_top_forms_by_response_count(
+			$current_period['gmt']['start'],
+			$current_period['gmt']['end']
+		);
+
+		$response = array(
+			'period' => $current_period['local'],
+			'forms'  => $forms,
+		);
 
 		set_transient( $cache_key, $response, HOUR_IN_SECONDS );
 

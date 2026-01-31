@@ -278,6 +278,45 @@ class AnalyticsManager {
 	}
 
 	/**
+	 * Get the top 5 forms by response count with metrics.
+	 *
+	 * @param string $start_date The start date.
+	 * @param string $end_date   The end date.
+	 *
+	 * @return array The top 5 forms with metrics.
+	 */
+	public function get_top_forms_by_response_count( string $start_date, string $end_date ) {
+		$results = $this->query_builder->table( self::EVENTS_TABLE )
+			->select(
+				array(
+					'form_id',
+					$this->query_builder->prefix_table( 'posts' ) . '.post_title AS form_title',
+					'COUNT(CASE WHEN event_type = ' . EventType::IMPRESSION . ' THEN event_id END) AS total_impressions',
+					'COUNT(DISTINCT CASE WHEN event_type = ' . EventType::IMPRESSION . ' THEN visitor_id END) AS unique_impressions',
+					'COUNT(CASE WHEN event_type = ' . EventType::SUBMISSION_SUCCESS . ' THEN event_id END) AS response_count',
+					'COUNT(DISTINCT CASE WHEN event_type = ' . EventType::SUBMISSION_SUCCESS . ' THEN visitor_id END) AS unique_responses',
+				)
+			)
+			->join( 'posts', $this->query_builder->prefix_table( 'posts' ) . '.ID = ' . $this->query_builder->prefix_table( self::EVENTS_TABLE ) . '.form_id', 'LEFT' )
+			->where( 'event_time', '>=', $start_date )
+			->where( 'event_time', '<=', $end_date )
+			->where( 'event_type', 'IN', array( EventType::IMPRESSION, EventType::SUBMISSION_SUCCESS ) )
+			->group_by( 'form_id' )
+			->group_by( 'wp_posts.post_title' )
+			->order_by( 'response_count', 'DESC' )
+			->limit( 5 )
+			->get();
+
+		foreach ( $results as $row ) {
+			$row->conversion_rate = $row->unique_impressions > 0
+				? round( $row->unique_responses / $row->unique_impressions, 4 )
+				: 0;
+		}
+
+		return $results;
+	}
+
+	/**
 	 * Purge data for a form.
 	 *
 	 * @param int $form_id The form ID.

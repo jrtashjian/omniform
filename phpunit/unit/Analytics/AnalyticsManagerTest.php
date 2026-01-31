@@ -181,7 +181,7 @@ class AnalyticsManagerTest extends BaseTestCase {
 	 */
 	public function testRecordImpressionUsesCachedVisitor() {
 		WP_Mock::userFunction( 'wp_cache_get' )->andReturn( 123 );
-		WP_Mock::userFunction( 'current_time' )->with( 'mysql' )->andReturn( '2023-01-01 12:00:00' );
+		WP_Mock::userFunction( 'current_time' )->with( 'mysql', true )->andReturn( '2023-01-01 12:00:00' );
 
 		$this->query_builder->shouldReceive( 'table' )
 			->with( AnalyticsManager::EVENTS_TABLE )
@@ -206,7 +206,7 @@ class AnalyticsManagerTest extends BaseTestCase {
 	 */
 	public function testRecordSubmissionSuccess() {
 		WP_Mock::userFunction( 'wp_cache_get' )->andReturn( 123 );
-		WP_Mock::userFunction( 'current_time' )->with( 'mysql' )->andReturn( '2023-01-01 12:00:00' );
+		WP_Mock::userFunction( 'current_time' )->with( 'mysql', true )->andReturn( '2023-01-01 12:00:00' );
 
 		$this->query_builder->shouldReceive( 'table' )
 			->with( AnalyticsManager::EVENTS_TABLE )
@@ -231,7 +231,7 @@ class AnalyticsManagerTest extends BaseTestCase {
 	 */
 	public function testRecordSubmissionFailure() {
 		WP_Mock::userFunction( 'wp_cache_get' )->andReturn( 123 );
-		WP_Mock::userFunction( 'current_time' )->with( 'mysql' )->andReturn( '2023-01-01 12:00:00' );
+		WP_Mock::userFunction( 'current_time' )->with( 'mysql', true )->andReturn( '2023-01-01 12:00:00' );
 
 		$this->query_builder->shouldReceive( 'table' )
 			->with( AnalyticsManager::EVENTS_TABLE )
@@ -544,5 +544,202 @@ class AnalyticsManagerTest extends BaseTestCase {
 		$result = $this->analytics_manager->get_submission_count_by_date_range( '2023-01-01', '2023-01-07', false );
 
 		$this->assertEquals( 20, $result );
+	}
+
+	/**
+	 * Test get_top_forms_by_response_count returns top forms with metrics.
+	 */
+	public function testGetTopFormsByResponseCount() {
+		$form1                     = new \stdClass();
+		$form1->form_id            = 1;
+		$form1->form_title         = 'Contact Form';
+		$form1->total_impressions  = 100;
+		$form1->unique_impressions = 80;
+		$form1->response_count     = 20;
+		$form1->unique_responses   = 15;
+		$form1->conversion_rate    = 0.1875;
+
+		$form2                     = new \stdClass();
+		$form2->form_id            = 2;
+		$form2->form_title         = 'Newsletter Signup';
+		$form2->total_impressions  = 50;
+		$form2->unique_impressions = 40;
+		$form2->response_count     = 10;
+		$form2->unique_responses   = 8;
+		$form2->conversion_rate    = 0.2;
+
+		$this->query_builder->shouldReceive( 'table' )
+			->with( AnalyticsManager::EVENTS_TABLE )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'select' )
+			->once()
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'prefix_table' )
+			->atLeast()
+			->times( 2 )
+			->andReturnUsing(
+				function ( $table ) {
+					return 'wp_' . $table;
+				}
+			);
+		$this->query_builder->shouldReceive( 'join' )
+			->once()
+			->with( 'posts', 'wp_posts.ID = wp_omniform_stats_events.form_id', 'LEFT' )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'where' )
+			->once()
+			->with( 'event_time', '>=', '2023-01-01' )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'where' )
+			->once()
+			->with( 'event_time', '<=', '2023-01-07' )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'where' )
+			->once()
+			->with( 'event_type', 'IN', array( EventType::IMPRESSION, EventType::SUBMISSION_SUCCESS ) )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'group_by' )
+			->twice()
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'order_by' )
+			->once()
+			->with( 'response_count', 'DESC' )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'limit' )
+			->once()
+			->with( 5 )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'get' )
+			->once()
+			->andReturn( array( $form1, $form2 ) );
+
+		$result = $this->analytics_manager->get_top_forms_by_response_count( '2023-01-01', '2023-01-07' );
+
+		$this->assertCount( 2, $result );
+		$this->assertEquals( 1, $result[0]->form_id );
+		$this->assertEquals( 'Contact Form', $result[0]->form_title );
+		$this->assertEquals( 100, $result[0]->total_impressions );
+		$this->assertEquals( 80, $result[0]->unique_impressions );
+		$this->assertEquals( 20, $result[0]->response_count );
+		$this->assertEquals( 15, $result[0]->unique_responses );
+		$this->assertEquals( 0.1875, $result[0]->conversion_rate );
+	}
+
+	/**
+	 * Test get_top_forms_by_response_count handles zero impressions.
+	 */
+	public function testGetTopFormsByResponseCountWithZeroImpressions() {
+		$form                     = new \stdClass();
+		$form->form_id            = 1;
+		$form->form_title         = 'Empty Form';
+		$form->total_impressions  = 0;
+		$form->unique_impressions = 0;
+		$form->response_count     = 0;
+		$form->unique_responses   = 0;
+		$form->conversion_rate    = 0;
+
+		$this->query_builder->shouldReceive( 'table' )
+			->with( AnalyticsManager::EVENTS_TABLE )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'select' )
+			->once()
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'prefix_table' )
+			->atLeast()
+			->times( 2 )
+			->andReturnUsing(
+				function ( $table ) {
+					return 'wp_' . $table;
+				}
+			);
+		$this->query_builder->shouldReceive( 'join' )
+			->once()
+			->with( 'posts', 'wp_posts.ID = wp_omniform_stats_events.form_id', 'LEFT' )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'where' )
+			->once()
+			->with( 'event_time', '>=', '2023-01-01' )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'where' )
+			->once()
+			->with( 'event_time', '<=', '2023-01-07' )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'where' )
+			->once()
+			->with( 'event_type', 'IN', array( EventType::IMPRESSION, EventType::SUBMISSION_SUCCESS ) )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'group_by' )
+			->twice()
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'order_by' )
+			->once()
+			->with( 'response_count', 'DESC' )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'limit' )
+			->once()
+			->with( 5 )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'get' )
+			->once()
+			->andReturn( array( $form ) );
+
+		$result = $this->analytics_manager->get_top_forms_by_response_count( '2023-01-01', '2023-01-07' );
+
+		$this->assertCount( 1, $result );
+		$this->assertEquals( 0, $result[0]->conversion_rate );
+	}
+
+	/**
+	 * Test get_top_forms_by_response_count returns empty array when no data.
+	 */
+	public function testGetTopFormsByResponseCountEmpty() {
+		$this->query_builder->shouldReceive( 'table' )
+			->with( AnalyticsManager::EVENTS_TABLE )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'select' )
+			->once()
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'prefix_table' )
+			->atLeast()
+			->times( 2 )
+			->andReturnUsing(
+				function ( $table ) {
+					return 'wp_' . $table;
+				}
+			);
+		$this->query_builder->shouldReceive( 'join' )
+			->once()
+			->with( 'posts', 'wp_posts.ID = wp_omniform_stats_events.form_id', 'LEFT' )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'where' )
+			->once()
+			->with( 'event_time', '>=', '2023-01-01' )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'where' )
+			->once()
+			->with( 'event_time', '<=', '2023-01-07' )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'where' )
+			->once()
+			->with( 'event_type', 'IN', array( EventType::IMPRESSION, EventType::SUBMISSION_SUCCESS ) )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'group_by' )
+			->twice()
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'order_by' )
+			->once()
+			->with( 'response_count', 'DESC' )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'limit' )
+			->once()
+			->with( 5 )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'get' )
+			->once()
+			->andReturn( array() );
+
+		$result = $this->analytics_manager->get_top_forms_by_response_count( '2023-01-01', '2023-01-07' );
+
+		$this->assertCount( 0, $result );
 	}
 }
