@@ -57,6 +57,13 @@ class QueryBuilder {
 	protected $group_bys = array();
 
 	/**
+	 * The join clauses.
+	 *
+	 * @var array
+	 */
+	protected $joins = array();
+
+	/**
 	 * The limit.
 	 *
 	 * @var int
@@ -81,6 +88,7 @@ class QueryBuilder {
 		$this->wheres    = array();
 		$this->order_bys = array();
 		$this->group_bys = array();
+		$this->joins     = array();
 		$this->limit     = null;
 	}
 
@@ -172,6 +180,21 @@ class QueryBuilder {
 	}
 
 	/**
+	 * Add a join clause to the query.
+	 *
+	 * @param string $table The table to join.
+	 * @param string $on The ON condition.
+	 * @param string $type The join type (INNER, LEFT, RIGHT, etc.).
+	 *
+	 * @return QueryBuilder
+	 */
+	public function join( $table, $on, $type = 'INNER' ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
+		$this->joins[] = compact( 'table', 'on', 'type' );
+
+		return $this;
+	}
+
+	/**
 	 * Execute the query and return the results.
 	 *
 	 * @return array|object|null The query results.
@@ -179,16 +202,22 @@ class QueryBuilder {
 	public function get() {
 		$query = 'SELECT ' . implode( ', ', $this->selects ) . ' FROM `' . $this->database->prefix . $this->table . '`';
 
+		if ( ! empty( $this->joins ) ) {
+			foreach ( $this->joins as $join ) {
+				$query .= ' ' . $join['type'] . ' JOIN `' . $this->database->prefix . $join['table'] . '` ON ' . $join['on'];
+			}
+		}
+
 		if ( ! empty( $this->wheres ) ) {
 			$query .= ' WHERE ' . $this->build_where_clause();
 		}
 
-		if ( ! empty( $this->order_bys ) ) {
-			$query .= ' ORDER BY ' . $this->build_order_by_clause();
-		}
-
 		if ( ! empty( $this->group_bys ) ) {
 			$query .= ' GROUP BY ' . implode( ', ', $this->group_bys );
+		}
+
+		if ( ! empty( $this->order_bys ) ) {
+			$query .= ' ORDER BY ' . $this->build_order_by_clause();
 		}
 
 		if ( ! empty( $this->limit ) ) {
