@@ -289,8 +289,8 @@ class AnalyticsManager {
 		$results = $this->query_builder->table( self::EVENTS_TABLE )
 			->select(
 				array(
-					'form_id',
-					$this->query_builder->prefix_table( 'posts' ) . '.post_title AS form_title',
+					'form_id as id',
+					$this->query_builder->prefix_table( 'posts' ) . '.post_title AS title',
 					'COUNT(CASE WHEN event_type = ' . EventType::IMPRESSION . ' THEN event_id END) AS total_impressions',
 					'COUNT(DISTINCT CASE WHEN event_type = ' . EventType::IMPRESSION . ' THEN visitor_id END) AS unique_impressions',
 					'COUNT(CASE WHEN event_type = ' . EventType::SUBMISSION_SUCCESS . ' THEN event_id END) AS response_count',
