@@ -4,13 +4,9 @@
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import {
-	__experimentalHeading as Heading,
 	__experimentalVStack as VStack,
 	__experimentalHStack as HStack,
 	Button,
-	Card,
-	CardBody,
-	CardHeader,
 } from '@wordpress/components';
 import { Page } from '@wordpress/admin-ui';
 import { close } from '@wordpress/icons';
@@ -24,6 +20,7 @@ import ResponseList from '../response-list';
 import ResponsePreview from '../response-preview';
 import MetricsPanel from '../metrics-panel';
 import DataViewTopForms from './dataview-top-forms';
+import DataViewLatestResponses from './dataview-latest-responses';
 
 export default function App( { settings } ) {
 	const [ activeItem, setActiveItem ] = useState( null );
@@ -47,14 +44,7 @@ export default function App( { settings } ) {
 
 									<DataViewTopForms period={ period } />
 
-									<Card isBorderless>
-										<CardHeader>
-											<Heading level={ 2 }>{ __( 'Latest Responses', 'omniform' ) }</Heading>
-										</CardHeader>
-										<CardBody>
-											DATAVIEW
-										</CardBody>
-									</Card>
+									<DataViewLatestResponses />
 								</VStack>
 							</Page>
 						) }
