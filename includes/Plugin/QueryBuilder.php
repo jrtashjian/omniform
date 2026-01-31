@@ -80,6 +80,17 @@ class QueryBuilder {
 	}
 
 	/**
+	 * Get the prefixed table name.
+	 *
+	 * @param string $table The table name.
+	 *
+	 * @return string The prefixed table name.
+	 */
+	public function prefix_table( $table ) {
+		return $this->database->prefix . $table;
+	}
+
+	/**
 	 * Reset query-specific state to start a fresh query.
 	 */
 	protected function reset() {
@@ -200,11 +211,11 @@ class QueryBuilder {
 	 * @return array|object|null The query results.
 	 */
 	public function get() {
-		$query = 'SELECT ' . implode( ', ', $this->selects ) . ' FROM `' . $this->database->prefix . $this->table . '`';
+		$query = 'SELECT ' . implode( ', ', $this->selects ) . ' FROM `' . $this->prefix_table( $this->table ) . '`';
 
 		if ( ! empty( $this->joins ) ) {
 			foreach ( $this->joins as $join ) {
-				$query .= ' ' . $join['type'] . ' JOIN `' . $this->database->prefix . $join['table'] . '` ON ' . $join['on'];
+				$query .= ' ' . $join['type'] . ' JOIN `' . $this->prefix_table( $join['table'] ) . '` ON ' . $join['on'];
 			}
 		}
 
@@ -235,7 +246,7 @@ class QueryBuilder {
 	 * @return int The number of records.
 	 */
 	public function count( $select = '*' ) {
-		$query = 'SELECT COUNT(' . $select . ') FROM `' . $this->database->prefix . $this->table . '`';
+		$query = 'SELECT COUNT(' . $select . ') FROM `' . $this->prefix_table( $this->table ) . '`';
 
 		if ( ! empty( $this->wheres ) ) {
 			$query .= ' WHERE ' . $this->build_where_clause();
@@ -303,7 +314,7 @@ class QueryBuilder {
 	 * @return int|bool The number of rows inserted or false on failure.
 	 */
 	public function insert( array $data ) {
-		return $this->database->insert( $this->database->prefix . $this->table, $data );
+		return $this->database->insert( $this->prefix_table( $this->table ), $data );
 	}
 
 	/**
@@ -328,7 +339,7 @@ class QueryBuilder {
 			throw new QueryBuilderException( 'Cannot update records without a WHERE clause to prevent updating all rows.' );
 		}
 
-		return $this->database->update( $this->database->prefix . $this->table, $data, $this->extract_where_conditions() );
+		return $this->database->update( $this->prefix_table( $this->table ), $data, $this->extract_where_conditions() );
 	}
 
 	/**
@@ -342,7 +353,7 @@ class QueryBuilder {
 			throw new QueryBuilderException( 'Cannot delete records without a WHERE clause to prevent deleting all rows.' );
 		}
 
-		return $this->database->delete( $this->database->prefix . $this->table, $this->extract_where_conditions() );
+		return $this->database->delete( $this->prefix_table( $this->table ), $this->extract_where_conditions() );
 	}
 
 	/**
