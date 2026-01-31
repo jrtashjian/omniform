@@ -86,7 +86,7 @@ class AnalyticsManager {
 					'form_id'    => $form_id,
 					'event_type' => $event_type,
 					'visitor_id' => $visitor_id,
-					'event_time' => current_time( 'mysql' ),
+					'event_time' => current_time( 'mysql', true ),
 				)
 			);
 	}
