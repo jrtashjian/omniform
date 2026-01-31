@@ -16,8 +16,10 @@ import apiFetch from '@wordpress/api-fetch';
  */
 import MetricsCard from '../metrics-card';
 
-export default function MetricsPanel() {
-	const [ period, setPeriod ] = useState( '7d' );
+export default function MetricsPanel( {
+	period,
+	setPeriod,
+} ) {
 	const [ metrics, setMetrics ] = useState( null );
 	const [ error, setError ] = useState( null );
 

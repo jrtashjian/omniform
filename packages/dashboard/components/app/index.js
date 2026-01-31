@@ -4,8 +4,13 @@
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import {
+	__experimentalHeading as Heading,
+	__experimentalVStack as VStack,
 	__experimentalHStack as HStack,
 	Button,
+	Card,
+	CardBody,
+	CardHeader,
 } from '@wordpress/components';
 import { Page } from '@wordpress/admin-ui';
 import { close } from '@wordpress/icons';
@@ -17,9 +22,11 @@ import { EditorSnackbars } from '@wordpress/editor';
 import FormList from '../form-list';
 import ResponseList from '../response-list';
 import ResponsePreview from '../response-preview';
+import MetricsPanel from '../metrics-panel';
 
 export default function App( { settings } ) {
 	const [ activeItem, setActiveItem ] = useState( null );
+	const [ period, setPeriod ] = useState( '7d' );
 
 	return (
 		<>
@@ -29,7 +36,33 @@ export default function App( { settings } ) {
 				<div className="omniform-layout__container">
 					<div className="omniform-layout__content">
 						{ settings.screen === 'dashboard' && (
-							<Page title={ __( 'OmniForm', 'omniform' ) } />
+							<Page title={ __( 'OmniForm', 'omniform' ) }>
+								<VStack spacing="10" style={ { padding: '24px' } }>
+
+									<MetricsPanel
+										period={ period }
+										setPeriod={ setPeriod }
+									/>
+
+									<Card isBorderless>
+										<CardHeader>
+											<Heading level={ 2 }>{ __( 'Top Performing Forms', 'omniform' ) }</Heading>
+										</CardHeader>
+										<CardBody>
+											DATAVIEW
+										</CardBody>
+									</Card>
+
+									<Card isBorderless>
+										<CardHeader>
+											<Heading level={ 2 }>{ __( 'Latest Responses', 'omniform' ) }</Heading>
+										</CardHeader>
+										<CardBody>
+											DATAVIEW
+										</CardBody>
+									</Card>
+								</VStack>
+							</Page>
 						) }
 
 						{ settings.screen === 'forms' && (
