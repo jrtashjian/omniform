@@ -234,6 +234,50 @@ class AnalyticsManager {
 	}
 
 	/**
+	 * Get the impression count by date range.
+	 *
+	 * @param string $start_date The start date.
+	 * @param string $end_date   The end date.
+	 * @param bool   $unique     Whether to count unique impressions.
+	 *
+	 * @return int The impression count.
+	 */
+	public function get_impression_count_by_date_range( string $start_date, string $end_date, bool $unique = false ) {
+		return $this->get_event_count_by_date_range( EventType::IMPRESSION, $start_date, $end_date, $unique );
+	}
+
+	/**
+	 * Get the submission count by date range.
+	 *
+	 * @param string $start_date The start date.
+	 * @param string $end_date   The end date.
+	 * @param bool   $unique     Whether to count unique submissions.
+	 *
+	 * @return int The submission count.
+	 */
+	public function get_submission_count_by_date_range( string $start_date, string $end_date, bool $unique = false ) {
+		return $this->get_event_count_by_date_range( EventType::SUBMISSION_SUCCESS, $start_date, $end_date, $unique );
+	}
+
+	/**
+	 * Get the event count by date range.
+	 *
+	 * @param int    $event_type The event type.
+	 * @param string $start_date The start date.
+	 * @param string $end_date   The end date.
+	 * @param bool   $unique     Whether to count unique events.
+	 *
+	 * @return int The event count.
+	 */
+	private function get_event_count_by_date_range( int $event_type, string $start_date, string $end_date, bool $unique ) {
+		return $this->query_builder->table( self::EVENTS_TABLE )
+			->where( 'event_type', '=', $event_type )
+			->where( 'event_time', '>=', $start_date )
+			->where( 'event_time', '<=', $end_date )
+			->count( $unique ? 'DISTINCT visitor_id' : 'event_id' );
+	}
+
+	/**
 	 * Purge data for a form.
 	 *
 	 * @param int $form_id The form ID.

@@ -445,4 +445,104 @@ class AnalyticsManagerTest extends BaseTestCase {
 
 		$this->expectNotToPerformAssertions();
 	}
+
+	/**
+	 * Test get_impression_count_by_date_range with unique parameter.
+	 */
+	public function testGetImpressionCountByDateRangeUnique() {
+		$this->query_builder->shouldReceive( 'table' )
+			->with( AnalyticsManager::EVENTS_TABLE )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'where' )
+			->with( 'event_type', '=', EventType::IMPRESSION )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'where' )
+			->with( 'event_time', '>=', '2023-01-01' )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'where' )
+			->with( 'event_time', '<=', '2023-01-07' )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'count' )
+			->with( 'DISTINCT visitor_id' )
+			->andReturn( 50 );
+
+		$result = $this->analytics_manager->get_impression_count_by_date_range( '2023-01-01', '2023-01-07', true );
+
+		$this->assertEquals( 50, $result );
+	}
+
+	/**
+	 * Test get_impression_count_by_date_range without unique parameter.
+	 */
+	public function testGetImpressionCountByDateRangeNonUnique() {
+		$this->query_builder->shouldReceive( 'table' )
+			->with( AnalyticsManager::EVENTS_TABLE )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'where' )
+			->with( 'event_type', '=', EventType::IMPRESSION )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'where' )
+			->with( 'event_time', '>=', '2023-01-01' )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'where' )
+			->with( 'event_time', '<=', '2023-01-07' )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'count' )
+			->with( 'event_id' )
+			->andReturn( 75 );
+
+		$result = $this->analytics_manager->get_impression_count_by_date_range( '2023-01-01', '2023-01-07', false );
+
+		$this->assertEquals( 75, $result );
+	}
+
+	/**
+	 * Test get_submission_count_by_date_range with unique parameter.
+	 */
+	public function testGetSubmissionCountByDateRangeUnique() {
+		$this->query_builder->shouldReceive( 'table' )
+			->with( AnalyticsManager::EVENTS_TABLE )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'where' )
+			->with( 'event_type', '=', EventType::SUBMISSION_SUCCESS )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'where' )
+			->with( 'event_time', '>=', '2023-01-01' )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'where' )
+			->with( 'event_time', '<=', '2023-01-07' )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'count' )
+			->with( 'DISTINCT visitor_id' )
+			->andReturn( 15 );
+
+		$result = $this->analytics_manager->get_submission_count_by_date_range( '2023-01-01', '2023-01-07', true );
+
+		$this->assertEquals( 15, $result );
+	}
+
+	/**
+	 * Test get_submission_count_by_date_range without unique parameter.
+	 */
+	public function testGetSubmissionCountByDateRangeNonUnique() {
+		$this->query_builder->shouldReceive( 'table' )
+			->with( AnalyticsManager::EVENTS_TABLE )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'where' )
+			->with( 'event_type', '=', EventType::SUBMISSION_SUCCESS )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'where' )
+			->with( 'event_time', '>=', '2023-01-01' )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'where' )
+			->with( 'event_time', '<=', '2023-01-07' )
+			->andReturnSelf();
+		$this->query_builder->shouldReceive( 'count' )
+			->with( 'event_id' )
+			->andReturn( 20 );
+
+		$result = $this->analytics_manager->get_submission_count_by_date_range( '2023-01-01', '2023-01-07', false );
+
+		$this->assertEquals( 20, $result );
+	}
 }

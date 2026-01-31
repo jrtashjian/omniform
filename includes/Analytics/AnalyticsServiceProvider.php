@@ -35,6 +35,7 @@ class AnalyticsServiceProvider extends AbstractServiceProvider implements Bootab
 	public function provides( string $id ): bool {
 		$services = array(
 			AnalyticsManager::class,
+			RestApiController::class,
 		);
 
 		return in_array( $id, $services, true );
@@ -51,6 +52,10 @@ class AnalyticsServiceProvider extends AbstractServiceProvider implements Bootab
 			->addArgument( QueryBuilder::class )
 			->addArgument( Request::class )
 			->addArgument( $this->generate_daily_salt() );
+
+		$this->getContainer()
+			->add( RestApiController::class )
+			->addArgument( AnalyticsManager::class );
 	}
 
 	/**
@@ -61,8 +66,18 @@ class AnalyticsServiceProvider extends AbstractServiceProvider implements Bootab
 	public function boot(): void {
 		add_action( 'omniform_activate', array( $this, 'activate' ) );
 		add_action( 'admin_init', array( $this, 'update_database' ) );
+		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
 
 		add_action( 'delete_post', array( $this, 'on_delete_form' ), 10, 2 );
+	}
+
+	/**
+	 * Register the REST API routes.
+	 *
+	 * @return void
+	 */
+	public function register_routes() {
+		$this->getContainer()->get( RestApiController::class )->register_routes();
 	}
 
 	/**
