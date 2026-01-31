@@ -100,7 +100,7 @@ class RestApiController extends WP_REST_Controller {
 		$period = $this->validate_period( $request->get_param( 'period' ) );
 
 		$current_period = $this->get_current_period( $period );
-		$cache_key      = 'omniform_analytics_overview_' . $period . '_' . $current_period['start'] . '_' . $current_period['end'];
+		$cache_key      = 'omniform_analytics_overview_' . $period . '_' . $current_period['local']['start'] . '_' . $current_period['local']['end'];
 
 		$cached_response = get_transient( $cache_key );
 
@@ -110,7 +110,7 @@ class RestApiController extends WP_REST_Controller {
 
 		$response = $this->fetch_overview_data( $current_period, $period );
 
-		set_transient( $cache_key, $response, DAY_IN_SECONDS );
+		set_transient( $cache_key, $response, HOUR_IN_SECONDS );
 
 		return rest_ensure_response( $response );
 	}
@@ -144,13 +144,13 @@ class RestApiController extends WP_REST_Controller {
 		$previous_period = $this->get_previous_period( $period );
 
 		$current_impressions_total  = $this->analytics_manager->get_impression_count_by_date_range(
-			$current_period['start'],
-			$current_period['end'],
+			$current_period['gmt']['start'],
+			$current_period['gmt']['end'],
 			false
 		);
 		$current_impressions_unique = $this->analytics_manager->get_impression_count_by_date_range(
-			$current_period['start'],
-			$current_period['end'],
+			$current_period['gmt']['start'],
+			$current_period['gmt']['end'],
 			true
 		);
 
@@ -166,13 +166,13 @@ class RestApiController extends WP_REST_Controller {
 		);
 
 		$current_submissions_total  = $this->analytics_manager->get_submission_count_by_date_range(
-			$current_period['start'],
-			$current_period['end'],
+			$current_period['gmt']['start'],
+			$current_period['gmt']['end'],
 			false
 		);
 		$current_submissions_unique = $this->analytics_manager->get_submission_count_by_date_range(
-			$current_period['start'],
-			$current_period['end'],
+			$current_period['gmt']['start'],
+			$current_period['gmt']['end'],
 			true
 		);
 
@@ -195,7 +195,7 @@ class RestApiController extends WP_REST_Controller {
 			: 0;
 
 		return array(
-			'period'     => $current_period,
+			'period'     => $current_period['local'],
 			'metrics'    => array(
 				'impressions'     => array(
 					'total'  => $current_impressions_total,
@@ -226,7 +226,7 @@ class RestApiController extends WP_REST_Controller {
 	 *
 	 * @param string $period The period (1d, 7d, or 30d).
 	 *
-	 * @return array The period with start and end dates.
+	 * @return array The period with start and end dates in local timezone and UTC.
 	 */
 	protected function get_current_period( $period ) {
 		$days_map = array(
@@ -237,9 +237,21 @@ class RestApiController extends WP_REST_Controller {
 
 		$days = $days_map[ $period ] ?? 6;
 
+		// If days is 0, we want today only, so no subtraction.
+		$timestamp = ( 0 === $days ) ? false : strtotime( '-' . $days . ' days' );
+
+		$local_start = date_i18n( 'Y-m-d 00:00:00', $timestamp );
+		$local_end   = date_i18n( 'Y-m-d 23:59:59' );
+
 		return array(
-			'start' => gmdate( 'Y-m-d', strtotime( '-' . $days . ' days' ) ),
-			'end'   => gmdate( 'Y-m-d' ),
+			'local' => array(
+				'start' => $local_start,
+				'end'   => $local_end,
+			),
+			'gmt'   => array(
+				'start' => get_gmt_from_date( $local_start ),
+				'end'   => get_gmt_from_date( $local_end ),
+			),
 		);
 	}
 
@@ -248,7 +260,7 @@ class RestApiController extends WP_REST_Controller {
 	 *
 	 * @param string $period The period (1d, 7d, or 30d).
 	 *
-	 * @return array The period with start and end dates.
+	 * @return array The period with start and end dates in UTC for queries.
 	 */
 	protected function get_previous_period( $period ) {
 		$days_map = array(
@@ -259,9 +271,12 @@ class RestApiController extends WP_REST_Controller {
 
 		$days = $days_map[ $period ] ?? 6;
 
+		$local_start = date_i18n( 'Y-m-d 00:00:00', strtotime( '-' . ( $days * 2 + 1 ) . ' days' ) );
+		$local_end   = date_i18n( 'Y-m-d 23:59:59', strtotime( '-' . ( $days + 1 ) . ' days' ) );
+
 		return array(
-			'start' => gmdate( 'Y-m-d', strtotime( '-' . ( $days * 2 + 1 ) . ' days' ) ),
-			'end'   => gmdate( 'Y-m-d', strtotime( '-' . ( $days + 1 ) . ' days' ) ),
+			'start' => get_gmt_from_date( $local_start ),
+			'end'   => get_gmt_from_date( $local_end ),
 		);
 	}
 
