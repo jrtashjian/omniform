@@ -1,3 +1,5 @@
+import { Routes, Route } from 'react-router-dom';
+
 /**
  * WordPress dependencies.
  */
@@ -21,10 +23,15 @@ import ResponsePreview from '../response-preview';
 import MetricsPanel from '../metrics-panel';
 import DataViewTopForms from './dataview-top-forms';
 import DataViewLatestResponses from './dataview-latest-responses';
+import { useInterceptMenuLink } from '../../hooks/use-intercept-menu-link';
+import { useSyncCurrentMenu } from '../../hooks/use-sync-menu-current';
 
 export default function App( { settings } ) {
 	const [ activeItem, setActiveItem ] = useState( null );
 	const [ period, setPeriod ] = useState( '7d' );
+
+	useInterceptMenuLink();
+	useSyncCurrentMenu();
 
 	return (
 		<>
@@ -33,29 +40,30 @@ export default function App( { settings } ) {
 			<div className="omniform-layout">
 				<div className="omniform-layout__container">
 					<div className="omniform-layout__content">
-						{ settings.screen === 'dashboard' && (
-							<Page title={ __( 'OmniForm', 'omniform' ) }>
-								<VStack spacing="10" style={ { padding: '24px' } }>
+						<Routes>
+							<Route path="/" element={ (
+								<Page title={ __( 'OmniForm', 'omniform' ) }>
+									<VStack spacing="10" style={ { padding: '24px' } }>
 
-									<MetricsPanel
-										period={ period }
-										setPeriod={ setPeriod }
-									/>
+										<MetricsPanel
+											period={ period }
+											setPeriod={ setPeriod }
+										/>
 
-									<DataViewTopForms period={ period } />
+										<DataViewTopForms period={ period } />
 
-									<DataViewLatestResponses />
-								</VStack>
-							</Page>
-						) }
+										<DataViewLatestResponses />
+									</VStack>
+								</Page>
+							) } />
 
-						{ settings.screen === 'forms' && (
-							<FormList />
-						) }
+							<Route path="/forms" element={ <FormList /> } />
 
-						{ settings.screen === 'responses' && (
-							<ResponseList setActiveItem={ setActiveItem } />
-						) }
+							<Route path="/responses" element={ (
+								<ResponseList setActiveItem={ setActiveItem } />
+							) } />
+
+						</Routes>
 					</div>
 
 					<div className="omniform-layout__panel">
@@ -94,6 +102,7 @@ export default function App( { settings } ) {
 							</Page>
 						) }
 					</div>
+
 				</div>
 			</div>
 		</>
