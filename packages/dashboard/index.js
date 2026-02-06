@@ -1,8 +1,10 @@
+import { HashRouter } from 'react-router-dom';
+
 /**
  * WordPress dependencies.
  */
 import '@wordpress/dom-ready';
-import { createRoot } from '@wordpress/element';
+import { createRoot, StrictMode } from '@wordpress/element';
 
 /**
  * Internal dependencies.
@@ -20,6 +22,12 @@ export function initialize( id, settings ) {
 	const target = document.getElementById( id );
 	const root = createRoot( target );
 
-	root.render( <App settings={ settings } /> );
+	root.render(
+		<StrictMode>
+			<HashRouter>
+				<App settings={ settings } />
+			</HashRouter>
+		</StrictMode>
+	);
 	return root;
 }
