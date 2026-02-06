@@ -47,6 +47,7 @@
 		"classnames": "^2.3.2",
 		"colord": "^2.9.3",
 		"lodash": "^4.17.21",
+		"react-router-dom": "^7.13.0",
 		"remove-accents": "^0.5.0"
 	},
 	"devDependencies": {
