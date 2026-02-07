@@ -6,9 +6,11 @@
 @use "./components/response-preview/style.scss" as response-preview;
 @import "@wordpress/admin-ui/build-style/style.css";
 
-body.js.toplevel_page_omniform,
-body.js.omniform_page_omniform_forms,
-body.js.omniform_page_omniform_responses {
+body.js.toplevel_page_omniform {
+
+	#wpbody-content {
+		padding-bottom: 0;
+	}
 
 	#wpcontent {
 		padding-left: 0;
@@ -25,14 +27,12 @@ body.js.omniform_page_omniform_responses {
 	left: 0;
 	right: 0;
 	top: 0;
-	height: calc(100vh - 32px);
+	min-height: calc(100vh - $admin-bar-height-big);
 	background-color: #1d2327; // default admin theme background
-}
 
-@media screen and (max-width: 600px) {
-  #omniform {
-    top: 46px;
-  }
+	@media (min-width: #{ ($break-medium + 1) }) {
+		min-height: calc(100vh - $admin-bar-height);
+	}
 }
 
 .admin-color-light #omniform {
@@ -76,9 +76,22 @@ body.js.omniform_page_omniform_responses {
 
 .omniform-layout {
 	display: flex;
-	flex-direction: column;
-	height: 100%;
+	flex-direction: row;
+	height: auto;
+	max-height: 100%;
+
+	position: fixed;
+	top: $admin-bar-height-big;
+	left: 0;
+	right: 0;
+	bottom: 0;
+
+	@media (min-width: #{ ($break-medium + 1) }) {
+		top: $admin-bar-height;
+	}
 }
+
+@include editor-left(".omniform-layout");
 
 .omniform-layout .admin-ui-page {
 	overflow: scroll;
