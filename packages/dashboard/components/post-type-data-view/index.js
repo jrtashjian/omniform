@@ -2,10 +2,7 @@
  * WordPress dependencies.
  */
 import { Page } from '@wordpress/admin-ui';
-import {
-	__experimentalHStack as HStack,
-	Button,
-} from '@wordpress/components';
+import { TabPanel } from '@wordpress/components';
 import {
 	useEntityRecords,
 	store as coreStore,
@@ -128,46 +125,48 @@ export default function PostTypeDataView( {
 		restorePost,
 	];
 
+	const tabs = useMemo( () => {
+		const baseTab = {
+			name: 'all',
+			title: itemCounts.all
+				? sprintf(
+					/* translators: %s: Total number of items. */
+					__( 'All (%s)', 'omniform' ),
+					abbreviateNumber( itemCounts.all )
+				)
+				: __( 'All', 'omniform' ),
+		};
+		const statusTabs = filterStatuses.map( ( status ) => ( {
+			name: status,
+			title: ( postStatuses?.find( ( s ) => s.slug === status )?.name || status ) + ( itemCounts[ status ] ? ` (${ abbreviateNumber( itemCounts[ status ] ) })` : '' ),
+		} ) );
+		return [ baseTab, ...statusTabs ];
+	}, [ filterStatuses, postStatuses, itemCounts ] );
+
 	return (
 		<Page
 			title={ pageTitle }
 			actions={ pageActions }
 		>
-			<HStack
-				justify="start"
-				expanded={ false }
-			>
-				<Button size="compact" onClick={ () => setView( { ...view, filters: defaultView.filters } ) }>
-					{ itemCounts.all
-						? sprintf(
-							/* translators: %s: Total number of items. */
-							__( 'All (%s)', 'omniform' ),
-							abbreviateNumber( itemCounts.all )
-						)
-						: __( 'All', 'omniform' )
-					}
-				</Button>
-				{ filterStatuses.map( ( status ) => (
-					<Button
-						key={ status }
-						size="compact"
-						onClick={ () => setView( { ...view, filters: [ { field: 'status', operator: 'isAny', value: [ status ] } ] } ) }
-					>
-						{ ( postStatuses?.find( ( s ) => s.slug === status )?.name || status ) + ( itemCounts[ status ] ? ` (${ abbreviateNumber( itemCounts[ status ] ) })` : '' ) }
-					</Button>
-				) ) }
-			</HStack>
-
-			<DataViews
-				data={ records || [] }
-				isLoading={ isLoadingData }
-				view={ view }
-				onChangeView={ setView }
-				fields={ fields }
-				actions={ [ ...actions, ...defaultActions ] }
-				paginationInfo={ { totalItems, totalPages } }
-				defaultLayouts={ { table: {} } }
-				onClickItem={ ( item ) => onClickItem( item ) }
+			<TabPanel
+				onSelect={ ( status ) => 'all' === status
+					? setView( { ...view, filters: defaultView.filters } )
+					: setView( { ...view, filters: [ { field: 'status', operator: 'isAny', value: [ status ] } ] } )
+				}
+				tabs={ tabs }
+				children={ () => (
+					<DataViews
+						data={ records || [] }
+						isLoading={ isLoadingData }
+						view={ view }
+						onChangeView={ setView }
+						fields={ fields }
+						actions={ [ ...actions, ...defaultActions ] }
+						paginationInfo={ { totalItems, totalPages } }
+						defaultLayouts={ { table: {} } }
+						onClickItem={ ( item ) => onClickItem( item ) }
+					/>
+				) }
 			/>
 		</Page>
 	);
