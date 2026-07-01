@@ -12,10 +12,7 @@ import { PluginDocumentSettingPanel } from '@wordpress/editor';
  */
 import { RESPONSE_POST_TYPE } from '../../block-library/shared/constants';
 
-export default function ViewResponses( {
-	formId,
-	isDocumentPanel,
-} ) {
+export default function ViewResponses( { formId, isDocumentPanel } ) {
 	const PanelComponent = isDocumentPanel
 		? PluginDocumentSettingPanel
 		: PanelBody;

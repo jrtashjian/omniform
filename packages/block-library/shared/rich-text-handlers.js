@@ -1,9 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	store as blockEditorStore,
-} from '@wordpress/block-editor';
+import { store as blockEditorStore } from '@wordpress/block-editor';
 import {
 	cloneBlock,
 	createBlock,
@@ -27,17 +25,26 @@ export function onSplit( targetBlock, value, isOriginal ) {
 		block = cloneBlock(
 			targetBlock,
 			targetBlock.attributes,
-			targetBlock.innerBlocks
+			targetBlock.innerBlocks,
 		);
 	} else {
 		block = createBlock(
 			targetBlock.name,
 			{ style: targetBlock.attributes.style },
-			targetBlock.innerBlocks.map(
-				( { name, attributes } ) => [ 'omniform/input', 'omniform/select', 'omniform/textarea' ].includes( name )
-					? createBlock( name, { fieldPlaceholder: undefined, fieldValue: undefined, fieldType: attributes.fieldType, style: attributes.style } )
-					: createBlock( name, { style: attributes.style } )
-			)
+			targetBlock.innerBlocks.map( ( { name, attributes } ) =>
+				[
+					'omniform/input',
+					'omniform/select',
+					'omniform/textarea',
+				].includes( name )
+					? createBlock( name, {
+						fieldPlaceholder: undefined,
+						fieldValue: undefined,
+						fieldType: attributes.fieldType,
+						style: attributes.style,
+					  } )
+					: createBlock( name, { style: attributes.style } ),
+			),
 		);
 	}
 
@@ -56,22 +63,30 @@ export function onSplit( targetBlock, value, isOriginal ) {
  * @param {number} indexToSelect   The index of the block to select.
  * @param {number} initialPosition The initial position of the caret.
  */
-export function onReplace( targetBlock, blocks, indexToSelect, initialPosition ) {
-	const {
-		replaceBlocks,
-		selectBlock,
-	} = dispatch( blockEditorStore );
+export function onReplace(
+	targetBlock,
+	blocks,
+	indexToSelect,
+	initialPosition,
+) {
+	const { replaceBlocks, selectBlock } = dispatch( blockEditorStore );
 
 	replaceBlocks(
 		[ targetBlock.clientId ],
 		blocks,
 		indexToSelect,
-		initialPosition
+		initialPosition,
 	);
 
 	// Select the label block if it exists, otherwise select the input block.
-	const labelBlock = blocks[ indexToSelect ]?.innerBlocks.find( ( block ) => block.name === 'omniform/label' );
-	const inputBlock = blocks[ indexToSelect ]?.innerBlocks.find( ( block ) => [ 'omniform/input', 'omniform/textarea', 'omniform/select' ].includes( block.name ) );
+	const labelBlock = blocks[ indexToSelect ]?.innerBlocks.find(
+		( block ) => block.name === 'omniform/label',
+	);
+	const inputBlock = blocks[ indexToSelect ]?.innerBlocks.find( ( block ) =>
+		[ 'omniform/input', 'omniform/textarea', 'omniform/select' ].includes(
+			block.name,
+		),
+	);
 
 	if ( labelBlock ) {
 		selectBlock( labelBlock.clientId );
@@ -88,9 +103,7 @@ export function onReplace( targetBlock, blocks, indexToSelect, initialPosition )
  * @param {Object} targetBlock The target block.
  */
 export function onRemove( targetBlock ) {
-	const {
-		removeBlock,
-	} = dispatch( blockEditorStore );
+	const { removeBlock } = dispatch( blockEditorStore );
 
 	removeBlock( targetBlock.clientId );
 }
@@ -102,21 +115,18 @@ export function onRemove( targetBlock ) {
  * @param {boolean} forward     Whether to merge with the next block or the previous block.
  */
 export function onMerge( targetBlock, forward ) {
-	const {
-		getNextBlockClientId,
-		getPreviousBlockClientId,
-	} = select( blockEditorStore );
+	const { getNextBlockClientId, getPreviousBlockClientId } =
+		select( blockEditorStore );
 
-	const {
-		mergeBlocks,
-		replaceBlock,
-		selectBlock,
-	} = dispatch( blockEditorStore );
+	const { mergeBlocks, replaceBlock, selectBlock } =
+		dispatch( blockEditorStore );
 
 	// If the target block is empty, replace it with a default block.
 	if (
-		( targetBlock.name === 'omniform/field' && ! targetBlock.attributes?.fieldLabel ) ||
-		( targetBlock.name === 'omniform/hidden' && ! targetBlock.attributes?.fieldName )
+		( targetBlock.name === 'omniform/field' &&
+			! targetBlock.attributes?.fieldLabel ) ||
+		( targetBlock.name === 'omniform/hidden' &&
+			! targetBlock.attributes?.fieldName )
 	) {
 		const defaultBlock = createBlock( getDefaultBlockName() );
 		replaceBlock( targetBlock.clientId, defaultBlock );
@@ -131,7 +141,9 @@ export function onMerge( targetBlock, forward ) {
 			mergeBlocks( targetBlock.clientId, nextBlockClientId );
 		}
 	} else {
-		const previousBlockClientId = getPreviousBlockClientId( targetBlock.clientId );
+		const previousBlockClientId = getPreviousBlockClientId(
+			targetBlock.clientId,
+		);
 		if ( previousBlockClientId ) {
 			mergeBlocks( previousBlockClientId, targetBlock.clientId );
 		}

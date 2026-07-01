@@ -12,10 +12,14 @@ const transforms = {
 				'jetpack/field-checkbox-multiple',
 			],
 			transform: ( attributes, innerBlocks ) => {
-				return createBlock( 'omniform/fieldset', {
-					fieldLabel: attributes?.label,
-					isRequired: attributes?.required,
-				}, innerBlocks );
+				return createBlock(
+					'omniform/fieldset',
+					{
+						fieldLabel: attributes?.label,
+						isRequired: attributes?.required,
+					},
+					innerBlocks,
+				);
 			},
 		},
 	],

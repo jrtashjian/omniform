@@ -25,5 +25,6 @@ registerBlockType( name, {
 	transforms,
 	variations,
 	// Get block name from the option value.
-	__experimentalLabel: ( { fieldLabel } ) => fieldLabel && decodeEntities( fieldLabel ),
+	__experimentalLabel: ( { fieldLabel } ) =>
+		fieldLabel && decodeEntities( fieldLabel ),
 } );

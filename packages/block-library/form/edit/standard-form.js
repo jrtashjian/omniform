@@ -8,10 +8,7 @@ import {
 	__experimentalRecursionProvider as RecursionProvider,
 	__experimentalUseHasRecursion as useHasRecursion,
 } from '@wordpress/block-editor';
-import {
-	Modal,
-	Spinner,
-} from '@wordpress/components';
+import { Modal, Spinner } from '@wordpress/components';
 import { store as coreStore } from '@wordpress/core-data';
 import { useSelect } from '@wordpress/data';
 import { useState } from '@wordpress/element';
@@ -35,28 +32,26 @@ export default function StandardForm( {
 	const { postId: contextPostId, postType: contextPostType } = context;
 	const { ref } = attributes;
 
-	const entityId = ( contextPostType === POST_TYPE )
-		? contextPostId
-		: ref;
+	const entityId = contextPostType === POST_TYPE ? contextPostId : ref;
 
 	const hasAlreadyRendered = useHasRecursion( [ entityId ] );
 	const [ isFormSelectionOpen, setIsFormSelectionOpen ] = useState( false );
 
 	const { isResolved, hasInnerBlocks, isMissing } = useSelect(
 		( select ) => {
-			const { getEditedEntityRecord, hasFinishedResolution } = select( coreStore );
+			const { getEditedEntityRecord, hasFinishedResolution } =
+				select( coreStore );
 			const { getBlockCount } = select( blockEditorStore );
 
-			const getEntityArgs = [
-				'postType',
-				POST_TYPE,
-				entityId,
-			];
+			const getEntityArgs = [ 'postType', POST_TYPE, entityId ];
 			const entityRecord = entityId
 				? getEditedEntityRecord( ...getEntityArgs )
 				: null;
 			const hasResolvedEntity = entityId
-				? hasFinishedResolution( 'getEditedEntityRecord', getEntityArgs )
+				? hasFinishedResolution(
+					'getEditedEntityRecord',
+					getEntityArgs,
+				  )
 				: false;
 
 			return {
@@ -65,7 +60,7 @@ export default function StandardForm( {
 				isMissing: hasResolvedEntity && ! entityRecord,
 			};
 		},
-		[ entityId, clientId ]
+		[ entityId, clientId ],
 	);
 
 	const blockProps = useBlockProps( {
@@ -78,7 +73,10 @@ export default function StandardForm( {
 		return (
 			<div { ...blockProps }>
 				<Warning>
-					{ __( 'Form has been deleted or is unavailable.', 'omniform' ) }
+					{ __(
+						'Form has been deleted or is unavailable.',
+						'omniform',
+					) }
 				</Warning>
 			</div>
 		);
@@ -88,7 +86,10 @@ export default function StandardForm( {
 		return (
 			<div { ...blockProps }>
 				<Warning>
-					{ __( 'Form cannot be rendered inside itself.', 'omniform' ) }
+					{ __(
+						'Form cannot be rendered inside itself.',
+						'omniform',
+					) }
 				</Warning>
 			</div>
 		);
@@ -107,7 +108,9 @@ export default function StandardForm( {
 							clientId={ clientId }
 							formId={ entityId }
 							setAttributes={ setAttributes }
-							onOpenSelectionModal={ () => setIsFormSelectionOpen( true ) }
+							onOpenSelectionModal={ () =>
+								setIsFormSelectionOpen( true )
+							}
 						/>
 					</div>
 				) }

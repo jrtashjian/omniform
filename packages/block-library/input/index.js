@@ -26,5 +26,6 @@ registerBlockType( name, {
 	variations,
 	example: {},
 	// Get block name from the option value.
-	__experimentalLabel: ( { fieldType } ) => startCase( name.replace( 'omniform', fieldType ) ),
+	__experimentalLabel: ( { fieldType } ) =>
+		startCase( name.replace( 'omniform', fieldType ) ),
 } );

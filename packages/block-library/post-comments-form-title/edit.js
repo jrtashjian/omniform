@@ -9,10 +9,7 @@ import {
 	useBlockProps,
 } from '@wordpress/block-editor';
 
-const Edit = ( {
-	attributes: { noReplyText, level },
-	setAttributes,
-} ) => {
+const Edit = ( { attributes: { noReplyText, level }, setAttributes } ) => {
 	const blockProps = useBlockProps();
 
 	return (
@@ -26,9 +23,14 @@ const Edit = ( {
 			<RichText
 				identifier="noReplyText"
 				tagName={ 'h' + level }
-				placeholder={ __( 'Enter a title for the comment form…', 'omniform' ) }
+				placeholder={ __(
+					'Enter a title for the comment form…',
+					'omniform',
+				) }
 				value={ noReplyText ?? '' }
-				onChange={ ( value ) => setAttributes( { noReplyText: value } ) }
+				onChange={ ( value ) =>
+					setAttributes( { noReplyText: value } )
+				}
 				{ ...blockProps }
 			/>
 		</>

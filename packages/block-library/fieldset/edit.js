@@ -26,7 +26,10 @@ import { useMergeRefs } from '@wordpress/compose';
  */
 import { Required } from '../shared/icons';
 import { cleanFieldName, generateShortId } from '../shared/utils';
-import { useStandaloneFormSettings, useStandardFormSettings } from '../form/utils/hooks';
+import {
+	useStandaloneFormSettings,
+	useStandardFormSettings,
+} from '../form/utils/hooks';
 import useEnter from '../shared/hooks';
 
 const Edit = ( {
@@ -35,16 +38,11 @@ const Edit = ( {
 	clientId,
 	context,
 } ) => {
-	const {
-		updateBlockAttributes,
-	} = useDispatch( blockEditorStore );
+	const { updateBlockAttributes } = useDispatch( blockEditorStore );
 
 	const { formBlockObject } = useSelect(
 		( select ) => {
-			const {
-				getBlock,
-				getBlockParents,
-			} = select( blockEditorStore );
+			const { getBlock, getBlockParents } = select( blockEditorStore );
 
 			const parentBlocks = getBlockParents( clientId );
 
@@ -56,11 +54,12 @@ const Edit = ( {
 			return {
 				formBlockObject: {
 					...getBlock( rootBlock ),
-					setAttributes: ( value ) => updateBlockAttributes( rootBlock, value ),
+					setAttributes: ( value ) =>
+						updateBlockAttributes( rootBlock, value ),
 				},
 			};
 		},
-		[ clientId, updateBlockAttributes ]
+		[ clientId, updateBlockAttributes ],
 	);
 
 	useEffect( () => {
@@ -80,29 +79,44 @@ const Edit = ( {
 	/**
 	 * Toggles the required attribute.
 	 */
-	const toggleRequired = () =>
-		setAttributes( { isRequired: ! isRequired } );
+	const toggleRequired = () => setAttributes( { isRequired: ! isRequired } );
 
 	return (
-		<div { ...blockProps } >
+		<div { ...blockProps }>
 			<div className="omniform-field-label">
 				<RichText
 					ref={ useMergeRefs( [ useEnter( clientId ) ] ) }
 					identifier="fieldsetLabel"
 					aria-label={ __( 'Legend text', 'omniform' ) }
-					placeholder={ __( 'Enter a title to the field…', 'omniform' ) }
+					placeholder={ __(
+						'Enter a title to the field…',
+						'omniform',
+					) }
 					multiple={ false }
 					value={ fieldLabel || '' }
-					onChange={ ( html ) => setAttributes( { fieldLabel: html } ) }
+					onChange={ ( html ) =>
+						setAttributes( { fieldLabel: html } )
+					}
 					withoutInteractiveFormatting
-					allowedFormats={ [ 'core/bold', 'core/italic', 'core/image' ] }
+					allowedFormats={ [
+						'core/bold',
+						'core/italic',
+						'core/image',
+					] }
 				/>
 
-				{ isRequired && (
-					contextPostId && 'omniform' === contextPostType
-						? <StandardFormRequiredLabel clientId={ clientId } formId={ contextPostId } />
-						: <StandaloneFormRequiredLabel clientId={ clientId } blockObject={ formBlockObject } />
-				) }
+				{ isRequired &&
+					( contextPostId && 'omniform' === contextPostType ? (
+						<StandardFormRequiredLabel
+							clientId={ clientId }
+							formId={ contextPostId }
+						/>
+					) : (
+						<StandaloneFormRequiredLabel
+							clientId={ clientId }
+							blockObject={ formBlockObject }
+						/>
+					) ) }
 			</div>
 
 			<div { ...innerBlockProps } />
@@ -120,12 +134,14 @@ const Edit = ( {
 
 			<InspectorControls>
 				<PanelBody title={ __( 'Fieldset Settings', 'omniform' ) }>
-
 					<ToggleControl
 						label={ __( 'Required for submission', 'omniform' ) }
 						checked={ isRequired }
 						onChange={ toggleRequired }
-						help={ __( 'Set default \'required\' state for all fields in the group.', 'omniform' ) }
+						help={ __(
+							"Set default 'required' state for all fields in the group.",
+							'omniform',
+						) }
 						__nextHasNoMarginBottom
 					/>
 
@@ -136,13 +152,19 @@ const Edit = ( {
 							setAttributes( { fieldName: newFieldName } );
 						} }
 						onBlur={ () => {
-							setAttributes( { fieldName: cleanFieldName( fieldName || fieldLabel ) } );
+							setAttributes( {
+								fieldName: cleanFieldName(
+									fieldName || fieldLabel,
+								),
+							} );
 						} }
-						help={ __( 'Name of the fieldset. Defaults to the fieldset\'s label.', 'omniform' ) }
+						help={ __(
+							"Name of the fieldset. Defaults to the fieldset's label.",
+							'omniform',
+						) }
 						__nextHasNoMarginBottom
 						__next40pxDefaultSize
 					/>
-
 				</PanelBody>
 			</InspectorControls>
 		</div>
@@ -150,10 +172,7 @@ const Edit = ( {
 };
 
 function StandardFormRequiredLabel( { clientId, formId } ) {
-	const {
-		getSetting,
-		setSetting,
-	} = useStandardFormSettings( formId );
+	const { getSetting, setSetting } = useStandardFormSettings( formId );
 
 	const requiredLabel = getSetting( 'required_label' ) || '';
 
@@ -163,7 +182,9 @@ function StandardFormRequiredLabel( { clientId, formId } ) {
 			className="omniform-field-required"
 			placeholder={ __( 'Enter a required field label…', 'omniform' ) }
 			value={ requiredLabel }
-			onChange={ ( newValue ) => setSetting( 'required_label', newValue ) }
+			onChange={ ( newValue ) =>
+				setSetting( 'required_label', newValue )
+			}
 			withoutInteractiveFormatting
 			allowedFormats={ [ 'core/bold', 'core/italic', 'core/image' ] }
 			disableLineBreaks
@@ -173,10 +194,7 @@ function StandardFormRequiredLabel( { clientId, formId } ) {
 }
 
 function StandaloneFormRequiredLabel( { clientId, blockObject } ) {
-	const {
-		getSetting,
-		setSetting,
-	} = useStandaloneFormSettings( blockObject );
+	const { getSetting, setSetting } = useStandaloneFormSettings( blockObject );
 
 	const requiredLabel = getSetting( 'required_label' ) || '';
 
@@ -186,7 +204,9 @@ function StandaloneFormRequiredLabel( { clientId, blockObject } ) {
 			className="omniform-field-required"
 			placeholder={ __( 'Enter a required field label…', 'omniform' ) }
 			value={ requiredLabel }
-			onChange={ ( newValue ) => setSetting( 'required_label', newValue ) }
+			onChange={ ( newValue ) =>
+				setSetting( 'required_label', newValue )
+			}
 			withoutInteractiveFormatting
 			allowedFormats={ [ 'core/bold', 'core/italic', 'core/image' ] }
 			disableLineBreaks={ true }

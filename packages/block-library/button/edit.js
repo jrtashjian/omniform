@@ -19,15 +19,8 @@ import { useMergeRefs } from '@wordpress/compose';
  */
 import useEnter from '../shared/hooks';
 
-const Edit = ( {
-	attributes,
-	setAttributes,
-	onRemove,
-	clientId,
-} ) => {
-	const {
-		buttonLabel,
-	} = attributes;
+const Edit = ( { attributes, setAttributes, onRemove, clientId } ) => {
+	const { buttonLabel } = attributes;
 
 	const blockProps = useBlockProps( {
 		ref: useMergeRefs( [ useEnter( clientId ) ] ),
@@ -45,7 +38,9 @@ const Edit = ( {
 				aria-label={ __( 'Button text', 'omniform' ) }
 				placeholder={ __( 'Add text…', 'omniform' ) }
 				value={ buttonLabel }
-				onChange={ ( value ) => setAttributes( { buttonLabel: value } ) }
+				onChange={ ( value ) =>
+					setAttributes( { buttonLabel: value } )
+				}
 				withoutInteractiveFormatting
 				allowedFormats={ [ 'core/bold', 'core/italic', 'core/image' ] }
 				disableLineBreaks

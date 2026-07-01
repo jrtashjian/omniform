@@ -27,8 +27,7 @@ const variations = [
 
 variations.forEach( ( variation ) => {
 	variation.isActive = ( blockAttributes, variationAttributes ) =>
-		blockAttributes.buttonType ===
-		variationAttributes.buttonType;
+		blockAttributes.buttonType === variationAttributes.buttonType;
 
 	if ( ! variation.scope ) {
 		variation.scope = [ 'inserter', 'block', 'transform' ];

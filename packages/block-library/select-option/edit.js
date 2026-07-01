@@ -17,19 +17,12 @@ import { useDispatch, useSelect } from '@wordpress/data';
 import useEnter from '../shared/hooks';
 
 const Edit = ( props ) => {
-	const {
-		attributes,
-		setAttributes,
-		onRemove,
-		onReplace,
-		clientId,
-	} = props;
-	const {
-		fieldLabel,
-	} = attributes;
+	const { attributes, setAttributes, onRemove, onReplace, clientId } = props;
+	const { fieldLabel } = attributes;
 
 	const { insertBlocks } = useDispatch( blockEditorStore );
-	const { getBlockRootClientId, getBlockIndex } = useSelect( blockEditorStore );
+	const { getBlockRootClientId, getBlockIndex } =
+		useSelect( blockEditorStore );
 
 	const blockProps = useBlockProps( {
 		ref: useMergeRefs( [ useEnter( clientId ) ] ),
@@ -43,14 +36,14 @@ const Edit = ( props ) => {
 		setAttributes( { fieldLabel: lines.shift() } );
 
 		const blocks = lines.map( ( line ) =>
-			createBlock( 'omniform/select-option', { fieldLabel: line } )
+			createBlock( 'omniform/select-option', { fieldLabel: line } ),
 		);
 
 		if ( blocks.length ) {
 			insertBlocks(
 				blocks,
 				getBlockIndex( clientId ) + 1,
-				getBlockRootClientId( clientId )
+				getBlockRootClientId( clientId ),
 			);
 		}
 	};

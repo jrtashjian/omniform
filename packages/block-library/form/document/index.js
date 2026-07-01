@@ -2,9 +2,7 @@
  * WordPress dependencies
  */
 import { useSelect } from '@wordpress/data';
-import {
-	store as editorStore,
-} from '@wordpress/editor';
+import { store as editorStore } from '@wordpress/editor';
 import { registerPlugin } from '@wordpress/plugins';
 
 /**
@@ -16,26 +14,18 @@ import SubmissionMethodSettings from '../../../components/form-settings/submissi
 import { useStandardFormSettings } from '../utils/hooks';
 
 const DocumentSettingsPanel = () => {
-	const {
-		postType,
-		postId,
-	} = useSelect( ( select ) => {
+	const { postType, postId } = useSelect( ( select ) => {
 		return {
 			postType: select( editorStore ).getCurrentPostType(),
 			postId: select( editorStore ).getCurrentPostId(),
 		};
 	} );
 
-	return POST_TYPE === postType && (
-		<FormSettingsPanel postId={ postId } />
-	);
+	return POST_TYPE === postType && <FormSettingsPanel postId={ postId } />;
 };
 
 function FormSettingsPanel( { postId } ) {
-	const {
-		getSetting,
-		setSetting,
-	} = useStandardFormSettings( postId );
+	const { getSetting, setSetting } = useStandardFormSettings( postId );
 
 	return (
 		<>

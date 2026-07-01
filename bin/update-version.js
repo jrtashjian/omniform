@@ -15,7 +15,7 @@ const filesToUpdate = [
 	{
 		filePath: 'includes/Application.php',
 		searchPattern: /const VERSION.*/,
-		replacePattern: 'const VERSION = \'' + packageJson.version + '\';',
+		replacePattern: "const VERSION = '" + packageJson.version + "';",
 	},
 ];
 

@@ -22,105 +22,123 @@ import { applyFilters } from '@wordpress/hooks';
 		};
 
 		// Add event listeners to all omniforms.
-		document.querySelectorAll( 'form.wp-block-omniform-form' ).forEach( ( form ) => {
-			// Only add event listeners to OmniForms.
-			if ( ! form.action.includes( '/omniform/v1/forms/' ) ) {
-				return;
-			}
+		document
+			.querySelectorAll( 'form.wp-block-omniform-form' )
+			.forEach( ( form ) => {
+				// Only add event listeners to OmniForms.
+				if ( ! form.action.includes( '/omniform/v1/forms/' ) ) {
+					return;
+				}
 
-			const containersInitialState = {};
+				const containersInitialState = {};
 
-			const successContainer = form.querySelector( '.wp-block-omniform-response-notification.success-response-notification' );
-			const errorContainer = form.querySelector( '.wp-block-omniform-response-notification.error-response-notification' );
-			const containers = [ successContainer, errorContainer ];
+				const successContainer = form.querySelector(
+					'.wp-block-omniform-response-notification.success-response-notification',
+				);
+				const errorContainer = form.querySelector(
+					'.wp-block-omniform-response-notification.error-response-notification',
+				);
+				const containers = [ successContainer, errorContainer ];
 
-			/**
-			 * Save the initial state of the containers.
-			 *
-			 * @param {HTMLElement} container
-			 */
-			const saveInitialState = ( container ) => {
-				containersInitialState[ container.className ] = Array.from( container.children ).map( ( child ) => child.cloneNode( true ) );
-				container.textContent = '';
-			};
+				/**
+				 * Save the initial state of the containers.
+				 *
+				 * @param {HTMLElement} container
+				 */
+				const saveInitialState = ( container ) => {
+					containersInitialState[ container.className ] = Array.from(
+						container.children,
+					).map( ( child ) => child.cloneNode( true ) );
+					container.textContent = '';
+				};
 
-			/**
-			 * Show a message in a container.
-			 *
-			 * @param {HTMLElement} container
-			 * @param {Array}       additionalChildren
-			 */
-			const showMessage = ( container, additionalChildren = [] ) => {
-				// Hide all containers.
-				containers.forEach( ( elm ) => {
-					elm.textContent = '';
-					elm.style.display = 'none';
-				} );
+				/**
+				 * Show a message in a container.
+				 *
+				 * @param {HTMLElement} container
+				 * @param {Array}       additionalChildren
+				 */
+				const showMessage = ( container, additionalChildren = [] ) => {
+					// Hide all containers.
+					containers.forEach( ( elm ) => {
+						elm.textContent = '';
+						elm.style.display = 'none';
+					} );
 
-				// Reset the container to its initial state.
-				container.textContent = '';
-				containersInitialState[ container.className ].forEach( ( child ) => {
-					container.appendChild( child.cloneNode( true ) );
-				} );
+					// Reset the container to its initial state.
+					container.textContent = '';
+					containersInitialState[ container.className ].forEach(
+						( child ) => {
+							container.appendChild( child.cloneNode( true ) );
+						},
+					);
 
-				// Add additional children to the container.
-				additionalChildren.forEach( ( child ) => {
-					container.appendChild( child );
-				} );
+					// Add additional children to the container.
+					additionalChildren.forEach( ( child ) => {
+						container.appendChild( child );
+					} );
 
-				// Show the message container.
-				container.style.display = 'block';
+					// Show the message container.
+					container.style.display = 'block';
 
-				// Focus the message container.
-				container.setAttribute( 'tabindex', '-1' );
-				container.focus();
-				container.removeAttribute( 'tabindex' );
-			};
+					// Focus the message container.
+					container.setAttribute( 'tabindex', '-1' );
+					container.focus();
+					container.removeAttribute( 'tabindex' );
+				};
 
-			// Save initial state and clear content for both containers
-			containers.forEach( ( container ) => saveInitialState( container ) );
+				// Save initial state and clear content for both containers
+				containers.forEach( ( container ) =>
+					saveInitialState( container ),
+				);
 
-			const formResponseHandler = async ( event ) => {
-				event.preventDefault();
+				const formResponseHandler = async ( event ) => {
+					event.preventDefault();
 
-				// Allow plugins to hook into the form submission.
-				const formElement = await applyFilters( 'omniform.prepareFormElementForSubmission', event.target );
+					// Allow plugins to hook into the form submission.
+					const formElement = await applyFilters(
+						'omniform.prepareFormElementForSubmission',
+						event.target,
+					);
 
-				const { action: url, method } = formElement;
-				const body = new FormData( formElement );
+					const { action: url, method } = formElement;
+					const body = new FormData( formElement );
 
-				await apiFetch( {
-					url,
-					method,
-					body,
-				} ).then( () => {
-					showMessage( successContainer );
+					await apiFetch( {
+						url,
+						method,
+						body,
+					} )
+						.then( () => {
+							showMessage( successContainer );
 
-					// Reset the form.
-					event.target.reset();
-				} ).catch( ( error ) => {
-					// Show the field errors.
-					if ( error.invalid_fields ) {
-						showMessage(
-							errorContainer,
-							[ createUnorderedList( Object.values( error.invalid_fields ) ) ]
-						);
-					}
+							// Reset the form.
+							event.target.reset();
+						} )
+						.catch( ( error ) => {
+							// Show the field errors.
+							if ( error.invalid_fields ) {
+								showMessage( errorContainer, [
+									createUnorderedList(
+										Object.values( error.invalid_fields ),
+									),
+								] );
+							}
 
-					// Show the error message.
-					if ( error.message && ! error.invalid_fields ) {
-						const paragraphElement = document.createElement( 'p' );
-						paragraphElement.textContent = error.message;
+							// Show the error message.
+							if ( error.message && ! error.invalid_fields ) {
+								const paragraphElement =
+									document.createElement( 'p' );
+								paragraphElement.textContent = error.message;
 
-						showMessage(
-							errorContainer,
-							[ paragraphElement ]
-						);
-					}
-				} );
-			};
+								showMessage( errorContainer, [
+									paragraphElement,
+								] );
+							}
+						} );
+				};
 
-			form.addEventListener( 'submit', formResponseHandler );
-		} );
+				form.addEventListener( 'submit', formResponseHandler );
+			} );
 	} );
 }() );

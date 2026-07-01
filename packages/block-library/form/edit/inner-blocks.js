@@ -26,7 +26,7 @@ export default function FormInnerBlocks( {
 	const [ blocks, onInput, onChange ] = useEntityBlockEditor(
 		'postType',
 		POST_TYPE,
-		{ id }
+		{ id },
 	);
 
 	const innerBlockProps = useInnerBlocksProps( blockProps, {

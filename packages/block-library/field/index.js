@@ -26,13 +26,11 @@ registerBlockType( name, {
 		attributes: {
 			fieldLabel: 'Field Label',
 		},
-		innerBlocks: [
-			{ name: 'omniform/label' },
-			{ name: 'omniform/input' },
-		],
+		innerBlocks: [ { name: 'omniform/label' }, { name: 'omniform/input' } ],
 	},
 	transforms,
 	variations,
 	// Get block name from the option value.
-	__experimentalLabel: ( { fieldLabel } ) => fieldLabel && decodeEntities( fieldLabel ),
+	__experimentalLabel: ( { fieldLabel } ) =>
+		fieldLabel && decodeEntities( fieldLabel ),
 } );

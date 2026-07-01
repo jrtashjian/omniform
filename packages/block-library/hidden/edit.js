@@ -2,10 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	RichText,
-	useBlockProps,
-} from '@wordpress/block-editor';
+import { RichText, useBlockProps } from '@wordpress/block-editor';
 import { useMergeRefs } from '@wordpress/compose';
 
 /**
@@ -35,7 +32,9 @@ const Edit = ( {
 					setAttributes( { fieldName: newFieldName } );
 				} }
 				onBlur={ () => {
-					setAttributes( { fieldName: cleanFieldName( fieldName ?? '' ) } );
+					setAttributes( {
+						fieldName: cleanFieldName( fieldName ?? '' ),
+					} );
 				} }
 				withoutInteractiveFormatting
 				allowedFormats={ [] }
@@ -44,9 +43,14 @@ const Edit = ( {
 			<RichText
 				ref={ useMergeRefs( [ useEnter( clientId ) ] ) }
 				identifier="fieldControl"
-				aria-label={ __( 'Placeholder text for text input.', 'omniform' ) }
+				aria-label={ __(
+					'Placeholder text for text input.',
+					'omniform',
+				) }
 				placeholder={
-					( isSelected || fieldValue ) ? __( 'Enter a value…', 'omniform' ) : undefined
+					isSelected || fieldValue
+						? __( 'Enter a value…', 'omniform' )
+						: undefined
 				}
 				value={ fieldValue }
 				onChange={ ( html ) => setAttributes( { fieldValue: html } ) }

@@ -97,9 +97,15 @@ const variations = [
 							{
 								name: 'omniform/post-comments-form-title',
 								attributes: {
-									noReplyText: __( 'Leave a Reply', 'omniform' ),
+									noReplyText: __(
+										'Leave a Reply',
+										'omniform',
+									),
 									/* translators: %s: author name */
-									replyText: __( 'Leave a Reply to %s', 'omniform' ),
+									replyText: __(
+										'Leave a Reply to %s',
+										'omniform',
+									),
 									linkToParent: true,
 									level: 3,
 								},
@@ -133,10 +139,13 @@ const variations = [
 										attributes: {
 											content: sprintf(
 												/* translators: 1: User name, 2: Edit user link, 3: Logout URL. */
-												__( 'Logged in as %1$s. <a href="%2$s">Edit your profile</a>. <a href="%3$s">Log out?</a> Required fields are marked *', 'omniform' ),
+												__(
+													'Logged in as %1$s. <a href="%2$s">Edit your profile</a>. <a href="%3$s">Log out?</a> Required fields are marked *',
+													'omniform',
+												),
 												'{{omniform_current_user_display_name}}',
 												'{{get_edit_user_link}}',
-												'{{omniform_comment_logout_url}'
+												'{{omniform_comment_logout_url}',
 											),
 											dropCap: false,
 										},
@@ -154,14 +163,20 @@ const variations = [
 									{
 										name: 'core/paragraph',
 										attributes: {
-											content: __( 'Your email address will not be published. Required fields are marked *', 'omniform' ),
+											content: __(
+												'Your email address will not be published. Required fields are marked *',
+												'omniform',
+											),
 											dropCap: false,
 										},
 										innerBlocks: [],
 									},
 								],
 							},
-							createTextareaField( __( 'Comment', 'omniform' ), true ),
+							createTextareaField(
+								__( 'Comment', 'omniform' ),
+								true,
+							),
 							{
 								name: 'omniform/conditional-group',
 								attributes: {
@@ -169,17 +184,58 @@ const variations = [
 									reverseCondition: true,
 								},
 								innerBlocks: [
-									createInputField( __( 'Name', 'omniform' ), 'text', true, { fieldName: 'author', fieldValue: '{{omniform_current_commenter_author}}' } ),
-									createInputField( __( 'Email', 'omniform' ), 'text', true, { fieldName: 'email', fieldValue: '{{omniform_current_commenter_email}}' } ),
-									createInputField( __( 'Website', 'omniform' ), 'text', false, { fieldName: 'url', fieldValue: '{{omniform_current_commenter_url}}' } ),
+									createInputField(
+										__( 'Name', 'omniform' ),
+										'text',
+										true,
+										{
+											fieldName: 'author',
+											fieldValue:
+												'{{omniform_current_commenter_author}}',
+										},
+									),
+									createInputField(
+										__( 'Email', 'omniform' ),
+										'text',
+										true,
+										{
+											fieldName: 'email',
+											fieldValue:
+												'{{omniform_current_commenter_email}}',
+										},
+									),
+									createInputField(
+										__( 'Website', 'omniform' ),
+										'text',
+										false,
+										{
+											fieldName: 'url',
+											fieldValue:
+												'{{omniform_current_commenter_url}}',
+										},
+									),
 									{
 										name: 'omniform/conditional-group',
 										attributes: {
-											callback: '{{omniform_comment_cookies_opt_in}}',
+											callback:
+												'{{omniform_comment_cookies_opt_in}}',
 											reverseCondition: false,
 										},
 										innerBlocks: [
-											createInputField( __( 'Save my name, email, and website in this browser for the next time I comment.', 'omniform' ), 'checkbox', false, { fieldName: 'wp-comment-cookies-consent', fieldValue: '{{omniform_current_commenter_author}}' } ),
+											createInputField(
+												__(
+													'Save my name, email, and website in this browser for the next time I comment.',
+													'omniform',
+												),
+												'checkbox',
+												false,
+												{
+													fieldName:
+														'wp-comment-cookies-consent',
+													fieldValue:
+														'{{omniform_current_commenter_author}}',
+												},
+											),
 										],
 									},
 								],
@@ -200,7 +256,10 @@ const variations = [
 										name: 'omniform/button',
 										attributes: {
 											buttonType: 'submit',
-											buttonLabel: __( 'Post Comment', 'omniform' ),
+											buttonLabel: __(
+												'Post Comment',
+												'omniform',
+											),
 										},
 										innerBlocks: [],
 									},
@@ -218,7 +277,10 @@ const variations = [
 							{
 								name: 'core/paragraph',
 								attributes: {
-									content: __( 'Comments are closed.', 'omniform' ),
+									content: __(
+										'Comments are closed.',
+										'omniform',
+									),
 									dropCap: false,
 								},
 								innerBlocks: [],
@@ -237,8 +299,11 @@ const variations = [
 								attributes: {
 									content: sprintf(
 										/* translators: %s: Login URL. */
-										__( 'You must be <a href="%s">logged in</a> to post a comment.', 'omniform' ),
-										'{{omniform_comment_login_url}}'
+										__(
+											'You must be <a href="%s">logged in</a> to post a comment.',
+											'omniform',
+										),
+										'{{omniform_comment_login_url}}',
 									),
 									dropCap: false,
 								},

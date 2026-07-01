@@ -21,5 +21,6 @@ registerBlockType( name, {
 	icon: { foreground: '#D92E83', src: selectOption },
 	transforms,
 	// Get block name from the option value.
-	__experimentalLabel: ( { fieldLabel } ) => fieldLabel && decodeEntities( fieldLabel ),
+	__experimentalLabel: ( { fieldLabel } ) =>
+		fieldLabel && decodeEntities( fieldLabel ),
 } );

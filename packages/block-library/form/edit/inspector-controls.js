@@ -26,22 +26,22 @@ import { useState } from '@wordpress/element';
 import EmailNotificationSettings from '../../../components/form-settings/email-notifications';
 import ViewResponses from '../../../components/form-settings/view-responses';
 import SubmissionMethodSettings from '../../../components/form-settings/submission-method';
-import { useCreateFormFromBlocks, useStandaloneFormSettings, useStandardFormSettings } from '../../../block-library/form/utils/hooks';
+import {
+	useCreateFormFromBlocks,
+	useStandaloneFormSettings,
+	useStandardFormSettings,
+} from '../../../block-library/form/utils/hooks';
 
-export default function FormInspectorControls( {
-	formId,
-	blockObject,
-} ) {
-	return !! formId
-		? <StandardFormInspectorControls formId={ formId } />
-		: <StandaloneFormInspectorControls blockObject={ blockObject } />;
+export default function FormInspectorControls( { formId, blockObject } ) {
+	return !! formId ? (
+		<StandardFormInspectorControls formId={ formId } />
+	) : (
+		<StandaloneFormInspectorControls blockObject={ blockObject } />
+	);
 }
 
 function StandardFormInspectorControls( { formId } ) {
-	const {
-		getSetting,
-		setSetting,
-	} = useStandardFormSettings( formId );
+	const { getSetting, setSetting } = useStandardFormSettings( formId );
 
 	return (
 		<InspectorControls>
@@ -50,8 +50,13 @@ function StandardFormInspectorControls( { formId } ) {
 				<TextControl
 					label={ __( 'Name', 'omniform' ) }
 					value={ getSetting( 'form_title' ) || '' }
-					onChange={ ( newValue ) => setSetting( 'form_title', newValue ) }
-					help={ __( 'This name will not be visible to viewers and is only for identifying the form.', 'omniform' ) }
+					onChange={ ( newValue ) =>
+						setSetting( 'form_title', newValue )
+					}
+					help={ __(
+						'This name will not be visible to viewers and is only for identifying the form.',
+						'omniform',
+					) }
 					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 				/>
@@ -78,21 +83,24 @@ function StandardFormInspectorControls( { formId } ) {
 }
 
 function StandaloneFormInspectorControls( { blockObject } ) {
-	const {
-		getSetting,
-		setSetting,
-	} = useStandaloneFormSettings( blockObject.clientId );
+	const { getSetting, setSetting } = useStandaloneFormSettings(
+		blockObject.clientId,
+	);
 
 	const innerBlocks = useSelect(
 		( select ) => {
 			const { getBlocks } = select( blockEditorStore );
 			return getBlocks( blockObject.clientId );
 		},
-		[ blockObject.clientId ]
+		[ blockObject.clientId ],
 	);
 
-	const { createSuccessNotice, createErrorNotice } = useDispatch( noticesStore );
-	const createFromBlocks = useCreateFormFromBlocks( blockObject.setAttributes, blockObject.attributes );
+	const { createSuccessNotice, createErrorNotice } =
+		useDispatch( noticesStore );
+	const createFromBlocks = useCreateFormFromBlocks(
+		blockObject.setAttributes,
+		blockObject.attributes,
+	);
 
 	const [ modalOpen, setModalOpen ] = useState( false );
 
@@ -107,7 +115,7 @@ function StandaloneFormInspectorControls( { blockObject } ) {
 					submit_method: getSetting( 'submit_method' ),
 					notify_email: getSetting( 'notify_email' ),
 					notify_email_subject: getSetting( 'notify_email_subject' ),
-				}
+				},
 			);
 
 			// Reset all but the 'ref' block attribute.
@@ -117,15 +125,20 @@ function StandaloneFormInspectorControls( { blockObject } ) {
 						acc[ key ] = undefined;
 					}
 					return acc;
-				}, {} )
+				}, {} ),
 			);
 
-			createSuccessNotice( __( 'Form created', 'omniform' ), { type: 'snackbar' } );
+			createSuccessNotice( __( 'Form created', 'omniform' ), {
+				type: 'snackbar',
+			} );
 		} catch ( error ) {
 			const errorMessage =
 				error.message && error.code !== 'unknown_error'
 					? error.message
-					: __( 'An error occurred while creating the form.', 'omniform' );
+					: __(
+						'An error occurred while creating the form.',
+						'omniform',
+					  );
 
 			createErrorNotice( errorMessage, { type: 'snackbar' } );
 		}
@@ -142,14 +155,25 @@ function StandaloneFormInspectorControls( { blockObject } ) {
 				<TextControl
 					label={ __( 'Name', 'omniform' ) }
 					value={ getSetting( 'form_title' ) || '' }
-					onChange={ ( newValue ) => setSetting( 'form_title', newValue ) }
-					help={ __( 'This name will not be visible to viewers and is only for identifying the form.', 'omniform' ) }
+					onChange={ ( newValue ) =>
+						setSetting( 'form_title', newValue )
+					}
+					help={ __(
+						'This name will not be visible to viewers and is only for identifying the form.',
+						'omniform',
+					) }
 					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 				/>
 				<Text>
-					{ __( 'Want deeper insights into your form\'s performance?', 'omniform' ) }{ ' ' }
-					<Button variant="link" onClick={ () => setModalOpen( true ) }>
+					{ __(
+						"Want deeper insights into your form's performance?",
+						'omniform',
+					) }{ ' ' }
+					<Button
+						variant="link"
+						onClick={ () => setModalOpen( true ) }
+					>
 						{ __( 'Learn more', 'omniform' ) }
 					</Button>
 				</Text>
@@ -162,31 +186,61 @@ function StandaloneFormInspectorControls( { blockObject } ) {
 						<VStack spacing={ 8 }>
 							<VStack spacing={ 4 }>
 								<Text>
-									{ __( 'Your current form supports direct submissions and email notifications, but converting unlocks advanced features to help you get more from your form.', 'omniform' ) }
+									{ __(
+										'Your current form supports direct submissions and email notifications, but converting unlocks advanced features to help you get more from your form.',
+										'omniform',
+									) }
 								</Text>
 								<Text>
 									{ __( 'Convert to access:', 'omniform' ) }
 								</Text>
 								<Flex>
 									<Text>
-										<strong>{ __( 'Analytics', 'omniform' ) }</strong>{ ' ' }
-										{ __( 'for tracking submissions and engagement', 'omniform' ) }
+										<strong>
+											{ __( 'Analytics', 'omniform' ) }
+										</strong>{ ' ' }
+										{ __(
+											'for tracking submissions and engagement',
+											'omniform',
+										) }
 									</Text>
 									<Text>
-										<strong>{ __( 'Response tracking', 'omniform' ) }</strong>{ ' ' }
-										{ __( 'to manage and review form entries', 'omniform' ) }
+										<strong>
+											{ __(
+												'Response tracking',
+												'omniform',
+											) }
+										</strong>{ ' ' }
+										{ __(
+											'to manage and review form entries',
+											'omniform',
+										) }
 									</Text>
 									<Text>
-										<strong>{ __( 'Dedicated editor', 'omniform' ) }</strong>{ ' ' }
-										{ __( 'for easy customization and sharing', 'omniform' ) }
+										<strong>
+											{ __(
+												'Dedicated editor',
+												'omniform',
+											) }
+										</strong>{ ' ' }
+										{ __(
+											'for easy customization and sharing',
+											'omniform',
+										) }
 									</Text>
 								</Flex>
 							</VStack>
 							<Flex justify="space-between">
-								<Button variant="secondary" onClick={ () => setModalOpen( false ) }>
+								<Button
+									variant="secondary"
+									onClick={ () => setModalOpen( false ) }
+								>
 									{ __( 'Cancel', 'omniform' ) }
 								</Button>
-								<Button variant="primary" onClick={ handleConvertForm }>
+								<Button
+									variant="primary"
+									onClick={ handleConvertForm }
+								>
 									{ __( 'Convert Form', 'omniform' ) }
 								</Button>
 							</Flex>

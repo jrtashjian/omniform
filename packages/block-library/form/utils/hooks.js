@@ -4,10 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useMemo } from '@wordpress/element';
-import {
-	useEntityProp,
-	store as coreStore,
-} from '@wordpress/core-data';
+import { useEntityProp, store as coreStore } from '@wordpress/core-data';
 import { serialize } from '@wordpress/blocks';
 import { store as blockEditorStore } from '@wordpress/block-editor';
 
@@ -25,16 +22,32 @@ import { POST_TYPE } from '../../shared/constants';
  */
 export function useAlternativeForms( excludedId ) {
 	const { forms = [], isResolving } = useSelect( ( select ) => {
-		const { getEntityRecords, isResolving: _isResolving } = select( coreStore );
+		const { getEntityRecords, isResolving: _isResolving } =
+			select( coreStore );
 		const queryPublished = { per_page: -1, status: 'publish' };
 		const queryDrafts = { per_page: -1, status: 'draft' };
 
 		return {
 			forms: [
-				...getEntityRecords( 'postType', POST_TYPE, queryPublished ) ?? [],
-				...getEntityRecords( 'postType', POST_TYPE, queryDrafts ) ?? [],
+				...( getEntityRecords(
+					'postType',
+					POST_TYPE,
+					queryPublished,
+				) ?? [] ),
+				...( getEntityRecords( 'postType', POST_TYPE, queryDrafts ) ??
+					[] ),
 			],
-			isLoading: _isResolving( 'getEntityRecords', [ 'postType', POST_TYPE, queryPublished ] ) || _isResolving( 'getEntityRecords', [ 'postType', POST_TYPE, queryDrafts ] ),
+			isLoading:
+				_isResolving( 'getEntityRecords', [
+					'postType',
+					POST_TYPE,
+					queryPublished,
+				] ) ||
+				_isResolving( 'getEntityRecords', [
+					'postType',
+					POST_TYPE,
+					queryDrafts,
+				] ),
 		};
 	}, [] );
 
@@ -54,7 +67,12 @@ export function useAlternativeForms( excludedId ) {
 export function useCreateFormFromBlocks( setAttributes ) {
 	const { saveEntityRecord } = useDispatch( coreStore );
 
-	return async ( blocks = [], title = __( 'Untitled Form', 'omniform' ), type = 'standard', meta = {} ) => {
+	return async (
+		blocks = [],
+		title = __( 'Untitled Form', 'omniform' ),
+		type = 'standard',
+		meta = {},
+	) => {
 		const record = {
 			title,
 			content: serialize( blocks ),
@@ -62,11 +80,7 @@ export function useCreateFormFromBlocks( setAttributes ) {
 			omniform_type: type,
 			meta,
 		};
-		const form = await saveEntityRecord(
-			'postType',
-			POST_TYPE,
-			record
-		);
+		const form = await saveEntityRecord( 'postType', POST_TYPE, record );
 		setAttributes( { ref: form.id } );
 	};
 }
@@ -79,10 +93,25 @@ export function useCreateFormFromBlocks( setAttributes ) {
  * @return {Object} Form settings.
  */
 export function useStandardFormSettings( formId ) {
-	const [ meta, setMeta ] = useEntityProp( 'postType', POST_TYPE, 'meta', formId );
+	const [ meta, setMeta ] = useEntityProp(
+		'postType',
+		POST_TYPE,
+		'meta',
+		formId,
+	);
 
-	const [ formTitle, setFormTitle ] = useEntityProp( 'postType', POST_TYPE, 'title', formId );
-	const [ formType, setFormType ] = useEntityProp( 'postType', POST_TYPE, 'omniform_type', formId );
+	const [ formTitle, setFormTitle ] = useEntityProp(
+		'postType',
+		POST_TYPE,
+		'title',
+		formId,
+	);
+	const [ formType, setFormType ] = useEntityProp(
+		'postType',
+		POST_TYPE,
+		'omniform_type',
+		formId,
+	);
 
 	/**
 	 * Retrieves the setting value.
@@ -141,10 +170,7 @@ export function useStandardFormSettings( formId ) {
 export function useStandaloneFormSettings( blockClientId ) {
 	const { getBlock } = useSelect( blockEditorStore );
 
-	const {
-		attributes,
-		setAttributes,
-	} = getBlock( blockClientId ) || {};
+	const { attributes, setAttributes } = getBlock( blockClientId ) || {};
 
 	/**
 	 * Retrieves the setting value.

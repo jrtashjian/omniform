@@ -14,7 +14,8 @@ import { ENTER } from '@wordpress/keycodes';
  */
 export default function useEnter( clientId ) {
 	const { insertBlock } = useDispatch( blockEditorStore );
-	const { getBlockName, getBlockRootClientId, getBlockIndex } = useSelect( blockEditorStore );
+	const { getBlockName, getBlockRootClientId, getBlockIndex } =
+		useSelect( blockEditorStore );
 
 	return useRefEffect(
 		( element ) => {
@@ -37,14 +38,17 @@ export default function useEnter( clientId ) {
 					? getBlockRootClientId( clientId )
 					: clientId;
 
-				const defaultBlockName = [ 'omniform/select-group', 'omniform/select-option' ].includes( blockName )
+				const defaultBlockName = [
+					'omniform/select-group',
+					'omniform/select-option',
+				].includes( blockName )
 					? 'omniform/select-option'
 					: getDefaultBlockName();
 
 				insertBlock(
 					createBlock( defaultBlockName ),
 					getBlockIndex( targetClientId ) + 1,
-					getBlockRootClientId( targetClientId )
+					getBlockRootClientId( targetClientId ),
 				);
 			}
 
@@ -53,6 +57,6 @@ export default function useEnter( clientId ) {
 				element.removeEventListener( 'keydown', onKeyDown );
 			};
 		},
-		[ clientId ]
+		[ clientId ],
 	);
 }

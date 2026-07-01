@@ -22,7 +22,10 @@ registerBlockType( name, {
 	icon: iconSuccess,
 	example: {
 		attributes: {
-			messageContent: __( 'Sharing some info you might find helpful.', 'omniform' ),
+			messageContent: __(
+				'Sharing some info you might find helpful.',
+				'omniform',
+			),
 		},
 	},
 	variations,

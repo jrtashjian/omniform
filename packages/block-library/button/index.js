@@ -37,5 +37,6 @@ registerBlockType( name, {
 		};
 	},
 	// Get block name from the option value.
-	__experimentalLabel: ( { buttonLabel } ) => buttonLabel && decodeEntities( buttonLabel ),
+	__experimentalLabel: ( { buttonLabel } ) =>
+		buttonLabel && decodeEntities( buttonLabel ),
 } );

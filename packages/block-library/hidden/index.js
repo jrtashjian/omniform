@@ -22,10 +22,13 @@ registerBlockType( name, {
 	variations,
 	// Return the title of the variation if fieldName is in variations, otherwise return fieldName.
 	__experimentalLabel: ( { fieldName, fieldValue } ) => {
-		const variation = variations.find( ( { attributes } ) =>
-			attributes.fieldName === fieldName &&
-			attributes.fieldValue === fieldValue
+		const variation = variations.find(
+			( { attributes } ) =>
+				attributes.fieldName === fieldName &&
+				attributes.fieldValue === fieldValue,
 		);
-		return variation ? decodeEntities( variation.title ) : decodeEntities( fieldName );
+		return variation
+			? decodeEntities( variation.title )
+			: decodeEntities( fieldName );
 	},
 } );

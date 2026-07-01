@@ -30,40 +30,52 @@ window.omniformCaptchaOnLoad = () => {
 };
 
 // Add a filter to validate the captcha.
-addFilter( 'omniform.prepareFormElementForSubmission', 'omniform/captcha/validate', async ( formElement ) => {
-	const target = formElement.querySelector( '.wp-block-omniform-captcha' );
-	const captchaResponse = formElement.querySelector( '[name$="captcha-response"]' );
+addFilter(
+	'omniform.prepareFormElementForSubmission',
+	'omniform/captcha/validate',
+	async ( formElement ) => {
+		const target = formElement.querySelector(
+			'.wp-block-omniform-captcha',
+		);
+		const captchaResponse = formElement.querySelector(
+			'[name$="captcha-response"]',
+		);
 
-	// reCAPTCHA v3
-	if ( 'recaptchav3' === target.dataset.service ) {
-		await window.grecaptcha.execute( target.dataset.sitekey, { action: 'submit' } ).then( ( token ) => {
-			captchaResponse.value = token;
-		} );
-	}
-
-	// reCAPTCHA v2
-	if ( 'recaptchav2' === target.dataset.service ) {
-		if ( 'invisible' === target.dataset.size ) {
-			await window.grecaptcha.execute().then( ( token ) => {
-				captchaResponse.value = token;
-				return token;
-			} );
-		} else {
-			await window.grecaptcha.getResponse( captchaWidgetId );
+		// reCAPTCHA v3
+		if ( 'recaptchav3' === target.dataset.service ) {
+			await window.grecaptcha
+				.execute( target.dataset.sitekey, { action: 'submit' } )
+				.then( ( token ) => {
+					captchaResponse.value = token;
+				} );
 		}
-	}
 
-	// hCaptcha
-	if ( 'hcaptcha' === target.dataset.service ) {
-		await window.hcaptcha.execute( captchaWidgetId, { async: true } ).then( ( { response: token } ) => {
-			captchaResponse.value = token;
-		} );
-	}
+		// reCAPTCHA v2
+		if ( 'recaptchav2' === target.dataset.service ) {
+			if ( 'invisible' === target.dataset.size ) {
+				await window.grecaptcha.execute().then( ( token ) => {
+					captchaResponse.value = token;
+					return token;
+				} );
+			} else {
+				await window.grecaptcha.getResponse( captchaWidgetId );
+			}
+		}
 
-	// Turnstile
-	if ( 'turnstile' === target.dataset.service ) {
-		await window.turnstile.getResponse( captchaWidgetId );
-	}
+		// hCaptcha
+		if ( 'hcaptcha' === target.dataset.service ) {
+			await window.hcaptcha
+				.execute( captchaWidgetId, { async: true } )
+				.then( ( { response: token } ) => {
+					captchaResponse.value = token;
+				} );
+		}
 
-	return formElement;
-} );
+		// Turnstile
+		if ( 'turnstile' === target.dataset.service ) {
+			await window.turnstile.getResponse( captchaWidgetId );
+		}
+
+		return formElement;
+	},
+);

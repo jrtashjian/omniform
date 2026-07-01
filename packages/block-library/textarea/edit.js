@@ -2,10 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import {
-	RichText,
-	useBlockProps,
-} from '@wordpress/block-editor';
+import { RichText, useBlockProps } from '@wordpress/block-editor';
 
 const Edit = ( {
 	attributes: { fieldPlaceholder },
@@ -20,7 +17,7 @@ const Edit = ( {
 			identifier="fieldControl"
 			aria-label={ __( 'Placeholder text for text input.', 'omniform' ) }
 			placeholder={
-				( fieldPlaceholder || ! isSelected )
+				fieldPlaceholder || ! isSelected
 					? undefined
 					: __( 'Enter a placeholder…', 'omniform' )
 			}

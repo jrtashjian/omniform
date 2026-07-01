@@ -35,15 +35,11 @@ const Edit = ( {
 				return null;
 			}
 
-			const {
-				getBlockName,
-				getBlockAttributes,
-			} = select( blockEditorStore );
+			const { getBlockName, getBlockAttributes } =
+				select( blockEditorStore );
 
-			const {
-				getBlockType,
-				getActiveBlockVariation,
-			} = select( blocksStore );
+			const { getBlockType, getActiveBlockVariation } =
+				select( blocksStore );
 
 			const blockName = getBlockName( clientId );
 			const blockType = getBlockType( blockName );
@@ -55,7 +51,7 @@ const Edit = ( {
 			const match = getActiveBlockVariation( blockName, attributes );
 			return match?.title || attributes?.callback;
 		},
-		[ clientId ]
+		[ clientId ],
 	);
 
 	const blockProps = useBlockProps();
@@ -72,7 +68,11 @@ const Edit = ( {
 						icon={ iconReverseCondition }
 						isActive={ reverseCondition }
 						label={ __( 'Reverse condition', 'omniform' ) }
-						onClick={ () => setAttributes( { reverseCondition: ! reverseCondition } ) }
+						onClick={ () =>
+							setAttributes( {
+								reverseCondition: ! reverseCondition,
+							} )
+						}
 					/>
 				</ToolbarGroup>
 			</BlockControls>
@@ -81,8 +81,13 @@ const Edit = ( {
 					<TextControl
 						label={ __( 'Callback', 'omniform' ) }
 						value={ callback || '' }
-						onChange={ ( newValue ) => setAttributes( { callback: newValue } ) }
-						help={ __( 'The callback to determine if this block should be shown.', 'omniform' ) }
+						onChange={ ( newValue ) =>
+							setAttributes( { callback: newValue } )
+						}
+						help={ __(
+							'The callback to determine if this block should be shown.',
+							'omniform',
+						) }
 						__nextHasNoMarginBottom
 						__next40pxDefaultSize
 					/>
@@ -90,15 +95,24 @@ const Edit = ( {
 					<ToggleControl
 						label={ __( 'Reverse condition', 'omniform' ) }
 						checked={ !! reverseCondition }
-						onChange={ () => setAttributes( { reverseCondition: ! reverseCondition } ) }
-						help={ __( 'Show the block when the callback returns false.', 'omniform' ) }
+						onChange={ () =>
+							setAttributes( {
+								reverseCondition: ! reverseCondition,
+							} )
+						}
+						help={ __(
+							'Show the block when the callback returns false.',
+							'omniform',
+						) }
 						__nextHasNoMarginBottom
 					/>
 				</PanelBody>
 			</InspectorControls>
 			<div { ...blockProps }>
 				<div className="condition-label">
-					{ conditionLabel + ' ' + ( blockTitle || 'condition' ).toLowerCase() }
+					{ conditionLabel +
+						' ' +
+						( blockTitle || 'condition' ).toLowerCase() }
 				</div>
 				<div { ...innerBlockProps } />
 			</div>

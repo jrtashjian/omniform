@@ -6,11 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import {
-	iconReCaptcha,
-	iconHCaptcha,
-	iconTurnstile,
-} from '../shared/icons';
+import { iconReCaptcha, iconHCaptcha, iconTurnstile } from '../shared/icons';
 
 const variations = [
 	{
@@ -42,8 +38,7 @@ const variations = [
 
 variations.forEach( ( variation ) => {
 	variation.isActive = ( blockAttributes, variationAttributes ) =>
-		blockAttributes.service ===
-		variationAttributes.service;
+		blockAttributes.service === variationAttributes.service;
 
 	if ( ! variation.scope ) {
 		variation.scope = [ 'inserter', 'block', 'transform' ];

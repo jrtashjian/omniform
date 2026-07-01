@@ -20,20 +20,14 @@ import { ALLOWED_BLOCKS } from '../../shared/constants';
 import QuickStartPlaceholder from './quick-start';
 
 export default function StandaloneForm( blockObject ) {
-	const {
-		name,
-		clientId,
-	} = blockObject;
+	const { name, clientId } = blockObject;
 
 	const [ isQuickStartFinished, setIsQuickStartFinished ] = useState( false );
 
 	const { isNested, hasInnerBlocks } = useSelect(
 		( select ) => {
-			const {
-				getBlockParents,
-				getBlock,
-				getBlockCount,
-			} = select( blockEditorStore );
+			const { getBlockParents, getBlock, getBlockCount } =
+				select( blockEditorStore );
 
 			const parentBlocks = getBlockParents( clientId );
 			const rootBlock = getBlock( parentBlocks[ 0 ] );
@@ -43,7 +37,7 @@ export default function StandaloneForm( blockObject ) {
 				hasInnerBlocks: getBlockCount( clientId ) > 0,
 			};
 		},
-		[ clientId, name ]
+		[ clientId, name ],
 	);
 
 	useEffect( () => {
@@ -67,7 +61,10 @@ export default function StandaloneForm( blockObject ) {
 		return (
 			<div { ...blockProps }>
 				<Warning>
-					{ __( 'A form cannot be nested within another form.', 'omniform' ) }
+					{ __(
+						'A form cannot be nested within another form.',
+						'omniform',
+					) }
 				</Warning>
 			</div>
 		);

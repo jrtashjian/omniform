@@ -12,10 +12,7 @@ import { registerBlockType, switchToBlockType } from '@wordpress/blocks';
 import { dispatch, select } from '@wordpress/data';
 import { decodeEntities } from '@wordpress/html-entities';
 import { addFilter } from '@wordpress/hooks';
-import {
-	InnerBlocks,
-	BlockControls,
-} from '@wordpress/block-editor';
+import { InnerBlocks, BlockControls } from '@wordpress/block-editor';
 import { ToolbarButton, ToolbarGroup } from '@wordpress/components';
 
 /**
@@ -41,7 +38,7 @@ registerBlockType( name, {
 		const Edit = props.attributes.ref ? StandardForm : StandaloneForm;
 		return <Edit { ...props } />;
 	},
-	save: ( { ref } ) => ref ? null : <InnerBlocks.Content />,
+	save: ( { ref } ) => ( ref ? null : <InnerBlocks.Content /> ),
 	icon: { foreground: '#D92E83', src: form },
 	transforms,
 	variations,
@@ -54,7 +51,7 @@ registerBlockType( name, {
 		const entity = select( 'core' ).getEntityRecord(
 			'postType',
 			POST_TYPE,
-			ref
+			ref,
 		);
 		if ( ! entity ) {
 			return;
@@ -74,7 +71,10 @@ addFilter(
 	'omniform/replace-with-omniform',
 	createHigherOrderComponent( ( BlockEdit ) => {
 		return ( props ) => {
-			if ( props.name !== 'core/group' || props.attributes?.metadata?.name !== 'Sample Form' ) {
+			if (
+				props.name !== 'core/group' ||
+				props.attributes?.metadata?.name !== 'Sample Form'
+			) {
 				return <BlockEdit { ...props } />;
 			}
 
@@ -82,7 +82,10 @@ addFilter(
 			const { replaceBlocks } = dispatch( 'core/block-editor' );
 
 			const handleClick = () => {
-				const newBlocks = switchToBlockType( getBlock( props.clientId ), 'omniform/form' );
+				const newBlocks = switchToBlockType(
+					getBlock( props.clientId ),
+					'omniform/form',
+				);
 				replaceBlocks( props.clientId, newBlocks );
 			};
 
@@ -92,7 +95,10 @@ addFilter(
 						<ToolbarGroup>
 							<ToolbarButton
 								icon={ form }
-								text={ __( 'Replace with OmniForm', 'omniform' ) }
+								text={ __(
+									'Replace with OmniForm',
+									'omniform',
+								) }
 								onClick={ handleClick }
 							/>
 						</ToolbarGroup>
@@ -101,24 +107,27 @@ addFilter(
 				</>
 			);
 		};
-	}, 'replaceWithOmniForm' )
+	}, 'replaceWithOmniForm' ),
 );
 
 addFilter(
 	'editor.BlockListBlock',
 	'omniform/with-omniform-overlay',
-	createHigherOrderComponent(
-		( BlockListBlock ) => {
-			return ( props ) => {
-				if ( props.name !== 'core/group' || props.attributes?.metadata?.name !== 'Sample Form' ) {
-					return <BlockListBlock { ...props } />;
-				}
+	createHigherOrderComponent( ( BlockListBlock ) => {
+		return ( props ) => {
+			if (
+				props.name !== 'core/group' ||
+				props.attributes?.metadata?.name !== 'Sample Form'
+			) {
+				return <BlockListBlock { ...props } />;
+			}
 
-				return (
-					<BlockListBlock { ...props } className="with-omniform-overlay" />
-				);
-			};
-		},
-		'withOmniFormOverlay'
-	)
+			return (
+				<BlockListBlock
+					{ ...props }
+					className="with-omniform-overlay"
+				/>
+			);
+		};
+	}, 'withOmniFormOverlay' ),
 );

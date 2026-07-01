@@ -30,30 +30,43 @@ export default function CreateFormModal( { closeModal, onCreate } ) {
 	const formTypes = [
 		{
 			type: 'uncategorized',
-			description: __( 'General forms are used to collect and organize information for processing or storage.', 'omniform' ),
+			description: __(
+				'General forms are used to collect and organize information for processing or storage.',
+				'omniform',
+			),
 			icon: typeGeneral,
 			label: __( 'General', 'omniform' ),
 		},
 		{
 			type: 'search',
-			description: __( 'A search form allows users to enter a search query and find relevant information on the website.', 'omniform' ),
+			description: __(
+				'A search form allows users to enter a search query and find relevant information on the website.',
+				'omniform',
+			),
 			icon: typeSearch,
 			label: (
 				<>
 					{ __( 'Search', 'omniform' ) }
-					<span className="badge">{ __( 'coming soon', 'omniform' ) }</span>
+					<span className="badge">
+						{ __( 'coming soon', 'omniform' ) }
+					</span>
 				</>
 			),
 			disabled: true,
 		},
 		{
 			type: 'login',
-			description: __( 'A login form is used to authenticate a user\'s identity and grant them access to the website.', 'omniform' ),
+			description: __(
+				"A login form is used to authenticate a user's identity and grant them access to the website.",
+				'omniform',
+			),
 			icon: typeLock,
 			label: (
 				<>
 					{ __( 'Login', 'omniform' ) }
-					<span className="badge">{ __( 'coming soon', 'omniform' ) }</span>
+					<span className="badge">
+						{ __( 'coming soon', 'omniform' ) }
+					</span>
 				</>
 			),
 			disabled: true,
@@ -98,7 +111,13 @@ export default function CreateFormModal( { closeModal, onCreate } ) {
 						checked={ type }
 					>
 						{ formTypes.map(
-							( { icon, label, type: value, description, disabled } ) => (
+							( {
+								icon,
+								label,
+								type: value,
+								description,
+								disabled,
+							} ) => (
 								<Radio
 									key={ value }
 									value={ value }
@@ -121,7 +140,7 @@ export default function CreateFormModal( { closeModal, onCreate } ) {
 										</FlexItem>
 									</Flex>
 								</Radio>
-							)
+							),
 						) }
 					</RadioGroup>
 				</BaseControl>

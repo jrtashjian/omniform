@@ -9,10 +9,14 @@ const transforms = {
 			type: 'block',
 			blocks: [ 'jetpack/button' ],
 			transform: ( attributes, innerBlocks ) => {
-				return createBlock( 'omniform/button', {
-					buttonLabel: attributes?.text,
-					buttonType: 'submit',
-				}, innerBlocks );
+				return createBlock(
+					'omniform/button',
+					{
+						buttonLabel: attributes?.text,
+						buttonType: 'submit',
+					},
+					innerBlocks,
+				);
 			},
 		},
 	],

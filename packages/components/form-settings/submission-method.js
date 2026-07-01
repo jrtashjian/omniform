@@ -42,7 +42,10 @@ export default function SubmissionMethodSettings( {
 					label: item.label,
 					value: item.type,
 				} ) ) }
-				help={ __( 'Determines how the form data is processed and submitted.', 'omniform' ) }
+				help={ __(
+					'Determines how the form data is processed and submitted.',
+					'omniform',
+				) }
 			/>
 
 			{ getSetting( 'form_type' ) === 'custom' && (
@@ -50,20 +53,30 @@ export default function SubmissionMethodSettings( {
 					<TextControl
 						label={ __( 'Submit Action', 'omniform' ) }
 						value={ getSetting( 'submit_action' ) || '' }
-						onChange={ ( newValue ) => setSetting( 'submit_action', newValue ) }
-						help={ __( 'Enter the URL where the form data will be submitted.', 'omniform' ) }
+						onChange={ ( newValue ) =>
+							setSetting( 'submit_action', newValue )
+						}
+						help={ __(
+							'Enter the URL where the form data will be submitted.',
+							'omniform',
+						) }
 						__nextHasNoMarginBottom
 						__next40pxDefaultSize
 					/>
 					<SelectControl
 						label={ __( 'Submit Method', 'omniform' ) }
 						value={ getSetting( 'submit_method' ) || 'POST' }
-						onChange={ ( newValue ) => setSetting( 'submit_method', newValue ) }
+						onChange={ ( newValue ) =>
+							setSetting( 'submit_method', newValue )
+						}
 						options={ [
 							{ label: 'POST', value: 'POST' },
 							{ label: 'GET', value: 'GET' },
 						] }
-						help={ __( 'Select the HTTP method to use for submission.', 'omniform' ) }
+						help={ __(
+							'Select the HTTP method to use for submission.',
+							'omniform',
+						) }
 					/>
 				</>
 			) }

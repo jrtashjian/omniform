@@ -4,10 +4,7 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import {
-	useBlockProps,
-	InspectorControls,
-} from '@wordpress/block-editor';
+import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import {
 	Icon,
 	PanelBody,
@@ -21,11 +18,7 @@ import { useEntityProp } from '@wordpress/core-data';
 /**
  * Internal dependencies
  */
-import {
-	iconReCaptcha,
-	iconHCaptcha,
-	iconTurnstile,
-} from '../shared/icons';
+import { iconReCaptcha, iconHCaptcha, iconTurnstile } from '../shared/icons';
 
 const services = {
 	hcaptcha: {
@@ -50,12 +43,17 @@ const services = {
 	},
 };
 
-const Edit = ( {
-	attributes: { service, theme, size },
-	setAttributes,
-} ) => {
-	const [ siteKey, setSiteKey ] = useEntityProp( 'root', 'site', `omniform_${ service }_site_key` );
-	const [ secretKey, setSecretKey ] = useEntityProp( 'root', 'site', `omniform_${ service }_secret_key` );
+const Edit = ( { attributes: { service, theme, size }, setAttributes } ) => {
+	const [ siteKey, setSiteKey ] = useEntityProp(
+		'root',
+		'site',
+		`omniform_${ service }_site_key`,
+	);
+	const [ secretKey, setSecretKey ] = useEntityProp(
+		'root',
+		'site',
+		`omniform_${ service }_secret_key`,
+	);
 
 	const blockProps = useBlockProps();
 
@@ -64,8 +62,11 @@ const Edit = ( {
 			<>
 				{ sprintf(
 					/* translators: %s: captcha service name */
-					__( 'To start using %s, you need to sign up for an API key pair for your site. The key pair consists of a site key and secret key.', 'omniform' ),
-					services[ service ].label
+					__(
+						'To start using %s, you need to sign up for an API key pair for your site. The key pair consists of a site key and secret key.',
+						'omniform',
+					),
+					services[ service ].label,
 				) }
 				&nbsp;
 				<ExternalLink href={ services[ service ].setupLink }>
@@ -95,8 +96,9 @@ const Edit = ( {
 			</div>
 			<InspectorControls>
 				<PanelBody title={ __( 'Settings', 'omniform' ) }>
-
-					<p><SetupInstructions /></p>
+					<p>
+						<SetupInstructions />
+					</p>
 
 					<TextControl
 						label={ __( 'Site Key', 'omniform' ) }
@@ -119,25 +121,40 @@ const Edit = ( {
 					<ToggleGroupControl
 						label={ __( 'Theme', 'omniform' ) }
 						value={ theme }
-						onChange={ ( value ) => setAttributes( { theme: value } ) }
+						onChange={ ( value ) =>
+							setAttributes( { theme: value } )
+						}
 						isBlock
 					>
-						<ToggleGroupControlOption value="light" label={ __( 'Light', 'omniform' ) } />
-						<ToggleGroupControlOption value="dark" label={ __( 'Dark', 'omniform' ) } />
+						<ToggleGroupControlOption
+							value="light"
+							label={ __( 'Light', 'omniform' ) }
+						/>
+						<ToggleGroupControlOption
+							value="dark"
+							label={ __( 'Dark', 'omniform' ) }
+						/>
 					</ToggleGroupControl>
 
 					{ 'recaptchav3' !== service && (
 						<ToggleGroupControl
 							label={ __( 'Size', 'omniform' ) }
 							value={ size }
-							onChange={ ( value ) => setAttributes( { size: value } ) }
+							onChange={ ( value ) =>
+								setAttributes( { size: value } )
+							}
 							isBlock
 						>
-							<ToggleGroupControlOption value="normal" label={ __( 'Normal', 'omniform' ) } />
-							<ToggleGroupControlOption value="compact" label={ __( 'Compact', 'omniform' ) } />
+							<ToggleGroupControlOption
+								value="normal"
+								label={ __( 'Normal', 'omniform' ) }
+							/>
+							<ToggleGroupControlOption
+								value="compact"
+								label={ __( 'Compact', 'omniform' ) }
+							/>
 						</ToggleGroupControl>
 					) }
-
 				</PanelBody>
 			</InspectorControls>
 		</>

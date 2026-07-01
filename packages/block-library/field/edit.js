@@ -32,27 +32,36 @@ const Edit = ( {
 	setAttributes,
 	clientId,
 } ) => {
-	const {
-		labelBlock,
-		inputBlock,
-		hasLabel,
-		canHideLabel,
-	} = useSelect(
+	const { labelBlock, inputBlock, hasLabel, canHideLabel } = useSelect(
 		( select ) => {
 			const { getBlocks } = select( blockEditorStore );
 			const blocks = getBlocks( clientId );
 
-			const _labelBlock = blocks.find( ( block ) => block.name === 'omniform/label' );
-			const _inputBlock = blocks.find( ( block ) => [ 'omniform/input', 'omniform/textarea', 'omniform/select' ].includes( block.name ) );
+			const _labelBlock = blocks.find(
+				( block ) => block.name === 'omniform/label',
+			);
+			const _inputBlock = blocks.find( ( block ) =>
+				[
+					'omniform/input',
+					'omniform/textarea',
+					'omniform/select',
+				].includes( block.name ),
+			);
 
 			return {
 				labelBlock: _labelBlock,
 				inputBlock: _inputBlock,
 				hasLabel: !! _labelBlock,
-				canHideLabel: _inputBlock && ! ( [ 'checkbox', 'radio', 'range' ].includes( _inputBlock.attributes?.fieldType ) || _inputBlock.attributes?.isMultiple ),
+				canHideLabel:
+					_inputBlock &&
+					! (
+						[ 'checkbox', 'radio', 'range' ].includes(
+							_inputBlock.attributes?.fieldType,
+						) || _inputBlock.attributes?.isMultiple
+					),
 			};
 		},
-		[ clientId ]
+		[ clientId ],
 	);
 
 	const {
@@ -73,13 +82,13 @@ const Edit = ( {
 	const innerBlockOptions = {
 		__experimentalCaptureToolbars: true,
 		templateLock: 'insert',
-		template: [
-			[ 'omniform/label' ],
-			[ 'omniform/input' ],
-		],
+		template: [ [ 'omniform/label' ], [ 'omniform/input' ] ],
 	};
 
-	const innerBlockProps = useInnerBlocksProps( blockProps, innerBlockOptions );
+	const innerBlockProps = useInnerBlocksProps(
+		blockProps,
+		innerBlockOptions,
+	);
 
 	/**
 	 * Updates the field label of the parent block.
@@ -96,14 +105,15 @@ const Edit = ( {
 	const toggleLabel = () => {
 		if ( hasLabel ) {
 			// Remove the label block.
-			updateBlockAttributes( [ labelBlock.clientId ], { lock: { remove: false } } );
+			updateBlockAttributes( [ labelBlock.clientId ], {
+				lock: { remove: false },
+			} );
 			removeBlock( labelBlock.clientId, false );
 
 			// Update the input block's placeholder.
-			updateBlockAttributes(
-				[ inputBlock.clientId ],
-				{ fieldPlaceholder: fieldLabel.replace( /(<([^>]+)>)/gi, '' ) }
-			);
+			updateBlockAttributes( [ inputBlock.clientId ], {
+				fieldPlaceholder: fieldLabel.replace( /(<([^>]+)>)/gi, '' ),
+			} );
 		} else {
 			// Add the label block.
 			updateBlockListSettings( clientId, { templateLock: false } );
@@ -111,18 +121,16 @@ const Edit = ( {
 			updateBlockListSettings( clientId, { templateLock: true } );
 
 			// Remove the input block's placeholder.
-			updateBlockAttributes(
-				[ inputBlock.clientId ],
-				{ fieldPlaceholder: undefined }
-			);
+			updateBlockAttributes( [ inputBlock.clientId ], {
+				fieldPlaceholder: undefined,
+			} );
 		}
 	};
 
 	/**
 	 * Toggles the required attribute.
 	 */
-	const toggleRequired = () =>
-		setAttributes( { isRequired: ! isRequired } );
+	const toggleRequired = () => setAttributes( { isRequired: ! isRequired } );
 
 	return (
 		<>
@@ -139,12 +147,14 @@ const Edit = ( {
 			</BlockControls>
 			<InspectorControls>
 				<PanelBody title={ __( 'Field Settings', 'omniform' ) }>
-
 					<ToggleControl
 						label={ __( 'Required for submission', 'omniform' ) }
 						checked={ isRequired }
 						onChange={ toggleRequired }
-						help={ __( 'A value is required or must be check for the form to be submittable.', 'omniform' ) }
+						help={ __(
+							'A value is required or must be check for the form to be submittable.',
+							'omniform',
+						) }
 						__nextHasNoMarginBottom
 					/>
 
@@ -153,7 +163,10 @@ const Edit = ( {
 							label={ __( 'Hidden label', 'omniform' ) }
 							checked={ ! hasLabel }
 							onChange={ toggleLabel }
-							help={ __( 'Hide the field\'s label, current label becomes the field\'s placeholder.', 'omniform' ) }
+							help={ __(
+								"Hide the field's label, current label becomes the field's placeholder.",
+								'omniform',
+							) }
 							__nextHasNoMarginBottom
 						/>
 					) }
@@ -163,7 +176,10 @@ const Edit = ( {
 							label={ __( 'Label', 'omniform' ) }
 							value={ fieldLabel }
 							onChange={ updateLabel }
-							help={ __( 'Label for the form control.', 'omniform' ) }
+							help={ __(
+								'Label for the form control.',
+								'omniform',
+							) }
 							__nextHasNoMarginBottom
 							__next40pxDefaultSize
 						/>
@@ -176,9 +192,16 @@ const Edit = ( {
 							setAttributes( { fieldName: newFieldName } );
 						} }
 						onBlur={ () => {
-							setAttributes( { fieldName: cleanFieldName( fieldName || fieldLabel ) } );
+							setAttributes( {
+								fieldName: cleanFieldName(
+									fieldName || fieldLabel,
+								),
+							} );
 						} }
-						help={ __( 'Name of the form control. Defaults to the label.', 'omniform' ) }
+						help={ __(
+							'Name of the form control. Defaults to the label.',
+							'omniform',
+						) }
 						__nextHasNoMarginBottom
 						__next40pxDefaultSize
 					/>

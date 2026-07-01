@@ -22,31 +22,37 @@ import {
  */
 import useEnter from '../shared/hooks';
 
-const Edit = ( {
-	attributes,
-	setAttributes,
-	clientId,
-	isSelected,
-} ) => {
-	const {
-		fieldPlaceholder,
-		fieldType,
-	} = attributes;
+const Edit = ( { attributes, setAttributes, clientId, isSelected } ) => {
+	const { fieldPlaceholder, fieldType } = attributes;
 
-	const isTextInput = [ 'text', 'email', 'url', 'number', 'month', 'password', 'search', 'tel', 'week', 'hidden', 'username-email' ].includes( fieldType );
+	const isTextInput = [
+		'text',
+		'email',
+		'url',
+		'number',
+		'month',
+		'password',
+		'search',
+		'tel',
+		'week',
+		'hidden',
+		'username-email',
+	].includes( fieldType );
 	const isOptionInput = [ 'checkbox', 'radio' ].includes( fieldType );
 
-	const {
-		selectBlock,
-	} = useDispatch( blockEditorStore );
+	const { selectBlock } = useDispatch( blockEditorStore );
 
-	const { selectedBlockClientId, parentClientId } = useSelect( ( select ) => {
-		const { getSelectedBlockClientId, getBlockRootClientId } = select( blockEditorStore );
-		return {
-			selectedBlockClientId: getSelectedBlockClientId(),
-			parentClientId: getBlockRootClientId( clientId ),
-		};
-	}, [ clientId ] );
+	const { selectedBlockClientId, parentClientId } = useSelect(
+		( select ) => {
+			const { getSelectedBlockClientId, getBlockRootClientId } =
+				select( blockEditorStore );
+			return {
+				selectedBlockClientId: getSelectedBlockClientId(),
+				parentClientId: getBlockRootClientId( clientId ),
+			};
+		},
+		[ clientId ],
+	);
 
 	const blockProps = useBlockProps( {
 		ref: useMergeRefs( [ useEnter( clientId ) ] ),
@@ -59,29 +65,40 @@ const Edit = ( {
 			<RichText
 				{ ...blockProps }
 				identifier="fieldControl"
-				aria-label={ __( 'Placeholder text for text input.', 'omniform' ) }
+				aria-label={ __(
+					'Placeholder text for text input.',
+					'omniform',
+				) }
 				placeholder={
-					( isSelected || fieldPlaceholder ) ? __( 'Enter a placeholder…', 'omniform' ) : undefined
+					isSelected || fieldPlaceholder
+						? __( 'Enter a placeholder…', 'omniform' )
+						: undefined
 				}
 				value={ fieldPlaceholder }
-				onChange={ ( html ) => setAttributes( { fieldPlaceholder: html } ) }
+				onChange={ ( html ) =>
+					setAttributes( { fieldPlaceholder: html } )
+				}
 				withoutInteractiveFormatting
 				allowedFormats={ [] }
 				disableLineBreaks
 			/>
 		);
 	} else if ( isOptionInput ) {
-		blockElement = (
-			<div type={ fieldType } { ...blockProps } />
-		);
+		blockElement = <div type={ fieldType } { ...blockProps } />;
 	} else {
 		blockElement = (
-			<input type={ fieldType } { ...blockProps } readOnly
+			<input
+				type={ fieldType }
+				{ ...blockProps }
+				readOnly
 				// Prevent editing of the input field in the editor.
 				onClick={ ( event ) => event.preventDefault() }
 				onKeyDown={ ( event ) => {
 					event.preventDefault();
-					if ( event.key === 'ArrowLeft' || event.key === 'ArrowRight' ) {
+					if (
+						event.key === 'ArrowLeft' ||
+						event.key === 'ArrowRight'
+					) {
 						if ( parentClientId ) {
 							selectBlock( parentClientId );
 						}
@@ -106,7 +123,9 @@ const Edit = ( {
 			{ selectedBlockClientId === clientId && (
 				<InspectorControls>
 					<PanelBody title={ __( 'Input Settings', 'omniform' ) }>
-						<InputSettingsPanel { ...{ attributes, setAttributes } } />
+						<InputSettingsPanel
+							{ ...{ attributes, setAttributes } }
+						/>
 					</PanelBody>
 				</InspectorControls>
 			) }
@@ -114,12 +133,21 @@ const Edit = ( {
 	);
 };
 
-function InputSettingsPanel( {
-	attributes,
-	setAttributes,
-} ) {
+function InputSettingsPanel( { attributes, setAttributes } ) {
 	const attributeInputTypes = {
-		placeholder: [ 'text', 'email', 'url', 'number', 'month', 'password', 'search', 'tel', 'week', 'hidden', 'username-email' ],
+		placeholder: [
+			'text',
+			'email',
+			'url',
+			'number',
+			'month',
+			'password',
+			'search',
+			'tel',
+			'week',
+			'hidden',
+			'username-email',
+		],
 		min: [ 'range' ],
 		max: [ 'range' ],
 		step: [ 'range' ],
@@ -127,11 +155,15 @@ function InputSettingsPanel( {
 
 	return (
 		<>
-			{ attributeInputTypes.placeholder.includes( attributes.fieldType ) && (
+			{ attributeInputTypes.placeholder.includes(
+				attributes.fieldType,
+			) && (
 				<TextControl
 					label={ __( 'Placeholder', 'omniform' ) }
 					value={ attributes.fieldPlaceholder || '' }
-					onChange={ ( value ) => setAttributes( { fieldPlaceholder: value } ) }
+					onChange={ ( value ) =>
+						setAttributes( { fieldPlaceholder: value } )
+					}
 					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 				/>
@@ -140,7 +172,9 @@ function InputSettingsPanel( {
 				<NumberControl
 					label={ __( 'Min', 'omniform' ) }
 					value={ attributes.fieldMin || '' }
-					onChange={ ( value ) => setAttributes( { fieldMin: value } ) }
+					onChange={ ( value ) =>
+						setAttributes( { fieldMin: value } )
+					}
 					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 				/>
@@ -149,7 +183,9 @@ function InputSettingsPanel( {
 				<NumberControl
 					label={ __( 'Max', 'omniform' ) }
 					value={ attributes.fieldMax || '' }
-					onChange={ ( value ) => setAttributes( { fieldMax: value } ) }
+					onChange={ ( value ) =>
+						setAttributes( { fieldMax: value } )
+					}
 					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 				/>
@@ -158,7 +194,9 @@ function InputSettingsPanel( {
 				<NumberControl
 					label={ __( 'Step', 'omniform' ) }
 					value={ attributes.fieldStep || '' }
-					onChange={ ( value ) => setAttributes( { fieldStep: value } ) }
+					onChange={ ( value ) =>
+						setAttributes( { fieldStep: value } )
+					}
 					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 				/>
