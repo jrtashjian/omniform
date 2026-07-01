@@ -1,5 +1,0 @@
-build
-node_modules
-vendor
-vendor_prefixed
-phpunit/coverage
