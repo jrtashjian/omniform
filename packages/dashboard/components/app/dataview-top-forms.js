@@ -11,7 +11,7 @@ import {
 import {
 	titleField,
 } from '@wordpress/fields';
-import { DataViews } from '@wordpress/dataviews/wp';
+import { DataViews } from '@wordpress/dataviews';
 import { useMemo, useState, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { addQueryArgs } from '@wordpress/url';

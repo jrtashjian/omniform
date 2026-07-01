@@ -8,7 +8,7 @@ import {
 	store as coreStore,
 } from '@wordpress/core-data';
 import { useSelect } from '@wordpress/data';
-import { DataViews } from '@wordpress/dataviews/wp';
+import { DataViews } from '@wordpress/dataviews';
 import { useMemo, useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 

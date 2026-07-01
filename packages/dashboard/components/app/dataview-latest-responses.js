@@ -8,7 +8,7 @@ import {
 	CardHeader,
 } from '@wordpress/components';
 import { dateField } from '@wordpress/fields';
-import { DataViews } from '@wordpress/dataviews/wp';
+import { DataViews } from '@wordpress/dataviews';
 import { useEntityRecords } from '@wordpress/core-data';
 import { __ } from '@wordpress/i18n';
 import { addQueryArgs } from '@wordpress/url';
