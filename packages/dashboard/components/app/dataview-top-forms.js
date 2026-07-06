@@ -5,10 +5,11 @@ import { useNavigate } from 'react-router-dom';
  */
 import {
 	__experimentalHeading as Heading,
+	__experimentalVStack as VStack,
+	__experimentalHStack as HStack,
 	Button,
 	Card,
 	CardBody,
-	CardHeader,
 	Notice,
 } from '@wordpress/components';
 import { titleField } from '@wordpress/fields';
@@ -102,46 +103,52 @@ export default function DataViewTopForms( { period } ) {
 	}, [ period ] );
 
 	return (
-		<Card>
-			<CardHeader>
+		<VStack spacing="4">
+			<HStack>
 				<Heading level={ 4 }>
 					{ __( 'Top Performing Forms', 'omniform' ) }
 				</Heading>
+			</HStack>
+
+			<Card>
+				<CardBody>
+					{ error ? (
+						<Notice status="warning" isDismissible={ false }>
+							{ __(
+								'An error occurred while fetching data.',
+								'omniform',
+							) }
+						</Notice>
+					) : (
+						<DataViews
+							data={ data?.forms || [] }
+							isLoading={ isLoading }
+							view={ view }
+							onChangeView={ setView }
+							fields={ fields }
+							paginationInfo={ { totalItems: 0, totalPages: 0 } }
+							defaultLayouts={ { table: {} } }
+							onClickItem={ ( item ) =>
+								( document.location.href = addQueryArgs(
+									'post.php',
+									{ post: item.id, action: 'edit' },
+								) )
+							}
+						>
+							<DataViews.Layout />
+						</DataViews>
+					) }
+				</CardBody>
+			</Card>
+
+			<HStack justify="right">
 				<Button
 					variant="link"
 					onClick={ () => navigate( '/forms' ) }
 				>
 					{ __( 'View all forms', 'omniform' ) }
 				</Button>
-			</CardHeader>
-			<CardBody>
-				{ error ? (
-					<Notice status="warning" isDismissible={ false }>
-						{ __(
-							'An error occurred while fetching data.',
-							'omniform',
-						) }
-					</Notice>
-				) : (
-					<DataViews
-						data={ data?.forms || [] }
-						isLoading={ isLoading }
-						view={ view }
-						onChangeView={ setView }
-						fields={ fields }
-						paginationInfo={ { totalItems: 0, totalPages: 0 } }
-						defaultLayouts={ { table: {} } }
-						onClickItem={ ( item ) =>
-							( document.location.href = addQueryArgs(
-								'post.php',
-								{ post: item.id, action: 'edit' },
-							) )
-						}
-					>
-						<DataViews.Layout />
-					</DataViews>
-				) }
-			</CardBody>
-		</Card>
+			</HStack>
+		</VStack>
 	);
 }

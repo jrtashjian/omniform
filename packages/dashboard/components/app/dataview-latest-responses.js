@@ -5,10 +5,11 @@ import { useNavigate } from 'react-router-dom';
  */
 import {
 	__experimentalHeading as Heading,
+	__experimentalVStack as VStack,
+	__experimentalHStack as HStack,
 	Button,
 	Card,
 	CardBody,
-	CardHeader,
 } from '@wordpress/components';
 import { dateField } from '@wordpress/fields';
 import { DataViews } from '@wordpress/dataviews';
@@ -80,50 +81,56 @@ export default function DataViewLatestResponses() {
 	} );
 
 	return (
-		<Card>
-			<CardHeader>
+		<VStack spacing="4">
+			<HStack>
 				<Heading level={ 4 }>
 					{ __( 'Latest Responses', 'omniform' ) }
 				</Heading>
+			</HStack>
+
+			<Card>
+				<CardBody>
+					<DataViews
+						data={ records || [] }
+						isLoading={ isLoading }
+						view={ {
+							type: 'table',
+							titleField: fields[ 0 ]?.id,
+							mediaField: 'omniform_form.sender_gravatar',
+							fields: fields
+								.map( ( field ) => field.id )
+								.filter(
+									( id ) =>
+										id !== fields[ 0 ]?.id &&
+										id !== 'omniform_form.sender_gravatar',
+								),
+							layout: {
+								enableMoving: false,
+							},
+						} }
+						fields={ fields }
+						paginationInfo={ { totalItems, totalPages } }
+						defaultLayouts={ { table: {} } }
+						onClickItem={ ( item ) =>
+							( document.location.href = addQueryArgs( 'post.php', {
+								post: item.id,
+								action: 'edit',
+							} ) )
+						}
+					>
+						<DataViews.Layout />
+					</DataViews>
+				</CardBody>
+			</Card>
+
+			<HStack justify="right">
 				<Button
 					variant="link"
 					onClick={ () => navigate( '/responses' ) }
 				>
 					{ __( 'View all responses', 'omniform' ) }
 				</Button>
-			</CardHeader>
-			<CardBody>
-				<DataViews
-					data={ records || [] }
-					isLoading={ isLoading }
-					view={ {
-						type: 'table',
-						titleField: fields[ 0 ]?.id,
-						mediaField: 'omniform_form.sender_gravatar',
-						fields: fields
-							.map( ( field ) => field.id )
-							.filter(
-								( id ) =>
-									id !== fields[ 0 ]?.id &&
-									id !== 'omniform_form.sender_gravatar',
-							),
-						layout: {
-							enableMoving: false,
-						},
-					} }
-					fields={ fields }
-					paginationInfo={ { totalItems, totalPages } }
-					defaultLayouts={ { table: {} } }
-					onClickItem={ ( item ) =>
-						( document.location.href = addQueryArgs( 'post.php', {
-							post: item.id,
-							action: 'edit',
-						} ) )
-					}
-				>
-					<DataViews.Layout />
-				</DataViews>
-			</CardBody>
-		</Card>
+			</HStack>
+		</VStack>
 	);
 }
