@@ -18,16 +18,33 @@ export default function MetricsCard( {
 	primaryValue,
 	secondaryText,
 	formatType = 'number',
+	trend = 'same',
 } ) {
+	const trendColors = {
+		up: '#00a32a',
+		down: '#d63638',
+	};
+
 	return (
 		<Card style={ { width: '100%', textAlign: 'center' } }>
 			<CardBody>
 				<VStack>
-					<Heading level={ 4 } variant="muted">{ title }</Heading>
+					<Heading level={ 4 } variant="muted">
+						{ title }
+					</Heading>
 					<Text style={ { fontSize: '36px', fontWeight: 'bold' } }>
-						{ formatType === 'percentage' ? `${ primaryValue.toFixed( 1 ) }%` : primaryValue.toLocaleString() }
+						{ formatType === 'percentage'
+							? `${ primaryValue.toFixed( 1 ) }%`
+							: primaryValue.toLocaleString() }
 					</Text>
-					<Text variant="muted">{ secondaryText }</Text>
+					<Text
+						variant="muted"
+						style={ {
+							color: trendColors[ trend ],
+						} }
+					>
+						{ secondaryText }
+					</Text>
 				</VStack>
 			</CardBody>
 		</Card>

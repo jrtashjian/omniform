@@ -57,15 +57,6 @@ class RestApiController extends WP_REST_Controller {
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_overview' ),
 				'permission_callback' => array( $this, 'get_overview_permissions_check' ),
-				'args'                => array(
-					'period' => array(
-						'description'       => __( 'The time period for analytics data (1d, 7d, or 30d).', 'omniform' ),
-						'type'              => 'string',
-						'enum'              => array( '1d', '7d', '30d' ),
-						'default'           => '7d',
-						'sanitize_callback' => 'sanitize_text_field',
-					),
-				),
 			)
 		);
 
@@ -76,15 +67,6 @@ class RestApiController extends WP_REST_Controller {
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_top_forms' ),
 				'permission_callback' => array( $this, 'get_overview_permissions_check' ),
-				'args'                => array(
-					'period' => array(
-						'description'       => __( 'The time period for analytics data (1d, 7d, or 30d).', 'omniform' ),
-						'type'              => 'string',
-						'enum'              => array( '1d', '7d', '30d' ),
-						'default'           => '7d',
-						'sanitize_callback' => 'sanitize_text_field',
-					),
-				),
 			)
 		);
 	}
@@ -116,18 +98,15 @@ class RestApiController extends WP_REST_Controller {
 	 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function get_overview( \WP_REST_Request $request ) {
-		$period = $this->validate_period( $request->get_param( 'period' ) );
+		$cache_key = 'omniform_analytics_overview';
 
-		$current_period = $this->get_current_period( $period );
-		$cache_key      = 'omniform_analytics_overview_' . $period . '_' . $current_period['local']['start'] . '_' . $current_period['local']['end'];
+		/* $cached_response = get_transient( $cache_key ); */
+		/**/
+		/* if ( false !== $cached_response ) { */
+		/* 	return rest_ensure_response( $cached_response ); */
+		/* } */
 
-		$cached_response = get_transient( $cache_key );
-
-		if ( false !== $cached_response ) {
-			return rest_ensure_response( $cached_response );
-		}
-
-		$response = $this->fetch_overview_data( $current_period, $period );
+		$response = $this->fetch_overview_data();
 
 		set_transient( $cache_key, $response, HOUR_IN_SECONDS );
 
@@ -142,16 +121,14 @@ class RestApiController extends WP_REST_Controller {
 	 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function get_top_forms( \WP_REST_Request $request ) {
-		$period = $this->validate_period( $request->get_param( 'period' ) );
+		$current_period = $this->get_current_period( '7d' );
+		$cache_key      = 'omniform_analytics_top_forms_7d_' . $current_period['local']['start'] . '_' . $current_period['local']['end'];
 
-		$current_period = $this->get_current_period( $period );
-		$cache_key      = 'omniform_analytics_top_forms_' . $period . '_' . $current_period['local']['start'] . '_' . $current_period['local']['end'];
-
-		$cached_response = get_transient( $cache_key );
-
-		if ( false !== $cached_response ) {
-			return rest_ensure_response( $cached_response );
-		}
+		/* $cached_response = get_transient( $cache_key ); */
+		/**/
+		/* if ( false !== $cached_response ) { */
+		/* 	return rest_ensure_response( $cached_response ); */
+		/* } */
 
 		$forms = $this->analytics_manager->get_top_forms_by_response_count(
 			$current_period['gmt']['start'],
@@ -169,109 +146,177 @@ class RestApiController extends WP_REST_Controller {
 	}
 
 	/**
-	 * Validates the period parameter.
-	 *
-	 * @param string $period The period to validate.
-	 *
-	 * @return string The validated period.
-	 */
-	protected function validate_period( $period ) {
-		$valid_periods = array( '1d', '7d', '30d' );
-
-		if ( ! in_array( $period, $valid_periods, true ) ) {
-			return '7d';
-		}
-
-		return $period;
-	}
-
-	/**
 	 * Fetches the analytics overview data from the database.
-	 *
-	 * @param array  $current_period The current period dates.
-	 * @param string $period        The period (1d, 7d, or 30d).
 	 *
 	 * @return array The analytics overview data.
 	 */
-	private function fetch_overview_data( array $current_period, $period ) {
-		$previous_period = $this->get_previous_period( $period );
+	private function fetch_overview_data() {
+		$ref_timestamp = current_time( 'timestamp' );
+		$day_of_week   = (int) date( 'N', $ref_timestamp );
 
-		$current_impressions_total  = $this->analytics_manager->get_impression_count_by_date_range(
-			$current_period['gmt']['start'],
-			$current_period['gmt']['end'],
+		$today_start_gmt = get_gmt_from_date( date_i18n( 'Y-m-d 00:00:00' ) );
+		$today_end_gmt   = current_time( 'mysql', true );
+
+		$yesterday_start_gmt = get_gmt_from_date( date_i18n( 'Y-m-d 00:00:00', strtotime( '-1 day' ) ) );
+		$yesterday_end_gmt   = get_gmt_from_date( date_i18n( 'Y-m-d 23:59:59', strtotime( '-1 day' ) ) );
+
+		$this_monday = strtotime( '-' . ( $day_of_week - 1 ) . ' days', $ref_timestamp );
+		$last_monday = strtotime( '-' . ( $day_of_week + 6 ) . ' days', $ref_timestamp );
+		$last_sunday = strtotime( '-' . ( $day_of_week ) . ' days', $ref_timestamp );
+
+		$week_start_gmt      = get_gmt_from_date( date_i18n( 'Y-m-d 00:00:00', $this_monday ) );
+		$last_week_start_gmt = get_gmt_from_date( date_i18n( 'Y-m-d 00:00:00', $last_monday ) );
+		$last_week_end_gmt   = get_gmt_from_date( date_i18n( 'Y-m-d 23:59:59', $last_sunday ) );
+
+		$month_start_gmt      = get_gmt_from_date( date_i18n( 'Y-m-01 00:00:00' ) );
+		$last_month_start_gmt = get_gmt_from_date( date_i18n( 'Y-m-01 00:00:00', strtotime( 'first day of last month' ) ) );
+		$last_month_end_gmt   = get_gmt_from_date( date_i18n( 'Y-m-t 23:59:59', strtotime( 'last day of last month' ) ) );
+
+		$today_submissions = $this->analytics_manager->get_submission_count_by_date_range(
+			$today_start_gmt,
+			$today_end_gmt,
 			false
 		);
-		$current_impressions_unique = $this->analytics_manager->get_impression_count_by_date_range(
-			$current_period['gmt']['start'],
-			$current_period['gmt']['end'],
+
+		$yesterday_submissions = $this->analytics_manager->get_submission_count_by_date_range(
+			$yesterday_start_gmt,
+			$yesterday_end_gmt,
+			false
+		);
+
+		$week_submissions = $this->analytics_manager->get_submission_count_by_date_range(
+			$week_start_gmt,
+			$today_end_gmt,
+			false
+		);
+
+		$last_week_submissions = $this->analytics_manager->get_submission_count_by_date_range(
+			$last_week_start_gmt,
+			$last_week_end_gmt,
+			false
+		);
+
+		$month_unique_impressions = $this->analytics_manager->get_impression_count_by_date_range(
+			$month_start_gmt,
+			$today_end_gmt,
 			true
 		);
 
-		$previous_impressions_total  = $this->analytics_manager->get_impression_count_by_date_range(
-			$previous_period['start'],
-			$previous_period['end'],
-			false
-		);
-		$previous_impressions_unique = $this->analytics_manager->get_impression_count_by_date_range(
-			$previous_period['start'],
-			$previous_period['end'],
+		$month_unique_submissions = $this->analytics_manager->get_submission_count_by_date_range(
+			$month_start_gmt,
+			$today_end_gmt,
 			true
 		);
 
-		$current_submissions_total  = $this->analytics_manager->get_submission_count_by_date_range(
-			$current_period['gmt']['start'],
-			$current_period['gmt']['end'],
-			false
-		);
-		$current_submissions_unique = $this->analytics_manager->get_submission_count_by_date_range(
-			$current_period['gmt']['start'],
-			$current_period['gmt']['end'],
-			true
-		);
-
-		$previous_submissions_total  = $this->analytics_manager->get_submission_count_by_date_range(
-			$previous_period['start'],
-			$previous_period['end'],
-			false
-		);
-		$previous_submissions_unique = $this->analytics_manager->get_submission_count_by_date_range(
-			$previous_period['start'],
-			$previous_period['end'],
-			true
-		);
-
-		$current_conversion_rate  = $current_impressions_unique > 0
-			? ( $current_submissions_unique / $current_impressions_unique )
+		$month_conversion_rate = $month_unique_impressions > 0
+			? round( ( $month_unique_submissions / $month_unique_impressions ) * 100, 1 )
 			: 0;
-		$previous_conversion_rate = $previous_impressions_unique > 0
-			? ( $previous_submissions_unique / $previous_impressions_unique )
+
+		$last_month_unique_impressions = $this->analytics_manager->get_impression_count_by_date_range(
+			$last_month_start_gmt,
+			$last_month_end_gmt,
+			true
+		);
+
+		$last_month_unique_submissions = $this->analytics_manager->get_submission_count_by_date_range(
+			$last_month_start_gmt,
+			$last_month_end_gmt,
+			true
+		);
+
+		$last_month_conversion_rate = $last_month_unique_impressions > 0
+			? round( ( $last_month_unique_submissions / $last_month_unique_impressions ) * 100, 1 )
 			: 0;
+
+		$today_diff       = (int) $today_submissions - (int) $yesterday_submissions;
+		$week_diff        = (int) $week_submissions - (int) $last_week_submissions;
+		$month_rate_diff  = round( $month_conversion_rate - $last_month_conversion_rate, 1 );
 
 		return array(
-			'period'     => $current_period['local'],
-			'metrics'    => array(
-				'impressions'     => array(
-					'total'  => $current_impressions_total,
-					'unique' => $current_impressions_unique,
+			'metrics' => array(
+				array(
+					'title'    => __( 'Submissions Today', 'omniform' ),
+					'value'    => (int) $today_submissions,
+					'format'   => 'number',
+					'sub_text' => $this->format_comparison_text(
+						$today_diff,
+						__( 'vs yesterday', 'omniform' )
+					),
+					'trend'    => $this->calculate_trend( $today_submissions, $yesterday_submissions ),
 				),
-				'submissions'     => array(
-					'total'  => $current_submissions_total,
-					'unique' => $current_submissions_unique,
+				array(
+					'title'    => __( 'Responses This Week', 'omniform' ),
+					'value'    => (int) $week_submissions,
+					'format'   => 'number',
+					'sub_text' => $this->format_comparison_text(
+						$week_diff,
+						__( 'vs last week', 'omniform' )
+					),
+					'trend'    => $this->calculate_trend( $week_submissions, $last_week_submissions ),
 				),
-				'conversion_rate' => $current_conversion_rate,
-			),
-			'comparison' => array(
-				'impressions'     => array(
-					'total'  => $this->calculate_percentage_change( $current_impressions_total, $previous_impressions_total ),
-					'unique' => $this->calculate_percentage_change( $current_impressions_unique, $previous_impressions_unique ),
+				array(
+					'title'    => __( 'Average Completion', 'omniform' ),
+					'value'    => (float) $month_conversion_rate,
+					'format'   => 'percentage',
+					'sub_text' => $this->format_comparison_text(
+						$month_rate_diff,
+						__( 'vs last month', 'omniform' ),
+						true
+					),
+					'trend'    => $this->calculate_trend( $month_conversion_rate, $last_month_conversion_rate ),
 				),
-				'submissions'     => array(
-					'total'  => $this->calculate_percentage_change( $current_submissions_total, $previous_submissions_total ),
-					'unique' => $this->calculate_percentage_change( $current_submissions_unique, $previous_submissions_unique ),
-				),
-				'conversion_rate' => $this->calculate_percentage_change( $current_conversion_rate, $previous_conversion_rate ),
 			),
 		);
+	}
+
+	/**
+	 * Formats the comparison text for a metric.
+	 *
+	 * @param float  $diff          The difference between current and previous values.
+	 * @param string $label         The comparison period label.
+	 * @param bool   $is_percentage Whether the value is a percentage.
+	 *
+	 * @return string The formatted comparison text.
+	 */
+	private function format_comparison_text( $diff, $label, $is_percentage = false ) {
+		if ( $diff > 0 ) {
+			if ( $is_percentage ) {
+				return '+' . number_format( $diff, 1 ) . '% ' . $label;
+			}
+
+			return '+' . (int) $diff . ' ' . $label;
+		}
+
+		if ( $diff < 0 ) {
+			if ( $is_percentage ) {
+				return '-' . number_format( abs( $diff ), 1 ) . '% ' . $label;
+			}
+
+			return '-' . (int) abs( $diff ) . ' ' . $label;
+		}
+
+		/* translators: %s: comparison period label */
+		return sprintf( __( 'No change %s', 'omniform' ), $label );
+	}
+
+	/**
+	 * Calculates the trend direction between two values.
+	 *
+	 * @param float $current  The current value.
+	 * @param float $previous The previous value.
+	 *
+	 * @return string The trend direction ('up', 'down', or 'same').
+	 */
+	private function calculate_trend( $current, $previous ) {
+		if ( $current > $previous ) {
+			return 'up';
+		}
+
+		if ( $current < $previous ) {
+			return 'down';
+		}
+
+		return 'same';
 	}
 
 	/**

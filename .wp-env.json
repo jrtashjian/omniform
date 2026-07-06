@@ -1,4 +1,5 @@
 {
+	"$schema": "https://schemas.wp.org/trunk/wp-env.json",
 	"plugins": [
 		".",
 		"https://downloads.wordpress.org/plugin/wp-mail-smtp.latest-stable.zip"
@@ -10,5 +11,6 @@
 		"WPMS_SMTP_PORT": 1025,
 		"WPMS_SMTP_AUTH": false,
 		"WPMS_SMTP_AUTOTLS": false
-	}
+	},
+	"testsEnvironment": false
 }

@@ -11,6 +11,7 @@ import {
 	Button,
 } from '@wordpress/components';
 import { Page } from '@wordpress/admin-ui';
+import { addQueryArgs } from '@wordpress/url';
 import { close } from '@wordpress/icons';
 import { EditorSnackbars } from '@wordpress/editor';
 
@@ -25,13 +26,28 @@ import DataViewTopForms from './dataview-top-forms';
 import DataViewLatestResponses from './dataview-latest-responses';
 import { useInterceptMenuLink } from '../../hooks/use-intercept-menu-link';
 import { useSyncCurrentMenu } from '../../hooks/use-sync-menu-current';
+import { form } from '../../../block-library/shared/icons';
 
 export default function App( { settings } ) {
 	const [ activeItem, setActiveItem ] = useState( null );
-	const [ period, setPeriod ] = useState( '7d' );
 
 	useInterceptMenuLink();
 	useSyncCurrentMenu();
+
+	const pageActions = (
+		<>
+			<Button
+				variant="primary"
+				onClick={ () =>
+					( document.location.href = addQueryArgs( 'post-new.php', {
+						post_type: 'omniform',
+					} ) )
+				}
+			>
+				{ __( 'Create Form', 'omniform' ) }
+			</Button>
+		</>
+	);
 
 	return (
 		<>
@@ -41,28 +57,47 @@ export default function App( { settings } ) {
 				<div className="omniform-layout__container">
 					<div className="omniform-layout__content">
 						<Routes>
-							<Route path="/" element={ (
-								<Page title={ __( 'OmniForm', 'omniform' ) }>
-									<VStack spacing="10" style={ { padding: '24px' } }>
+							<Route
+								path="/"
+								element={
+									<Page
+										title={ __( 'OmniForm', 'omniform' ) }
+										subTitle={ __( 'Here\'s what\'s happening with your forms.', 'omniform' ) }
+										visual={ form }
+										actions={ pageActions }
+									>
+										<VStack
+											spacing="10"
+											style={ { padding: '24px' } }
+										>
+											<MetricsPanel />
 
-										<MetricsPanel
-											period={ period }
-											setPeriod={ setPeriod }
-										/>
-
-										<DataViewTopForms period={ period } />
-
-										<DataViewLatestResponses />
-									</VStack>
-								</Page>
-							) } />
+											<HStack
+												spacing="8"
+												alignment="stretch"
+											>
+												<div style={ { flex: 1 } }>
+													<DataViewLatestResponses />
+												</div>
+												<div style={ { flex: 1 } }>
+													<DataViewTopForms />
+												</div>
+											</HStack>
+										</VStack>
+									</Page>
+								}
+							/>
 
 							<Route path="/forms" element={ <FormList /> } />
 
-							<Route path="/responses" element={ (
-								<ResponseList setActiveItem={ setActiveItem } />
-							) } />
-
+							<Route
+								path="/responses"
+								element={
+									<ResponseList
+										setActiveItem={ setActiveItem }
+									/>
+								}
+							/>
 						</Routes>
 					</div>
 
@@ -70,18 +105,37 @@ export default function App( { settings } ) {
 						{ activeItem && (
 							<Page
 								title={
-									<HStack as="span" alignment="left" expanded={ false }>
+									<HStack
+										as="span"
+										alignment="left"
+										expanded={ false }
+									>
 										<img
 											className="field__avatar"
 											alt={ __( 'Author avatar' ) }
-											src={ activeItem.omniform_form.sender_gravatar }
+											src={
+												activeItem.omniform_form
+													.sender_gravatar
+											}
 										/>
 										<span className="field__email">
-											{ activeItem.omniform_form.sender_email }
+											{
+												activeItem.omniform_form
+													.sender_email
+											}
 										</span>
 									</HStack>
 								}
-								subTitle={ ( new Date( activeItem.date ) ).toLocaleString( 'en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true } ) }
+								subTitle={ new Date(
+									activeItem.date,
+								).toLocaleString( 'en-US', {
+									month: 'long',
+									day: 'numeric',
+									year: 'numeric',
+									hour: 'numeric',
+									minute: '2-digit',
+									hour12: true,
+								} ) }
 								actions={
 									<>
 										<Button
@@ -92,8 +146,13 @@ export default function App( { settings } ) {
 										</Button>
 										<Button
 											icon={ close }
-											label={ __( 'Close panel', 'omniform' ) }
-											onClick={ () => setActiveItem( null ) }
+											label={ __(
+												'Close panel',
+												'omniform',
+											) }
+											onClick={ () =>
+												setActiveItem( null )
+											}
 										/>
 									</>
 								}
@@ -102,7 +161,6 @@ export default function App( { settings } ) {
 							</Page>
 						) }
 					</div>
-
 				</div>
 			</div>
 		</>

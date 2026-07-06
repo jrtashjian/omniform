@@ -93,7 +93,7 @@ body.js.toplevel_page_omniform {
 @include editor-left(".omniform-layout");
 
 .omniform-layout .admin-ui-navigable-region {
-	overflow: scroll;
+	overflow: auto;
 }
 
 .omniform-layout__container {

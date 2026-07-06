@@ -25,10 +25,7 @@ import {
 
 export default function ResponsePreview( { id } ) {
 	return (
-		<Card
-			className="omniform-response-preview"
-			isBorderless
-		>
+		<Card className="omniform-response-preview" isBorderless>
 			<CardBody>
 				<VStack className="omniform-response-preview__field">
 					<HStack
@@ -36,7 +33,9 @@ export default function ResponsePreview( { id } ) {
 						alignment="left"
 					>
 						<Icon icon={ fieldInput } />
-						<Text variant="muted">{ __( 'Form Label', 'omniform' ) }</Text>
+						<Text variant="muted">
+							{ __( 'Form Label', 'omniform' ) }
+						</Text>
 					</HStack>
 					<div className="omniform-response-preview__field-value">
 						<Text>PREVIEW</Text>
@@ -53,7 +52,9 @@ export default function ResponsePreview( { id } ) {
 						alignment="left"
 					>
 						<Icon icon={ fieldTextarea } />
-						<Text variant="muted">{ __( 'Form Label', 'omniform' ) }</Text>
+						<Text variant="muted">
+							{ __( 'Form Label', 'omniform' ) }
+						</Text>
 					</HStack>
 					<div className="omniform-response-preview__field-value">
 						<Text>PREVIEW</Text>
@@ -70,7 +71,9 @@ export default function ResponsePreview( { id } ) {
 						alignment="left"
 					>
 						<Icon icon={ fieldSelect } />
-						<Text variant="muted">{ __( 'Form Label', 'omniform' ) }</Text>
+						<Text variant="muted">
+							{ __( 'Form Label', 'omniform' ) }
+						</Text>
 					</HStack>
 					<div className="omniform-response-preview__field-value">
 						<Text>PREVIEW</Text>
@@ -87,7 +90,9 @@ export default function ResponsePreview( { id } ) {
 						alignment="left"
 					>
 						<Icon icon={ fieldEmail } />
-						<Text variant="muted">{ __( 'Form Label', 'omniform' ) }</Text>
+						<Text variant="muted">
+							{ __( 'Form Label', 'omniform' ) }
+						</Text>
 					</HStack>
 					<div className="omniform-response-preview__field-value">
 						<Text>PREVIEW</Text>
@@ -104,7 +109,9 @@ export default function ResponsePreview( { id } ) {
 						alignment="left"
 					>
 						<Icon icon={ fieldDate } />
-						<Text variant="muted">{ __( 'Form Label', 'omniform' ) }</Text>
+						<Text variant="muted">
+							{ __( 'Form Label', 'omniform' ) }
+						</Text>
 					</HStack>
 					<div className="omniform-response-preview__field-value">
 						<Text>PREVIEW</Text>

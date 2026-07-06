@@ -3,9 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { addQueryArgs } from '@wordpress/url';
-import {
-	Button,
-} from '@wordpress/components';
+import { Button } from '@wordpress/components';
 import {
 	titleField,
 	statusField,
@@ -21,23 +19,19 @@ import PostTypeDataView from '../post-type-data-view';
 import editPost from '../../actions/edit-post';
 
 export default function FormList() {
-	const fields = [
-		titleField,
-		statusField,
-		dateField,
-	];
+	const fields = [ titleField, statusField, dateField ];
 
-	const actions = [
-		editPost,
-		viewPost,
-		duplicatePost,
-	];
+	const actions = [ editPost, viewPost, duplicatePost ];
 
 	const pageActions = (
 		<>
 			<Button
 				variant="primary"
-				onClick={ () => document.location.href = addQueryArgs( 'post-new.php', { post_type: 'omniform' } ) }
+				onClick={ () =>
+					( document.location.href = addQueryArgs( 'post-new.php', {
+						post_type: 'omniform',
+					} ) )
+				}
 			>
 				{ __( 'Create Form', 'omniform' ) }
 			</Button>
@@ -47,12 +41,18 @@ export default function FormList() {
 	return (
 		<PostTypeDataView
 			pageTitle={ __( 'Forms', 'omniform' ) }
+			subTitle={ __( 'Create new forms and edit your existing ones.', 'omniform' ) }
 			pageActions={ pageActions }
 			fields={ fields }
 			actions={ actions }
 			postType="omniform"
 			filterStatuses={ [ 'publish', 'draft', 'trash' ] }
-			onClickItem={ ( item ) => document.location.href = addQueryArgs( 'post.php', { post: item.id, action: 'edit' } ) }
+			onClickItem={ ( item ) =>
+				( document.location.href = addQueryArgs( 'post.php', {
+					post: item.id,
+					action: 'edit',
+				} ) )
+			}
 		/>
 	);
 }

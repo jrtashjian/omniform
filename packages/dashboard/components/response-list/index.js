@@ -10,9 +10,7 @@ import { dateField } from '@wordpress/fields';
  */
 import PostTypeDataView from '../post-type-data-view';
 
-export default function ResponseList( {
-	setActiveItem,
-} ) {
+export default function ResponseList( { setActiveItem } ) {
 	const STATUSES = [
 		{ value: 'trash', label: __( 'Trash', 'omniform' ) },
 		{ value: 'omniform_read', label: __( 'Read', 'omniform' ) },
@@ -24,9 +22,14 @@ export default function ResponseList( {
 			id: 'omniform_form.sender_email',
 			label: __( 'Sender', 'omniform' ),
 			render: ( { item } ) => (
-				<span style={ {
-					fontWeight: item.status === 'omniform_unread' ? 'bold' : 'normal',
-				} }>
+				<span
+					style={ {
+						fontWeight:
+							item.status === 'omniform_unread'
+								? 'bold'
+								: 'normal',
+					} }
+				>
 					{ item.omniform_form.sender_email }
 				</span>
 			),
@@ -43,7 +46,11 @@ export default function ResponseList( {
 			label: __( 'Avatar', 'omniform' ),
 			isVisible: () => false,
 			render: ( { item } ) => (
-				<img alt={ __( 'Sender avatar', 'omniform' ) } src={ item.omniform_form.sender_gravatar } style={ { width: '40px', height: '40px' } } />
+				<img
+					alt={ __( 'Sender avatar', 'omniform' ) }
+					src={ item.omniform_form.sender_gravatar }
+					style={ { width: '40px', height: '40px' } }
+				/>
 			),
 			enableHiding: false,
 			enableSorting: false,
@@ -80,10 +87,7 @@ export default function ResponseList( {
 
 	const pageActions = (
 		<>
-			<Button
-				variant="primary"
-				onClick={ () => {} }
-			>
+			<Button variant="primary" onClick={ () => {} }>
 				{ __( 'Export', 'omniform' ) }
 			</Button>
 		</>
@@ -92,6 +96,7 @@ export default function ResponseList( {
 	return (
 		<PostTypeDataView
 			pageTitle={ __( 'Responses', 'omniform' ) }
+			subTitle={ __( 'View all the responses submitted through your forms.', 'omniform' ) }
 			pageActions={ pageActions }
 			fields={ fields }
 			actions={ actions }

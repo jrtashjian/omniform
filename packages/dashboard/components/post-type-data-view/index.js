@@ -15,6 +15,7 @@ import { __, sprintf } from '@wordpress/i18n';
 import trashPost from '../../actions/trash-post';
 import permanentlyDeletePost from '../../actions/permanently-delete-post';
 import restorePost from '../../actions/restore-post';
+import { form } from '../../../block-library/shared/icons';
 
 /**
  * Abbreviates a number for display, e.g., 19545 becomes '19.5k'.
@@ -38,6 +39,7 @@ const abbreviateNumber = ( num ) => {
 
 export default function PostTypeDataView( {
 	pageTitle,
+	subTitle = null,
 	pageActions,
 	fields,
 	actions,
@@ -52,41 +54,74 @@ export default function PostTypeDataView( {
 	filterStatuses = [],
 	onClickItem = () => {},
 } ) {
-	const postStatuses = useSelect( ( select ) => select( coreStore ).getStatuses(), [] );
+	const postStatuses = useSelect(
+		( select ) => select( coreStore ).getStatuses(),
+		[],
+	);
 
-	const itemCounts = useSelect( ( select ) => {
-		const all = select( coreStore ).getEntityRecordsTotalItems( 'postType', postType, { status: statuses } );
-		const statusCounts = filterStatuses.reduce( ( acc, status ) => {
-			acc[ status ] = select( coreStore ).getEntityRecordsTotalItems( 'postType', postType, { status: [ status ] } );
-			return acc;
-		}, {} );
-		return { all, ...statusCounts };
-	}, [ postType, statuses, filterStatuses ] );
+	const itemCounts = useSelect(
+		( select ) => {
+			const all = select( coreStore ).getEntityRecordsTotalItems(
+				'postType',
+				postType,
+				{ status: statuses },
+			);
+			const statusCounts = filterStatuses.reduce( ( acc, status ) => {
+				acc[ status ] = select( coreStore ).getEntityRecordsTotalItems(
+					'postType',
+					postType,
+					{ status: [ status ] },
+				);
+				return acc;
+			}, {} );
+			return { all, ...statusCounts };
+		},
+		[ postType, statuses, filterStatuses ],
+	);
 
-	const defaultView = useMemo( () => ( {
-		type: 'table',
-		search: '',
-		page: 1,
-		perPage: initialPerPage,
-		sort: {
-			field: initialSortField,
-			direction: initialSortDirection,
-		},
-		titleField,
-		mediaField,
-		descriptionField,
-		fields: fields.map( ( field ) => field.id ).filter( ( id ) => id !== titleField && id !== mediaField && id !== descriptionField ),
-		layout: {
-			enableMoving: false,
-		},
-		filters: [
-			{
-				field: 'status',
-				operator: 'isAny',
-				value: statuses,
+	const defaultView = useMemo(
+		() => ( {
+			type: 'table',
+			search: '',
+			page: 1,
+			perPage: initialPerPage,
+			sort: {
+				field: initialSortField,
+				direction: initialSortDirection,
 			},
+			titleField,
+			mediaField,
+			descriptionField,
+			fields: fields
+				.map( ( field ) => field.id )
+				.filter(
+					( id ) =>
+						id !== titleField &&
+						id !== mediaField &&
+						id !== descriptionField,
+				),
+			layout: {
+				enableMoving: false,
+			},
+			filters: [
+				{
+					field: 'status',
+					operator: 'isAny',
+					value: statuses,
+				},
+			],
+		} ),
+		[
+			fields,
+			titleField,
+			mediaField,
+			descriptionField,
+			initialSortField,
+			initialSortDirection,
+			initialPerPage,
+			statuses,
 		],
-	} ), [ fields, titleField, mediaField, descriptionField, initialSortField, initialSortDirection, initialPerPage, statuses ] );
+	);
 
 	const [ view, setView ] = useState( defaultView );
 
@@ -116,11 +151,7 @@ export default function PostTypeDataView( {
 		totalPages,
 	} = useEntityRecords( 'postType', postType, queryArgs );
 
-	const defaultActions = [
-		trashPost,
-		permanentlyDeletePost,
-		restorePost,
-	];
+	const defaultActions = [ trashPost, permanentlyDeletePost, restorePost ];
 
 	const tabs = useMemo( () => {
 		const baseTab = {
@@ -129,13 +160,18 @@ export default function PostTypeDataView( {
 				? sprintf(
 					/* translators: %s: Total number of items. */
 					__( 'All (%s)', 'omniform' ),
-					abbreviateNumber( itemCounts.all )
+					abbreviateNumber( itemCounts.all ),
 				)
 				: __( 'All', 'omniform' ),
 		};
 		const statusTabs = filterStatuses.map( ( status ) => ( {
 			name: status,
-			title: ( postStatuses?.find( ( s ) => s.slug === status )?.name || status ) + ( itemCounts[ status ] ? ` (${ abbreviateNumber( itemCounts[ status ] ) })` : '' ),
+			title:
+				( postStatuses?.find( ( s ) => s.slug === status )?.name ||
+					status ) +
+				( itemCounts[ status ]
+					? ` (${ abbreviateNumber( itemCounts[ status ] ) })`
+					: '' ),
 		} ) );
 		return [ baseTab, ...statusTabs ];
 	}, [ filterStatuses, postStatuses, itemCounts ] );
@@ -143,12 +179,24 @@ export default function PostTypeDataView( {
 	return (
 		<Page
 			title={ pageTitle }
+			subTitle={ subTitle }
 			actions={ pageActions }
+			visual={ form }
 		>
 			<TabPanel
-				onSelect={ ( status ) => 'all' === status
-					? setView( { ...view, filters: defaultView.filters } )
-					: setView( { ...view, filters: [ { field: 'status', operator: 'isAny', value: [ status ] } ] } )
+				onSelect={ ( status ) =>
+					'all' === status
+						? setView( { ...view, filters: defaultView.filters } )
+						: setView( {
+							...view,
+							filters: [
+								{
+									field: 'status',
+									operator: 'isAny',
+									value: [ status ],
+								},
+							],
+						} )
 				}
 				tabs={ tabs }
 				children={ () => (

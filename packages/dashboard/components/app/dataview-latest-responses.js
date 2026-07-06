@@ -1,8 +1,11 @@
+import { useNavigate } from 'react-router-dom';
+
 /**
  * WordPress dependencies.
  */
 import {
 	__experimentalHeading as Heading,
+	Button,
 	Card,
 	CardBody,
 	CardHeader,
@@ -13,22 +16,22 @@ import { useEntityRecords } from '@wordpress/core-data';
 import { __ } from '@wordpress/i18n';
 import { addQueryArgs } from '@wordpress/url';
 
-/**
- * Internal dependencies.
- */
-import trashPost from '../../actions/trash-post';
-import permanentlyDeletePost from '../../actions/permanently-delete-post';
-import restorePost from '../../actions/restore-post';
-
 export default function DataViewLatestResponses() {
+	const navigate = useNavigate();
+
 	const fields = [
 		{
 			id: 'omniform_form.sender_email',
 			label: __( 'Sender', 'omniform' ),
 			render: ( { item } ) => (
-				<span style={ {
-					fontWeight: item.status === 'omniform_unread' ? 'bold' : 'normal',
-				} }>
+				<span
+					style={ {
+						fontWeight:
+							item.status === 'omniform_unread'
+								? 'bold'
+								: 'normal',
+					} }
+				>
 					{ item.omniform_form.sender_email }
 				</span>
 			),
@@ -41,7 +44,11 @@ export default function DataViewLatestResponses() {
 			label: __( 'Avatar', 'omniform' ),
 			isVisible: () => false,
 			render: ( { item } ) => (
-				<img alt={ __( 'Sender avatar', 'omniform' ) } src={ item.omniform_form.sender_gravatar } style={ { width: '40px', height: '40px' } } />
+				<img
+					alt={ __( 'Sender avatar', 'omniform' ) }
+					src={ item.omniform_form.sender_gravatar }
+					style={ { width: '40px', height: '40px' } }
+				/>
 			),
 			enableHiding: false,
 			enableSorting: false,
@@ -54,22 +61,11 @@ export default function DataViewLatestResponses() {
 			enableSorting: false,
 			filterBy: false,
 		},
-		dateField,
-	];
-
-	const defaultActions = [
-		trashPost,
-		permanentlyDeletePost,
-		restorePost,
-	];
-
-	const actions = [
 		{
-			id: 'view',
-			label: __( 'View', 'omniform' ),
-			callback: ( items ) => console.debug( items[ 0 ] ),
-			isPrimary: true,
-			isEligible: ( item ) => item.status !== 'trash',
+			...dateField,
+			enableHiding: false,
+			enableSorting: false,
+			filterBy: false,
 		},
 	];
 
@@ -84,9 +80,17 @@ export default function DataViewLatestResponses() {
 	} );
 
 	return (
-		<Card isBorderless>
+		<Card>
 			<CardHeader>
-				<Heading level={ 2 }>{ __( 'Latest Responses', 'omniform' ) }</Heading>
+				<Heading level={ 4 }>
+					{ __( 'Latest Responses', 'omniform' ) }
+				</Heading>
+				<Button
+					variant="link"
+					onClick={ () => navigate( '/responses' ) }
+				>
+					{ __( 'View all responses', 'omniform' ) }
+				</Button>
 			</CardHeader>
 			<CardBody>
 				<DataViews
@@ -96,16 +100,26 @@ export default function DataViewLatestResponses() {
 						type: 'table',
 						titleField: fields[ 0 ]?.id,
 						mediaField: 'omniform_form.sender_gravatar',
-						fields: fields.map( ( field ) => field.id ).filter( ( id ) => id !== fields[ 0 ]?.id && id !== 'omniform_form.sender_gravatar' ),
+						fields: fields
+							.map( ( field ) => field.id )
+							.filter(
+								( id ) =>
+									id !== fields[ 0 ]?.id &&
+									id !== 'omniform_form.sender_gravatar',
+							),
 						layout: {
 							enableMoving: false,
 						},
 					} }
 					fields={ fields }
-					actions={ [ ...actions, ...defaultActions ] }
 					paginationInfo={ { totalItems, totalPages } }
 					defaultLayouts={ { table: {} } }
-					onClickItem={ ( item ) => document.location.href = addQueryArgs( 'post.php', { post: item.id, action: 'edit' } ) }
+					onClickItem={ ( item ) =>
+						( document.location.href = addQueryArgs( 'post.php', {
+							post: item.id,
+							action: 'edit',
+						} ) )
+					}
 				>
 					<DataViews.Layout />
 				</DataViews>
