@@ -342,12 +342,12 @@ class RestApiController extends WP_REST_Controller {
 	 * @return float The percentage change as a decimal.
 	 */
 	protected function calculate_percentage_change( $current, $previous ) {
-		$current  = (float) $current;
-		$previous = (float) $previous;
-
 		if ( 0 === $previous || ! is_numeric( $current ) || ! is_numeric( $previous ) ) {
 			return 0;
 		}
+
+		$current  = (float) $current;
+		$previous = (float) $previous;
 
 		$change = ( $current - $previous ) / $previous;
 
