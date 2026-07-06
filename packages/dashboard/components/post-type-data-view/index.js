@@ -3,10 +3,7 @@
  */
 import { Page } from '@wordpress/admin-ui';
 import { TabPanel } from '@wordpress/components';
-import {
-	useEntityRecords,
-	store as coreStore,
-} from '@wordpress/core-data';
+import { useEntityRecords, store as coreStore } from '@wordpress/core-data';
 import { useSelect } from '@wordpress/data';
 import { DataViews } from '@wordpress/dataviews';
 import { useMemo, useState } from '@wordpress/element';

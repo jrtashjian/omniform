@@ -9,7 +9,11 @@ const restorePost = {
 	...restorePostField,
 	isEligible: ( item ) =>
 		item.status === 'trash' &&
-		select( coreStore ).canUser( 'update', { kind: 'postType', name: item.type, id: item.id } ),
+		select( coreStore ).canUser( 'update', {
+			kind: 'postType',
+			name: item.type,
+			id: item.id,
+		} ),
 };
 
 export default restorePost;

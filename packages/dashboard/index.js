@@ -27,7 +27,7 @@ export function initialize( id, settings ) {
 			<HashRouter>
 				<App settings={ settings } />
 			</HashRouter>
-		</StrictMode>
+		</StrictMode>,
 	);
 	return root;
 }

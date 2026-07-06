@@ -10,7 +10,9 @@ export function useInterceptMenuLink() {
 
 	useEffect( () => {
 		const handleClick = ( event ) => {
-			const link = event.target.closest( 'a[href="admin.php?page=omniform"]' );
+			const link = event.target.closest(
+				'a[href="admin.php?page=omniform"]',
+			);
 
 			if ( link ) {
 				event.preventDefault();

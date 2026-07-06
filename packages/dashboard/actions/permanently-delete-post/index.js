@@ -9,7 +9,11 @@ const permanentlyDeletePost = {
 	...permanentlyDeletePostField,
 	isEligible: ( item ) =>
 		item.status === 'trash' &&
-		select( coreStore ).canUser( 'delete', { kind: 'postType', name: item.type, id: item.id } ),
+		select( coreStore ).canUser( 'delete', {
+			kind: 'postType',
+			name: item.type,
+			id: item.id,
+		} ),
 };
 
 export default permanentlyDeletePost;

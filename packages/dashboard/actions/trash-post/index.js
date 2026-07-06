@@ -10,7 +10,11 @@ const trashPost = {
 	isEligible: ( item ) =>
 		!! item.status &&
 		! [ 'auto-draft', 'trash' ].includes( item.status ) &&
-		select( coreStore ).canUser( 'delete', { kind: 'postType', name: item.type, id: item.id } ),
+		select( coreStore ).canUser( 'delete', {
+			kind: 'postType',
+			name: item.type,
+			id: item.id,
+		} ),
 };
 
 export default trashPost;
