@@ -22,6 +22,7 @@ import FormList from '../form-list';
 import ResponseList from '../response-list';
 import ResponsePreview from '../response-preview';
 import MetricsPanel from '../metrics-panel';
+import ConnectSitePanel from '../connect-site-panel';
 import DataViewTopForms from './dataview-top-forms';
 import DataViewLatestResponses from './dataview-latest-responses';
 import { useInterceptMenuLink } from '../../hooks/use-intercept-menu-link';
@@ -83,6 +84,8 @@ export default function App( { settings } ) {
 													<DataViewTopForms />
 												</div>
 											</HStack>
+
+											<ConnectSitePanel />
 										</VStack>
 									</Page>
 								}
