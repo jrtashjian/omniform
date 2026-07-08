@@ -77,7 +77,7 @@ class RestApiController extends WP_REST_Controller {
 	 * @return true|WP_Error True if the request has access, WP_Error object otherwise.
 	 */
 	public function get_overview_permissions_check() {
-		if ( ! current_user_can( 'edit_theme_options' ) ) {
+		if ( ! current_user_can( 'edit_pages' ) ) {
 			return new WP_Error(
 				'rest_cannot_view_analytics',
 				__( 'Sorry, you are not allowed to view analytics.', 'omniform' ),

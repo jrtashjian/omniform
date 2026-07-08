@@ -229,7 +229,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				add_menu_page(
 					esc_html__( 'OmniForm', 'omniform' ),
 					esc_html__( 'OmniForm', 'omniform' ),
-					'manage_options',
+					'edit_pages',
 					'omniform',
 					function () {
 						?>
@@ -253,7 +253,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					'omniform',
 					esc_html__( 'Overview', 'omniform' ),
 					esc_html__( 'Overview', 'omniform' ),
-					'manage_options',
+					'edit_pages',
 					'omniform',
 				);
 
@@ -261,7 +261,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					'omniform',
 					esc_html__( 'Forms', 'omniform' ),
 					esc_html__( 'Forms', 'omniform' ),
-					'manage_options',
+					'edit_pages',
 					'admin.php?page=omniform#/forms',
 				);
 
@@ -269,7 +269,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					'omniform',
 					esc_html__( 'Responses', 'omniform' ),
 					esc_html__( 'Responses', 'omniform' ),
-					'manage_options',
+					'edit_pages',
 					'admin.php?page=omniform#/responses',
 				);
 			}
@@ -389,26 +389,16 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					'item_updated'             => __( 'Form updated.', 'omniform' ),
 				),
 				'public'                => true,
-				'show_ui'               => true,
+				'exclude_from_search'   => true,
 				'show_in_menu'          => false,
+				'show_in_admin_bar'     => true,
 				'show_in_rest'          => true,
 				'rest_namespace'        => 'omniform/v1',
 				'rest_base'             => 'forms',
 				'rest_controller_class' => \OmniForm\Plugin\Api\FormsController::class,
 				'map_meta_cap'          => true,
 				'capabilities'          => array(
-					'create_posts'           => 'edit_theme_options',
-					'delete_posts'           => 'edit_theme_options',
-					'delete_others_posts'    => 'edit_theme_options',
-					'delete_private_posts'   => 'edit_theme_options',
-					'delete_published_posts' => 'edit_theme_options',
-					'edit_posts'             => 'edit_theme_options',
-					'edit_others_posts'      => 'edit_theme_options',
-					'edit_private_posts'     => 'edit_theme_options',
-					'edit_published_posts'   => 'edit_theme_options',
-					'publish_posts'          => 'edit_theme_options',
-					'read'                   => 'edit_theme_options',
-					'read_private_posts'     => 'edit_theme_options',
+					'create_posts' => 'publish_posts',
 				),
 				'supports'              => array(
 					'title',
@@ -441,11 +431,6 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				'label'  => __( 'Spam', 'omniform' ),
 			)
 		);
-
-		// If the current user can't edit_theme_options, bail.
-		if ( ! current_user_can( 'edit_theme_options' ) ) {
-			return;
-		}
 
 		register_post_meta(
 			'omniform',
@@ -518,37 +503,24 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					'name'               => _x( 'Responses', 'post type general name', 'omniform' ),
 					'singular_name'      => _x( 'Response', 'post type singular name', 'omniform' ),
 					'all_items'          => __( 'Responses', 'omniform' ),
-					'edit_item'          => __( 'Edit response', 'omniform' ),
 					'filter_items_list'  => __( 'Filter responses list', 'omniform' ),
-					'not_found_in_trash' => __( 'No responses found in Trash.', 'omniform' ),
 					'not_found'          => __( 'No responses found.', 'omniform' ),
+					'not_found_in_trash' => __( 'No responses found in Trash.', 'omniform' ),
 					'search_items'       => __( 'Search responses', 'omniform' ),
 					'view_item'          => __( 'View response', 'omniform' ),
 				),
 				'public'                          => false,
-				'show_ui'                         => true,
-				'show_in_menu'                    => false,
-				'show_in_admin_bar'               => false,
 				'rewrite'                         => false,
 				'show_in_rest'                    => true,
 				'rest_namespace'                  => 'omniform/v1',
 				'rest_base'                       => 'responses',
+				'rest_controller_class'           => \OmniForm\Plugin\Api\ResponsesController::class,
 				'autosave_rest_controller_class'  => 'stdClass', // Disable autosave endpoints.
 				'revisions_rest_controller_class' => 'stdClass', // Disable revisions endpoints.
+				'capability_type'                 => 'page',
 				'map_meta_cap'                    => true,
 				'capabilities'                    => array(
 					'create_posts'           => 'do_not_allow',
-					'delete_posts'           => 'edit_theme_options',
-					'delete_others_posts'    => 'edit_theme_options',
-					'delete_private_posts'   => 'edit_theme_options',
-					'delete_published_posts' => 'edit_theme_options',
-					'edit_posts'             => 'edit_theme_options',
-					'edit_others_posts'      => 'edit_theme_options',
-					'edit_private_posts'     => 'edit_theme_options',
-					'edit_published_posts'   => 'edit_theme_options',
-					'publish_posts'          => 'edit_theme_options',
-					'read'                   => 'edit_theme_options',
-					'read_private_posts'     => 'edit_theme_options',
 				),
 				'supports'                        => array(
 					'custom-fields',
