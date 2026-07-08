@@ -7,7 +7,6 @@
 
 namespace OmniForm\Plugin;
 
-use OmniForm\Plugin\Support\Number;
 use OmniForm\Analytics\AnalyticsManager;
 use OmniForm\Dependencies\Respect\Validation;
 use OmniForm\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
@@ -27,7 +26,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 *
 	 * @param string $id The service to check.
 	 *
-	 * @return array
+	 * @return bool
 	 */
 	public function provides( string $id ): bool {
 		$services = array(
@@ -520,7 +519,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				'capability_type'                 => 'page',
 				'map_meta_cap'                    => true,
 				'capabilities'                    => array(
-					'create_posts'           => 'do_not_allow',
+					'create_posts' => 'do_not_allow',
 				),
 				'supports'                        => array(
 					'custom-fields',

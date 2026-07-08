@@ -33,11 +33,11 @@ class FormsController extends \WP_REST_Posts_Controller {
 	/**
 	 * Checks if a given request has access to create a response.
 	 *
-	 * @param \WP_REST_Request $request Full details about the request.
+	 * @param \WP_REST_Request $_request Full details about the request.
 	 *
 	 * @return true|\WP_Error True if the request has access to create items, WP_Error object otherwise.
 	 */
-	public function create_response_permissions_check( \WP_REST_Request $request ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
+	public function create_response_permissions_check( \WP_REST_Request $_request ) {
 		return rest_cookie_check_errors( null );
 	}
 
@@ -206,9 +206,9 @@ class FormsController extends \WP_REST_Posts_Controller {
 	/**
 	 * Prepares a single post for create or update.
 	 *
-	 * @param WP_REST_Request $request Request object.
+	 * @param \WP_REST_Request $request Request object.
 	 *
-	 * @return stdClass|WP_Error Post object or WP_Error.
+	 * @return \stdClass|\WP_Error Post object or WP_Error.
 	 */
 	protected function prepare_item_for_database( $request ) {
 		$prepared_post = parent::prepare_item_for_database( $request );
@@ -247,8 +247,8 @@ class FormsController extends \WP_REST_Posts_Controller {
 	/**
 	 * Adds the values from additional fields to a data object.
 	 *
-	 * @param array           $response_data Prepared response array.
-	 * @param WP_REST_Request $request       Full details about the request.
+	 * @param array            $response_data Prepared response array.
+	 * @param \WP_REST_Request $request       Full details about the request.
 	 *
 	 * @return array Modified data object with additional fields.
 	 */
