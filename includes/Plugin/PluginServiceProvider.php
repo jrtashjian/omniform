@@ -98,8 +98,6 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		add_action( 'rest_api_init', array( $this, 'register_rest_fields' ) );
 		add_filter( 'the_content', array( $this, 'render_singular_template' ) );
 
-		add_action( 'admin_init', array( $this, 'dismiss_newsletter_notice' ) );
-
 		// Send email notification when a response is created.
 		add_action(
 			'omniform_response_created',
@@ -802,52 +800,6 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		// Prevent default hooks rendering content to the page.
 		remove_all_actions( 'admin_notices' );
 		remove_all_actions( 'all_admin_notices' );
-		// Add our own notices after this.
-
-		add_action( 'admin_notices', array( $this, 'render_newsletter_notice' ) );
-	}
-
-	/**
-	 * Render the newsletter notice.
-	 *
-	 * Retrieves the dismissed version of the newsletter notice for the current user and compares it with the current version of the plugin.
-	 * If the dismissed version is greater than or equal to the current version, the notice is not shown.
-	 */
-	public function render_newsletter_notice() {
-		/** @var \OmniForm\Application */ // phpcs:ignore
-		$container = $this->getContainer();
-
-		$dismissed_version = get_user_meta( get_current_user_id(), 'omniform_dismissed_newsletter_notice', true );
-
-		$semver_regex      = '/(\d+\.\d+)\.\d+/';
-		$dismissed_version = preg_replace( $semver_regex, '$1', $dismissed_version );
-		$current_version   = preg_replace( $semver_regex, '$1', $container->version() );
-
-		if ( $dismissed_version && version_compare( $dismissed_version, $current_version, '>=' ) ) {
-			return;
-		}
-
-		printf(
-			'<div class="notice notice-info" style="position:relative;"><p>%s <a href="%s" target="_blank">%s</a></p><a style="position:absolute;top:0;right:0;padding:10px;color:#787c82;" href="%s">%s</a></div>',
-			esc_html__( 'Want to stay up to date with OmniForm news?', 'omniform' ),
-			esc_url( 'https://omniform.io/omniform/newsletter?utm_source=omniform&utm_medium=plugin&utm_content=admin_notice' ),
-			esc_html__( 'Sign up for our newsletter!', 'omniform' ),
-			esc_url( add_query_arg( 'dismiss_newsletter_notice', '' ) ),
-			esc_html__( 'Dismiss', 'omniform' )
-		);
-	}
-
-	/**
-	 * Dismiss the newsletter notice.
-	 */
-	public function dismiss_newsletter_notice() {
-		$request = $this->getContainer()->get( Request::class );
-
-		if ( $request->query->has( 'dismiss_newsletter_notice' ) ) {
-			/** @var \OmniForm\Application */ // phpcs:ignore
-			$container = $this->getContainer();
-			update_user_meta( get_current_user_id(), 'omniform_dismissed_newsletter_notice', $container->version() );
-		}
 	}
 
 	/**
