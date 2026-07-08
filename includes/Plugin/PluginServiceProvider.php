@@ -378,8 +378,8 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 
 				add_submenu_page(
 					'omniform',
-					esc_html__( 'Dashboard', 'omniform' ),
-					esc_html__( 'Dashboard', 'omniform' ),
+					esc_html__( 'Overview', 'omniform' ),
+					esc_html__( 'Overview', 'omniform' ),
 					'manage_options',
 					'omniform',
 				);
