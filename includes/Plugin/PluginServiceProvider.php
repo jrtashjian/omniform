@@ -368,8 +368,8 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			'omniform',
 			array(
 				'labels'                => array(
-					'name'                     => _x( 'Forms', 'post type general name', 'omniform' ),
-					'singular_name'            => _x( 'Form', 'post type singular name', 'omniform' ),
+					'name'                     => _x( 'OmniForms', 'post type general name', 'omniform' ),
+					'singular_name'            => _x( 'OmniForm', 'post type singular name', 'omniform' ),
 					'add_new'                  => _x( 'Create a Form', 'Form', 'omniform' ),
 					'add_new_item'             => __( 'Create a Form', 'omniform' ),
 					'new_item'                 => __( 'Create a Form', 'omniform' ),
