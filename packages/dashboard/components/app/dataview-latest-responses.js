@@ -5,69 +5,33 @@ import { useNavigate } from 'react-router-dom';
  */
 import {
 	__experimentalHeading as Heading,
-	__experimentalVStack as VStack,
 	__experimentalHStack as HStack,
+	__experimentalVStack as VStack,
 	Button,
 	Card,
 	CardBody,
 } from '@wordpress/components';
-import { dateField } from '@wordpress/fields';
 import { DataViews } from '@wordpress/dataviews';
 import { useEntityRecords } from '@wordpress/core-data';
 import { __ } from '@wordpress/i18n';
 import { addQueryArgs } from '@wordpress/url';
 
+/**
+ * Internal dependencies.
+ */
+import senderEmailField from '../../fields/sender-email';
+import senderGravatarField from '../../fields/sender-gravatar';
+import formTitleField from '../../fields/form-title';
+import relativeDateField from '../../fields/relative-date';
+
 export default function DataViewLatestResponses() {
 	const navigate = useNavigate();
 
 	const fields = [
-		{
-			id: 'omniform_form.sender_email',
-			label: __( 'Sender', 'omniform' ),
-			render: ( { item } ) => (
-				<span
-					style={ {
-						fontWeight:
-							item.status === 'omniform_unread'
-								? 'bold'
-								: 'normal',
-					} }
-				>
-					{ item.omniform_form.sender_email }
-				</span>
-			),
-			enableHiding: false,
-			enableSorting: false,
-			filterBy: false,
-		},
-		{
-			id: 'omniform_form.sender_gravatar',
-			label: __( 'Avatar', 'omniform' ),
-			isVisible: () => false,
-			render: ( { item } ) => (
-				<img
-					alt={ __( 'Sender avatar', 'omniform' ) }
-					src={ item.omniform_form.sender_gravatar }
-					style={ { width: '40px', height: '40px' } }
-				/>
-			),
-			enableHiding: false,
-			enableSorting: false,
-			filterBy: false,
-		},
-		{
-			id: 'omniform_form.title',
-			label: __( 'Form', 'omniform' ),
-			enableHiding: false,
-			enableSorting: false,
-			filterBy: false,
-		},
-		{
-			...dateField,
-			enableHiding: false,
-			enableSorting: false,
-			filterBy: false,
-		},
+		senderEmailField,
+		senderGravatarField,
+		formTitleField,
+		relativeDateField,
 	];
 
 	const {
