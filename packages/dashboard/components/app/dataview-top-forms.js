@@ -42,23 +42,24 @@ export default function DataViewTopForms( { period } ) {
 				filterBy: false,
 				type: 'integer',
 			},
-			// {
-			// 	id: 'unique_impressions',
-			// 	label: __( 'Impressions', 'omniform' ),
-			// 	enableSorting: false,
-			// 	enableHiding: false,
-			// 	filterBy: false,
-			// 	type: 'integer',
-			// },
+			{
+				id: 'unique_impressions',
+				label: __( 'Impressions', 'omniform' ),
+				enableSorting: false,
+				enableHiding: false,
+				filterBy: false,
+				type: 'integer',
+			},
 			{
 				id: 'conversion_rate',
 				label: __( 'Conversion Rate', 'omniform' ),
 				enableSorting: false,
 				enableHiding: false,
 				filterBy: false,
+				type: 'number',
 				render: ( { item } ) => {
 					const rate = item.conversion_rate || 0;
-					return `${ ( rate * 100 ).toFixed( 1 ) }%`;
+					return `${ ( rate * 100 ).toFixed( 0 ) }%`;
 				},
 			},
 		],
