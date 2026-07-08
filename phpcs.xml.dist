@@ -30,7 +30,7 @@
 	<rule ref="Generic.Commenting.Todo" />
 
 	<!-- Check for PHP cross-version compatibility. -->
-	<config name="testVersion" value="7.4-"/>
+	<config name="testVersion" value="8.0-"/>
 	<rule ref="PHPCompatibilityWP" />
 
 	<rule ref="WordPress.WP.I18n">
@@ -49,6 +49,6 @@
 		</properties>
 	</rule>
 
-	<config name="minimum_supported_wp_version" value="6.3"/>
+	<config name="minimum_supported_wp_version" value="7.0"/>
 
 </ruleset>

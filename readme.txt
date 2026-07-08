@@ -1,9 +1,9 @@
 === OmniForm ===
 Contributors: jrtashjian
 Tags: contact form, block editor, form builder, forms, email
-Requires at least: 6.6
+Requires at least: 7.0
 Tested up to: 7.0
-Requires PHP: 7.4
+Requires PHP: 8.2
 Stable tag: 1.3.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -36,8 +36,6 @@ From there, you can choose to create a new form from scratch or use one of the p
 = 🙏 A Special Thanks from OmniForm =
 
 Whether you're a first-time user or someone who's considering giving OmniForm a try, thank you! Your interest is what fuels ongoing improvements and innovations.
-
-Feel free to explore, provide feedback, or even contribute to the plugin's development. Every bit of support counts and is highly appreciated.
 
 == Installation ==
 

@@ -6,8 +6,8 @@ OmniForm is a powerful WordPress plugin that allows you to create and manage for
 
 ## Requirements
 
-- PHP 7.4+
-- [WordPress](http://wordpress.org/) 6.6+
+- [PHP](https://www.php.net/supported-versions.php) 8.2+
+- [WordPress](https://wordpress.org/download/releases/) 7.0+
 
 ## Installation
 
