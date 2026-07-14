@@ -51,6 +51,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 		add_filter( 'wp_theme_json_data_blocks', array( $this, 'register_global_block_styles' ) );
 
 		add_filter( 'render_block_context', array( $this, 'add_field_path_context' ), 10, 2 );
+		add_filter( 'render_block_context', array( $this, 'add_is_choice_group_context' ), 10, 2 );
 	}
 
 	public function add_field_path_context( array $context, array $parsed_block ) {
@@ -73,6 +74,48 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 			: $field_name;
 
 		return $context;
+	}
+
+	public function add_is_choice_group_context( array $context, array $parsed_block ) {
+		$context_key = 'omniform/isChoiceGroup';
+
+		if ( 'omniform/fieldset' !== $parsed_block['blockName'] ) {
+			return $context;
+		}
+
+		if ( $this->is_choice_group( $parsed_block['innerBlocks'] ) ) {
+			$context[ $context_key ] = true;
+		}
+
+		return $context;
+	}
+
+	private function is_choice_group( array $blocks ) {
+		foreach ( $blocks as $block ) {
+			if ( 'omniform/field' === $block['blockName'] ) {
+				if ( ! $this->is_choice_field( $block ) ) {
+					return false;
+				}
+			}
+
+			if ( ! empty( $block['innerBlocks'] ) ) {
+				if ( ! $this->is_choice_group( $block['innerBlocks'] ) ) {
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	private function is_choice_field( array $parsed_block ) {
+		foreach ( $parsed_block['innerBlocks'] as $inner_block ) {
+			if ( 'omniform/input' === $inner_block['blockName'] && isset( $inner_block['attrs']['fieldType'] ) ) {
+				return in_array( $inner_block['attrs']['fieldType'], array( 'radio', 'checkbox' ), true );
+			}
+		}
+
+		return false;
 	}
 
 	/**
