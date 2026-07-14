@@ -106,14 +106,10 @@ abstract class BaseControlBlock extends BaseBlock {
 	 * @return array
 	 */
 	public function get_control_name_parts() {
-		return array_values(
-			array_filter(
-				array(
-					$this->get_field_group_name(),
-					$this->get_field_name(),
-				)
-			)
-		);
+		return array_filter( [
+			...explode( '.', $this->get_block_context( 'omniform/fieldPath' ) ),
+			$this->get_field_name(),
+		] );
 	}
 
 	/**
@@ -123,10 +119,13 @@ abstract class BaseControlBlock extends BaseBlock {
 	 */
 	public function get_control_name() {
 		$parts = $this->get_control_name_parts();
+		$name  = array_shift( $parts );
 
-		return 2 === count( $parts )
-			? sprintf( '%s[%s]', $parts[0], $parts[1] )
-			: $parts[0];
+		foreach ( $parts as $part ) {
+			$name .= "[$part]";
+		}
+
+		return $name;
 	}
 
 	/**
