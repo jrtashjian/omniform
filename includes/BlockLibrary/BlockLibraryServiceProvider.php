@@ -49,6 +49,30 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 		add_filter( 'block_type_metadata_settings', array( $this, 'update_layout_support' ), 10, 2 );
 
 		add_filter( 'wp_theme_json_data_blocks', array( $this, 'register_global_block_styles' ) );
+
+		add_filter( 'render_block_context', array( $this, 'add_field_path_context' ), 10, 2 );
+	}
+
+	public function add_field_path_context( array $context, array $parsed_block ) {
+		if ( 'omniform/fieldset' !== $parsed_block['blockName'] ) {
+			return $context;
+		}
+
+		$field_name = $parsed_block['attrs']['fieldName'] ?? '';
+
+		if ( empty( $field_name ) ) {
+			return $context;
+		}
+
+		$context_key = 'omniform/fieldPath';
+
+		$previous_path = $context[ $context_key ] ?? '';
+
+		$context[ $context_key ] = $previous_path !== ''
+			? $previous_path . '.' . $field_name
+			: $field_name;
+
+		return $context;
 	}
 
 	/**

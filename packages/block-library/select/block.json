@@ -43,6 +43,7 @@
 	"usesContext": [
 		"postId",
 		"postType",
+		"omniform/fieldPath",
 		"omniform/fieldGroupName",
 		"omniform/fieldGroupLabel",
 		"omniform/fieldGroupIsRequired",
