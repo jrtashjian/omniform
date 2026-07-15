@@ -161,7 +161,7 @@ class Input extends BaseControlBlock {
 	public function get_control_name_parts() {
 		$control_name_parts = parent::get_control_name_parts();
 
-		if ( in_array( $this->get_block_attribute( 'fieldType' ), array( 'radio', 'checkbox' ), true ) && $this->get_block_context( 'omniform/isMultipleChoice' ) ) {
+		if ( in_array( $this->get_block_attribute( 'fieldType' ), array( 'radio', 'checkbox' ), true ) && $this->get_block_context( 'omniform/isChoiceGroup' ) ) {
 			array_pop( $control_name_parts );
 		}
 
@@ -174,7 +174,7 @@ class Input extends BaseControlBlock {
 	 * @return string
 	 */
 	public function get_control_name() {
-		if ( 'checkbox' === $this->get_block_attribute( 'fieldType' ) && $this->get_block_context( 'omniform/isMultipleChoice' ) ) {
+		if ( 'checkbox' === $this->get_block_attribute( 'fieldType' ) && $this->get_block_context( 'omniform/isChoiceGroup' ) ) {
 			return parent::get_control_name() . '[]';
 		}
 
