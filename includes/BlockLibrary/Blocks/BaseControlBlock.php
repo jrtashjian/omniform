@@ -106,8 +106,11 @@ abstract class BaseControlBlock extends BaseBlock {
 	 * @return array
 	 */
 	public function get_control_name_parts() {
+		$field_path = $this->get_block_context( 'omniform/fieldPath' ) ?? '';
+		$path_parts = explode( '.', $field_path );
+
 		return array_filter( [
-			...explode( '.', $this->get_block_context( 'omniform/fieldPath' ) ),
+			...$path_parts,
 			$this->get_field_name(),
 		] );
 	}

@@ -81,9 +81,9 @@ abstract class BaseBlock implements FormBlockInterface {
 	 *
 	 * @param string $key The block attribute key.
 	 *
-	 * @return string
+	 * @return mixed
 	 */
-	public function get_block_attribute( $key ) {
+	public function get_block_attribute( string $key ): mixed {
 		return array_key_exists( $key, $this->attributes )
 			? $this->attributes[ $key ]
 			: null;
@@ -94,9 +94,9 @@ abstract class BaseBlock implements FormBlockInterface {
 	 *
 	 * @param string $key The block context key.
 	 *
-	 * @return string
+	 * @return mixed
 	 */
-	public function get_block_context( $key ) {
+	public function get_block_context( string $key ): mixed {
 		return property_exists( $this->instance, 'context' ) && array_key_exists( $key, $this->instance->context )
 			? $this->instance->context[ $key ]
 			: null;
