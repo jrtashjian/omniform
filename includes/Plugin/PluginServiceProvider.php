@@ -550,7 +550,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 
 						if ( isset( $response_data['response'] ) && is_array( $response_data['response'] ) ) {
 							foreach ( $response_data['response'] as $value ) {
-								if ( is_email( $value ) ) {
+								if ( is_string( $value ) && is_email( $value ) ) {
 									$sender_email = $value;
 									break;
 								}
