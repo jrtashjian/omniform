@@ -1,6 +1,6 @@
 <?php
 /**
- * The PostCommentsFormCancelReplyLink block class.
+ * Server-side renderer for the cancel comment reply link block.
  *
  * @package OmniForm
  */
@@ -8,7 +8,10 @@
 namespace OmniForm\BlockLibrary\Blocks;
 
 /**
- * The PostCommentsFormCancelReplyLink block class.
+ * Renders WordPress's cancel-reply link with block wrapper attributes.
+ *
+ * Delegates link generation to get_cancel_comment_reply_link(), then injects
+ * block supports attributes onto the anchor element.
  */
 class PostCommentsFormCancelReplyLink extends BaseBlock {
 	/**
@@ -17,17 +20,22 @@ class PostCommentsFormCancelReplyLink extends BaseBlock {
 	 * @return string
 	 */
 	public function render(): string {
-		$link_text = $this->get_block_attribute( 'linkText' );
-
-		$cancel_comment_reply_link = get_cancel_comment_reply_link(
-			$this->get_block_attribute( 'linkText' ),
-			$this->get_block_context( 'postId' )
-		);
-
 		return str_replace(
 			'<a',
 			'<a ' . get_block_wrapper_attributes(),
-			$cancel_comment_reply_link
+			$this->cancel_reply_link()
+		);
+	}
+
+	/**
+	 * Cancel reply link markup from WordPress core.
+	 *
+	 * @return string
+	 */
+	private function cancel_reply_link(): string {
+		return get_cancel_comment_reply_link(
+			$this->get_block_attribute( 'linkText' ),
+			$this->get_block_context( 'postId' )
 		);
 	}
 }

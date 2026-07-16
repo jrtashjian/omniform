@@ -1,6 +1,6 @@
 <?php
 /**
- * The SelectGroup block class.
+ * Server-side renderer for the select option group block.
  *
  * @package OmniForm
  */
@@ -8,23 +8,37 @@
 namespace OmniForm\BlockLibrary\Blocks;
 
 /**
- * The SelectGroup block class.
+ * Renders an optgroup wrapping select option inner blocks.
+ *
+ * Returns empty markup when the group has no field label attribute.
  */
 class SelectGroup extends BaseBlock {
 	/**
 	 * Renders the block on the server.
 	 *
-	 * @return string Returns the block content.
+	 * @return string
 	 */
 	public function render(): string {
-		if ( empty( $this->get_block_attribute( 'fieldLabel' ) ) ) {
+		$field_label = $this->field_label();
+		if ( null === $field_label ) {
 			return '';
 		}
 
 		return sprintf(
 			'<optgroup label="%s">%s</optgroup>',
-			esc_attr( $this->get_block_attribute( 'fieldLabel' ) ),
+			esc_attr( $field_label ),
 			$this->content
 		);
+	}
+
+	/**
+	 * Group label from block attributes, or null when empty.
+	 *
+	 * @return string|null
+	 */
+	private function field_label(): ?string {
+		$label = $this->get_block_attribute( 'fieldLabel' );
+
+		return empty( $label ) ? null : (string) $label;
 	}
 }
