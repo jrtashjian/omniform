@@ -50,6 +50,7 @@
 		"postId",
 		"postType",
 		"omniform/fieldPath",
+		"omniform/isChoiceGroup",
 		"omniform/fieldGroupName",
 		"omniform/fieldGroupLabel",
 		"omniform/fieldGroupIsRequired",

@@ -7,6 +7,8 @@
 
 namespace OmniForm\BlockLibrary\Blocks;
 
+use OmniForm\Form\Path;
+
 /**
  * The Select block class.
  */
@@ -62,9 +64,8 @@ class Select extends BaseControlBlock {
 	 * @return string
 	 */
 	public function get_control_name() {
-		return $this->get_block_attribute( 'isMultiple' )
-			? parent::get_control_name() . '[]'
-			: parent::get_control_name();
+		return Path::from_segments( $this->get_control_name_parts() )
+			->html_name( $this->get_block_attribute( 'isMultiple' ) );
 	}
 
 	/**

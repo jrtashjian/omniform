@@ -8,6 +8,7 @@
 namespace OmniForm\BlockLibrary\Blocks;
 
 use OmniForm\Dependencies\Respect\Validation;
+use OmniForm\Form\Path;
 use OmniForm\Traits\CallbackSupport;
 
 /**
@@ -109,10 +110,12 @@ abstract class BaseControlBlock extends BaseBlock {
 		$field_path = $this->get_block_context( 'omniform/fieldPath' ) ?? '';
 		$path_parts = explode( '.', $field_path );
 
-		return array_filter( [
-			...$path_parts,
-			$this->get_field_name(),
-		] );
+		return array_filter(
+			array(
+				...$path_parts,
+				$this->get_field_name(),
+			)
+		);
 	}
 
 	/**
@@ -121,14 +124,7 @@ abstract class BaseControlBlock extends BaseBlock {
 	 * @return string
 	 */
 	public function get_control_name() {
-		$parts = $this->get_control_name_parts();
-		$name  = array_shift( $parts );
-
-		foreach ( $parts as $part ) {
-			$name .= "[$part]";
-		}
-
-		return $name;
+		return Path::from_segments( $this->get_control_name_parts() )->html_name();
 	}
 
 	/**

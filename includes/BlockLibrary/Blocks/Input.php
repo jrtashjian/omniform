@@ -8,6 +8,7 @@
 namespace OmniForm\BlockLibrary\Blocks;
 
 use OmniForm\Dependencies\Respect\Validation;
+use OmniForm\Form\Path;
 use OmniForm\Validation\Rules\UsernameOrEmailRule;
 
 /**
@@ -174,10 +175,7 @@ class Input extends BaseControlBlock {
 	 * @return string
 	 */
 	public function get_control_name() {
-		if ( 'checkbox' === $this->get_block_attribute( 'fieldType' ) && $this->get_block_context( 'omniform/isChoiceGroup' ) ) {
-			return parent::get_control_name() . '[]';
-		}
-
-		return parent::get_control_name();
+		return Path::from_segments( $this->get_control_name_parts() )
+			->html_name( 'checkbox' === $this->get_block_attribute( 'fieldType' ) && $this->get_block_context( 'omniform/isChoiceGroup' ) );
 	}
 }
