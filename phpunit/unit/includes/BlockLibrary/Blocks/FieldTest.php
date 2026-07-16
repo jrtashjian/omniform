@@ -39,7 +39,7 @@ class FieldTest extends BaseTestCase {
 		$result = $this->block->render_block(
 			array(),
 			'<p>Field content</p>',
-			$this->createMock( \stdClass::class )
+			new \WP_Block()
 		);
 
 		$this->assertEquals( '', $result );
@@ -52,7 +52,7 @@ class FieldTest extends BaseTestCase {
 		$result = $this->block->render_block(
 			array( 'fieldLabel' => 'Test Field' ),
 			'<p>Field content</p>',
-			$this->createMock( \stdClass::class )
+			new \WP_Block()
 		);
 
 		$this->assertEquals( '<div class="wp-block-omniform-field-is-layout-flex"><p>Field content</p></div>', $result );

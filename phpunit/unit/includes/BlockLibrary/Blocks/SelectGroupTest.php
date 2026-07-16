@@ -38,7 +38,7 @@ class SelectGroupTest extends BaseTestCase {
 
 		$this->block = new SelectGroup();
 
-		$this->wp_block_mock          = $this->createMock( \stdClass::class );
+		$this->wp_block_mock          = new \WP_Block();
 		$this->wp_block_mock->context = array( 'omniform/fieldLabel' => 'Test Group' );
 
 		// Mock WP_Block_Supports static method using Mockery.

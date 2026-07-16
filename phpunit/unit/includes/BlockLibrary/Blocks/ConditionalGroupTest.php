@@ -42,7 +42,7 @@ class ConditionalGroupTest extends BaseTestCase {
 		$result = $this->block->render_block(
 			array(),
 			'<p>Test content</p>',
-			$this->createMock( \stdClass::class )
+			new \WP_Block()
 		);
 
 		$this->assertEquals( '<p>Test content</p>', $result );
@@ -55,7 +55,7 @@ class ConditionalGroupTest extends BaseTestCase {
 		$result = $this->block->render_block(
 			array( 'callback' => '' ),
 			'<p>Test content</p>',
-			$this->createMock( \stdClass::class )
+			new \WP_Block()
 		);
 
 		$this->assertEquals( '<p>Test content</p>', $result );
@@ -79,7 +79,7 @@ class ConditionalGroupTest extends BaseTestCase {
 				'reverseCondition' => false,
 			),
 			'<p>Test content</p>',
-			$this->createMock( \stdClass::class )
+			new \WP_Block()
 		);
 
 		$this->assertEquals( '<p>Test content</p>', $result );
@@ -103,7 +103,7 @@ class ConditionalGroupTest extends BaseTestCase {
 				'reverseCondition' => true,
 			),
 			'<p>Test content</p>',
-			$this->createMock( \stdClass::class )
+			new \WP_Block()
 		);
 
 		$this->assertEquals( '', $result );
@@ -119,7 +119,7 @@ class ConditionalGroupTest extends BaseTestCase {
 				'reverseCondition' => false,
 			),
 			'<p>Test content</p>',
-			$this->createMock( \stdClass::class )
+			new \WP_Block()
 		);
 
 		$this->assertEquals( '', $result );
@@ -135,7 +135,7 @@ class ConditionalGroupTest extends BaseTestCase {
 				'reverseCondition' => true,
 			),
 			'<p>Test content</p>',
-			$this->createMock( \stdClass::class )
+			new \WP_Block()
 		);
 
 		$this->assertEquals( '<p>Test content</p>', $result );

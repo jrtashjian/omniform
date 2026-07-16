@@ -39,7 +39,7 @@ class FieldsetTest extends BaseTestCase {
 
 		$this->block = new Fieldset();
 
-		$this->wp_block_mock = $this->createMock( \stdClass::class );
+		$this->wp_block_mock = new \WP_Block();
 
 		// Mock omniform() function and its dependencies.
 		$form_mock = Mockery::mock();

@@ -38,7 +38,7 @@ class TextareaTest extends BaseTestCase {
 
 		$this->block = new Textarea();
 
-		$this->wp_block_mock          = $this->createMock( \stdClass::class );
+		$this->wp_block_mock          = new \WP_Block();
 		$this->wp_block_mock->context = array();
 
 		// Mock WP_Block_Supports static method using Mockery.

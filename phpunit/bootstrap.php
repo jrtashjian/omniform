@@ -10,6 +10,30 @@ require_once dirname( __DIR__ ) . '/vendor/autoload.php';
 
 define( 'PHPUNIT_TESTING', true ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
+/*
+ * Minimal WP_Block double for unit tests (WordPress core is not bootstrapped).
+ */
+if ( ! class_exists( 'WP_Block', false ) ) {
+	/**
+	 * Test double for WordPress WP_Block.
+	 */
+	class WP_Block {
+		/**
+		 * Block context values.
+		 *
+		 * @var array
+		 */
+		public $context = array();
+
+		/**
+		 * Original parsed array representation of block.
+		 *
+		 * @var array
+		 */
+		public $parsed_block = array();
+	}
+}
+
 // Initialize WP_Mock.
 WP_Mock::bootstrap();
 

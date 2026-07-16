@@ -39,7 +39,7 @@ class ButtonTest extends BaseTestCase {
 
 		$this->block = new Button();
 
-		$this->wp_block_mock = $this->createMock( \stdClass::class );
+		$this->wp_block_mock = new \WP_Block();
 
 		WP_Mock::userFunction( 'wp_theme_get_element_class_name' )->with( 'button' )->andReturn( 'wp-element-button' );
 

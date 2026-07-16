@@ -38,7 +38,7 @@ class HiddenTest extends BaseTestCase {
 		$this->block->render_block(
 			array( 'fieldName' => 'test-hidden' ),
 			'',
-			$this->createMock( \stdClass::class )
+			new \WP_Block()
 		);
 
 		$result = $this->block->get_field_label();
@@ -56,7 +56,7 @@ class HiddenTest extends BaseTestCase {
 				'fieldValue' => 'hidden-value',
 			),
 			'',
-			$this->createMock( \stdClass::class )
+			new \WP_Block()
 		);
 
 		$result = $this->block->get_extra_wrapper_attributes();
@@ -79,7 +79,7 @@ class HiddenTest extends BaseTestCase {
 				'fieldValue' => 'hidden-value',
 			),
 			'',
-			$this->createMock( \stdClass::class )
+			new \WP_Block()
 		);
 
 		$this->assertEquals( '<input type="hidden" id="test-hidden" name="test-hidden" value="hidden-value" />', $result );

@@ -40,7 +40,7 @@ class InputTest extends BaseTestCase {
 
 		$this->block = new Input();
 
-		$this->wp_block_mock          = $this->createMock( \stdClass::class );
+		$this->wp_block_mock          = new \WP_Block();
 		$this->wp_block_mock->context = array( 'omniform/fieldLabel' => 'Test Label' );
 
 		// Mock WP_Block_Supports static method using Mockery.

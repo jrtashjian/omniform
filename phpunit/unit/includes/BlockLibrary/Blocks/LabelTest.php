@@ -39,7 +39,7 @@ class LabelTest extends BaseTestCase {
 
 		$this->block = new Label();
 
-		$this->wp_block_mock          = $this->createMock( \stdClass::class );
+		$this->wp_block_mock          = new \WP_Block();
 		$this->wp_block_mock->context = array();
 	}
 
