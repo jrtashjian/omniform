@@ -8,16 +8,17 @@
 namespace OmniForm\BlockLibrary\Blocks;
 
 use OmniForm\Dependencies\Respect\Validation;
-use OmniForm\Form\Path;
+use OmniForm\Form\ControlName;
+use OmniForm\Form\FieldName;
+use OmniForm\Form\FieldPath;
 use OmniForm\Traits\CallbackSupport;
 
 /**
  * Shared foundation for form control blocks.
  *
  * Resolves field identity from block context (label, name, group, path),
- * builds HTML control attributes and Path-based name segments, applies
- * callback-aware values, and supplies validation rules. Concrete controls
- * implement render_control().
+ * composes HTML names via ControlName, applies callback-aware values, and
+ * supplies validation rules. Concrete controls implement render_control().
  */
 abstract class BaseControlBlock extends BaseBlock {
 	use CallbackSupport;
@@ -43,14 +44,16 @@ abstract class BaseControlBlock extends BaseBlock {
 	}
 
 	/**
-	 * Gets the sanitized field name, falling back to the field label.
+	 * Gets the sanitized control name, falling back to the field label.
 	 *
 	 * @return string
 	 */
 	public function get_field_name(): string {
-		return $this->sanitize_field_name(
-			(string) ( $this->get_block_context( 'omniform/fieldName' ) ?? $this->get_field_label() ?? '' )
-		);
+		try {
+			return $this->control_field_name()->value();
+		} catch ( \InvalidArgumentException $_exception ) {
+			return '';
+		}
 	}
 
 	/**
@@ -117,23 +120,12 @@ abstract class BaseControlBlock extends BaseBlock {
 	}
 
 	/**
-	 * Path segments used to build the control's HTML name attribute.
+	 * Name segments used to build the control's HTML name attribute.
 	 *
 	 * @return list<string>
 	 */
 	public function get_control_name_parts(): array {
-		$field_path = (string) ( $this->get_block_context( 'omniform/fieldPath' ) ?? '' );
-		$path_parts = '' === $field_path ? array() : explode( '.', $field_path );
-
-		return array_values(
-			array_filter(
-				array(
-					...$path_parts,
-					$this->get_field_name(),
-				),
-				static fn( string $part ): bool => '' !== $part
-			)
-		);
+		return $this->composed_name()->segments();
 	}
 
 	/**
@@ -142,7 +134,71 @@ abstract class BaseControlBlock extends BaseBlock {
 	 * @return string
 	 */
 	public function get_control_name(): string {
-		return Path::from_segments( $this->get_control_name_parts() )->html_name();
+		return $this->composed_name()->html_name(
+			ControlName::is_multiple(
+				$this->control_type(),
+				$this->is_choice_group(),
+				$this->control_name_is_multiple()
+			)
+		);
+	}
+
+	/**
+	 * Composed field path for this control (path prefix + control name + flags).
+	 */
+	public function composed_name(): FieldPath {
+		return ControlName::compose(
+			$this->field_path_prefix(),
+			$this->control_field_name(),
+			$this->control_type(),
+			$this->is_choice_group()
+		);
+	}
+
+	/**
+	 * Single-segment control name from fieldName or fieldLabel.
+	 */
+	protected function control_field_name(): FieldName {
+		$name_context = $this->get_block_context( 'omniform/fieldName' );
+
+		return FieldName::from_name_or_label(
+			null === $name_context ? null : (string) $name_context,
+			(string) ( $this->get_field_label() ?? '' )
+		);
+	}
+
+	/**
+	 * Fieldset path prefix from render context.
+	 */
+	protected function field_path_prefix(): FieldPath {
+		$field_path = (string) ( $this->get_block_context( 'omniform/fieldPath' ) ?? '' );
+
+		if ( '' === $field_path ) {
+			return FieldPath::empty();
+		}
+
+		return FieldPath::from_segments( explode( '.', $field_path ) );
+	}
+
+	/**
+	 * Control type used for composition (text, radio, select, …).
+	 */
+	protected function control_type(): string {
+		return 'text';
+	}
+
+	/**
+	 * Whether the control requests a multi-value HTML name (e.g. select multiple).
+	 */
+	protected function control_name_is_multiple(): bool {
+		return false;
+	}
+
+	/**
+	 * Whether the parent fieldset is a radio/checkbox choice group.
+	 */
+	protected function is_choice_group(): bool {
+		return (bool) $this->get_block_context( 'omniform/isChoiceGroup' );
 	}
 
 	/**
