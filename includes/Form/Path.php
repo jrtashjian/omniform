@@ -4,6 +4,7 @@
  *
  * @package OmniForm
  */
+
 namespace OmniForm\Form;
 
 /**
@@ -11,6 +12,8 @@ namespace OmniForm\Form;
  */
 final class Path {
 	/**
+	 * Create a new Path instance.
+	 *
 	 * @param array<string> $segments The segments of the path.
 	 */
 	private function __construct(
@@ -20,12 +23,13 @@ final class Path {
 	/**
 	 * Create Path from segments.
 	 *
-	 * @param array $segments
+	 * @param array $segments The segments of the path.
+	 *
 	 * @return self
 	 * @throws \InvalidArgumentException If empty or non-string segments.
 	 */
 	public static function from_segments( array $segments ): self {
-		if ( $segments === array() ) {
+		if ( array() === $segments ) {
 			throw new \InvalidArgumentException( 'Path requires at least one segment.' );
 		}
 
@@ -91,7 +95,7 @@ final class Path {
 	/**
 	 * Sanitize a path segment.
 	 *
-	 * @param string $segment
+	 * @param string $segment The segment to sanitize.
 	 * @return string
 	 */
 	private static function sanitize( string $segment ): string {

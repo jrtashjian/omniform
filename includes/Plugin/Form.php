@@ -9,7 +9,6 @@ namespace OmniForm\Plugin;
 
 use OmniForm\BlockLibrary\Blocks\BaseControlBlock;
 use OmniForm\BlockLibrary\Blocks\Fieldset;
-use OmniForm\Dependencies\Dflydev\DotAccessData;
 use OmniForm\Dependencies\Respect\Validation;
 
 /**
@@ -19,7 +18,7 @@ class Form {
 	/**
 	 * Form ID.
 	 *
-	 * @var number
+	 * @var int
 	 */
 	protected $id = 0;
 
@@ -268,7 +267,7 @@ class Form {
 	protected function register_fields() {
 		add_filter( 'render_block', array( $this, 'hook_render_block' ), 10, 3 );
 		do_blocks( $this->get_content() );
-		remove_filter( 'render_block', array( $this, 'hook_render_block' ), 10, 3 );
+		remove_filter( 'render_block', array( $this, 'hook_render_block' ), 10 );
 	}
 
 	/**
@@ -302,11 +301,11 @@ class Form {
 	 * Filters the content of a single block. This is used to parse the form's
 	 * blocks and add them to the form's fields for processing.
 	 *
-	 * @param string   $block_content The block content.
-	 * @param array    $parsed_block The full block, including name and attributes.
-	 * @param WP_Block $wp_block The block instance.
+	 * @param string    $block_content The block content.
+	 * @param array     $_parsed_block The full block, including name and attributes.
+	 * @param \WP_Block $wp_block The block instance.
 	 */
-	public function hook_render_block( $block_content, $parsed_block, $wp_block ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
+	public function hook_render_block( $block_content, $_parsed_block, $wp_block ) {
 		if ( empty( $wp_block->block_type->render_callback ) || ! is_array( $wp_block->block_type->render_callback ) ) {
 			return $block_content;
 		}
