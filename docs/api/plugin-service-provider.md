@@ -8,40 +8,25 @@ The service provider extends `AbstractServiceProvider` and implements `BootableS
 
 ## Services Provided
 
-Access services through the `omniform()` helper function. See [omniform() Helper Function documentation](omniform-function.md) for usage examples.
+Access forms through the `omniform()` helper. See [omniform() Helper Function documentation](omniform-function.md) for usage examples.
 
 ### Form
 
-A shared instance of the `Form` class for form validation and processing.
+Load or create form instances.
 
 ```php
-$form = omniform()->get( \OmniForm\Plugin\Form::class );
+$form = omniform()->form( $form_id );
+$form = omniform()->form_from_content( $serialized_blocks );
 ```
 
-### FormFactory
+### Response
 
-Creates and manages form instances.
-
-```php
-$form_factory = omniform()->get( \OmniForm\Plugin\FormFactory::class );
-$form = $form_factory->create_with_id( $form_id );
-```
-
-### ResponseFactory
-
-Creates form response objects.
+Create form response objects via the container.
 
 ```php
-$response_factory = omniform()->get( \OmniForm\Plugin\ResponseFactory::class );
-$response = $response_factory->create_with_id( $response_id );
-```
-
-### QueryBuilder
-
-Provides database query building functionality using WordPress's `$wpdb`.
-
-```php
-$query_builder = omniform()->get( \OmniForm\Plugin\QueryBuilder::class );
+$response = omniform()->container()
+	->get( \OmniForm\Plugin\ResponseFactory::class )
+	->create_with_form( $form );
 ```
 
 ## Post Types

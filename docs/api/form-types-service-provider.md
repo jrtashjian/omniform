@@ -13,7 +13,7 @@ The service provider extends `AbstractServiceProvider` and implements `BootableS
 The service provider registers a shared instance of `FormTypesManager`, which manages form type definitions and provides methods for adding and retrieving form types.
 
 ```php
-$form_types_manager = omniform()->get( \OmniForm\FormTypes\FormTypesManager::class );
+$form_types_manager = omniform()->container()->get( \OmniForm\FormTypes\FormTypesManager::class );
 ```
 
 ## Form Types
@@ -34,7 +34,7 @@ array(
 ### Retrieving Form Types
 
 ```php
-$form_types_manager = omniform()->get( \OmniForm\FormTypes\FormTypesManager::class );
+$form_types_manager = omniform()->container()->get( \OmniForm\FormTypes\FormTypesManager::class );
 
 // Get all available form types
 $form_types = $form_types_manager->get_form_types();
@@ -49,7 +49,7 @@ $validated_type = $form_types_manager->validate_form_type( 'some_type' );
 ### Adding Custom Form Types
 
 ```php
-$form_types_manager = omniform()->get( \OmniForm\FormTypes\FormTypesManager::class );
+$form_types_manager = omniform()->container()->get( \OmniForm\FormTypes\FormTypesManager::class );
 
 $form_types_manager->add_form_type(
     array(

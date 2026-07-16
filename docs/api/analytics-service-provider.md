@@ -13,7 +13,7 @@ The service provider extends `AbstractServiceProvider` and implements `BootableS
 The service provider registers a shared instance of `AnalyticsManager`, which provides methods for recording form events and retrieving analytics data.
 
 ```php
-$analytics_manager = omniform()->get( \OmniForm\Analytics\AnalyticsManager::class );
+$analytics_manager = omniform()->container()->get( \OmniForm\Analytics\AnalyticsManager::class );
 ```
 
 ## Database Schema
@@ -28,7 +28,7 @@ The service provider manages two database tables for analytics:
 ### Recording Events
 
 ```php
-$analytics = omniform()->get( \OmniForm\Analytics\AnalyticsManager::class );
+$analytics = omniform()->container()->get( \OmniForm\Analytics\AnalyticsManager::class );
 
 // Record when a form is viewed
 $analytics->record_impression( $form_id );
@@ -43,7 +43,7 @@ $analytics->record_submission_failure( $form_id );
 ### Retrieving Analytics
 
 ```php
-$analytics = omniform()->get( \OmniForm\Analytics\AnalyticsManager::class );
+$analytics = omniform()->container()->get( \OmniForm\Analytics\AnalyticsManager::class );
 
 // Get total impressions
 $total_impressions = $analytics->get_impression_count( $form_id );

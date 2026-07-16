@@ -1,74 +1,62 @@
 # omniform() Function
 
-The `omniform()` function is a global helper that returns the main application container instance (`\OmniForm\Application`), providing access to core services and utilities within the OmniForm plugin.
+The `omniform()` function is a global helper that returns the main application instance (`\OmniForm\Application`). Use it when extending the plugin from outside OmniForm’s own internals.
 
 ## Overview
 
 ```php
-$container = omniform();
+$app = omniform();
 ```
 
-This function allows developers to interact with various OmniForm services programmatically.
+## Forms
 
-## Service Retrieval
-
-### FormFactory
-Retrieve the FormFactory service to create or manage form instances.
+### Load a form by ID
 
 ```php
-$form_factory = omniform()->get( \OmniForm\Plugin\FormFactory::class );
-$form = $form_factory->create_with_id( $form_id );
+$form = omniform()->form( $form_id );
 ```
 
-### AnalyticsManager
-Access analytics tracking for form submissions and impressions.
+### Create a form from block content
 
 ```php
-$analytics = omniform()->get( \OmniForm\Analytics\AnalyticsManager::class );
-$analytics->record_submission_success( $form_id );
-$impressions = $analytics->get_impression_count( $form_id );
+$form = omniform()->form_from_content( $serialized_blocks );
 ```
 
-### ResponseFactory
-Create form response objects.
-
-```php
-$response_factory = omniform()->get( \OmniForm\Plugin\ResponseFactory::class );
-$response = $response_factory->create_with_form( $form );
-```
-
-### FormTypesManager
-Manage different form types.
-
-```php
-$form_types = omniform()->get( \OmniForm\FormTypes\FormTypesManager::class );
-// Use for registering or retrieving form types
-```
-
-## Utility Methods
+## Utility methods
 
 ### Version
-Get the current plugin version.
 
 ```php
 $version = omniform()->version();
 ```
 
-### Base Path
-Get the plugin's base directory path.
+### Base path / URL
 
 ```php
-$path = omniform()->base_path();
+$path = omniform()->base_path( 'build/dashboard/index.js' );
+$url  = omniform()->base_url( 'assets/' );
 ```
 
-## Service Providers
+## Service providers
 
-You can register custom service providers to extend OmniForm's functionality.
+Register custom service providers when you need to wire additional services:
 
 ```php
-omniform()->addServiceProvider( new MyCustomServiceProvider() );
+omniform()->register( new MyCustomServiceProvider() );
 ```
+
+Resolve services not exposed as typed methods via the container:
+
+```php
+$analytics = omniform()->container()->get( \OmniForm\Analytics\AnalyticsManager::class );
+$form_types = omniform()->container()->get( \OmniForm\FormTypes\FormTypesManager::class );
+```
+
+For most customizations, prefer [hooks](../hooks/php-hooks.md) instead of container access.
 
 ## Notes
 
-Some methods like `set_base_path()` are internal and not intended for public use. Stick to the service retrieval, utility methods, and service provider registration for custom development. For most customizations, use [hooks](../hooks/php-hooks.md) instead.
+- `omniform()` returns `Application`, not a DI container.
+- Prefer `form()` / `form_from_content()` for form access.
+- `container()` is for advanced wiring only.
+- Methods like `set_base_path()` are internal and not intended for public use.
