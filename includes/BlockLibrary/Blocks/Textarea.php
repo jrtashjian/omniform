@@ -16,7 +16,7 @@ class Textarea extends BaseControlBlock {
 	 *
 	 * @return string
 	 */
-	public function render_control() {
+	public function render_control(): string {
 		return sprintf(
 			'<textarea %s>%s</textarea>',
 			get_block_wrapper_attributes( $this->get_extra_wrapper_attributes() ),
@@ -27,13 +27,13 @@ class Textarea extends BaseControlBlock {
 	/**
 	 * Gets the extra wrapper attributes for the field to be passed into get_block_wrapper_attributes().
 	 *
-	 * @return array
+	 * @return array<string, mixed>
 	 */
-	public function get_extra_wrapper_attributes() {
+	public function get_extra_wrapper_attributes(): array {
 		$extra_attributes = wp_parse_args(
 			array(
 				'placeholder' => $this->get_block_attribute( 'fieldPlaceholder' ),
-				'aria-label'  => esc_attr( wp_strip_all_tags( $this->get_field_label() ) ),
+				'aria-label'  => esc_attr( wp_strip_all_tags( $this->get_field_label() ?? '' ) ),
 			),
 			parent::get_extra_wrapper_attributes()
 		);

@@ -18,7 +18,7 @@ class Select extends BaseControlBlock {
 	 *
 	 * @return string
 	 */
-	public function render_control() {
+	public function render_control(): string {
 		// Remove minHeight attribute so it doesn't get added to the wrapper element if not a multiple select.
 		$block_attributes = get_block_wrapper_attributes( $this->get_extra_wrapper_attributes() );
 
@@ -44,9 +44,9 @@ class Select extends BaseControlBlock {
 	/**
 	 * Gets the extra wrapper attributes for the field to be passed into get_block_wrapper_attributes().
 	 *
-	 * @return array
+	 * @return array<string, mixed>
 	 */
-	public function get_extra_wrapper_attributes() {
+	public function get_extra_wrapper_attributes(): array {
 		$extra_attributes = wp_parse_args(
 			array(
 				'multiple' => $this->get_block_attribute( 'isMultiple' ),
@@ -60,12 +60,10 @@ class Select extends BaseControlBlock {
 
 	/**
 	 * Gets the control's name attribute.
-	 *
-	 * @return string
 	 */
-	public function get_control_name() {
+	public function get_control_name(): string {
 		return Path::from_segments( $this->get_control_name_parts() )
-			->html_name( $this->get_block_attribute( 'isMultiple' ) );
+			->html_name( (bool) $this->get_block_attribute( 'isMultiple' ) );
 	}
 
 	/**

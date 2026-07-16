@@ -44,7 +44,9 @@ class Fieldset extends BaseBlock {
 	 * @return string|null
 	 */
 	public function get_field_group_name() {
-		return sanitize_html_class( preg_replace( '/\s+/', '-', $this->get_block_attribute( 'fieldName' ) ?? $this->get_field_group_label() ?? '' ) );
+		return $this->sanitize_field_name(
+			$this->get_block_attribute( 'fieldName' ) ?? $this->get_field_group_label() ?? ''
+		);
 	}
 
 	/**

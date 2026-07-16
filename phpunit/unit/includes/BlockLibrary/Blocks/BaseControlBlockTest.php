@@ -219,8 +219,8 @@ class BaseControlBlockTest extends \OmniForm\Tests\Unit\BaseTestCase {
 	public function testGetControlNameParts() {
 		$block          = new \WP_Block();
 		$block->context = array(
-			'omniform/fieldGroupName' => 'group',
-			'omniform/fieldName'      => 'field',
+			'omniform/fieldPath' => 'group',
+			'omniform/fieldName' => 'field',
 		);
 
 		$this->block->render_block( array(), '', $block );
@@ -231,13 +231,13 @@ class BaseControlBlockTest extends \OmniForm\Tests\Unit\BaseTestCase {
 	}
 
 	/**
-	 * Test get_control_name method for grouped field.
+	 * Test get_control_name method for nested field path.
 	 */
 	public function testGetControlNameGrouped() {
 		$block          = new \WP_Block();
 		$block->context = array(
-			'omniform/fieldGroupName' => 'group',
-			'omniform/fieldName'      => 'field',
+			'omniform/fieldPath' => 'group',
+			'omniform/fieldName' => 'field',
 		);
 
 		$this->block->render_block( array(), '', $block );
@@ -373,13 +373,13 @@ class BaseControlBlockTest extends \OmniForm\Tests\Unit\BaseTestCase {
 	}
 
 	/**
-	 * Test get_extra_wrapper_attributes method with grouped field.
+	 * Test get_extra_wrapper_attributes method with nested field path.
 	 */
 	public function testGetExtraWrapperAttributesWithGroupedField() {
 		$block          = new \WP_Block();
 		$block->context = array(
-			'omniform/fieldGroupName' => 'group',
-			'omniform/fieldName'      => 'field',
+			'omniform/fieldPath' => 'group',
+			'omniform/fieldName' => 'field',
 		);
 
 		$this->block->render_block( array(), '', $block );
@@ -387,7 +387,7 @@ class BaseControlBlockTest extends \OmniForm\Tests\Unit\BaseTestCase {
 		$result = $this->block->get_extra_wrapper_attributes();
 
 		$expected = array(
-			'id'   => 'field', // get_field_name() returns field name, not group name.
+			'id'   => 'field',
 			'name' => 'group[field]',
 		);
 
@@ -416,7 +416,7 @@ class BaseControlBlockTest extends \OmniForm\Tests\Unit\BaseTestCase {
 
 // phpcs:disable
 class TestableBaseControlBlock extends BaseControlBlock {
-	public function render_control() {
+	public function render_control(): string {
 		return '<div>Test Block Control</div>';
 	}
 }

@@ -26,7 +26,7 @@ class Input extends BaseControlBlock {
 	 *
 	 * @return string
 	 */
-	public function render_control() {
+	public function render_control(): string {
 		return sprintf(
 			'<input %s />',
 			get_block_wrapper_attributes( $this->get_extra_wrapper_attributes() )
@@ -54,11 +54,11 @@ class Input extends BaseControlBlock {
 	 *
 	 * @return array
 	 */
-	public function get_extra_wrapper_attributes() {
+	public function get_extra_wrapper_attributes(): array {
 		$extra_attributes = wp_parse_args(
 			array(
 				'type'       => $this->get_type(),
-				'aria-label' => esc_attr( wp_strip_all_tags( $this->get_field_label() ) ),
+				'aria-label' => esc_attr( wp_strip_all_tags( $this->get_field_label() ?? '' ) ),
 			),
 			parent::get_extra_wrapper_attributes()
 		);
@@ -84,51 +84,40 @@ class Input extends BaseControlBlock {
 	 *
 	 * @return string
 	 */
-	public function get_control_value() {
+	public function get_control_value(): string {
 		if ( $this->get_block_attribute( 'fieldValue' ) ) {
 			return parent::get_control_value();
 		}
 
-		switch ( $this->get_block_attribute( 'fieldType' ) ) {
+		return match ( $this->get_block_attribute( 'fieldType' ) ) {
 			// Checkboxes default to boolean. However, when transforming from a select field we want the option name to be the value.
-			case 'checkbox':
-				return $this->get_field_label();
+			'checkbox',
 			// Radios are always grouped so value is its name.
-			case 'radio':
-				return $this->get_field_label();
-			// Date and time inputs need a default vaule to display properly on iOS.
-			case 'date':
-				return gmdate( self::FORMAT_DATE );
-			case 'time':
-				return gmdate( self::FORMAT_TIME );
-			case 'month':
-				return gmdate( self::FORMAT_MONTH );
-			case 'week':
-				return gmdate( self::FORMAT_WEEK );
-			case 'datetime-local':
-				return gmdate( self::FORMAT_DATETIME_LOCAL );
-			case 'search':
-				return get_query_var( $this->get_control_name() );
-			default:
-				return '';
-		}
+			'radio' => $this->get_field_label() ?? '',
+			// Date and time inputs need a default value to display properly on iOS.
+			'date' => gmdate( self::FORMAT_DATE ),
+			'time' => gmdate( self::FORMAT_TIME ),
+			'month' => gmdate( self::FORMAT_MONTH ),
+			'week' => gmdate( self::FORMAT_WEEK ),
+			'datetime-local' => gmdate( self::FORMAT_DATETIME_LOCAL ),
+			'search' => (string) get_query_var( $this->get_control_name() ),
+			default => '',
+		};
 	}
 
 	/**
 	 * Is the field required?
-	 *
-	 * @return bool
 	 */
-	public function is_required() {
+	public function is_required(): bool {
 		return ! in_array( $this->get_block_attribute( 'fieldType' ), array( 'radio', 'checkbox' ), true ) && parent::is_required();
 	}
 
 	/**
 	 * Gets the validation rules for the field.
 	 *
-	 * @return array
+	 * @return list<object>
 	 */
-	public function get_validation_rules() {
+	public function get_validation_rules(): array {
 		$rules = parent::get_validation_rules();
 
 		$validation_mapping = array(
@@ -144,8 +133,10 @@ class Input extends BaseControlBlock {
 			'color'          => new Validation\Rules\HexRgbColor(),
 		);
 
-		if ( isset( $validation_mapping[ $this->get_block_attribute( 'fieldType' ) ] ) ) {
-			$rule    = $validation_mapping[ $this->get_block_attribute( 'fieldType' ) ];
+		$field_type = $this->get_block_attribute( 'fieldType' );
+
+		if ( isset( $validation_mapping[ $field_type ] ) ) {
+			$rule    = $validation_mapping[ $field_type ];
 			$rules[] = $this->is_required()
 				? $rule
 				: new Validation\Rules\Optional( $rule );
@@ -157,9 +148,9 @@ class Input extends BaseControlBlock {
 	/**
 	 * Gets the control's name parts.
 	 *
-	 * @return array
+	 * @return list<string>
 	 */
-	public function get_control_name_parts() {
+	public function get_control_name_parts(): array {
 		$control_name_parts = parent::get_control_name_parts();
 
 		if ( in_array( $this->get_block_attribute( 'fieldType' ), array( 'radio', 'checkbox' ), true ) && $this->get_block_context( 'omniform/isChoiceGroup' ) ) {
@@ -171,10 +162,8 @@ class Input extends BaseControlBlock {
 
 	/**
 	 * Gets the control's name attribute.
-	 *
-	 * @return string
 	 */
-	public function get_control_name() {
+	public function get_control_name(): string {
 		return Path::from_segments( $this->get_control_name_parts() )
 			->html_name( 'checkbox' === $this->get_block_attribute( 'fieldType' ) && $this->get_block_context( 'omniform/isChoiceGroup' ) );
 	}

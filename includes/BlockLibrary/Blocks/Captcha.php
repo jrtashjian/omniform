@@ -105,65 +105,53 @@ class Captcha extends BaseControlBlock {
 	 *
 	 * @return string|null
 	 */
-	public function get_field_label() {
-		return self::SERVICES[ $this->get_block_attribute( 'service' ) ];
+	public function get_field_label(): ?string {
+		return self::SERVICES[ $this->get_block_attribute( 'service' ) ] ?? null;
 	}
 
 	/**
 	 * Gets the field name (sanitized).
 	 *
-	 * @return string|null
+	 * @return string
 	 */
-	public function get_field_name() {
-		switch ( $this->get_block_attribute( 'service' ) ) {
-			case 'hcaptcha':
-				$fieldname = 'h-captcha-response';
-				break;
-			case 'recaptchav2':
-			case 'recaptchav3':
-				$fieldname = 'g-recaptcha-response';
-				break;
-			case 'turnstile':
-				$fieldname = 'cf-turnstile-response';
-				break;
-		}
-		return $fieldname;
+	public function get_field_name(): string {
+		return match ( $this->get_block_attribute( 'service' ) ) {
+			'hcaptcha' => 'h-captcha-response',
+			'recaptchav2', 'recaptchav3' => 'g-recaptcha-response',
+			'turnstile' => 'cf-turnstile-response',
+			default => '',
+		};
 	}
 
 	/**
 	 * Gets the field group name (sanitized).
 	 *
-	 * @return string|null
+	 * @return string
 	 */
-	public function get_field_group_name() {
-		return null;
+	public function get_field_group_name(): string {
+		return '';
 	}
 
 	/**
 	 * Get the validation rules for the field.
 	 *
-	 * @return array
+	 * @return list<object>
 	 */
-	public function get_validation_rules() {
-		switch ( $this->get_block_attribute( 'service' ) ) {
-			case 'hcaptcha':
-				$rule = new HCaptchaRule();
-				break;
-			case 'recaptchav2':
-				$rule = new ReCaptchaV2Rule();
-				break;
-			case 'recaptchav3':
-				$rule = new ReCaptchaV3Rule();
-				break;
-			case 'turnstile':
-				$rule = new TurnstileRule();
-				break;
-		}
+	public function get_validation_rules(): array {
+		$rule = match ( $this->get_block_attribute( 'service' ) ) {
+			'hcaptcha' => new HCaptchaRule(),
+			'recaptchav2' => new ReCaptchaV2Rule(),
+			'recaptchav3' => new ReCaptchaV3Rule(),
+			'turnstile' => new TurnstileRule(),
+			default => null,
+		};
 
-		return array_filter(
-			array(
-				new Validation\Rules\NotEmpty(),
-				$rule,
+		return array_values(
+			array_filter(
+				array(
+					new Validation\Rules\NotEmpty(),
+					$rule,
+				)
 			)
 		);
 	}
@@ -173,7 +161,7 @@ class Captcha extends BaseControlBlock {
 	 *
 	 * @return string
 	 */
-	public function render_control() {
+	public function render_control(): string {
 		// Don't render a control for CAPTCHA.
 		return '';
 	}

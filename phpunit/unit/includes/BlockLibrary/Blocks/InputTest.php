@@ -193,7 +193,8 @@ class InputTest extends BaseTestCase {
 	public function testGetControlNameCheckboxGrouped() {
 		$this->wp_block_mock->context = array(
 			'omniform/fieldLabel'     => 'Test Label',
-			'omniform/fieldGroupName' => 'Test Group',
+			'omniform/fieldPath'      => 'Test-Group',
+			'omniform/isChoiceGroup'  => true,
 		);
 
 		$this->block->render_block(

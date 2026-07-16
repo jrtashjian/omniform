@@ -16,16 +16,18 @@ class Hidden extends Input {
 	 *
 	 * @return string|null
 	 */
-	public function get_field_label() {
-		return $this->get_block_attribute( 'fieldName' );
+	public function get_field_label(): ?string {
+		$name = $this->get_block_attribute( 'fieldName' );
+
+		return null === $name ? null : (string) $name;
 	}
 
 	/**
 	 * Gets the extra wrapper attributes for the field to be passed into get_block_wrapper_attributes().
 	 *
-	 * @return array
+	 * @return array<string, mixed>
 	 */
-	public function get_extra_wrapper_attributes() {
+	public function get_extra_wrapper_attributes(): array {
 		return array_filter(
 			array(
 				'type'  => 'hidden',

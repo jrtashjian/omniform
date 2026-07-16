@@ -29,7 +29,11 @@ class Label extends BaseBlock {
 
 		return sprintf(
 			'<label for="%s" %s>%s</label>',
-			esc_attr( sanitize_html_class( preg_replace( '/\s+/', '-', $this->get_block_context( 'omniform/fieldName' ) ?? $this->get_block_context( 'omniform/fieldLabel' ) ?? '' ) ) ),
+			esc_attr(
+				$this->sanitize_field_name(
+					$this->get_block_context( 'omniform/fieldName' ) ?? $this->get_block_context( 'omniform/fieldLabel' ) ?? ''
+				)
+			),
 			get_block_wrapper_attributes( $extra_attributes ),
 			wp_kses( $this->get_block_context( 'omniform/fieldLabel' ), $this->allowed_html_for_labels() ) . $this->label_required()
 		);
