@@ -16,7 +16,7 @@ class Field extends BaseBlock {
 	 *
 	 * @return string
 	 */
-	protected function render() {
+	protected function render(): string {
 		if ( empty( $this->get_block_attribute( 'fieldLabel' ) ) ) {
 			return '';
 		}

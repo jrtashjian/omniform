@@ -16,7 +16,7 @@ class SelectGroup extends BaseBlock {
 	 *
 	 * @return string Returns the block content.
 	 */
-	public function render() {
+	public function render(): string {
 		if ( empty( $this->get_block_attribute( 'fieldLabel' ) ) ) {
 			return '';
 		}

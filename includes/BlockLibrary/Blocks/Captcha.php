@@ -39,7 +39,7 @@ class Captcha extends BaseControlBlock {
 	 *
 	 * @return string Returns the block content.
 	 */
-	public function render() {
+	public function render(): string {
 		$service = $this->get_block_attribute( 'service' );
 
 		if ( empty( $service ) ) {

@@ -16,7 +16,7 @@ class ResponseNotification extends BaseBlock {
 	 *
 	 * @return string Returns the block content.
 	 */
-	public function render() {
+	public function render(): string {
 		$form = omniform()->get( \OmniForm\Plugin\Form::class );
 
 		// Render validation messages if they exist.
@@ -47,7 +47,7 @@ class ResponseNotification extends BaseBlock {
 					'style' => $this->notification_display( $form ),
 				)
 			),
-			wp_kses( $this->get_block_attribute( 'messageContent' ), $this->allowed_html_for_labels ),
+			wp_kses( $this->get_block_attribute( 'messageContent' ), $this->allowed_html_for_labels() ),
 			do_blocks( $this->content )
 		);
 	}

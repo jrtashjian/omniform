@@ -16,7 +16,7 @@ class Label extends BaseBlock {
 	 *
 	 * @return string
 	 */
-	protected function render() {
+	protected function render(): string {
 		if ( empty( $this->get_block_context( 'omniform/fieldLabel' ) ) ) {
 			return '';
 		}
@@ -31,7 +31,7 @@ class Label extends BaseBlock {
 			'<label for="%s" %s>%s</label>',
 			esc_attr( sanitize_html_class( preg_replace( '/\s+/', '-', $this->get_block_context( 'omniform/fieldName' ) ?? $this->get_block_context( 'omniform/fieldLabel' ) ?? '' ) ) ),
 			get_block_wrapper_attributes( $extra_attributes ),
-			wp_kses( $this->get_block_context( 'omniform/fieldLabel' ), $this->allowed_html_for_labels ) . $this->label_required()
+			wp_kses( $this->get_block_context( 'omniform/fieldLabel' ), $this->allowed_html_for_labels() ) . $this->label_required()
 		);
 	}
 
@@ -54,7 +54,7 @@ class Label extends BaseBlock {
 			)
 			: sprintf(
 				'<span class="omniform-field-required">%s</span>',
-				wp_kses( $required_label, $this->allowed_html_for_labels )
+				wp_kses( $required_label, $this->allowed_html_for_labels() )
 			);
 	}
 }

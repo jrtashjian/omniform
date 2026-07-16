@@ -16,7 +16,7 @@ class Button extends BaseBlock {
 	 *
 	 * @return string Returns the block content.
 	 */
-	public function render() {
+	public function render(): string {
 		if ( empty( $this->get_block_attribute( 'buttonLabel' ) ) ) {
 			return '';
 		}
@@ -29,7 +29,7 @@ class Button extends BaseBlock {
 					'type'  => esc_attr( $this->get_block_attribute( 'buttonType' ) ?? 'button' ),
 				)
 			),
-			wp_kses( $this->get_block_attribute( 'buttonLabel' ), $this->allowed_html_for_labels )
+			wp_kses( $this->get_block_attribute( 'buttonLabel' ), $this->allowed_html_for_labels() )
 		);
 	}
 }

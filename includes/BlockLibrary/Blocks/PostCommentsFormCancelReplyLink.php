@@ -16,7 +16,7 @@ class PostCommentsFormCancelReplyLink extends BaseBlock {
 	 *
 	 * @return string
 	 */
-	public function render() {
+	public function render(): string {
 		$link_text = $this->get_block_attribute( 'linkText' );
 
 		$cancel_comment_reply_link = get_cancel_comment_reply_link(

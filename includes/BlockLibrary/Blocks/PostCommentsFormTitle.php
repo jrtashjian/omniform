@@ -16,7 +16,7 @@ class PostCommentsFormTitle extends BaseBlock {
 	 *
 	 * @return string
 	 */
-	public function render() {
+	public function render(): string {
 		$tag_name = 'h3';
 		if ( $this->get_block_attribute( 'level' ) ) {
 			$tag_name = 'h' . $this->get_block_attribute( 'level' );

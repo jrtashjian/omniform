@@ -20,7 +20,7 @@ class ConditionalGroup extends BaseBlock {
 	 *
 	 * @return string
 	 */
-	public function render() {
+	public function render(): string {
 		if ( ! $this->has_callback( $this->get_block_attribute( 'callback' ) ?? '' ) ) {
 			return $this->content;
 		}

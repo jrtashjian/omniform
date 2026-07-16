@@ -22,7 +22,7 @@ class Form extends BaseBlock {
 	 *
 	 * @return string Returns the block content.
 	 */
-	public function render() {
+	public function render(): string {
 		if ( 'omniform' === $this->get_block_context( 'postType' ) ) {
 			$entity_id = $this->get_block_context( 'postId' );
 		}
