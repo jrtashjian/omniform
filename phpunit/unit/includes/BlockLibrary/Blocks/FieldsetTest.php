@@ -46,7 +46,9 @@ class FieldsetTest extends BaseTestCase {
 		$form_mock->shouldReceive( 'get_required_label' )->andReturn( '*' );
 
 		$omniform_mock = Mockery::mock();
-		$omniform_mock->shouldReceive( 'get' )->with( \OmniForm\Plugin\Form::class )->andReturn( $form_mock );
+		$omniform_mock->shouldReceive( 'container' )->andReturn(
+			Mockery::mock()->shouldReceive( 'get' )->with( \OmniForm\Plugin\Form::class )->andReturn( $form_mock )->getMock()
+		);
 
 		WP_Mock::userFunction( 'omniform' )->andReturn( $omniform_mock );
 

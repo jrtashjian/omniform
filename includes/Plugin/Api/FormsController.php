@@ -7,6 +7,8 @@
 
 namespace OmniForm\Plugin\Api;
 
+use OmniForm\Analytics\AnalyticsManager;
+use OmniForm\FormTypes\FormTypesManager;
 use OmniForm\Plugin\ResponseFactory;
 
 /**
@@ -92,9 +94,7 @@ class FormsController extends \WP_REST_Posts_Controller {
 	 */
 	public function create_response( \WP_REST_Request $request ) {
 		try {
-			/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
-			$form = omniform()->get( \OmniForm\Plugin\FormFactory::class )
-				->create_with_id( absint( $request->get_param( 'id' ) ) );
+			$form = omniform()->form( absint( $request->get_param( 'id' ) ) );
 		} catch ( \Exception $e ) {
 			return new \WP_Error(
 				'omniform_not_found',
@@ -112,7 +112,7 @@ class FormsController extends \WP_REST_Posts_Controller {
 		}
 
 		// Rate limit: Allow up to 10 submissions per hour, per unique visitor, per individual form.
-		$analytics_manager  = omniform()->get( \OmniForm\Analytics\AnalyticsManager::class );
+		$analytics_manager  = omniform()->container()->get( AnalyticsManager::class );
 		$recent_submissions = $analytics_manager->get_recent_submissions_count( $form->get_id(), 3600 );
 
 		if ( $recent_submissions >= 10 ) {
@@ -135,7 +135,7 @@ class FormsController extends \WP_REST_Posts_Controller {
 			);
 
 			if ( $form->is_published() ) {
-				omniform()->get( \OmniForm\Analytics\AnalyticsManager::class )->record_submission_failure( $form->get_id() );
+				omniform()->container()->get( AnalyticsManager::class )->record_submission_failure( $form->get_id() );
 			}
 
 			return rest_ensure_response(
@@ -143,8 +143,7 @@ class FormsController extends \WP_REST_Posts_Controller {
 			);
 		}
 
-		/** @var \OmniForm\Plugin\Response */ // phpcs:ignore
-		$response = omniform()->get( ResponseFactory::class )->create_with_form( $form );
+		$response = omniform()->container()->get( ResponseFactory::class )->create_with_form( $form );
 
 		$user_ip = filter_var( $_SERVER['REMOTE_ADDR'] ?? '', FILTER_VALIDATE_IP );
 
@@ -169,7 +168,7 @@ class FormsController extends \WP_REST_Posts_Controller {
 		}
 
 		if ( $form->is_published() ) {
-			omniform()->get( \OmniForm\Analytics\AnalyticsManager::class )->record_submission_success( $form->get_id() );
+			omniform()->container()->get( AnalyticsManager::class )->record_submission_success( $form->get_id() );
 		}
 
 		/**
@@ -213,7 +212,7 @@ class FormsController extends \WP_REST_Posts_Controller {
 	protected function prepare_item_for_database( $request ) {
 		$prepared_post = parent::prepare_item_for_database( $request );
 
-		$form_types_manager = omniform()->get( \OmniForm\FormTypes\FormTypesManager::class );
+		$form_types_manager = omniform()->container()->get( FormTypesManager::class );
 
 		if ( isset( $request['omniform_type'] ) ) {
 			$prepared_post->tax_input['omniform_type'] = $form_types_manager->validate_form_type( $request['omniform_type'] );
@@ -231,7 +230,7 @@ class FormsController extends \WP_REST_Posts_Controller {
 	 * @return array Modified Schema array.
 	 */
 	protected function add_additional_fields_schema( $schema ) {
-		$form_types_manager = omniform()->get( \OmniForm\FormTypes\FormTypesManager::class );
+		$form_types_manager = omniform()->container()->get( FormTypesManager::class );
 
 		// Define the schema for the omniform_type field.
 		$schema['properties']['omniform_type'] = array(
@@ -253,7 +252,7 @@ class FormsController extends \WP_REST_Posts_Controller {
 	 * @return array Modified data object with additional fields.
 	 */
 	protected function add_additional_fields_to_object( $response_data, $request ) {
-		$form_types_manager = omniform()->get( \OmniForm\FormTypes\FormTypesManager::class );
+		$form_types_manager = omniform()->container()->get( FormTypesManager::class );
 
 		$form_type_terms = get_the_terms( $response_data['id'], 'omniform_type' );
 

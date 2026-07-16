@@ -118,7 +118,9 @@ class LabelTest extends BaseTestCase {
 		$form_mock->shouldReceive( 'get_required_label' )->andReturn( '*' );
 
 		WP_Mock::userFunction( 'omniform' )->andReturn(
-			Mockery::mock()->shouldReceive( 'get' )->with( \OmniForm\Plugin\Form::class )->andReturn( $form_mock )->getMock()
+			Mockery::mock()->shouldReceive( 'container' )->andReturn(
+				Mockery::mock()->shouldReceive( 'get' )->with( \OmniForm\Plugin\Form::class )->andReturn( $form_mock )->getMock()
+			)->getMock()
 		);
 
 		$result = $this->block->render_block(
@@ -144,7 +146,9 @@ class LabelTest extends BaseTestCase {
 		$form_mock->shouldReceive( 'get_required_label' )->andReturn( '(required)' );
 
 		WP_Mock::userFunction( 'omniform' )->andReturn(
-			Mockery::mock()->shouldReceive( 'get' )->with( \OmniForm\Plugin\Form::class )->andReturn( $form_mock )->getMock()
+			Mockery::mock()->shouldReceive( 'container' )->andReturn(
+				Mockery::mock()->shouldReceive( 'get' )->with( \OmniForm\Plugin\Form::class )->andReturn( $form_mock )->getMock()
+			)->getMock()
 		);
 
 		$result = $this->block->render_block(

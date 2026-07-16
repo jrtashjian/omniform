@@ -9,6 +9,7 @@ namespace OmniForm\Tests\Unit;
 
 use OmniForm\Application;
 use OmniForm\Dependencies\League\Container\Container;
+use OmniForm\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Mock;
 
 /**
@@ -44,11 +45,11 @@ class ApplicationTest extends BaseTestCase {
 	 * Tests the setInstance method to ensure it correctly sets the application instance.
 	 */
 	public function testSetInstance() {
-		$new_container = new Container();
-		$result        = Application::set_instance( $new_container );
+		$new_application = new Application();
+		$result          = Application::set_instance( $new_application );
 
-		$this->assertSame( $new_container, $result, 'set_instance should return the provided container' );
-		$this->assertSame( $new_container, Application::get_instance(), 'get_instance should return the set container' );
+		$this->assertSame( $new_application, $result, 'set_instance should return the provided application' );
+		$this->assertSame( $new_application, Application::get_instance(), 'get_instance should return the set application' );
 
 		// Reset for subsequent tests.
 		Application::set_instance( null );
@@ -62,6 +63,56 @@ class ApplicationTest extends BaseTestCase {
 
 		$this->assertNull( $result, 'set_instance with null should return null' );
 		$this->assertInstanceOf( Application::class, Application::get_instance(), 'get_instance should still return a new instance after set_instance(null)' );
+	}
+
+	/**
+	 * Application composes a container rather than extending one.
+	 */
+	public function testComposesContainer() {
+		$app = Application::get_instance();
+
+		$this->assertInstanceOf( Container::class, $app->container() );
+		$this->assertFalse( $app instanceof Container, 'Application must not extend Container' );
+	}
+
+	/**
+	 * Application can accept an injected container.
+	 */
+	public function testConstructWithContainer() {
+		$container = new Container();
+		$app       = new Application( $container );
+
+		$this->assertSame( $container, $app->container() );
+	}
+
+	/**
+	 * Register delegates to the composed container.
+	 */
+	public function testRegisterServiceProvider() {
+		$app      = Application::get_instance();
+		$provider = new class() extends AbstractServiceProvider {
+			/**
+			 * Whether this provider provides the given service.
+			 *
+			 * @param string $id Service id.
+			 * @return bool
+			 */
+			public function provides( string $id ): bool {
+				return 'test.service' === $id;
+			}
+
+			/**
+			 * Register services.
+			 */
+			public function register(): void {
+				$this->getContainer()->add( 'test.service', 'registered' );
+			}
+		};
+
+		$result = $app->register( $provider );
+
+		$this->assertSame( $app, $result, 'register should return the application for chaining' );
+		$this->assertSame( 'registered', $app->container()->get( 'test.service' ) );
 	}
 
 	/**
@@ -186,7 +237,7 @@ class ApplicationTest extends BaseTestCase {
 		WP_Mock::userFunction(
 			'add_option',
 			array(
-				'args'  => array( 'omniform_initial_version', '1.3.3', '', false ),
+				'args'  => array( 'omniform_initial_version', Application::VERSION, '', false ),
 				'times' => 1,
 			)
 		);
