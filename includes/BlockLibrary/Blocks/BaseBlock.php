@@ -110,6 +110,17 @@ abstract class BaseBlock implements FormBlockInterface {
 	}
 
 	/**
+	 * Sanitize a field or group name for use as an HTML class, id, or name segment.
+	 *
+	 * @param string $name Raw field or group name.
+	 *
+	 * @return string
+	 */
+	protected function sanitize_field_name( string $name ): string {
+		return sanitize_html_class( preg_replace( '/\s+/', '-', $name ) );
+	}
+
+	/**
 	 * Bind the WordPress render callback arguments for this request.
 	 *
 	 * @param array<string, mixed> $attributes Block attributes.

@@ -1,6 +1,6 @@
 <?php
 /**
- * The BaseControlBlock block class.
+ * Abstract base for form control block renderers.
  *
  * @package OmniForm
  */
@@ -12,7 +12,12 @@ use OmniForm\Form\Path;
 use OmniForm\Traits\CallbackSupport;
 
 /**
- * The BaseControlBlock block class.
+ * Shared foundation for form control blocks.
+ *
+ * Resolves field identity from block context (label, name, group, path),
+ * builds HTML control attributes and Path-based name segments, applies
+ * callback-aware values, and supplies validation rules. Concrete controls
+ * implement render_control().
  */
 abstract class BaseControlBlock extends BaseBlock {
 	use CallbackSupport;
@@ -20,120 +25,133 @@ abstract class BaseControlBlock extends BaseBlock {
 	/**
 	 * Renders the block on the server.
 	 *
-	 * @return string Returns the block content.
+	 * @return string
 	 */
 	public function render(): string {
 		return $this->get_field_label() ? $this->render_control() : '';
 	}
 
 	/**
-	 * Gets the field label.
+	 * Gets the field label from block context.
 	 *
 	 * @return string|null
 	 */
-	public function get_field_label() {
-		return $this->get_block_context( 'omniform/fieldLabel' );
+	public function get_field_label(): ?string {
+		$label = $this->get_block_context( 'omniform/fieldLabel' );
+
+		return null === $label ? null : (string) $label;
 	}
 
 	/**
-	 * Gets the field name (sanitized).
+	 * Gets the sanitized field name, falling back to the field label.
+	 *
+	 * @return string
+	 */
+	public function get_field_name(): string {
+		return $this->sanitize_field_name(
+			(string) ( $this->get_block_context( 'omniform/fieldName' ) ?? $this->get_field_label() ?? '' )
+		);
+	}
+
+	/**
+	 * Gets the field group label from block context.
 	 *
 	 * @return string|null
 	 */
-	public function get_field_name() {
-		return sanitize_html_class( preg_replace( '/\s+/', '-', $this->get_block_context( 'omniform/fieldName' ) ?? $this->get_field_label() ?? '' ) );
+	public function get_field_group_label(): ?string {
+		$label = $this->get_block_context( 'omniform/fieldGroupLabel' );
+
+		return null === $label ? null : (string) $label;
 	}
 
 	/**
-	 * Gets the field group label.
+	 * Gets the sanitized field group name, falling back to the group label.
 	 *
-	 * @return string|null
+	 * @return string
 	 */
-	public function get_field_group_label() {
-		return $this->get_block_context( 'omniform/fieldGroupLabel' );
+	public function get_field_group_name(): string {
+		return $this->sanitize_field_name(
+			(string) ( $this->get_block_context( 'omniform/fieldGroupName' ) ?? $this->get_field_group_label() ?? '' )
+		);
 	}
 
 	/**
-	 * Gets the field group name (sanitized).
-	 *
-	 * @return string|null
-	 */
-	public function get_field_group_name() {
-		return sanitize_html_class( preg_replace( '/\s+/', '-', $this->get_block_context( 'omniform/fieldGroupName' ) ?? $this->get_field_group_label() ?? '' ) );
-	}
-
-	/**
-	 * Is the field grouped?
+	 * Whether the field belongs to a named group.
 	 *
 	 * @return bool
 	 */
-	public function is_grouped() {
-		return ! empty( $this->get_field_group_name() );
+	public function is_grouped(): bool {
+		return '' !== $this->get_field_group_name();
 	}
 
 	/**
-	 * Is the field required?
+	 * Whether the field (or its group) is required.
+	 *
+	 * Group-level required takes precedence over field-level required.
 	 *
 	 * @return bool
 	 */
-	public function is_required() {
-		return $this->get_block_context( 'omniform/fieldGroupIsRequired' ) ?? $this->get_block_context( 'omniform/fieldIsRequired' ) ?? false;
+	public function is_required(): bool {
+		return (bool) (
+			$this->get_block_context( 'omniform/fieldGroupIsRequired' )
+			?? $this->get_block_context( 'omniform/fieldIsRequired' )
+			?? false
+		);
 	}
 
 	/**
-	 * Gets the extra wrapper attributes for the field to be passed into get_block_wrapper_attributes().
+	 * Extra attributes for get_block_wrapper_attributes().
 	 *
-	 * @return array
+	 * @return array<string, mixed>
 	 */
-	public function get_extra_wrapper_attributes() {
-		$new_attributes = \WP_Block_Supports::get_instance()->apply_block_supports();
-		// Check if the block has a custom border. If it does, we don't want to hide it on focus.
-		$has_custom_border = key_exists( 'style', $new_attributes ) && strpos( $new_attributes['style'], 'border-width' ) !== false;
-
+	public function get_extra_wrapper_attributes(): array {
 		return array_filter(
 			array(
 				'id'       => $this->get_field_name(),
 				'name'     => $this->get_control_name(),
 				'value'    => $this->get_control_value(),
 				'required' => $this->is_required(),
-				'class'    => $has_custom_border ? 'has-custom-border' : '',
+				'class'    => $this->has_custom_border() ? 'has-custom-border' : '',
 			)
 		);
 	}
 
 	/**
-	 * Gets the control's name parts.
+	 * Path segments used to build the control's HTML name attribute.
 	 *
-	 * @return array
+	 * @return list<string>
 	 */
-	public function get_control_name_parts() {
-		$field_path = $this->get_block_context( 'omniform/fieldPath' ) ?? '';
-		$path_parts = explode( '.', $field_path );
+	public function get_control_name_parts(): array {
+		$field_path = (string) ( $this->get_block_context( 'omniform/fieldPath' ) ?? '' );
+		$path_parts = '' === $field_path ? array() : explode( '.', $field_path );
 
-		return array_filter(
-			array(
-				...$path_parts,
-				$this->get_field_name(),
+		return array_values(
+			array_filter(
+				array(
+					...$path_parts,
+					$this->get_field_name(),
+				),
+				static fn( string $part ): bool => '' !== $part
 			)
 		);
 	}
 
 	/**
-	 * Gets the control's name attribute.
+	 * The control's HTML name attribute (e.g. group[field]).
 	 *
 	 * @return string
 	 */
-	public function get_control_name() {
+	public function get_control_name(): string {
 		return Path::from_segments( $this->get_control_name_parts() )->html_name();
 	}
 
 	/**
-	 * The form control's value attribute.
+	 * The form control's value attribute, with callback placeholders resolved.
 	 *
 	 * @return string
 	 */
-	public function get_control_value() {
-		$value = $this->get_block_attribute( 'fieldValue' ) ?? '';
+	public function get_control_value(): string {
+		$value = (string) ( $this->get_block_attribute( 'fieldValue' ) ?? '' );
 
 		return $this->has_callback( $value )
 			? $this->process_callbacks( $value )
@@ -141,31 +159,47 @@ abstract class BaseControlBlock extends BaseBlock {
 	}
 
 	/**
-	 * Get the validation rules for the field.
+	 * Validation rules for the field.
 	 *
-	 * @return array
+	 * @return list<object>
 	 */
-	public function get_validation_rules() {
-		return array_filter(
-			array(
-				$this->is_required() ? new Validation\Rules\NotEmpty() : null,
+	public function get_validation_rules(): array {
+		return array_values(
+			array_filter(
+				array(
+					$this->is_required() ? new Validation\Rules\NotEmpty() : null,
+				)
 			)
 		);
 	}
 
 	/**
-	 * Does the field have validation rules?
+	 * Whether the field has any validation rules.
 	 *
 	 * @return bool
 	 */
-	public function has_validation_rules() {
-		return ! empty( $this->get_validation_rules() );
+	public function has_validation_rules(): bool {
+		return array() !== $this->get_validation_rules();
 	}
 
 	/**
-	 * Renders the form control.
+	 * Renders the form control markup.
 	 *
 	 * @return string
 	 */
-	abstract public function render_control();
+	abstract public function render_control(): string;
+
+	/**
+	 * Whether block supports include a custom border width.
+	 *
+	 * When present, focus styles should not hide the border.
+	 *
+	 * @return bool
+	 */
+	private function has_custom_border(): bool {
+		$attributes = \WP_Block_Supports::get_instance()->apply_block_supports();
+		$style      = $attributes['style'] ?? null;
+
+		return is_string( $style ) && str_contains( $style, 'border-width' );
+	}
 }
