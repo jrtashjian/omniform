@@ -81,7 +81,7 @@ class Label extends BaseBlock {
 			return '';
 		}
 
-		$required_label = omniform()->get( \OmniForm\Plugin\Form::class )->get_required_label();
+		$required_label = omniform()->container()->get( \OmniForm\Plugin\Form::class )->get_required_label();
 
 		return match ( $required_label ) {
 			'*' => sprintf(

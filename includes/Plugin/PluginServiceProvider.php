@@ -8,6 +8,7 @@
 namespace OmniForm\Plugin;
 
 use OmniForm\Analytics\AnalyticsManager;
+use OmniForm\Application;
 use OmniForm\Dependencies\Respect\Validation;
 use OmniForm\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use OmniForm\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
@@ -115,14 +116,13 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		add_action(
 			'omniform_form_render',
 			function ( $form_id ) {
-				/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
-				$form = omniform()->get( FormFactory::class )->create_with_id( $form_id );
+				$form = $this->getContainer()->get( FormFactory::class )->create_with_id( (int) $form_id );
 
 				if ( ! $form->is_published() || is_admin() || wp_is_serving_rest_request() ) {
 					return;
 				}
 
-				omniform()->get( AnalyticsManager::class )->record_impression( $form_id );
+				$this->getContainer()->get( AnalyticsManager::class )->record_impression( $form_id );
 			}
 		);
 
@@ -295,11 +295,12 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				remove_all_actions( 'admin_notices' );
 				remove_all_actions( 'all_admin_notices' );
 
-				$asset_file = include omniform()->base_path( 'build/dashboard/index.asset.php' );
+				$application = $this->getContainer()->get( Application::class );
+				$asset_file  = include $application->base_path( 'build/dashboard/index.asset.php' );
 
 				wp_enqueue_script(
 					'dashboard-script',
-					omniform()->base_url( 'build/dashboard/index.js' ),
+					$application->base_url( 'build/dashboard/index.js' ),
 					$asset_file['dependencies'],
 					$asset_file['version'],
 					true
@@ -307,7 +308,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 
 				wp_enqueue_style(
 					'dashboard-style',
-					omniform()->base_url( 'build/dashboard/style-index.css' ),
+					$application->base_url( 'build/dashboard/style-index.css' ),
 					array( 'wp-components' ),
 					$asset_file['version'],
 				);
@@ -508,7 +509,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					'search_items'       => __( 'Search responses', 'omniform' ),
 					'view_item'          => __( 'View response', 'omniform' ),
 				),
-				'public'                          => false,
+				'public'                          => true,
 				'rewrite'                         => false,
 				'show_in_rest'                    => true,
 				'rest_namespace'                  => 'omniform/v1',
@@ -522,6 +523,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					'create_posts' => 'do_not_allow',
 				),
 				'supports'                        => array(
+					'editor',
 					'custom-fields',
 				),
 			)
@@ -540,8 +542,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					$form_id = (int) get_post_meta( $post['id'], '_omniform_id', true );
 
 					try {
-						/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
-						$form = omniform()->get( FormFactory::class )->create_with_id( $form_id );
+						$form        = $this->getContainer()->get( FormFactory::class )->create_with_id( $form_id );
 						$post_object = get_post( $post['id'] );
 
 						$response_data = json_decode( $post_object->post_content, true );

@@ -7,7 +7,6 @@
 
 namespace OmniForm\BlockLibrary\Blocks;
 
-use OmniForm\Plugin\FormFactory;
 use OmniForm\Plugin\ResponseFactory;
 use OmniForm\Traits\CallbackSupport;
 
@@ -37,14 +36,10 @@ class Form extends BaseBlock {
 
 		// Setup the Form object.
 		try {
-			$form_factory = omniform()->get( FormFactory::class );
-
 			if ( ! empty( $entity_id ) ) {
-				/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
-				$form = $form_factory->create_with_id( $entity_id );
+				$form = omniform()->form( (int) $entity_id );
 			} else {
-				/** @var \OmniForm\Plugin\Form */ // phpcs:ignore
-				$form = $form_factory->create_with_content( serialize_blocks( $this->instance->parsed_block['innerBlocks'] ) );
+				$form = omniform()->form_from_content( serialize_blocks( $this->instance->parsed_block['innerBlocks'] ) );
 				$form->set_required_label( $this->get_block_attribute( 'required_label' ) );
 			}
 
@@ -144,8 +139,7 @@ class Form extends BaseBlock {
 			$form->set_request_params( $_POST );
 
 			if ( empty( $form->validate() ) ) {
-				/** @var \OmniForm\Plugin\Response */ // phpcs:ignore
-				$response = omniform()->get( ResponseFactory::class )->create_with_form( $form );
+				$response = omniform()->container()->get( ResponseFactory::class )->create_with_form( $form );
 
 				$notify_email         = $this->get_block_attribute( 'notify_email' );
 				$notify_email_subject = $this->get_block_attribute( 'notify_email_subject' );

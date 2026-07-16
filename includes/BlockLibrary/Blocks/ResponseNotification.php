@@ -17,7 +17,7 @@ class ResponseNotification extends BaseBlock {
 	 * @return string Returns the block content.
 	 */
 	public function render(): string {
-		$form = omniform()->get( \OmniForm\Plugin\Form::class );
+		$form = omniform()->container()->get( \OmniForm\Plugin\Form::class );
 
 		// Render validation messages if they exist.
 		if ( $form->get_validation_messages() ) {

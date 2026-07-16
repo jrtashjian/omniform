@@ -38,11 +38,11 @@ if ( class_exists( \OmniForm\Application::class ) ) {
 require_once __DIR__ . '/vendor/autoload.php';
 
 /**
- * Create and retrieve the main application container instance.
+ * Create and retrieve the main application instance.
  *
- * @return \OmniForm\Application The application container.
+ * @return \OmniForm\Application The application.
  */
-function omniform() {
+function omniform(): \OmniForm\Application {
 	return \OmniForm\Application::get_instance();
 }
 
@@ -51,11 +51,11 @@ omniform()->set_base_path( __FILE__ );
 /**
  * Service Providers.
  */
-omniform()->addServiceProvider( new \OmniForm\Plugin\PluginServiceProvider() );
-omniform()->addServiceProvider( new \OmniForm\FormTypes\FormTypesServiceProvider() );
-omniform()->addServiceProvider( new \OmniForm\Analytics\AnalyticsServiceProvider() );
-omniform()->addServiceProvider( new \OmniForm\BlockLibrary\BlockLibraryServiceProvider() );
-omniform()->addServiceProvider( new \OmniForm\OAuth\OAuthServiceProvider() );
+omniform()->register( new \OmniForm\Plugin\PluginServiceProvider() );
+omniform()->register( new \OmniForm\FormTypes\FormTypesServiceProvider() );
+omniform()->register( new \OmniForm\Analytics\AnalyticsServiceProvider() );
+omniform()->register( new \OmniForm\BlockLibrary\BlockLibraryServiceProvider() );
+omniform()->register( new \OmniForm\OAuth\OAuthServiceProvider() );
 
 register_activation_hook( __FILE__, array( omniform(), 'activation' ) );
 register_deactivation_hook( __FILE__, array( omniform(), 'deactivation' ) );

@@ -7,6 +7,7 @@
 
 namespace OmniForm\BlockLibrary;
 
+use OmniForm\Application;
 use OmniForm\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use OmniForm\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
 use WP_Query;
@@ -161,8 +162,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 			Blocks\ConditionalGroup::class,
 		);
 
-		/** @var \OmniForm\Application */ // phpcs:ignore
-		$container = $this->getContainer();
+		$application = $this->getContainer()->get( Application::class );
 
 		foreach ( $blocks as $block ) {
 			/** @var Blocks\BaseBlock */ // phpcs:ignore
@@ -200,7 +200,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 			}
 
 			register_block_type(
-				$container->base_path( '/build/block-library/' . $block_object->block_type_name() ),
+				$application->base_path( '/build/block-library/' . $block_object->block_type_name() ),
 				array(
 					'render_callback' => array( $block_object, 'render_block' ),
 					'variations'      => $variations,
@@ -212,7 +212,7 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 			'omniform-form-editor-script',
 			'const omniform = ' . wp_json_encode(
 				array(
-					'assetsUrl' => esc_url( $container->base_url( 'assets/' ) ),
+					'assetsUrl' => esc_url( $application->base_url( 'assets/' ) ),
 				)
 			)
 		);
