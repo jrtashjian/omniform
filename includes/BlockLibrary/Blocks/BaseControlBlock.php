@@ -22,7 +22,7 @@ abstract class BaseControlBlock extends BaseBlock {
 	 *
 	 * @return string Returns the block content.
 	 */
-	public function render() {
+	public function render(): string {
 		return $this->get_field_label() ? $this->render_control() : '';
 	}
 
