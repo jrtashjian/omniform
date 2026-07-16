@@ -106,9 +106,22 @@ class Input extends BaseControlBlock {
 
 	/**
 	 * Is the field required?
+	 *
+	 * Choice-group radios/checkboxes are never individually required; the
+	 * fieldset carries that rule. Lone checkboxes (e.g. consent) may be.
 	 */
 	public function is_required(): bool {
-		return ! in_array( $this->get_block_attribute( 'fieldType' ), array( 'radio', 'checkbox' ), true ) && parent::is_required();
+		$is_choice_control = in_array(
+			$this->get_block_attribute( 'fieldType' ),
+			array( 'radio', 'checkbox' ),
+			true
+		);
+
+		if ( $is_choice_control && $this->get_block_context( 'omniform/isChoiceGroup' ) ) {
+			return false;
+		}
+
+		return parent::is_required();
 	}
 
 	/**
