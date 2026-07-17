@@ -100,6 +100,98 @@ class ResponseRepositoryTest extends BaseTestCase {
 	}
 
 	/**
+	 * Legacy snapshots render from stored fields without the parent form.
+	 */
+	public function testFromPostHydratesLegacySnapshotWithoutForm() {
+		$payload = array(
+			'response' => array(
+				'name'  => 'Jane',
+				'email' => 'jane@example.com',
+			),
+			'fields'   => array(
+				'name'  => 'Name',
+				'email' => 'Email',
+			),
+			'groups'   => array(
+				'contact' => 'Contact',
+			),
+		);
+
+		$post               = Mockery::mock( 'WP_Post' );
+		$post->ID           = 115;
+		$post->post_type    = 'omniform_response';
+		$post->post_content = wp_json_encode( $payload );
+		$post->post_parent  = 999;
+
+		$response = $this->repository->from_post( $post );
+
+		$this->assertSame( 'Name', $response->schema()->field( 'name' )->label() );
+		$this->assertSame( 'Email', $response->schema()->field( 'email' )->label() );
+		$this->assertSame( 'Contact', $response->schema()->group( 'contact' )->label() );
+		$this->assertSame(
+			'Jane',
+			$response->submission()->value( FieldPath::from_segments( array( 'name' ) ) )
+		);
+		$this->assertSame(
+			'jane@example.com',
+			$response->submission()->value( FieldPath::from_segments( array( 'email' ) ) )
+		);
+	}
+
+	/**
+	 * Nested legacy field paths stay addressable in the domain snapshot.
+	 */
+	public function testFromPostHydratesNestedLegacyFields() {
+		$payload = array(
+			'response' => array(
+				'contact' => array(
+					'email' => 'nested@example.com',
+				),
+			),
+			'fields'   => array(
+				'contact.email' => 'Email',
+			),
+			'groups'   => array(),
+		);
+
+		$post               = Mockery::mock( 'WP_Post' );
+		$post->ID           = 12;
+		$post->post_type    = 'omniform_response';
+		$post->post_content = wp_json_encode( $payload );
+
+		$response = $this->repository->from_post( $post );
+
+		$this->assertSame( 'Email', $response->schema()->field( 'contact.email' )->label() );
+		$this->assertSame(
+			'nested@example.com',
+			$response->submission()->value( FieldPath::from_segments( array( 'contact', 'email' ) ) )
+		);
+	}
+
+	/**
+	 * Very old flat payloads still hydrate without a form.
+	 */
+	public function testFromPostHydratesVeryOldFlatPayload() {
+		$payload = array(
+			'name'  => 'Legacy',
+			'email' => 'legacy@example.com',
+		);
+
+		$post               = Mockery::mock( 'WP_Post' );
+		$post->ID           = 13;
+		$post->post_type    = 'omniform_response';
+		$post->post_content = wp_json_encode( $payload );
+
+		$response = $this->repository->from_post( $post );
+
+		$this->assertSame( 'name', $response->schema()->field( 'name' )->label() );
+		$this->assertSame(
+			'Legacy',
+			$response->submission()->value( FieldPath::from_segments( array( 'name' ) ) )
+		);
+	}
+
+	/**
 	 * Rejects non-positive IDs.
 	 */
 	public function testGetRejectsInvalidId() {
