@@ -14,7 +14,9 @@ namespace OmniForm\Form;
  */
 final class FieldPath {
 	/**
-	 * @param list<string> $segments Sanitized path segments.
+	 * Private constructor — use named constructors.
+	 *
+	 * @param array<string> $segments Sanitized path segments.
 	 */
 	private function __construct(
 		private readonly array $segments
@@ -30,7 +32,7 @@ final class FieldPath {
 	/**
 	 * Create from segments (each sanitized).
 	 *
-	 * @param list<string> $segments Path segments.
+	 * @param array<string> $segments Path segments.
 	 *
 	 * @throws \InvalidArgumentException If empty or any segment sanitizes to empty.
 	 */
@@ -60,6 +62,8 @@ final class FieldPath {
 
 	/**
 	 * Path consisting of a single control name.
+	 *
+	 * @param FieldName $name Control name for the root segment.
 	 */
 	public static function root( FieldName $name ): self {
 		return new self( array( $name->value() ) );
@@ -67,6 +71,8 @@ final class FieldPath {
 
 	/**
 	 * Append a control name segment.
+	 *
+	 * @param FieldName $name Control name to append.
 	 */
 	public function append( FieldName $name ): self {
 		return new self( array( ...$this->segments, $name->value() ) );
@@ -93,6 +99,8 @@ final class FieldPath {
 	/**
 	 * HTML name attribute (e.g. contact[email] or contact[email][]).
 	 *
+	 * @param bool $multiple Whether to append the multi-value suffix ([]).
+	 *
 	 * @throws \InvalidArgumentException If the path is empty.
 	 */
 	public function html_name( bool $multiple = false ): string {
@@ -114,6 +122,8 @@ final class FieldPath {
 	}
 
 	/**
+	 * Sanitized path segments.
+	 *
 	 * @return list<string>
 	 */
 	public function segments(): array {
@@ -121,6 +131,8 @@ final class FieldPath {
 	}
 
 	/**
+	 * Assert that the path is not empty.
+	 *
 	 * @throws \InvalidArgumentException If the path is empty.
 	 */
 	private function assert_not_empty(): void {

@@ -12,6 +12,8 @@ namespace OmniForm\Form;
  */
 final class Field {
 	/**
+	 * Validation rules for the field.
+	 *
 	 * @var ValidationRules
 	 */
 	private readonly ValidationRules $rules;
@@ -19,10 +21,10 @@ final class Field {
 	/**
 	 * Constructor.
 	 *
-	 * @param FieldPath    $name  Composed field path (submission / HTML name identity).
-	 * @param string       $label Human-readable label.
-	 * @param string       $type  Control type (text, email, file, radio, …).
-	 * @param list<string> $rules Laravel-style validation rules.
+	 * @param FieldPath     $name  Composed field path (submission / HTML name identity).
+	 * @param string        $label Human-readable label.
+	 * @param string        $type  Control type (text, email, file, radio, …).
+	 * @param array<string> $rules Laravel-style validation rules.
 	 *
 	 * @throws \InvalidArgumentException If label, type, path, or a rule is empty.
 	 */
@@ -79,6 +81,8 @@ final class Field {
 
 	/**
 	 * Whether a rule is present (matches "required" or "min:3" by name).
+	 *
+	 * @param string $name Rule name to check (e.g. "required", "min:3").
 	 */
 	public function has_rule( string $name ): bool {
 		return $this->rules->has( $name );

@@ -15,6 +15,8 @@ namespace OmniForm\Form;
  */
 final class FieldName {
 	/**
+	 * Private constructor — use named constructors.
+	 *
 	 * @param string $value Sanitized single segment.
 	 */
 	private function __construct(
@@ -23,6 +25,8 @@ final class FieldName {
 
 	/**
 	 * Create from a raw name string.
+	 *
+	 * @param string $raw Unsanitized name string.
 	 *
 	 * @throws \InvalidArgumentException If sanitation yields an empty string.
 	 */
@@ -39,6 +43,9 @@ final class FieldName {
 	/**
 	 * Prefer an explicit name attribute, otherwise infer from the label.
 	 *
+	 * @param ?string $name  Explicit name attribute, or null to fall back to label.
+	 * @param string  $label Human-readable label used as fallback.
+	 *
 	 * @throws \InvalidArgumentException If both resolve to an empty segment.
 	 */
 	public static function from_name_or_label( ?string $name, string $label ): self {
@@ -51,6 +58,8 @@ final class FieldName {
 	 * Sanitize a raw name or label into a single segment.
 	 *
 	 * Spaces become hyphens; percent-encoded and non [A-Za-z0-9_-] characters are stripped.
+	 *
+	 * @param string $name Raw name or label to sanitize.
 	 */
 	public static function sanitize( string $name ): string {
 		$name = preg_replace( '/\s+/', '-', $name );

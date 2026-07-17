@@ -45,6 +45,10 @@ final class ControlName {
 
 	/**
 	 * Whether the HTML name should use a multi-value suffix ([]).
+	 *
+	 * @param string $type         Control type (text, radio, checkbox, select, …).
+	 * @param bool   $choice_group Whether the parent fieldset is a choice group.
+	 * @param bool   $multiple     Whether the control allows multiple values.
 	 */
 	public static function is_multiple(
 		string $type,
@@ -59,6 +63,8 @@ final class ControlName {
 	}
 
 	/**
+	 * Whether the control type is a choice type (radio or checkbox).
+	 *
 	 * @param string $type Control type.
 	 */
 	private static function is_choice_type( string $type ): bool {

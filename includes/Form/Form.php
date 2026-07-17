@@ -12,6 +12,8 @@ namespace OmniForm\Form;
  */
 final class Form {
 	/**
+	 * Constructor.
+	 *
 	 * @param string   $content Block markup that defines the form.
 	 * @param string   $title   Human-readable title.
 	 * @param string   $status  Publication status (e.g. publish, draft).
@@ -32,6 +34,8 @@ final class Form {
 
 	/**
 	 * Content-only form (no persisted identity).
+	 *
+	 * @param string $content Block markup that defines the form.
 	 */
 	public static function from_content( string $content ): self {
 		return new self( content: $content );
