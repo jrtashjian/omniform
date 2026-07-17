@@ -15,10 +15,10 @@ use OmniForm\Form\Form;
 use OmniForm\Form\FormSchema;
 use OmniForm\Form\Response;
 use OmniForm\Form\Submission;
-use OmniForm\Form\SubmissionValidator;
 use OmniForm\Plugin\BlockFormSchemaParser;
 use OmniForm\Plugin\FormRepository;
 use OmniForm\Plugin\FormSubmitter;
+use OmniForm\Plugin\RespectSubmissionValidator;
 use OmniForm\Plugin\ResponseRepository;
 use OmniForm\Plugin\SubmissionFactory;
 use OmniForm\Tests\Unit\BaseTestCase;
@@ -68,7 +68,7 @@ class FormSubmitterTest extends BaseTestCase {
 			$this->forms,
 			$this->parser,
 			$this->submissions,
-			new SubmissionValidator(),
+			new RespectSubmissionValidator(),
 			$this->responses
 		);
 

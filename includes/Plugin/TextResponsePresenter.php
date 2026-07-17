@@ -5,7 +5,9 @@
  * @package OmniForm
  */
 
-namespace OmniForm\Form;
+namespace OmniForm\Plugin;
+
+use OmniForm\Form\Response;
 
 /**
  * Renders a Response as plain text suitable for email bodies.
@@ -18,7 +20,7 @@ final class TextResponsePresenter {
 	/**
 	 * Present schema fields in order with submitted values.
 	 *
-	 * @param Response $response Domain response.
+	 * @param Response     $response     Domain response.
 	 * @param list<string> $footer_lines Optional lines appended after a separator.
 	 */
 	public function present( Response $response, array $footer_lines = array() ): string {

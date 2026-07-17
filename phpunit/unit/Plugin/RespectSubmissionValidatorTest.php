@@ -1,27 +1,27 @@
 <?php
 /**
- * Tests the SubmissionValidator.
+ * Tests RespectSubmissionValidator.
  *
  * @package OmniForm
  */
 
-namespace OmniForm\Tests\Unit\Form;
+namespace OmniForm\Tests\Unit\Plugin;
 
 use OmniForm\Form\Field;
 use OmniForm\Form\FieldPath;
 use OmniForm\Form\FormSchema;
 use OmniForm\Form\Submission;
-use OmniForm\Form\SubmissionValidator;
+use OmniForm\Plugin\RespectSubmissionValidator;
 use OmniForm\Tests\Unit\BaseTestCase;
 
 /**
- * Tests the SubmissionValidator.
+ * Tests RespectSubmissionValidator.
  */
-class SubmissionValidatorTest extends BaseTestCase {
+class RespectSubmissionValidatorTest extends BaseTestCase {
 	/**
-	 * @var SubmissionValidator
+	 * @var RespectSubmissionValidator
 	 */
-	private SubmissionValidator $validator;
+	private RespectSubmissionValidator $validator;
 
 	/**
 	 * Sets up the test environment.
@@ -29,7 +29,7 @@ class SubmissionValidatorTest extends BaseTestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->validator = new SubmissionValidator();
+		$this->validator = new RespectSubmissionValidator();
 	}
 
 	/**

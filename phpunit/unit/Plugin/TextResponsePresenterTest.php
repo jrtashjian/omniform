@@ -5,14 +5,14 @@
  * @package OmniForm
  */
 
-namespace OmniForm\Tests\Unit\Form;
+namespace OmniForm\Tests\Unit\Plugin;
 
 use OmniForm\Form\Field;
 use OmniForm\Form\FieldPath;
 use OmniForm\Form\FormSchema;
 use OmniForm\Form\Response;
 use OmniForm\Form\Submission;
-use OmniForm\Form\TextResponsePresenter;
+use OmniForm\Plugin\TextResponsePresenter;
 use OmniForm\Tests\Unit\BaseTestCase;
 use WP_Mock;
 

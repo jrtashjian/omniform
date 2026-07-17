@@ -5,7 +5,9 @@
  * @package OmniForm
  */
 
-namespace OmniForm\Form;
+namespace OmniForm\Plugin;
+
+use OmniForm\Form\Field;
 
 /**
  * Turns a submitted field value into a human-readable string.

@@ -12,6 +12,7 @@ use OmniForm\Application;
 use OmniForm\Dependencies\Respect\Validation;
 use OmniForm\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use OmniForm\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
+use OmniForm\Form\Response as DomainResponse;
 use OmniForm\Plugin\Http\Request;
 use WP_Block_Type;
 use WP_Block_Type_Registry;
@@ -110,6 +111,30 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			},
 			10,
 			2
+		);
+
+		// Temporary: preview domain HTML presenter on classic response edit screen.
+		add_action(
+			'edit_form_top',
+			function ( \WP_Post $post ) {
+				if ( 'omniform_response' !== $post->post_type ) {
+					return;
+				}
+
+				try {
+					$response  = $this->domain_response_for_post( $post );
+					$presenter = new HtmlResponsePresenter();
+					$html      = $presenter->present( $response );
+				} catch ( \Throwable $exception ) {
+					echo '<div class="notice notice-error"><p>' . esc_html( $exception->getMessage() ) . '</p></div>';
+					return;
+				}
+
+				echo '<div class="omniform-response-preview" style="margin:1em 0;padding:1em;background:#fff;border:1px solid #c3c4c7;">';
+				echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- presenter escapes field output.
+				printf('<pre>%s</pre>', esc_html( wp_json_encode( $response->to_array(), JSON_PRETTY_PRINT ) ) );
+				echo '</div>';
+			}
 		);
 
 		// Increment form impression count.
@@ -358,6 +383,20 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				return $response;
 			}
 		);
+
+	}
+
+	/**
+	 * Load a domain Response snapshot for an omniform_response post.
+	 *
+	 * Uses only data stored on the response — never requires the parent form.
+	 *
+	 * @param \WP_Post $post Response post.
+	 *
+	 * @throws \InvalidArgumentException If the payload cannot be interpreted.
+	 */
+	private function domain_response_for_post( \WP_Post $post ): DomainResponse {
+		return ( new ResponseRepository() )->from_post( $post );
 	}
 
 	/**
@@ -523,7 +562,6 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 					'create_posts' => 'do_not_allow',
 				),
 				'supports'                        => array(
-					'editor',
 					'custom-fields',
 				),
 			)

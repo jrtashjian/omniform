@@ -5,7 +5,9 @@
  * @package OmniForm
  */
 
-namespace OmniForm\Form;
+namespace OmniForm\Plugin;
+
+use OmniForm\Form\Response;
 
 /**
  * Renders a Response as HTML suitable for admin and rich notifications.

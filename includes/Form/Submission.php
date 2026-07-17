@@ -136,7 +136,7 @@ final class Submission {
 		throw new \InvalidArgumentException(
 			sprintf(
 				'Submission values must be plain data; %s is not allowed.',
-				esc_html( get_debug_type( $data ) )
+				get_debug_type( $data )
 			)
 		);
 	}
