@@ -539,44 +539,56 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			'omniform_form',
 			array(
 				'get_callback' => function ( $post ) {
+					$form_data = array(
+						'title' => null,
+						'id' => null,
+						'edit_url' => null,
+					);
+
+					$sender_data = array(
+						'gravatar' => null,
+						'email'    => null,
+						'ip'       => null,
+					);
+
 					$form_id = (int) get_post_meta( $post['id'], '_omniform_id', true );
 
 					try {
-						$form        = $this->getContainer()->get( FormFactory::class )->create_with_id( $form_id );
+						$form = $this->getContainer()->get( FormFactory::class )->create_with_id( $form_id );
+
+						$form_data['id'] = $form->get_id();
+						$form_data['title'] = $form->get_title();
+						$form_data['edit_url'] = sanitize_url( admin_url( sprintf( 'post.php?post=%d&action=edit', $form->get_id() ) ) );
+					} catch ( \Exception $_e ) {
+						$form_data['title'] = __( '(form not found)', 'omniform' );
+					}
+
+					try {
 						$post_object = get_post( $post['id'] );
 
 						$response_data = json_decode( $post_object->post_content, true );
-						$sender_email = null;
-						$sender_ip = get_post_meta( $post_object->ID, '_omniform_user_ip', true );
+						$sender_data['ip'] = get_post_meta( $post_object->ID, '_omniform_user_ip', true );
 
 						if ( isset( $response_data['response'] ) && is_array( $response_data['response'] ) ) {
 							foreach ( $response_data['response'] as $value ) {
 								if ( is_string( $value ) && is_email( $value ) ) {
-									$sender_email = $value;
+									$sender_data['email'] = $value;
 									break;
 								}
 							}
 						}
+					} catch ( \Exception $_e ) {}
 
-						$form_admin_url = sanitize_url( admin_url( sprintf( 'post.php?post=%d&action=edit', $form->get_id() ) ) );
-					} catch ( \Exception $e ) {
-						echo esc_html( $e->getMessage() );
-						return;
-					}
-
-					$form_title = empty( $form->get_title() )
-						? __( '(no title)', 'omniform' )
-						: $form->get_title();
-
-					$email_for_hash = is_string( $sender_email ) ? $sender_email : '';
+					$form_title = $form_data['title'] ?? __( '(no title)', 'omniform' );
+					$email_for_hash = $sender_data['email'] ?? '';
 
 					return array(
-						'form_id'         => $form->get_id(),
-						'form_edit_url'   => $form_admin_url,
+						'form_id'         => $form_data['id'],
+						'form_edit_url'   => $form_data['edit_url'],
 						'title'           => $form_title,
 						'sender_gravatar' => sanitize_url( 'https://www.gravatar.com/avatar/' . hash( 'sha256', strtolower( trim( $email_for_hash ) ) ) . '?d=mp' ),
-						'sender_email'    => $sender_email,
-						'sender_ip'       => $sender_ip,
+						'sender_email'    => $sender_data['email'],
+						'sender_ip'       => $sender_data['ip']
 					);
 				},
 				'schema'       => array(
