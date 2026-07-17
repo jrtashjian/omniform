@@ -77,4 +77,50 @@ final class FieldGroup {
 	public function is_choice_group(): bool {
 		return $this->choice_group;
 	}
+
+	/**
+	 * @return array{name: string, label: string, rules: list<string>, choice_group: bool}
+	 */
+	public function to_array(): array {
+		return array(
+			'name'         => $this->name->key(),
+			'label'        => $this->label,
+			'rules'        => $this->rules->all(),
+			'choice_group' => $this->choice_group,
+		);
+	}
+
+	/**
+	 * @param array<string, mixed> $data Serialized group.
+	 *
+	 * @throws \InvalidArgumentException If the payload is invalid.
+	 */
+	public static function from_array( array $data ): self {
+		return new self(
+			name: FieldPath::from_segments( explode( '.', (string) $data['name'] ) ),
+			label: (string) $data['label'],
+			rules: self::validate_rules( $data['rules'] ?? array() ),
+			choice_group: (bool) ( $data['choice_group'] ?? false ),
+		);
+	}
+
+	/**
+	 * @param mixed $raw Raw rules list.
+	 * @return list<string>
+	 */
+	private static function validate_rules( mixed $raw ): array {
+		if ( ! is_array( $raw ) ) {
+			return array();
+		}
+
+		return array_values( array_filter(
+			$raw,
+			static function ( mixed $rule ): bool {
+				if ( ! is_string( $rule ) || '' === $rule ) {
+					throw new \InvalidArgumentException( 'Response rules must be non-empty strings.' );
+				}
+				return true;
+			},
+		) );
+	}
 }
