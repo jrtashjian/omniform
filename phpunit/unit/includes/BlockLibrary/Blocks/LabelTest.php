@@ -8,6 +8,7 @@
 namespace OmniForm\Tests\Unit\BlockLibrary\Blocks;
 
 use OmniForm\BlockLibrary\Blocks\Label;
+use OmniForm\Plugin\FormRenderContext;
 use OmniForm\Tests\Unit\BaseTestCase;
 use WP_Mock;
 use Mockery;
@@ -113,13 +114,12 @@ class LabelTest extends BaseTestCase {
 			'omniform/fieldIsRequired' => true,
 		);
 
-		// Mock the form get_required_label.
-		$form_mock = Mockery::mock( \OmniForm\Plugin\Form::class );
-		$form_mock->shouldReceive( 'get_required_label' )->andReturn( '*' );
+		$context = new FormRenderContext();
+		$context->set_required_label( '*' );
 
 		WP_Mock::userFunction( 'omniform' )->andReturn(
 			Mockery::mock()->shouldReceive( 'container' )->andReturn(
-				Mockery::mock()->shouldReceive( 'get' )->with( \OmniForm\Plugin\Form::class )->andReturn( $form_mock )->getMock()
+				Mockery::mock()->shouldReceive( 'get' )->with( FormRenderContext::class )->andReturn( $context )->getMock()
 			)->getMock()
 		);
 
@@ -141,13 +141,12 @@ class LabelTest extends BaseTestCase {
 			'omniform/fieldIsRequired' => true,
 		);
 
-		// Mock the form get_required_label.
-		$form_mock = Mockery::mock( \OmniForm\Plugin\Form::class );
-		$form_mock->shouldReceive( 'get_required_label' )->andReturn( '(required)' );
+		$context = new FormRenderContext();
+		$context->set_required_label( '(required)' );
 
 		WP_Mock::userFunction( 'omniform' )->andReturn(
 			Mockery::mock()->shouldReceive( 'container' )->andReturn(
-				Mockery::mock()->shouldReceive( 'get' )->with( \OmniForm\Plugin\Form::class )->andReturn( $form_mock )->getMock()
+				Mockery::mock()->shouldReceive( 'get' )->with( FormRenderContext::class )->andReturn( $context )->getMock()
 			)->getMock()
 		);
 

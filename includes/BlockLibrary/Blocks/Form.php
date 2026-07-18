@@ -7,12 +7,16 @@
 
 namespace OmniForm\BlockLibrary\Blocks;
 
+use OmniForm\Form\Form as DomainForm;
 use OmniForm\Form\FormNotificationSettings;
 use OmniForm\Form\Response as DomainResponse;
 use OmniForm\Plugin\BlockFormSchemaParser;
+use OmniForm\Plugin\FormRenderContext;
+use OmniForm\Plugin\FormRenderSettings;
 use OmniForm\Plugin\RespectSubmissionValidator;
 use OmniForm\Plugin\ResponseNotificationMailer;
 use OmniForm\Plugin\SubmissionFactory;
+use OmniForm\Plugin\SubmissionRenderState;
 use OmniForm\Traits\CallbackSupport;
 
 /**
@@ -45,10 +49,9 @@ class Form extends BaseBlock {
 				$form = omniform()->form( (int) $entity_id );
 			} else {
 				$form = omniform()->form_from_content( serialize_blocks( $this->instance->parsed_block['innerBlocks'] ) );
-				$form->set_required_label( $this->get_block_attribute( 'required_label' ) );
 			}
 
-			$this->content = $form->get_content();
+			$this->content = $form->content();
 		} catch ( \Exception $e ) {
 			// Display notice for logged in editors, render nothing for visitors.
 			return current_user_can( 'edit_posts' )
@@ -64,19 +67,22 @@ class Form extends BaseBlock {
 			return '';
 		}
 
+		$render_settings = new FormRenderSettings();
+		$this->prepare_render_context( $form, $render_settings );
+
 		// If the form is password protected, render the password form.
-		if ( $form->is_password_protected() ) {
+		if ( $form->is_persisted() && $render_settings->is_password_protected( (int) $form->id() ) ) {
 			return get_the_password_form();
 		}
 
 		if ( ! $form->is_published() && ! is_preview() ) {
 			// Display notice for logged in editors, render nothing for visitors.
-			return current_user_can( 'edit_post', $form->get_id() )
+			return current_user_can( 'edit_post', $form->id() )
 				? sprintf(
 					'<p style="color:var(--wp--preset--color--vivid-red,#cf2e2e);">%s<br/><a href="%s">%s</a></p>',
 					/* translators: %s: Form title. */
-					esc_html( sprintf( __( 'You must publish the "%s" form for visitors to see it.', 'omniform' ), $form->get_title() ) ),
-					esc_url( admin_url( sprintf( 'post.php?post=%d&action=edit', $form->get_id() ) ) ),
+					esc_html( sprintf( __( 'You must publish the "%s" form for visitors to see it.', 'omniform' ), $form->title() ) ),
+					esc_url( admin_url( sprintf( 'post.php?post=%d&action=edit', $form->id() ) ) ),
 					esc_html( __( 'Edit the form', 'omniform' ) )
 				)
 				: '';
@@ -101,29 +107,53 @@ class Form extends BaseBlock {
 			}
 		}
 
-		return $form->get_id()
-			? $this->render_standard( $form )
+		return $form->is_persisted()
+			? $this->render_standard( $form, $render_settings )
 			: $this->render_standalone( $form );
+	}
+
+	/**
+	 * Seed request-scoped render context for child blocks.
+	 *
+	 * @param DomainForm         $form             Domain form.
+	 * @param FormRenderSettings $render_settings  Render settings adapter.
+	 */
+	private function prepare_render_context( DomainForm $form, FormRenderSettings $render_settings ): void {
+		$override = $form->is_persisted()
+			? null
+			: ( is_string( $this->get_block_attribute( 'required_label' ) )
+				? $this->get_block_attribute( 'required_label' )
+				: null );
+
+		$label = $render_settings->required_label(
+			$form->id(),
+			$override
+		);
+
+		omniform()->container()->get( FormRenderContext::class )->set_required_label( $label );
 	}
 
 	/**
 	 * Renders the form in standard mode.
 	 *
-	 * @param \OmniForm\Plugin\Form $form The form object.
+	 * @param DomainForm         $form            The form object.
+	 * @param FormRenderSettings $render_settings Render settings adapter.
 	 *
 	 * @return string The rendered form.
 	 */
-	private function render_standard( \OmniForm\Plugin\Form $form ) {
+	private function render_standard( DomainForm $form, FormRenderSettings $render_settings ) {
+		$form_id = (int) $form->id();
+
 		/**
 		 * Fires when the form is rendered.
 		 *
 		 * @param int $form_id The form ID.
 		 */
-		do_action( 'omniform_form_render', $form->get_id() );
+		do_action( 'omniform_form_render', $form_id );
 
 		return $this->get_form_wrapper(
-			$form->get_submit_method(),
-			$form->get_submit_action(),
+			$render_settings->submit_method( $form_id ),
+			$render_settings->submit_action( $form_id ),
 			$this->process_callbacks( do_blocks( $this->content ) ) . wp_nonce_field( 'omniform', 'wp_rest', true, false )
 		);
 	}
@@ -131,24 +161,28 @@ class Form extends BaseBlock {
 	/**
 	 * Renders the form in standalone mode.
 	 *
-	 * @param \OmniForm\Plugin\Form $form The form object.
+	 * @param DomainForm $form The form object.
 	 *
 	 * @return string The rendered form.
 	 */
-	private function render_standalone( \OmniForm\Plugin\Form $form ) {
+	private function render_standalone( DomainForm $form ) {
 		$form_hash      = sha1( $this->content );
 		$submitted_hash = sanitize_text_field( filter_input( INPUT_POST, 'omniform_hash' ) );
 
 		if ( $submitted_hash === $form_hash && wp_verify_nonce( $_REQUEST['_wpnonce'], 'omniform' . $form_hash ) ) {
-			$schema     = ( new BlockFormSchemaParser() )->parse( $form->get_content() );
+			$schema     = ( new BlockFormSchemaParser() )->parse( $form->content() );
 			// phpcs:ignore WordPress.Security.NonceVerification.Missing -- verified above.
 			$submission = ( new SubmissionFactory() )->from_request( $_POST, $_FILES );
 			$validation = ( new RespectSubmissionValidator() )->validate( $schema, $submission );
+			$state      = omniform()->container()->get( SubmissionRenderState::class );
 
 			if ( $validation->is_valid() ) {
+				$state->mark_succeeded();
 				$this->send_standalone_notification(
 					new DomainResponse( $schema, $submission )
 				);
+			} else {
+				$state->mark_failed( $validation->messages() );
 			}
 		}
 
@@ -223,7 +257,7 @@ class Form extends BaseBlock {
 			$subject = $this->standalone_default_subject();
 		}
 
-		$domain_form = new \OmniForm\Form\Form(
+		$domain_form = new DomainForm(
 			content: $this->content,
 			title: (string) ( $this->get_block_attribute( 'form_title' ) ?? '' ),
 			notifications: new FormNotificationSettings( $recipients, $subject ),

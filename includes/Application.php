@@ -10,8 +10,8 @@ namespace OmniForm;
 use OmniForm\Dependencies\League\Container\Container;
 use OmniForm\Dependencies\League\Container\DefinitionContainerInterface;
 use OmniForm\Dependencies\League\Container\ServiceProvider\ServiceProviderInterface;
-use OmniForm\Plugin\Form;
-use OmniForm\Plugin\FormFactory;
+use OmniForm\Form\Form;
+use OmniForm\Plugin\FormRepository;
 
 /**
  * Plugin application: metadata, lifecycle, and a composed DI container.
@@ -89,21 +89,21 @@ class Application {
 	}
 
 	/**
-	 * Create a Form for the given post ID.
+	 * Load a domain Form for the given post ID.
 	 *
 	 * @param int $form_id The form post ID.
 	 */
 	public function form( int $form_id ): Form {
-		return $this->container->get( FormFactory::class )->create_with_id( $form_id );
+		return ( new FormRepository() )->get( $form_id );
 	}
 
 	/**
-	 * Create a Form from serialized block content.
+	 * Create a content-only domain Form from serialized block content.
 	 *
 	 * @param string $content The form content.
 	 */
 	public function form_from_content( string $content ): Form {
-		return $this->container->get( FormFactory::class )->create_with_content( $content );
+		return Form::from_content( $content );
 	}
 
 	/**

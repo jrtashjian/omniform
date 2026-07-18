@@ -9,6 +9,7 @@ namespace OmniForm\Tests\Unit\BlockLibrary\Blocks;
 
 use Mockery;
 use OmniForm\BlockLibrary\Blocks\Fieldset;
+use OmniForm\Plugin\FormRenderContext;
 use OmniForm\Tests\Unit\BaseTestCase;
 use WP_Mock;
 
@@ -41,13 +42,12 @@ class FieldsetTest extends BaseTestCase {
 
 		$this->wp_block_mock = new \WP_Block();
 
-		// Mock omniform() function and its dependencies.
-		$form_mock = Mockery::mock();
-		$form_mock->shouldReceive( 'get_required_label' )->andReturn( '*' );
+		$context = new FormRenderContext();
+		$context->set_required_label( '*' );
 
 		$omniform_mock = Mockery::mock();
 		$omniform_mock->shouldReceive( 'container' )->andReturn(
-			Mockery::mock()->shouldReceive( 'get' )->with( \OmniForm\Plugin\Form::class )->andReturn( $form_mock )->getMock()
+			Mockery::mock()->shouldReceive( 'get' )->with( FormRenderContext::class )->andReturn( $context )->getMock()
 		);
 
 		WP_Mock::userFunction( 'omniform' )->andReturn( $omniform_mock );

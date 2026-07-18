@@ -9,7 +9,6 @@ namespace OmniForm\Plugin;
 
 use OmniForm\Analytics\AnalyticsManager;
 use OmniForm\Application;
-use OmniForm\Dependencies\Respect\Validation;
 use OmniForm\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use OmniForm\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
 use OmniForm\Form\Form as DomainForm;
@@ -33,13 +32,13 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 */
 	public function provides( string $id ): bool {
 		$services = array(
-			Validation\Validator::class,
 			wpdb::class,
-			Form::class,
-			FormFactory::class,
 			QueryBuilder::class,
 			Request::class,
 			FormSubmitter::class,
+			FormRenderSettings::class,
+			FormRenderContext::class,
+			SubmissionRenderState::class,
 		);
 
 		return in_array( $id, $services, true );
@@ -53,17 +52,6 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	public function register(): void {
 		$this->getContainer()
 			->add( wpdb::class, $GLOBALS['wpdb'] );
-
-		$this->getContainer()
-			->add( Validation\Validator::class );
-
-		$this->getContainer()
-			->add( Form::class )
-			->addArgument( Validation\Validator::class );
-
-		$this->getContainer()
-			->add( FormFactory::class )
-			->addArgument( $this->getContainer() );
 
 		$this->getContainer()
 			->add( QueryBuilder::class )
@@ -89,6 +77,15 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				);
 			}
 		);
+
+		$this->getContainer()
+			->add( FormRenderSettings::class );
+
+		$this->getContainer()
+			->addShared( FormRenderContext::class );
+
+		$this->getContainer()
+			->addShared( SubmissionRenderState::class );
 	}
 
 	/**

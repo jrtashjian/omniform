@@ -7,6 +7,8 @@
 
 namespace OmniForm\BlockLibrary\Blocks;
 
+use OmniForm\Plugin\SubmissionRenderState;
+
 /**
  * The ResponseNotification block class.
  */
@@ -17,13 +19,13 @@ class ResponseNotification extends BaseBlock {
 	 * @return string Returns the block content.
 	 */
 	public function render(): string {
-		$form = omniform()->container()->get( \OmniForm\Plugin\Form::class );
+		$state = omniform()->container()->get( SubmissionRenderState::class );
 
 		// Render validation messages if they exist.
-		if ( $form->get_validation_messages() ) {
+		if ( $state->messages() ) {
 			$this->content = "<!-- wp:list -->\n<ul class=\"wp-block-list\">";
 
-			foreach ( $form->get_validation_messages() as $message ) {
+			foreach ( $state->messages() as $message ) {
 				$this->content .= sprintf(
 					"<!-- wp:list-item -->\n<li>%s</li>\n<!-- /wp:list-item -->",
 					esc_html( $message ),
@@ -44,7 +46,7 @@ class ResponseNotification extends BaseBlock {
 							esc_attr( 'is-style-' . $this->get_message_type() ),
 						)
 					),
-					'style' => $this->notification_display( $form ),
+					'style' => $this->notification_display( $state ),
 				)
 			),
 			wp_kses( $this->get_block_attribute( 'messageContent' ), $this->allowed_html_for_labels() ),
@@ -84,16 +86,16 @@ class ResponseNotification extends BaseBlock {
 	/**
 	 * Determines whether the notification should be displayed.
 	 *
-	 * @param \OmniForm\Plugin\Form $form The form object.
+	 * @param SubmissionRenderState $state Request-scoped submission state.
 	 *
 	 * @return string The display style.
 	 */
-	private function notification_display( \OmniForm\Plugin\Form $form ) {
+	private function notification_display( SubmissionRenderState $state ) {
 		$message_type = $this->get_message_type();
 
 		if (
-			( 'error' === $message_type && $form->validation_failed() ) ||
-			( 'success' === $message_type && $form->validation_succeeded() )
+			( 'error' === $message_type && $state->validation_failed() ) ||
+			( 'success' === $message_type && $state->validation_succeeded() )
 		) {
 			return 'display:block;';
 		}
