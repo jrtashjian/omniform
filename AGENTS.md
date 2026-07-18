@@ -22,7 +22,7 @@
 - CI runs tests with `composer test` (no wp-env); local runs with `npm run test:unit:php`.
 - `php-scoper` prefixes third-party deps into `OmniForm\Dependencies\` under `vendor_prefixed/`.
   Re-run `composer run phpscoper` after changing Composer dependencies.
-- `composer.json` pins `platform.php: 7.4` — `composer install` skips packages requiring PHP >= 8.0.
+- `composer.json` pins `platform.php: 8.2` — `composer install` skips packages requiring PHP >= 8.3.
 - Autoload: `OmniForm\` → `includes/` (PSR-4), `OmniForm\Tests\Unit\` → `phpunit/unit/` (dev).
 
 ## JS / Blocks
