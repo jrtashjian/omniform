@@ -22,12 +22,10 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 	 *
 	 * @param string $id The service to check.
 	 *
-	 * @return array
+	 * @return bool
 	 */
 	public function provides( string $id ): bool {
-		$services = array();
-
-		return in_array( $id, $services, true );
+		return false;
 	}
 
 	/**
@@ -55,6 +53,14 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 		add_filter( 'render_block_context', array( $this, 'add_is_choice_group_context' ), 10, 2 );
 	}
 
+	/**
+	 * Add nested field path context for fieldset blocks.
+	 *
+	 * @param array $context      Default context.
+	 * @param array $parsed_block Block being rendered.
+	 *
+	 * @return array
+	 */
 	public function add_field_path_context( array $context, array $parsed_block ) {
 		if ( 'omniform/fieldset' !== $parsed_block['blockName'] ) {
 			return $context;
@@ -70,13 +76,21 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 
 		$previous_path = $context[ $context_key ] ?? '';
 
-		$context[ $context_key ] = $previous_path !== ''
+		$context[ $context_key ] = '' !== $previous_path
 			? $previous_path . '.' . $field_name
 			: $field_name;
 
 		return $context;
 	}
 
+	/**
+	 * Mark fieldset context when it contains only choice fields.
+	 *
+	 * @param array $context      Default context.
+	 * @param array $parsed_block Block being rendered.
+	 *
+	 * @return array
+	 */
 	public function add_is_choice_group_context( array $context, array $parsed_block ) {
 		$context_key = 'omniform/isChoiceGroup';
 
@@ -91,6 +105,13 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 		return $context;
 	}
 
+	/**
+	 * Whether the given blocks form a choice-only group.
+	 *
+	 * @param array $blocks Blocks to inspect.
+	 *
+	 * @return bool
+	 */
 	private function is_choice_group( array $blocks ) {
 		foreach ( $blocks as $block ) {
 			if ( 'omniform/field' === $block['blockName'] ) {
@@ -109,6 +130,13 @@ class BlockLibraryServiceProvider extends AbstractServiceProvider implements Boo
 		return true;
 	}
 
+	/**
+	 * Whether the field block is a radio or checkbox input.
+	 *
+	 * @param array $parsed_block Field block being inspected.
+	 *
+	 * @return bool
+	 */
 	private function is_choice_field( array $parsed_block ) {
 		foreach ( $parsed_block['innerBlocks'] as $inner_block ) {
 			if ( 'omniform/input' === $inner_block['blockName'] && isset( $inner_block['attrs']['fieldType'] ) ) {
