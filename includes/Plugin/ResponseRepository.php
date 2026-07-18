@@ -110,10 +110,11 @@ class ResponseRepository {
 			$meta_input['_wp_http_referer'] = esc_url_raw( (string) $meta['referer'] );
 		}
 
+		// wp_insert_post unslashes post_content; slash so JSON escapes (e.g. \\) survive.
 		$result = wp_insert_post(
 			array(
 				'post_title'   => wp_generate_uuid4(),
-				'post_content' => $payload,
+				'post_content' => wp_slash( $payload ),
 				'post_type'    => 'omniform_response',
 				'post_status'  => 'omniform_unread',
 				'post_parent'  => $form_id,

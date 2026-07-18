@@ -44,6 +44,9 @@ class ResponseRepositoryTest extends BaseTestCase {
 		WP_Mock::userFunction( 'wp_json_encode' )->andReturnUsing(
 			static fn( $data ) => json_encode( $data ) // phpcs:ignore WordPress.WP.AlternativeFunctions
 		);
+		WP_Mock::userFunction( 'wp_slash' )->andReturnUsing(
+			static fn( $value ) => is_string( $value ) ? addslashes( $value ) : $value
+		);
 		WP_Mock::userFunction( 'is_wp_error' )->andReturnUsing(
 			static fn( $thing ) => $thing instanceof \WP_Error
 		);
@@ -232,7 +235,7 @@ class ResponseRepositoryTest extends BaseTestCase {
 			->with(
 				\Mockery::on(
 					static function ( array $args ): bool {
-						$data = json_decode( $args['post_content'], true );
+						$data = json_decode( stripslashes( $args['post_content'] ), true );
 
 						return 'omniform_response' === $args['post_type']
 							&& 'omniform_unread' === $args['post_status']
@@ -240,8 +243,10 @@ class ResponseRepositoryTest extends BaseTestCase {
 							&& 10 === $args['meta_input']['_omniform_id']
 							&& '1.2.3.4' === $args['meta_input']['_omniform_user_ip']
 							&& 'https://example.com' === $args['meta_input']['_wp_http_referer']
+							&& is_array( $data )
 							&& 1 === $data['version']
-							&& 'a@b.c' === $data['submission']['values']['email'];
+							&& 'a@b.c' === $data['submission']['values']['email']
+							&& $args['post_content'] !== stripslashes( $args['post_content'] );
 					}
 				),
 				true
@@ -258,6 +263,39 @@ class ResponseRepositoryTest extends BaseTestCase {
 		);
 
 		$this->assertSame( 77, $id );
+	}
+
+	/**
+	 * Backslashes in field values survive wp_insert_post unslashing.
+	 */
+	public function testSavePreservesBackslashesInPayload() {
+		$response = new Response(
+			new FormSchema(
+				array(
+					new Field( FieldPath::from_segments( array( 'message' ) ), 'Message', 'textarea' ),
+				)
+			),
+			new Submission( array( 'message' => 'path is includes\\Plugin\\Form.php' ) )
+		);
+
+		WP_Mock::userFunction( 'wp_insert_post' )
+			->once()
+			->with(
+				\Mockery::on(
+					static function ( array $args ): bool {
+						// Simulate WordPress unslashing post_content on insert.
+						$stored = stripslashes( $args['post_content'] );
+						$data   = json_decode( $stored, true );
+
+						return is_array( $data )
+							&& 'path is includes\\Plugin\\Form.php' === $data['submission']['values']['message'];
+					}
+				),
+				true
+			)
+			->andReturn( 88 );
+
+		$this->assertSame( 88, $this->repository->save( $response, 10 ) );
 	}
 
 	/**
