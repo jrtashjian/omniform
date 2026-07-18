@@ -17,6 +17,13 @@ use WP_Mock;
  */
 class ApplicationTest extends BaseTestCase {
 	/**
+	 * Absolute path to the root plugin file.
+	 *
+	 * @var string
+	 */
+	private string $plugin_file;
+
+	/**
 	 * Sets up the test environment before each test method is executed.
 	 */
 	public function setUp(): void {
@@ -25,6 +32,24 @@ class ApplicationTest extends BaseTestCase {
 		if ( ! defined( 'MINUTE_IN_SECONDS' ) ) {
 			define( 'MINUTE_IN_SECONDS', 60 ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 		}
+
+		$this->plugin_file = dirname( __DIR__, 2 ) . '/omniform.php';
+
+		WP_Mock::userFunction(
+			'plugin_dir_path',
+			array(
+				'args'   => array( $this->plugin_file ),
+				'return' => dirname( $this->plugin_file ) . '/',
+			)
+		);
+
+		WP_Mock::userFunction(
+			'plugin_dir_url',
+			array(
+				'args'   => array( $this->plugin_file ),
+				'return' => 'http://example.com/plugin/',
+			)
+		);
 
 		// Reset the singleton instance.
 		Application::set_instance( null );
@@ -120,74 +145,28 @@ class ApplicationTest extends BaseTestCase {
 	 */
 	public function testVersion() {
 		$app = Application::get_instance();
-		$this->assertEquals( Application::VERSION, $app->version(), 'Version should match defined constant' );
+		$this->assertSame( '1.3.4', $app->version(), 'Version should match the private constant' );
 	}
 
 	/**
-	 * Test setting and getting base path.
+	 * Base path is bound from the root plugin file at construction.
 	 */
-	public function testSetBasePath() {
-		$plugin_file   = '/path/to/plugin/main.php';
-		$expected_path = '/path/to/plugin/';
-		$expected_url  = 'http://example.com/plugin/';
-
-		// Mock WordPress functions.
-		WP_Mock::userFunction(
-			'plugin_dir_path',
-			array(
-				'args'   => array( $plugin_file ),
-				'return' => $expected_path,
-			)
-		);
-
-		WP_Mock::userFunction(
-			'plugin_dir_url',
-			array(
-				'args'   => array( $plugin_file ),
-				'return' => $expected_url,
-			)
-		);
+	public function testBasePathIsBoundFromPluginFile() {
+		$expected_root = dirname( $this->plugin_file );
 
 		$app = Application::get_instance();
 
-		$this->assertSame( '', $app->base_path(), 'base_path() should return empty string when base_path property is not set' );
-		$this->assertSame( '', $app->base_path( 'subfolder' ), 'base_path() with subfolder should return empty string when base_path property is not set' );
-
-		$this->assertSame( '', $app->base_url(), 'base_url() should return empty string when base_url property is not set' );
-		$this->assertSame( '', $app->base_url( 'subfolder' ), 'base_url() with subfolder should return empty string when base_url property is not set' );
-
-		$app->set_base_path( $plugin_file );
-
-		// Test that base_path and base_url work correctly after setting.
-		$this->assertEquals( rtrim( $expected_path, '/' ), $app->base_path(), 'Base path should return root path' );
-		$this->assertEquals( rtrim( $expected_url, '/' ), $app->base_url(), 'Base URL should return root URL' );
+		$this->assertSame( $expected_root, $app->base_path(), 'Base path should return root path' );
+		$this->assertSame( 'http://example.com/plugin', $app->base_url(), 'Base URL should return root URL' );
 	}
 
 	/**
 	 * Test base_path method with various path scenarios.
 	 */
 	public function testBasePathWithDifferentPaths() {
-		$plugin_file   = '/path/to/plugin/main.php';
-		$expected_root = '/path/to/plugin';
-
-		WP_Mock::userFunction(
-			'plugin_dir_path',
-			array(
-				'args'   => array( $plugin_file ),
-				'return' => $expected_root . '/',
-			)
-		);
-
-		WP_Mock::userFunction(
-			'plugin_dir_url',
-			array(
-				'args'   => array( $plugin_file ),
-				'return' => 'http://example.com/plugin/',
-			)
-		);
+		$expected_root = dirname( $this->plugin_file );
 
 		$app = Application::get_instance();
-		$app->set_base_path( $plugin_file );
 
 		$this->assertEquals( $expected_root, $app->base_path(), 'Base path with empty path should return root' );
 		$this->assertEquals( $expected_root . '/subfolder', $app->base_path( 'subfolder' ), 'Base path should append simple path' );
@@ -200,27 +179,9 @@ class ApplicationTest extends BaseTestCase {
 	 * Test base_url method with various path scenarios.
 	 */
 	public function testBaseUrlWithDifferentPaths() {
-		$plugin_file   = '/path/to/plugin/main.php';
 		$expected_root = 'http://example.com/plugin';
 
-		WP_Mock::userFunction(
-			'plugin_dir_path',
-			array(
-				'args'   => array( $plugin_file ),
-				'return' => '/path/to/plugin/',
-			)
-		);
-
-		WP_Mock::userFunction(
-			'plugin_dir_url',
-			array(
-				'args'   => array( $plugin_file ),
-				'return' => $expected_root . '/',
-			)
-		);
-
 		$app = Application::get_instance();
-		$app->set_base_path( $plugin_file );
 
 		$this->assertEquals( $expected_root, $app->base_url(), 'Base URL with empty path should return root' );
 		$this->assertEquals( $expected_root . '/subfolder', $app->base_url( 'subfolder' ), 'Base URL should append simple path' );
@@ -233,11 +194,13 @@ class ApplicationTest extends BaseTestCase {
 	 * Test activation method.
 	 */
 	public function testActivation() {
+		$app = Application::get_instance();
+
 		// Mock WordPress functions with exact expected arguments.
 		WP_Mock::userFunction(
 			'add_option',
 			array(
-				'args'  => array( 'omniform_initial_version', Application::VERSION, '', false ),
+				'args'  => array( 'omniform_initial_version', $app->version(), '', false ),
 				'times' => 1,
 			)
 		);
@@ -260,7 +223,6 @@ class ApplicationTest extends BaseTestCase {
 
 		WP_Mock::expectAction( 'omniform_activate' );
 
-		$app = Application::get_instance();
 		$app->activation();
 
 		// All assertions are handled by WP_Mock.

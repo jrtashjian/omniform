@@ -22,28 +22,36 @@ use OmniForm\Plugin\FormRepository;
 class Application {
 	/**
 	 * The current globally available application (if any).
+	 *
+	 * @var self|null
 	 */
 	protected static ?self $instance = null;
 
 	/**
 	 * The plugin version.
 	 */
-	public const VERSION = '1.3.4';
+	private const VERSION = '1.3.4';
 
 	/**
 	 * The dependency injection container.
+	 *
+	 * @var DefinitionContainerInterface
 	 */
 	protected DefinitionContainerInterface $container;
 
 	/**
 	 * The base path for the plugin.
+	 *
+	 * @var string
 	 */
-	protected ?string $base_path = null;
+	protected string $base_path;
 
 	/**
 	 * The base url for the plugin.
+	 *
+	 * @var string
 	 */
-	protected ?string $base_url = null;
+	protected string $base_url;
 
 	/**
 	 * Create a new application instance.
@@ -53,6 +61,7 @@ class Application {
 	public function __construct( ?DefinitionContainerInterface $container = null ) {
 		$this->container = $container ?? new Container();
 		$this->container->addShared( static::class, $this );
+		$this->bind_plugin_paths();
 	}
 
 	/**
@@ -68,7 +77,9 @@ class Application {
 	 * @param self|null $application The application instance, or null to clear.
 	 */
 	public static function set_instance( ?self $application = null ): ?self {
-		return static::$instance = $application;
+		static::$instance = $application;
+
+		return static::$instance;
 	}
 
 	/**
@@ -110,17 +121,7 @@ class Application {
 	 * Get the version number of the application.
 	 */
 	public function version(): string {
-		return static::VERSION;
-	}
-
-	/**
-	 * Register the path bindings based on the main plugin file.
-	 *
-	 * @param string $plugin_file The full path to the main plugin file.
-	 */
-	public function set_base_path( string $plugin_file ): void {
-		$this->base_path = plugin_dir_path( $plugin_file );
-		$this->base_url  = plugin_dir_url( $plugin_file );
+		return self::VERSION;
 	}
 
 	/**
@@ -129,11 +130,7 @@ class Application {
 	 * @param string $path path from the root.
 	 */
 	public function base_path( string $path = '' ): string {
-		if ( null === $this->base_path ) {
-			return '';
-		}
-
-		return rtrim( $this->base_path, DIRECTORY_SEPARATOR )
+		return $this->base_path
 			. ( '' !== $path ? DIRECTORY_SEPARATOR . ltrim( $path, DIRECTORY_SEPARATOR ) : '' );
 	}
 
@@ -143,11 +140,7 @@ class Application {
 	 * @param string $path path from the root.
 	 */
 	public function base_url( string $path = '' ): string {
-		if ( null === $this->base_url ) {
-			return '';
-		}
-
-		return rtrim( $this->base_url, '/' )
+		return $this->base_url
 			. ( '' !== $path ? '/' . ltrim( $path, '/' ) : '' );
 	}
 
@@ -155,7 +148,7 @@ class Application {
 	 * Callback for plugin activation.
 	 */
 	public function activation(): void {
-		add_option( 'omniform_initial_version', static::VERSION, '', false );
+		add_option( 'omniform_initial_version', self::VERSION, '', false );
 		add_option( 'omniform_activated_time', time(), '', false );
 		set_transient( 'omniform_just_activated', true, MINUTE_IN_SECONDS );
 		do_action( 'omniform_activate' );
@@ -166,5 +159,14 @@ class Application {
 	 */
 	public function deactivation(): void {
 		do_action( 'omniform_deactivate' );
+	}
+
+	/**
+	 * Bind base path and URL from the root plugin file.
+	 */
+	private function bind_plugin_paths(): void {
+		$plugin_file     = dirname( __DIR__ ) . '/omniform.php';
+		$this->base_path = rtrim( plugin_dir_path( $plugin_file ), DIRECTORY_SEPARATOR );
+		$this->base_url  = rtrim( plugin_dir_url( $plugin_file ), '/' );
 	}
 }

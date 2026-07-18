@@ -46,8 +46,6 @@ function omniform(): \OmniForm\Application {
 	return \OmniForm\Application::get_instance();
 }
 
-omniform()->set_base_path( __FILE__ );
-
 /**
  * Service Providers.
  */
