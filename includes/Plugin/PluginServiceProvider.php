@@ -12,6 +12,7 @@ use OmniForm\Application;
 use OmniForm\Dependencies\Respect\Validation;
 use OmniForm\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use OmniForm\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
+use OmniForm\Form\Form as DomainForm;
 use OmniForm\Form\Response as DomainResponse;
 use OmniForm\Plugin\Http\Request;
 use WP_Block_Type;
@@ -113,24 +114,29 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		add_action( 'rest_api_init', array( $this, 'register_rest_fields' ) );
 		add_filter( 'the_content', array( $this, 'render_singular_template' ) );
 
-		// Send email notification when a legacy Plugin\Response is created
-		// (standalone block path). Domain REST submit uses the same hook with
-		// domain types; email for that path is handled once notify meta is wired.
+		// Send email notification when a response is created.
 		add_action(
 			'omniform_response_created',
-			function ( $response, $form ) {
-				if ( ! $response instanceof Response || ! $form instanceof Form ) {
+			function ( $response, $form, $context = array() ) {
+				if ( $response instanceof DomainResponse && $form instanceof DomainForm ) {
+					( new ResponseNotificationMailer() )->send(
+						$response,
+						$form,
+						is_array( $context ) ? $context : array()
+					);
 					return;
 				}
 
-				wp_mail(
-					$form->get_notify_email(),
-					$form->get_notify_email_subject(),
-					wp_kses( $response->email_content(), array() )
-				);
+				if ( $response instanceof Response && $form instanceof Form ) {
+					wp_mail(
+						$form->get_notify_email(),
+						$form->get_notify_email_subject(),
+						wp_kses( $response->email_content(), array() )
+					);
+				}
 			},
 			10,
-			2
+			3
 		);
 
 		// Temporary: preview domain HTML presenter on classic response edit screen.

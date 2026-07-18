@@ -14,10 +14,11 @@ final class Form {
 	/**
 	 * Constructor.
 	 *
-	 * @param string   $content Block markup that defines the form.
-	 * @param string   $title   Human-readable title.
-	 * @param string   $status  Publication status (e.g. publish, draft).
-	 * @param int|null $id      Persisted form id, if any.
+	 * @param string                         $content       Block markup that defines the form.
+	 * @param string                         $title         Human-readable title.
+	 * @param string                         $status        Publication status (e.g. publish, draft).
+	 * @param int|null                       $id            Persisted form id, if any.
+	 * @param FormNotificationSettings|null  $notifications Notify recipients/subject, if known.
 	 *
 	 * @throws \InvalidArgumentException If id is non-positive when provided.
 	 */
@@ -26,6 +27,7 @@ final class Form {
 		private readonly string $title = '',
 		private readonly string $status = 'publish',
 		private readonly ?int $id = null,
+		private readonly ?FormNotificationSettings $notifications = null,
 	) {
 		if ( null !== $this->id && $this->id < 1 ) {
 			throw new \InvalidArgumentException( 'Form id must be a positive integer when provided.' );
@@ -81,5 +83,12 @@ final class Form {
 	 */
 	public function is_published(): bool {
 		return 'publish' === $this->status;
+	}
+
+	/**
+	 * Notification settings when loaded from persistence; null for content-only forms.
+	 */
+	public function notifications(): ?FormNotificationSettings {
+		return $this->notifications;
 	}
 }

@@ -8,6 +8,7 @@
 namespace OmniForm\Tests\Unit\Form;
 
 use OmniForm\Form\Form;
+use OmniForm\Form\FormNotificationSettings;
 use OmniForm\Tests\Unit\BaseTestCase;
 
 /**
@@ -26,17 +27,24 @@ class FormTest extends BaseTestCase {
 		$this->assertFalse( $form->is_persisted() );
 		$this->assertTrue( $form->is_published() );
 		$this->assertSame( 'publish', $form->status() );
+		$this->assertNull( $form->notifications() );
 	}
 
 	/**
 	 * Full construction captures identity and status.
 	 */
 	public function testFullConstruction() {
+		$notifications = new FormNotificationSettings(
+			array( 'a@example.com' ),
+			'Subject'
+		);
+
 		$form = new Form(
 			content: '<!-- form -->',
 			title: 'Contact',
 			status: 'draft',
 			id: 42,
+			notifications: $notifications,
 		);
 
 		$this->assertSame( 42, $form->id() );
@@ -45,6 +53,7 @@ class FormTest extends BaseTestCase {
 		$this->assertSame( '<!-- form -->', $form->content() );
 		$this->assertSame( 'draft', $form->status() );
 		$this->assertFalse( $form->is_published() );
+		$this->assertSame( $notifications, $form->notifications() );
 	}
 
 	/**

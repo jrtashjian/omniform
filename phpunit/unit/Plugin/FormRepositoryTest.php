@@ -59,6 +59,14 @@ class FormRepositoryTest extends BaseTestCase {
 			->with( $form_id )
 			->andReturn( $post );
 
+		WP_Mock::userFunction( 'get_post_meta' )
+			->with( $form_id, 'notify_email', true )
+			->andReturn( array( 'team@example.com' ) );
+		WP_Mock::userFunction( 'get_post_meta' )
+			->with( $form_id, 'notify_email_subject', true )
+			->andReturn( 'Custom subject' );
+		WP_Mock::userFunction( '__' )->andReturnUsing( static fn( $v ) => $v );
+
 		$form = $this->repository->get( $form_id );
 
 		$this->assertInstanceOf( Form::class, $form );
@@ -68,6 +76,45 @@ class FormRepositoryTest extends BaseTestCase {
 		$this->assertSame( 'publish', $form->status() );
 		$this->assertTrue( $form->is_persisted() );
 		$this->assertTrue( $form->is_published() );
+		$this->assertNotNull( $form->notifications() );
+		$this->assertSame( array( 'team@example.com' ), $form->notifications()->recipients() );
+		$this->assertSame( 'Custom subject', $form->notifications()->subject() );
+	}
+
+	/**
+	 * Defaults recipients to admin_email and builds a default subject.
+	 */
+	public function testGetDefaultsNotificationSettings() {
+		$form_id = 50;
+		$post    = Mockery::mock( 'WP_Post' );
+
+		$post->ID           = $form_id;
+		$post->post_type    = 'omniform';
+		$post->post_title   = 'Signup';
+		$post->post_content = '<!-- form -->';
+		$post->post_status  = 'publish';
+
+		WP_Mock::userFunction( 'get_post' )->once()->with( $form_id )->andReturn( $post );
+		WP_Mock::userFunction( 'get_post_meta' )
+			->with( $form_id, 'notify_email', true )
+			->andReturn( '' );
+		WP_Mock::userFunction( 'get_post_meta' )
+			->with( $form_id, 'notify_email_subject', true )
+			->andReturn( '' );
+		WP_Mock::userFunction( 'get_option' )
+			->with( 'admin_email' )
+			->andReturn( 'admin@example.com' );
+		WP_Mock::userFunction( 'get_option' )
+			->with( 'blogname' )
+			->andReturn( 'My Site' );
+		WP_Mock::userFunction( '__' )->andReturnUsing(
+			static fn( $text ) => $text
+		);
+
+		$form = $this->repository->get( $form_id );
+
+		$this->assertSame( array( 'admin@example.com' ), $form->notifications()->recipients() );
+		$this->assertSame( 'New Response: My Site - Signup', $form->notifications()->subject() );
 	}
 
 	/**

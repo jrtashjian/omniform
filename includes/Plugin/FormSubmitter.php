@@ -88,10 +88,21 @@ class FormSubmitter {
 		/**
 		 * Fires after a response has been created.
 		 *
-		 * @param Response $response Domain response snapshot.
-		 * @param Form     $form     Domain form.
+		 * @param Response             $response Domain response snapshot.
+		 * @param Form                 $form     Domain form.
+		 * @param array<string, mixed> $context  response_id, user_ip, referer, time.
 		 */
-		do_action( 'omniform_response_created', $response, $form );
+		do_action(
+			'omniform_response_created',
+			$response,
+			$form,
+			array(
+				'response_id' => $response_id,
+				'user_ip'     => isset( $meta['user_ip'] ) ? (string) $meta['user_ip'] : '',
+				'referer'     => isset( $meta['referer'] ) ? (string) $meta['referer'] : '',
+				'time'        => (string) current_time( 'mysql' ),
+			)
+		);
 
 		return FormSubmitResult::success( $response, $response_id );
 	}

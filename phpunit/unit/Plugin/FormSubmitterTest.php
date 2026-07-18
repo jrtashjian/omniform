@@ -74,6 +74,7 @@ class FormSubmitterTest extends BaseTestCase {
 
 		WP_Mock::userFunction( '__' )->andReturnUsing( static fn( $v ) => $v );
 		WP_Mock::userFunction( 'do_action' )->zeroOrMoreTimes()->andReturnNull();
+		WP_Mock::userFunction( 'current_time' )->andReturn( '2026-07-17 12:00:00' );
 	}
 
 	/**
