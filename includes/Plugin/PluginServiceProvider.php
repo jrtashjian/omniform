@@ -576,66 +576,95 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			'omniform_response',
 			'omniform_form',
 			array(
-				'get_callback' => function ( $post ) {
-					$form_data = array(
-						'title' => null,
-						'id' => null,
-						'edit_url' => null,
-					);
-
-					$sender_data = array(
-						'gravatar' => null,
-						'email'    => null,
-						'ip'       => null,
-					);
-
-					$form_id = (int) get_post_meta( $post['id'], '_omniform_id', true );
-
-					try {
-						$form = $this->getContainer()->get( FormFactory::class )->create_with_id( $form_id );
-
-						$form_data['id'] = $form->get_id();
-						$form_data['title'] = $form->get_title();
-						$form_data['edit_url'] = sanitize_url( admin_url( sprintf( 'post.php?post=%d&action=edit', $form->get_id() ) ) );
-					} catch ( \Exception $_e ) {
-						$form_data['title'] = __( '(form not found)', 'omniform' );
-					}
-
-					try {
-						$post_object = get_post( $post['id'] );
-
-						$response_data = json_decode( $post_object->post_content, true );
-						$sender_data['ip'] = get_post_meta( $post_object->ID, '_omniform_user_ip', true );
-
-						if ( isset( $response_data['response'] ) && is_array( $response_data['response'] ) ) {
-							foreach ( $response_data['response'] as $value ) {
-								if ( is_string( $value ) && is_email( $value ) ) {
-									$sender_data['email'] = $value;
-									break;
-								}
-							}
-						}
-					} catch ( \Exception $_e ) {}
-
-					$form_title = $form_data['title'] ?? __( '(no title)', 'omniform' );
-					$email_for_hash = $sender_data['email'] ?? '';
-
-					return array(
-						'form_id'         => $form_data['id'],
-						'form_edit_url'   => $form_data['edit_url'],
-						'title'           => $form_title,
-						'sender_gravatar' => sanitize_url( 'https://www.gravatar.com/avatar/' . hash( 'sha256', strtolower( trim( $email_for_hash ) ) ) . '?d=mp' ),
-						'sender_email'    => $sender_data['email'],
-						'sender_ip'       => $sender_data['ip']
-					);
-				},
+				'get_callback' => array( $this, 'get_response_omniform_form_field' ),
 				'schema'       => array(
-					'description' => __( 'The ID of the form associated with the response.', 'omniform' ),
+					'description' => __( 'Form and response summary for the dashboard list and detail panel.', 'omniform' ),
 					'type'        => 'object',
 					'context'     => array( 'edit' ),
 				),
 			)
 		);
+	}
+
+	/**
+	 * REST field payload for omniform_response → omniform_form.
+	 *
+	 * Dual-reads domain and legacy post_content via ResponseRepository so the
+	 * dashboard list (sender email) and detail panel (fields) work for both.
+	 *
+	 * @param array<string, mixed> $post Prepared post array from the REST controller.
+	 * @return array{
+	 *   form_id: int|null,
+	 *   form_edit_url: string|null,
+	 *   title: string,
+	 *   sender_gravatar: string,
+	 *   sender_email: string|null,
+	 *   sender_ip: string|null,
+	 *   fields: list<array{name: string, label: string, type: string, value: string}>
+	 * }
+	 */
+	public function get_response_omniform_form_field( array $post ): array {
+		$form_id    = (int) get_post_meta( $post['id'], '_omniform_id', true );
+		$form_data  = $this->form_summary_for_response( $form_id );
+		$view       = new ResponseViewData();
+		$fields     = array();
+		$sender_email = null;
+		$sender_ip  = null;
+
+		$post_object = get_post( (int) $post['id'] );
+
+		if ( $post_object instanceof \WP_Post ) {
+			$sender_ip = get_post_meta( $post_object->ID, '_omniform_user_ip', true );
+			$sender_ip = is_string( $sender_ip ) && '' !== $sender_ip ? $sender_ip : null;
+
+			try {
+				$response     = ( new ResponseRepository() )->from_post( $post_object );
+				$fields       = $view->fields( $response );
+				$sender_email = $view->sender_email( $response );
+			} catch ( \Throwable $_exception ) {
+				// Leave fields/email empty when the snapshot cannot be decoded.
+			}
+		}
+
+		$email_for_hash = $sender_email ?? '';
+
+		return array(
+			'form_id'         => $form_data['id'],
+			'form_edit_url'   => $form_data['edit_url'],
+			'title'           => $form_data['title'],
+			'sender_gravatar' => sanitize_url(
+				'https://www.gravatar.com/avatar/' . hash( 'sha256', strtolower( trim( $email_for_hash ) ) ) . '?d=mp'
+			),
+			'sender_email'    => $sender_email,
+			'sender_ip'       => $sender_ip,
+			'fields'          => $fields,
+		);
+	}
+
+	/**
+	 * Form title / edit URL for a response's parent form.
+	 *
+	 * @param int $form_id Parent form post ID.
+	 * @return array{id: int|null, title: string, edit_url: string|null}
+	 */
+	private function form_summary_for_response( int $form_id ): array {
+		try {
+			$form = $this->getContainer()->get( FormFactory::class )->create_with_id( $form_id );
+
+			return array(
+				'id'       => $form->get_id(),
+				'title'    => $form->get_title() ?: __( '(no title)', 'omniform' ),
+				'edit_url' => sanitize_url(
+					admin_url( sprintf( 'post.php?post=%d&action=edit', $form->get_id() ) )
+				),
+			);
+		} catch ( \Exception $_exception ) {
+			return array(
+				'id'       => null,
+				'title'    => __( '(form not found)', 'omniform' ),
+				'edit_url' => null,
+			);
+		}
 	}
 
 	/**

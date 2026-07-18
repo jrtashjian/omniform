@@ -160,7 +160,11 @@ export default function App( { settings } ) {
 									</>
 								}
 							>
-								<ResponsePreview id={ activeItem.id } />
+								<ResponsePreview
+								fields={
+									activeItem.omniform_form?.fields ?? []
+								}
+							/>
 							</Page>
 						) }
 					</div>
