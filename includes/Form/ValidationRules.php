@@ -12,7 +12,9 @@ namespace OmniForm\Form;
  */
 final class ValidationRules {
 	/**
-	 * @param list<string> $rules Rule strings (e.g. required, min:3).
+	 * Constructor.
+	 *
+	 * @param array $rules Rule strings.
 	 *
 	 * @throws \InvalidArgumentException If any rule is not a non-empty string.
 	 */
@@ -27,6 +29,8 @@ final class ValidationRules {
 	}
 
 	/**
+	 * All validation rule strings.
+	 *
 	 * @return list<string>
 	 */
 	public function all(): array {
@@ -34,7 +38,13 @@ final class ValidationRules {
 	}
 
 	/**
-	 * Whether a rule is present (matches "required" or "min:3" by name).
+	 * Whether a rule is present.
+	 *
+	 * Matches "required" or "min:3" by name.
+	 *
+	 * @param string $name Rule name.
+	 *
+	 * @return bool
 	 */
 	public function has( string $name ): bool {
 		foreach ( $this->rules as $rule ) {

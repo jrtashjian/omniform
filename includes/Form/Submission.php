@@ -133,11 +133,6 @@ final class Submission {
 			return;
 		}
 
-		throw new \InvalidArgumentException(
-			sprintf(
-				'Submission values must be plain data; %s is not allowed.',
-				get_debug_type( $data )
-			)
-		);
+		throw new \InvalidArgumentException( 'Submission values must be plain data; complex types are not allowed.' );
 	}
 }

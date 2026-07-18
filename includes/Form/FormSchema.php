@@ -15,8 +15,10 @@ namespace OmniForm\Form;
  */
 final class FormSchema {
 	/**
-	 * @param list<Field>      $fields Form fields in display order.
-	 * @param list<FieldGroup> $groups Field groups in encounter order.
+	 * Constructor.
+	 *
+	 * @param array $fields Form fields in display order.
+	 * @param array $groups Field groups in encounter order.
 	 *
 	 * @throws \InvalidArgumentException If entries are the wrong type.
 	 */
@@ -38,6 +40,8 @@ final class FormSchema {
 	}
 
 	/**
+	 * All fields in display order.
+	 *
 	 * @return list<Field>
 	 */
 	public function fields(): array {
@@ -45,6 +49,8 @@ final class FormSchema {
 	}
 
 	/**
+	 * All groups in encounter order.
+	 *
 	 * @return list<FieldGroup>
 	 */
 	public function groups(): array {
@@ -53,6 +59,10 @@ final class FormSchema {
 
 	/**
 	 * Find a field by its composed path key.
+	 *
+	 * @param string $path_key Field path key.
+	 *
+	 * @return Field|null
 	 */
 	public function field( string $path_key ): ?Field {
 		foreach ( $this->fields as $field ) {
@@ -66,6 +76,10 @@ final class FormSchema {
 
 	/**
 	 * Find a group by its composed path key.
+	 *
+	 * @param string $path_key Group path key.
+	 *
+	 * @return FieldGroup|null
 	 */
 	public function group( string $path_key ): ?FieldGroup {
 		foreach ( $this->groups as $group ) {

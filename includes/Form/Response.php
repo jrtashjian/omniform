@@ -17,6 +17,8 @@ final class Response {
 	public const VERSION = 1;
 
 	/**
+	 * Create a response snapshot.
+	 *
 	 * @param FormSchema $schema     Field catalog at submit time.
 	 * @param Submission $submission Submitted values.
 	 * @param int        $version    Schema/payload version for storage evolution.
@@ -55,6 +57,8 @@ final class Response {
 	}
 
 	/**
+	 * Serialize to array.
+	 *
 	 * @return array{version: int, schema: array, submission: array}
 	 */
 	public function to_array(): array {
@@ -66,7 +70,11 @@ final class Response {
 	}
 
 	/**
+	 * Restore from a serialized array.
+	 *
 	 * @param array<string, mixed> $data Serialized response.
+	 *
+	 * @return self
 	 *
 	 * @throws \InvalidArgumentException If the payload is invalid.
 	 */
@@ -81,6 +89,10 @@ final class Response {
 	}
 
 	/**
+	 * Convert schema to an array for serialization.
+	 *
+	 * @param FormSchema $schema Schema to convert.
+	 *
 	 * @return array{fields: list<array>, groups: list<array>}
 	 */
 	private function schema_to_array( FormSchema $schema ): array {
@@ -107,7 +119,13 @@ final class Response {
 	}
 
 	/**
+	 * Build a FormSchema from serialized data.
+	 *
 	 * @param array<string, mixed> $data Serialized schema.
+	 *
+	 * @return FormSchema
+	 *
+	 * @throws \InvalidArgumentException If the schema data is invalid.
 	 */
 	private static function schema_from_array( array $data ): FormSchema {
 		$fields = array();
@@ -142,8 +160,13 @@ final class Response {
 	}
 
 	/**
+	 * Convert a raw rules list into a validated list of strings.
+	 *
 	 * @param mixed $rules Raw rules list.
+	 *
 	 * @return list<string>
+	 *
+	 * @throws \InvalidArgumentException If any rule is not a non-empty string.
 	 */
 	private static function string_list( mixed $rules ): array {
 		if ( ! is_array( $rules ) ) {

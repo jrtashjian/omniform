@@ -12,15 +12,19 @@ namespace OmniForm\Form;
  */
 final class FieldGroup {
 	/**
+	 * Validation rules.
+	 *
 	 * @var ValidationRules
 	 */
 	private readonly ValidationRules $rules;
 
 	/**
-	 * @param FieldPath    $name         Composed group path.
-	 * @param string       $label        Human-readable label.
-	 * @param list<string> $rules        Laravel-style validation rules.
-	 * @param bool         $choice_group Whether children share one value (radio/checkbox group).
+	 * Constructor.
+	 *
+	 * @param FieldPath $name         Composed group path.
+	 * @param string    $label        Human-readable label.
+	 * @param array     $rules        Validation rules.
+	 * @param bool      $choice_group Whether children share one value.
 	 *
 	 * @throws \InvalidArgumentException If label, path, or a rule is empty.
 	 */
@@ -43,6 +47,8 @@ final class FieldGroup {
 
 	/**
 	 * Composed group path.
+	 *
+	 * @return FieldPath
 	 */
 	public function name(): FieldPath {
 		return $this->name;
@@ -50,6 +56,8 @@ final class FieldGroup {
 
 	/**
 	 * Human-readable label.
+	 *
+	 * @return string
 	 */
 	public function label(): string {
 		return $this->label;
@@ -65,7 +73,11 @@ final class FieldGroup {
 	}
 
 	/**
-	 * Whether a rule is present (matches "required" or "min:3" by name).
+	 * Whether a rule is present.
+	 *
+	 * @param string $name Rule name.
+	 *
+	 * @return bool
 	 */
 	public function has_rule( string $name ): bool {
 		return $this->rules->has( $name );
@@ -73,12 +85,16 @@ final class FieldGroup {
 
 	/**
 	 * Whether this group is a radio/checkbox choice group.
+	 *
+	 * @return bool
 	 */
 	public function is_choice_group(): bool {
 		return $this->choice_group;
 	}
 
 	/**
+	 * Serialize to an array.
+	 *
 	 * @return array{name: string, label: string, rules: list<string>, choice_group: bool}
 	 */
 	public function to_array(): array {
@@ -91,7 +107,11 @@ final class FieldGroup {
 	}
 
 	/**
+	 * Restore from a serialized array.
+	 *
 	 * @param array<string, mixed> $data Serialized group.
+	 *
+	 * @return self
 	 *
 	 * @throws \InvalidArgumentException If the payload is invalid.
 	 */
@@ -105,22 +125,29 @@ final class FieldGroup {
 	}
 
 	/**
+	 * Validate and convert raw input to a list of non-empty strings.
+	 *
 	 * @param mixed $raw Raw rules list.
+	 *
 	 * @return list<string>
+	 *
+	 * @throws \InvalidArgumentException If a rule is not a non-empty string.
 	 */
 	private static function validate_rules( mixed $raw ): array {
 		if ( ! is_array( $raw ) ) {
 			return array();
 		}
 
-		return array_values( array_filter(
-			$raw,
-			static function ( mixed $rule ): bool {
-				if ( ! is_string( $rule ) || '' === $rule ) {
-					throw new \InvalidArgumentException( 'Response rules must be non-empty strings.' );
-				}
-				return true;
-			},
-		) );
+		return array_values(
+			array_filter(
+				$raw,
+				static function ( mixed $rule ): bool {
+					if ( ! is_string( $rule ) || '' === $rule ) {
+						throw new \InvalidArgumentException( 'Response rules must be non-empty strings.' );
+					}
+					return true;
+				},
+			)
+		);
 	}
 }

@@ -14,11 +14,11 @@ final class Form {
 	/**
 	 * Constructor.
 	 *
-	 * @param string                         $content       Block markup that defines the form.
-	 * @param string                         $title         Human-readable title.
-	 * @param string                         $status        Publication status (e.g. publish, draft).
-	 * @param int|null                       $id            Persisted form id, if any.
-	 * @param FormNotificationSettings|null  $notifications Notify recipients/subject, if known.
+	 * @param string                        $content       Block markup that defines the form.
+	 * @param string                        $title         Human-readable title.
+	 * @param string                        $status        Publication status (e.g. publish, draft).
+	 * @param int|null                      $id            Persisted form id, if any.
+	 * @param FormNotificationSettings|null $notifications Notify recipients/subject, if known.
 	 *
 	 * @throws \InvalidArgumentException If id is non-positive when provided.
 	 */

@@ -12,8 +12,10 @@ namespace OmniForm\Form;
  */
 final class FormNotificationSettings {
 	/**
-	 * @param list<string> $recipients Email addresses.
-	 * @param string       $subject    Email subject line.
+	 * Constructor.
+	 *
+	 * @param array  $recipients Email addresses.
+	 * @param string $subject    Email subject line.
 	 *
 	 * @throws \InvalidArgumentException If a recipient is empty or subject is empty.
 	 */
@@ -33,16 +35,28 @@ final class FormNotificationSettings {
 	}
 
 	/**
+	 * Email recipients.
+	 *
 	 * @return list<string>
 	 */
 	public function recipients(): array {
 		return $this->recipients;
 	}
 
+	/**
+	 * Email subject line.
+	 *
+	 * @return string
+	 */
 	public function subject(): string {
 		return $this->subject;
 	}
 
+	/**
+	 * Whether any recipients are defined.
+	 *
+	 * @return bool
+	 */
 	public function has_recipients(): bool {
 		return array() !== $this->recipients;
 	}
