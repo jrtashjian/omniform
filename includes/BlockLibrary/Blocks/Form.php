@@ -7,7 +7,12 @@
 
 namespace OmniForm\BlockLibrary\Blocks;
 
-use OmniForm\Plugin\ResponseFactory;
+use OmniForm\Form\FormNotificationSettings;
+use OmniForm\Form\Response as DomainResponse;
+use OmniForm\Plugin\BlockFormSchemaParser;
+use OmniForm\Plugin\RespectSubmissionValidator;
+use OmniForm\Plugin\ResponseNotificationMailer;
+use OmniForm\Plugin\SubmissionFactory;
 use OmniForm\Traits\CallbackSupport;
 
 /**
@@ -135,36 +140,14 @@ class Form extends BaseBlock {
 		$submitted_hash = sanitize_text_field( filter_input( INPUT_POST, 'omniform_hash' ) );
 
 		if ( $submitted_hash === $form_hash && wp_verify_nonce( $_REQUEST['_wpnonce'], 'omniform' . $form_hash ) ) {
-			// Validate the form.
-			$form->set_request_params( $_POST );
+			$schema     = ( new BlockFormSchemaParser() )->parse( $form->get_content() );
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing -- verified above.
+			$submission = ( new SubmissionFactory() )->from_request( $_POST, $_FILES );
+			$validation = ( new RespectSubmissionValidator() )->validate( $schema, $submission );
 
-			if ( empty( $form->validate() ) ) {
-				$response = omniform()->container()->get( ResponseFactory::class )->create_with_form( $form );
-
-				$notify_email         = $this->get_block_attribute( 'notify_email' );
-				$notify_email_subject = $this->get_block_attribute( 'notify_email_subject' );
-
-				$default_subject = $this->get_block_attribute( 'form_title' )
-					? sprintf(
-						// translators: %1$s represents the blog name, %2$s represents the form title.
-						__( 'New Response: %1$s - %2$s', 'omniform' ),
-						get_option( 'blogname' ),
-						$this->get_block_attribute( 'form_title' )
-					)
-					: sprintf(
-						// translators: %1$s represents the blog name.
-						__( 'New Response: %1$s', 'omniform' ),
-						get_option( 'blogname' )
-					);
-
-				wp_mail(
-					empty( $notify_email )
-						? get_option( 'admin_email' )
-						: $notify_email,
-					empty( $notify_email_subject )
-						? esc_attr( $default_subject )
-						: esc_attr( $notify_email_subject ),
-					wp_kses( $response->email_content(), array() )
+			if ( $validation->is_valid() ) {
+				$this->send_standalone_notification(
+					new DomainResponse( $schema, $submission )
 				);
 			}
 		}
@@ -219,6 +202,93 @@ class Form extends BaseBlock {
 			esc_attr( $submit_action ),
 			get_block_wrapper_attributes( $extra_attributes ),
 			$inner_content,
+		);
+	}
+
+	/**
+	 * Email a standalone form submission using block notify attributes.
+	 *
+	 * @param DomainResponse $response Domain response snapshot.
+	 */
+	private function send_standalone_notification( DomainResponse $response ): void {
+		$notify_email = $this->get_block_attribute( 'notify_email' );
+		$subject      = $this->get_block_attribute( 'notify_email_subject' );
+
+		$recipients = $this->standalone_recipients( $notify_email );
+		if ( array() === $recipients ) {
+			return;
+		}
+
+		if ( ! is_string( $subject ) || '' === $subject ) {
+			$subject = $this->standalone_default_subject();
+		}
+
+		$domain_form = new \OmniForm\Form\Form(
+			content: $this->content,
+			title: (string) ( $this->get_block_attribute( 'form_title' ) ?? '' ),
+			notifications: new FormNotificationSettings( $recipients, $subject ),
+		);
+
+		$user_ip = filter_var( $_SERVER['REMOTE_ADDR'] ?? '', FILTER_VALIDATE_IP );
+
+		( new ResponseNotificationMailer() )->send(
+			$response,
+			$domain_form,
+			array(
+				'user_ip' => $user_ip ? $user_ip : '',
+				'referer' => isset( $_SERVER['HTTP_REFERER'] )
+					? esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) )
+					: '',
+				'time'    => (string) current_time( 'mysql' ),
+			)
+		);
+	}
+
+	/**
+	 * @param mixed $notify_email Block attribute value.
+	 * @return list<string>
+	 */
+	private function standalone_recipients( mixed $notify_email ): array {
+		if ( is_string( $notify_email ) && '' !== $notify_email ) {
+			return array( $notify_email );
+		}
+
+		if ( is_array( $notify_email ) ) {
+			$recipients = array();
+			foreach ( $notify_email as $email ) {
+				if ( is_string( $email ) && '' !== $email ) {
+					$recipients[] = $email;
+				}
+			}
+			if ( array() !== $recipients ) {
+				return $recipients;
+			}
+		}
+
+		$admin = get_option( 'admin_email' );
+
+		return ( is_string( $admin ) && '' !== $admin ) ? array( $admin ) : array();
+	}
+
+	/**
+	 * Default subject for standalone forms.
+	 */
+	private function standalone_default_subject(): string {
+		$form_title = $this->get_block_attribute( 'form_title' );
+
+		if ( is_string( $form_title ) && '' !== $form_title ) {
+			return sprintf(
+				/* translators: %1$s: Site name. %2$s: Form title. */
+				__( 'New Response: %1$s - %2$s', 'omniform' ),
+				get_option( 'blogname' ),
+				$form_title
+			);
+		}
+
+		return sprintf(
+			/* translators: %1$s: Site name. */
+			__( 'New Response: %1$s', 'omniform' ),
+			get_option( 'blogname' )
 		);
 	}
 

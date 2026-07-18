@@ -37,8 +37,6 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			wpdb::class,
 			Form::class,
 			FormFactory::class,
-			Response::class,
-			ResponseFactory::class,
 			QueryBuilder::class,
 			Request::class,
 			FormSubmitter::class,
@@ -65,13 +63,6 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 
 		$this->getContainer()
 			->add( FormFactory::class )
-			->addArgument( $this->getContainer() );
-
-		$this->getContainer()
-			->add( Response::class );
-
-		$this->getContainer()
-			->add( ResponseFactory::class )
 			->addArgument( $this->getContainer() );
 
 		$this->getContainer()
@@ -114,60 +105,33 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		add_action( 'rest_api_init', array( $this, 'register_rest_fields' ) );
 		add_filter( 'the_content', array( $this, 'render_singular_template' ) );
 
-		// Send email notification when a response is created.
+		// Send email notification when a domain response is created.
 		add_action(
 			'omniform_response_created',
 			function ( $response, $form, $context = array() ) {
-				if ( $response instanceof DomainResponse && $form instanceof DomainForm ) {
-					( new ResponseNotificationMailer() )->send(
-						$response,
-						$form,
-						is_array( $context ) ? $context : array()
-					);
+				if ( ! $response instanceof DomainResponse || ! $form instanceof DomainForm ) {
 					return;
 				}
 
-				if ( $response instanceof Response && $form instanceof Form ) {
-					wp_mail(
-						$form->get_notify_email(),
-						$form->get_notify_email_subject(),
-						wp_kses( $response->email_content(), array() )
-					);
-				}
+				( new ResponseNotificationMailer() )->send(
+					$response,
+					$form,
+					is_array( $context ) ? $context : array()
+				);
 			},
 			10,
 			3
-		);
-
-		// Temporary: preview domain HTML presenter on classic response edit screen.
-		add_action(
-			'edit_form_top',
-			function ( \WP_Post $post ) {
-				if ( 'omniform_response' !== $post->post_type ) {
-					return;
-				}
-
-				try {
-					$response  = $this->domain_response_for_post( $post );
-					$presenter = new HtmlResponsePresenter();
-					$html      = $presenter->present( $response );
-				} catch ( \Throwable $exception ) {
-					echo '<div class="notice notice-error"><p>' . esc_html( $exception->getMessage() ) . '</p></div>';
-					return;
-				}
-
-				echo '<div class="omniform-response-preview" style="margin:1em 0;padding:1em;background:#fff;border:1px solid #c3c4c7;">';
-				echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- presenter escapes field output.
-				printf('<pre>%s</pre>', esc_html( wp_json_encode( $response->to_array(), JSON_PRETTY_PRINT ) ) );
-				echo '</div>';
-			}
 		);
 
 		// Increment form impression count.
 		add_action(
 			'omniform_form_render',
 			function ( $form_id ) {
-				$form = $this->getContainer()->get( FormFactory::class )->create_with_id( (int) $form_id );
+				try {
+					$form = ( new FormRepository() )->get( (int) $form_id );
+				} catch ( \Throwable $_exception ) {
+					return;
+				}
 
 				if ( ! $form->is_published() || is_admin() || wp_is_serving_rest_request() ) {
 					return;
@@ -410,19 +374,6 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			}
 		);
 
-	}
-
-	/**
-	 * Load a domain Response snapshot for an omniform_response post.
-	 *
-	 * Uses only data stored on the response — never requires the parent form.
-	 *
-	 * @param \WP_Post $post Response post.
-	 *
-	 * @throws \InvalidArgumentException If the payload cannot be interpreted.
-	 */
-	private function domain_response_for_post( \WP_Post $post ): DomainResponse {
-		return ( new ResponseRepository() )->from_post( $post );
 	}
 
 	/**
@@ -675,13 +626,13 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 	 */
 	private function form_summary_for_response( int $form_id ): array {
 		try {
-			$form = $this->getContainer()->get( FormFactory::class )->create_with_id( $form_id );
+			$form = ( new FormRepository() )->get( $form_id );
 
 			return array(
-				'id'       => $form->get_id(),
-				'title'    => $form->get_title() ?: __( '(no title)', 'omniform' ),
+				'id'       => $form->id(),
+				'title'    => $form->title() ?: __( '(no title)', 'omniform' ),
 				'edit_url' => sanitize_url(
-					admin_url( sprintf( 'post.php?post=%d&action=edit', $form->get_id() ) )
+					admin_url( sprintf( 'post.php?post=%d&action=edit', $form->id() ) )
 				),
 			);
 		} catch ( \Exception $_exception ) {
