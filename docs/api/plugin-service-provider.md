@@ -19,15 +19,9 @@ $form = omniform()->form( $form_id );
 $form = omniform()->form_from_content( $serialized_blocks );
 ```
 
-### Response
+### Form submission (domain path)
 
-Create form response objects via the container.
-
-```php
-$response = omniform()->container()
-	->get( \OmniForm\Plugin\ResponseFactory::class )
-	->create_with_form( $form );
-```
+REST submissions go through `FormSubmitter` (validate → persist domain `Response` → `omniform_response_created`). Responses are loaded via `ResponseRepository` (dual-reads domain and legacy JSON).
 
 ## Post Types
 

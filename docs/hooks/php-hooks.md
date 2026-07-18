@@ -5,18 +5,18 @@ OmniForm provides several PHP hooks and filters prefixed with `omniform` to allo
 ## Actions
 
 ### omniform_response_created
-Triggered when a form response is created (after saving to the database).
+Triggered when a form response is created (after saving to the database via the domain submit path).
 
 **Parameters:**
-- `$response` (Response): The form response object.
-- `$form` (Form): The form object.
+- `$response` (`OmniForm\Form\Response`): Domain response snapshot (schema + submission).
+- `$form` (`OmniForm\Form\Form`): Domain form (includes notification settings when loaded from the repository).
+- `$context` (array, optional): `response_id`, `user_ip`, `referer`, `time`.
 
 **Usage:**
 ```php
-add_action( 'omniform_response_created', function( $response, $form ) {
-    // Custom logic, e.g., additional email notifications
-    wp_remote_post( 'https://hooks.slack.com/...', [ 'body' => $response->email_content() ] );
-}, 10, 2 );
+add_action( 'omniform_response_created', function( $response, $form, $context = array() ) {
+    // Custom logic after a response is saved.
+}, 10, 3 );
 ```
 
 ### omniform_form_render

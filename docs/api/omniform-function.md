@@ -10,6 +10,8 @@ $app = omniform();
 
 ## Forms
 
+Returns domain `\OmniForm\Form\Form` (content, title, status, id, notifications).
+
 ### Load a form by ID
 
 ```php
