@@ -86,13 +86,12 @@ class FormSubmitter {
 		}
 
 		/**
-		 * Fires after a domain Response has been saved.
+		 * Fires after a response has been created.
 		 *
-		 * @param Response $response    Domain response.
-		 * @param Form     $form        Domain form.
-		 * @param int      $response_id New response post ID.
+		 * @param Response $response Domain response snapshot.
+		 * @param Form     $form     Domain form.
 		 */
-		do_action( 'omniform_domain_response_created', $response, $form, $response_id );
+		do_action( 'omniform_response_created', $response, $form );
 
 		return FormSubmitResult::success( $response, $response_id );
 	}

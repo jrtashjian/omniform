@@ -9,7 +9,8 @@ namespace OmniForm\Plugin\Api;
 
 use OmniForm\Analytics\AnalyticsManager;
 use OmniForm\FormTypes\FormTypesManager;
-use OmniForm\Plugin\ResponseFactory;
+use OmniForm\Plugin\FormSubmitResult;
+use OmniForm\Plugin\FormSubmitter;
 
 /**
  * The FormsController class.
@@ -51,27 +52,26 @@ class FormsController extends \WP_REST_Posts_Controller {
 	 * @return true|\WP_Error True if the request has read access, WP_Error object otherwise.
 	 */
 	public function get_items_permissions_check( $request ) {
-		if ( current_user_can( 'edit_pages' ) ) {
-			return true;
-		}
-
-		return new \WP_Error(
-			'rest_cannot_manage_forms',
-			__( 'Sorry, you are not allowed to access the forms on this site.', 'omniform' ),
-			array(
-				'status' => rest_authorization_required_code(),
-			)
-		);
+		return $this->manage_forms_permissions_check();
 	}
 
 	/**
-	 * Checks if a given request has access to read forms.
+	 * Checks if a given request has access to read a form.
 	 *
 	 * @param \WP_REST_Request $request Full details about the request.
-
+	 *
 	 * @return true|\WP_Error True if the request has read access, WP_Error object otherwise.
 	 */
 	public function get_item_permissions_check( $request ) {
+		return $this->manage_forms_permissions_check();
+	}
+
+	/**
+	 * Shared capability check for reading form resources.
+	 *
+	 * @return true|\WP_Error
+	 */
+	private function manage_forms_permissions_check() {
 		if ( current_user_can( 'edit_pages' ) ) {
 			return true;
 		}
@@ -86,36 +86,19 @@ class FormsController extends \WP_REST_Posts_Controller {
 	}
 
 	/**
-	 * Creates a single response.
+	 * Creates a single response via the domain FormSubmitter path.
 	 *
 	 * @param \WP_REST_Request $request Full details about the request.
 	 *
 	 * @return \WP_REST_Response|\WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function create_response( \WP_REST_Request $request ) {
-		try {
-			$form = omniform()->form( absint( $request->get_param( 'id' ) ) );
-		} catch ( \Exception $e ) {
-			return new \WP_Error(
-				'omniform_not_found',
-				esc_html( $e->getMessage() ),
-				array( 'status' => 404 )
-			);
-		}
+		$form_id = absint( $request->get_param( 'id' ) );
 
-		if ( ! $form->is_published() ) {
-			return new \WP_Error(
-				'omniform_not_published',
-				esc_html__( 'The form is not published.', 'omniform' ),
-				array( 'status' => 400 )
-			);
-		}
+		$analytics = omniform()->container()->get( AnalyticsManager::class );
 
-		// Rate limit: Allow up to 10 submissions per hour, per unique visitor, per individual form.
-		$analytics_manager  = omniform()->container()->get( AnalyticsManager::class );
-		$recent_submissions = $analytics_manager->get_recent_submissions_count( $form->get_id(), 3600 );
-
-		if ( $recent_submissions >= 10 ) {
+		// Rate limit: up to 10 submissions per hour, per unique visitor, per form.
+		if ( $analytics->get_recent_submissions_count( $form_id, 3600 ) >= 10 ) {
 			return new \WP_Error(
 				'rate_limit_exceeded',
 				esc_html__( 'Too many form submissions. Please try again later.', 'omniform' ),
@@ -123,83 +106,89 @@ class FormsController extends \WP_REST_Posts_Controller {
 			);
 		}
 
-		// Validate the form.
-		$form->set_request_params( $request->get_params() );
-		$errors = $form->validate();
-
-		if ( ! empty( $errors ) ) {
-			$api_response = array(
-				'status'         => 400,
-				'message'        => 'validation_failed',
-				'invalid_fields' => $errors,
-			);
-
-			if ( $form->is_published() ) {
-				omniform()->container()->get( AnalyticsManager::class )->record_submission_failure( $form->get_id() );
-			}
-
-			return rest_ensure_response(
-				new \WP_HTTP_Response( $api_response, $api_response['status'] )
-			);
-		}
-
-		$response = omniform()->container()->get( ResponseFactory::class )->create_with_form( $form );
-
 		$user_ip = filter_var( $_SERVER['REMOTE_ADDR'] ?? '', FILTER_VALIDATE_IP );
+		$referer = $request->get_param( '_wp_http_referer' );
 
-		$response_id = wp_insert_post(
+		$result = omniform()->container()->get( FormSubmitter::class )->submit(
+			$form_id,
+			$request->get_params(),
+			$request->get_file_params(),
 			array(
-				'post_title'   => wp_generate_uuid4(),
-				'post_content' => addslashes( wp_json_encode( $response, JSON_UNESCAPED_UNICODE ) ),
-				'post_type'    => 'omniform_response',
-				'post_status'  => 'omniform_unread',
-				'post_parent'  => $form->get_id(),
-				'meta_input'   => array(
-					'_omniform_id'      => $form->get_id(),
-					'_omniform_user_ip' => $user_ip ? $user_ip : '',
-					'_wp_http_referer'  => sanitize_url( $request->get_param( '_wp_http_referer' ) ),
-				),
-			),
-			true
+				'user_ip' => $user_ip ? $user_ip : '',
+				'referer' => is_string( $referer ) ? sanitize_url( $referer ) : '',
+			)
 		);
 
-		if ( is_wp_error( $response_id ) ) {
-			return rest_ensure_response( $response_id );
-		}
-
-		if ( $form->is_published() ) {
-			omniform()->container()->get( AnalyticsManager::class )->record_submission_success( $form->get_id() );
-		}
-
-		/**
-		 * Fires after a response has been created.
-		 *
-		 * @param \OmniForm\Plugin\Response $response The response instance.
-		 * @param \OmniForm\Plugin\Form $form The form instance.
-		 */
-		do_action( 'omniform_response_created', $response, $form );
-
-		$api_response = array(
-			'status'  => 201,
-			'message' => 'response_created',
-		);
-
-		return rest_ensure_response(
-			new \WP_HTTP_Response( $api_response, $api_response['status'] )
-		);
+		return $this->rest_response_from_submit_result( $result, $form_id, $analytics );
 	}
 
 	/**
-	 * Sanitizes an array of data.
+	 * Map a FormSubmitResult to a REST response and record analytics.
 	 *
-	 * @param mixed $data The data to sanitize.
+	 * @param FormSubmitResult $result    Domain submit outcome.
+	 * @param int              $form_id   Form post ID.
+	 * @param AnalyticsManager $analytics Analytics recorder.
 	 *
-	 * @return array
+	 * @return \WP_REST_Response|\WP_Error
 	 */
-	public function sanitize_array( $data ) {
-		return is_array( $data )
-			? array_map( array( $this, 'sanitize_array' ), $data )
-			: sanitize_textarea_field( $data );
+	private function rest_response_from_submit_result(
+		FormSubmitResult $result,
+		int $form_id,
+		AnalyticsManager $analytics
+	) {
+		if ( $result->is_success() ) {
+			$analytics->record_submission_success( $form_id );
+
+			return rest_ensure_response(
+				new \WP_HTTP_Response(
+					array(
+						'status'  => 201,
+						'message' => 'response_created',
+					),
+					201
+				)
+			);
+		}
+
+		if ( $result->is_validation_failure() ) {
+			$analytics->record_submission_failure( $form_id );
+
+			return rest_ensure_response(
+				new \WP_HTTP_Response(
+					array(
+						'status'         => 400,
+						'message'        => 'validation_failed',
+						'invalid_fields' => $result->invalid_fields(),
+					),
+					400
+				)
+			);
+		}
+
+		return $this->rest_error_from_submit_result( $result );
+	}
+
+	/**
+	 * Map non-validation submit failures to WP_Error.
+	 *
+	 * @param FormSubmitResult $result Domain submit outcome.
+	 */
+	private function rest_error_from_submit_result( FormSubmitResult $result ): \WP_Error {
+		$code    = $result->error_code() ?? 'submit_failed';
+		$message = $result->error_message() ?? __( 'Form submission failed.', 'omniform' );
+
+		$error_map = array(
+			'form_not_found'     => array( 'omniform_not_found', 404 ),
+			'form_not_published' => array( 'omniform_not_published', 400 ),
+		);
+
+		[ $rest_code, $status ] = $error_map[ $code ] ?? array( 'omniform_submit_failed', 500 );
+
+		return new \WP_Error(
+			$rest_code,
+			esc_html( $message ),
+			array( 'status' => $status )
+		);
 	}
 
 	/**
@@ -212,10 +201,8 @@ class FormsController extends \WP_REST_Posts_Controller {
 	protected function prepare_item_for_database( $request ) {
 		$prepared_post = parent::prepare_item_for_database( $request );
 
-		$form_types_manager = omniform()->container()->get( FormTypesManager::class );
-
 		if ( isset( $request['omniform_type'] ) ) {
-			$prepared_post->tax_input['omniform_type'] = $form_types_manager->validate_form_type( $request['omniform_type'] );
+			$prepared_post->tax_input['omniform_type'] = $this->form_types_manager()->validate_form_type( $request['omniform_type'] );
 		}
 
 		/** This filter is documented in wp-includes/rest-api/endpoints/class-wp-rest-posts-controller.php */
@@ -230,13 +217,10 @@ class FormsController extends \WP_REST_Posts_Controller {
 	 * @return array Modified Schema array.
 	 */
 	protected function add_additional_fields_schema( $schema ) {
-		$form_types_manager = omniform()->container()->get( FormTypesManager::class );
-
-		// Define the schema for the omniform_type field.
 		$schema['properties']['omniform_type'] = array(
 			'description' => __( 'omniform_type', 'omniform' ),
 			'type'        => 'string',
-			'enum'        => array_column( $form_types_manager->get_form_types(), 'type' ),
+			'enum'        => array_column( $this->form_types_manager()->get_form_types(), 'type' ),
 			'context'     => array( 'view', 'edit', 'embed' ),
 		);
 
@@ -252,16 +236,20 @@ class FormsController extends \WP_REST_Posts_Controller {
 	 * @return array Modified data object with additional fields.
 	 */
 	protected function add_additional_fields_to_object( $response_data, $request ) {
-		$form_types_manager = omniform()->container()->get( FormTypesManager::class );
+		$form_types_manager = $this->form_types_manager();
+		$form_type_terms    = get_the_terms( $response_data['id'], 'omniform_type' );
 
-		$form_type_terms = get_the_terms( $response_data['id'], 'omniform_type' );
-
-		if ( ! is_wp_error( $form_type_terms ) && false !== $form_type_terms ) {
-			$response_data['omniform_type'] = $form_types_manager->validate_form_type( $form_type_terms[0]->slug );
-		} else {
-			$response_data['omniform_type'] = $form_types_manager->get_default_form_type();
-		}
+		$response_data['omniform_type'] = ( ! is_wp_error( $form_type_terms ) && false !== $form_type_terms )
+			? $form_types_manager->validate_form_type( $form_type_terms[0]->slug )
+			: $form_types_manager->get_default_form_type();
 
 		return $response_data;
+	}
+
+	/**
+	 * Resolve the form types manager from the container.
+	 */
+	private function form_types_manager(): FormTypesManager {
+		return omniform()->container()->get( FormTypesManager::class );
 	}
 }

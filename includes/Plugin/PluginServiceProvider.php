@@ -40,6 +40,7 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 			ResponseFactory::class,
 			QueryBuilder::class,
 			Request::class,
+			FormSubmitter::class,
 		);
 
 		return in_array( $id, $services, true );
@@ -83,6 +84,19 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 				return new Request( $_GET, $_POST, $_FILES, $_SERVER );
 			}
 		);
+
+		$this->getContainer()->add(
+			FormSubmitter::class,
+			static function () {
+				return new FormSubmitter(
+					new FormRepository(),
+					new BlockFormSchemaParser(),
+					new SubmissionFactory(),
+					new RespectSubmissionValidator(),
+					new ResponseRepository()
+				);
+			}
+		);
 	}
 
 	/**
@@ -99,10 +113,16 @@ class PluginServiceProvider extends AbstractServiceProvider implements BootableS
 		add_action( 'rest_api_init', array( $this, 'register_rest_fields' ) );
 		add_filter( 'the_content', array( $this, 'render_singular_template' ) );
 
-		// Send email notification when a response is created.
+		// Send email notification when a legacy Plugin\Response is created
+		// (standalone block path). Domain REST submit uses the same hook with
+		// domain types; email for that path is handled once notify meta is wired.
 		add_action(
 			'omniform_response_created',
-			function ( Response $response, Form $form ) {
+			function ( $response, $form ) {
+				if ( ! $response instanceof Response || ! $form instanceof Form ) {
+					return;
+				}
+
 				wp_mail(
 					$form->get_notify_email(),
 					$form->get_notify_email_subject(),
