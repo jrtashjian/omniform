@@ -34,6 +34,9 @@ if ( ! class_exists( 'WP_Block', false ) ) {
 	}
 }
 
+// Load test doubles for WordPress core classes (core is not bootstrapped).
+require_once __DIR__ . '/doubles/WP_Error.php';
+
 // Initialize WP_Mock.
 WP_Mock::bootstrap();
 

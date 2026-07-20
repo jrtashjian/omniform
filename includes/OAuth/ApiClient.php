@@ -115,7 +115,23 @@ class ApiClient {
 			return new \WP_Error( 'invalid_method', __( 'Invalid HTTP method.', 'omniform' ) );
 		}
 
-		return $response;
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+
+		$response_code = wp_remote_retrieve_response_code( $response );
+
+		if ( $response_code < 200 || $response_code >= 300 ) {
+			return new \WP_Error( 'api_error', __( 'API request failed.', 'omniform' ), array( 'status' => $response_code ) );
+		}
+
+		$decoded_body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+		if ( JSON_ERROR_NONE !== json_last_error() || ! is_array( $decoded_body ) ) {
+			return new \WP_Error( 'invalid_json', __( 'Invalid JSON response.', 'omniform' ) );
+		}
+
+		return $decoded_body;
 	}
 
 	/**
