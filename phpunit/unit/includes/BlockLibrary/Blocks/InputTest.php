@@ -207,4 +207,67 @@ class InputTest extends BaseTestCase {
 
 		$this->assertEquals( 'Test-Group[]', $result );
 	}
+
+	/**
+	 * A radio in a required choice group renders the native required attribute.
+	 */
+	public function testRenderBlockRadioChoiceGroupRequired() {
+		$this->wp_block_mock->context = array(
+			'omniform/fieldLabel'            => 'Test Label',
+			'omniform/fieldPath'             => 'Test-Group',
+			'omniform/isChoiceGroup'         => true,
+			'omniform/fieldGroupIsRequired'  => true,
+		);
+
+		$result = $this->block->render_block(
+			array( 'fieldType' => 'radio' ),
+			'',
+			$this->wp_block_mock
+		);
+
+		$this->assertStringContainsString( 'required="1"', $result );
+		$this->assertStringNotContainsString( 'data-omniform-required-choice', $result );
+	}
+
+	/**
+	 * A checkbox in a required choice group is flagged for JS validation, not
+	 * given a native required attribute.
+	 */
+	public function testRenderBlockCheckboxChoiceGroupRequired() {
+		$this->wp_block_mock->context = array(
+			'omniform/fieldLabel'            => 'Test Label',
+			'omniform/fieldPath'             => 'Test-Group',
+			'omniform/isChoiceGroup'         => true,
+			'omniform/fieldGroupIsRequired'  => true,
+		);
+
+		$result = $this->block->render_block(
+			array( 'fieldType' => 'checkbox' ),
+			'',
+			$this->wp_block_mock
+		);
+
+		$this->assertStringContainsString( 'data-omniform-required-choice="1"', $result );
+		$this->assertStringNotContainsString( ' required=', $result );
+	}
+
+	/**
+	 * A checkbox choice group that is not required carries no required flag.
+	 */
+	public function testRenderBlockCheckboxChoiceGroupNotRequired() {
+		$this->wp_block_mock->context = array(
+			'omniform/fieldLabel'    => 'Test Label',
+			'omniform/fieldPath'     => 'Test-Group',
+			'omniform/isChoiceGroup' => true,
+		);
+
+		$result = $this->block->render_block(
+			array( 'fieldType' => 'checkbox' ),
+			'',
+			$this->wp_block_mock
+		);
+
+		$this->assertStringNotContainsString( 'data-omniform-required-choice', $result );
+		$this->assertStringNotContainsString( ' required=', $result );
+	}
 }

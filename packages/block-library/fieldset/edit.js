@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useEffect } from '@wordpress/element';
+import { useEffect, useMemo } from '@wordpress/element';
 import {
 	BlockControls,
 	InspectorControls,
@@ -25,7 +25,11 @@ import { useMergeRefs } from '@wordpress/compose';
  * Internal dependencies
  */
 import { Required } from '../shared/icons';
-import { cleanFieldName, generateShortId } from '../shared/utils';
+import {
+	cleanFieldName,
+	choiceGroupType,
+	generateShortId,
+} from '../shared/utils';
 import {
 	useStandaloneFormSettings,
 	useStandardFormSettings,
@@ -40,7 +44,7 @@ const Edit = ( {
 } ) => {
 	const { updateBlockAttributes } = useDispatch( blockEditorStore );
 
-	const { formBlockObject } = useSelect(
+	const { formBlockObject, innerBlocks } = useSelect(
 		( select ) => {
 			const { getBlock, getBlockParents } = select( blockEditorStore );
 
@@ -57,10 +61,26 @@ const Edit = ( {
 					setAttributes: ( value ) =>
 						updateBlockAttributes( rootBlock, value ),
 				},
+				innerBlocks: getBlock( clientId )?.innerBlocks || [],
 			};
 		},
 		[ clientId, updateBlockAttributes ],
 	);
+
+	// Required on a fieldset only makes sense for a choice group (radios or
+	// checkboxes). For other fieldsets, required lives on individual fields.
+	const choiceType = useMemo(
+		() => choiceGroupType( innerBlocks ),
+		[ innerBlocks ],
+	);
+
+	// Drop a stale required flag when the fieldset stops being a choice
+	// group, since the toggle is then hidden and can't clear it.
+	useEffect( () => {
+		if ( ! choiceType && isRequired ) {
+			setAttributes( { isRequired: false } );
+		}
+	}, [ choiceType ] ); // eslint-disable-line react-hooks/exhaustive-deps -- isRequired intentionally read, only choiceType drives the clear
 
 	useEffect( () => {
 		if ( ! fieldName ) {
@@ -121,29 +141,39 @@ const Edit = ( {
 
 			<div { ...innerBlockProps } />
 
-			<BlockControls>
-				<ToolbarGroup>
-					<ToolbarButton
-						icon={ Required }
-						isActive={ isRequired }
-						label={ __( 'Required for submission', 'omniform' ) }
-						onClick={ toggleRequired }
-					/>
-				</ToolbarGroup>
-			</BlockControls>
+			{ choiceType && (
+				<BlockControls>
+					<ToolbarGroup>
+						<ToolbarButton
+							icon={ Required }
+							isActive={ isRequired }
+							label={ __(
+								'Required for submission',
+								'omniform',
+							) }
+							onClick={ toggleRequired }
+						/>
+					</ToolbarGroup>
+				</BlockControls>
+			) }
 
 			<InspectorControls>
 				<PanelBody title={ __( 'Fieldset Settings', 'omniform' ) }>
-					<ToggleControl
-						label={ __( 'Required for submission', 'omniform' ) }
-						checked={ isRequired }
-						onChange={ toggleRequired }
-						help={ __(
-							"Set default 'required' state for all fields in the group.",
-							'omniform',
-						) }
-						__nextHasNoMarginBottom
-					/>
+					{ choiceType && (
+						<ToggleControl
+							label={ __(
+								'Required for submission',
+								'omniform',
+							) }
+							checked={ isRequired }
+							onChange={ toggleRequired }
+							help={ __(
+								'At least one option must be selected.',
+								'omniform',
+							) }
+							__nextHasNoMarginBottom
+						/>
+					) }
 
 					<TextControl
 						label={ __( 'Name', 'omniform' ) }
