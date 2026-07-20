@@ -134,10 +134,6 @@ class ApiClientTest extends BaseTestCase {
 		$this->oauth_manager->shouldReceive( 'refresh_access_token' )->andReturn( false );
 		$this->token_storage->shouldReceive( 'clear_tokens' )->once();
 
-		Mockery::mock( 'overload:WP_Error' )
-			->shouldReceive( 'get_error_code' )
-			->andReturn( 'oauth_no_token' );
-
 		$result = $this->api_client->post( '/test' );
 
 		$this->assertInstanceOf( 'WP_Error', $result );

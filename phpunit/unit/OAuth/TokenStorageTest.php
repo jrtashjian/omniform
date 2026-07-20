@@ -173,7 +173,42 @@ class TokenStorageTest extends BaseTestCase {
 	}
 
 	/**
-	 * Test clear_tokens deletes all token-related options.
+	 * Test get_webhook_secret returns the stored webhook secret.
+	 */
+	public function testGetWebhookSecretReturnsStoredValue() {
+		WP_Mock::userFunction( 'get_option' )
+			->with( TokenStorage::WEBHOOK_SECRET_KEY, null )
+			->andReturn( 'test_webhook_secret' );
+
+		$this->assertEquals( 'test_webhook_secret', $this->token_storage->get_webhook_secret() );
+	}
+
+	/**
+	 * Test get_webhook_secret returns null when no secret is stored.
+	 */
+	public function testGetWebhookSecretReturnsNullWhenNotSet() {
+		WP_Mock::userFunction( 'get_option' )
+			->with( TokenStorage::WEBHOOK_SECRET_KEY, null )
+			->andReturn( null );
+
+		$this->assertNull( $this->token_storage->get_webhook_secret() );
+	}
+
+	/**
+	 * Test set_webhook_secret updates the webhook secret option.
+	 */
+	public function testSetWebhookSecretUpdatesOption() {
+		WP_Mock::userFunction( 'update_option' )
+			->with( TokenStorage::WEBHOOK_SECRET_KEY, 'new_webhook_secret', false )
+			->once();
+
+		$this->token_storage->set_webhook_secret( 'new_webhook_secret' );
+
+		$this->expectNotToPerformAssertions();
+	}
+
+	/**
+	 * Test clear_tokens deletes all token-related options including the webhook secret.
 	 */
 	public function testClearTokensDeletesAllOptions() {
 		WP_Mock::userFunction( 'delete_option' )
@@ -187,6 +222,9 @@ class TokenStorageTest extends BaseTestCase {
 			->once();
 		WP_Mock::userFunction( 'delete_option' )
 			->with( TokenStorage::CLIENT_ID_KEY )
+			->once();
+		WP_Mock::userFunction( 'delete_option' )
+			->with( TokenStorage::WEBHOOK_SECRET_KEY )
 			->once();
 
 		$this->token_storage->clear_tokens();

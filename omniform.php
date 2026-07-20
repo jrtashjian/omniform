@@ -54,6 +54,7 @@ omniform()->register( new \OmniForm\FormTypes\FormTypesServiceProvider() );
 omniform()->register( new \OmniForm\Analytics\AnalyticsServiceProvider() );
 omniform()->register( new \OmniForm\BlockLibrary\BlockLibraryServiceProvider() );
 omniform()->register( new \OmniForm\OAuth\OAuthServiceProvider() );
+omniform()->register( new \OmniForm\Webhook\WebhookServiceProvider() );
 
 register_activation_hook( __FILE__, array( omniform(), 'activation' ) );
 register_deactivation_hook( __FILE__, array( omniform(), 'deactivation' ) );

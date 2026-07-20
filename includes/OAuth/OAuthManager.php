@@ -117,6 +117,10 @@ class OAuthManager {
 		if ( $tokens ) {
 			$this->token_storage->set_access_token( $tokens['access_token'], $tokens['expires_in'] );
 			$this->token_storage->set_refresh_token( $tokens['refresh_token'] );
+
+			if ( ! empty( $tokens['webhook_secret'] ) && is_string( $tokens['webhook_secret'] ) ) {
+				$this->token_storage->set_webhook_secret( $tokens['webhook_secret'] );
+			}
 		} else {
 			wp_die( esc_html__( 'Failed to exchange code for tokens.', 'omniform' ) );
 			if ( defined( 'PHPUNIT_TESTING' ) && constant( 'PHPUNIT_TESTING' ) ) {
@@ -167,6 +171,9 @@ class OAuthManager {
 			$this->token_storage->set_access_token( $body['access_token'], $body['expires_in'] );
 			if ( isset( $body['refresh_token'] ) ) {
 				$this->token_storage->set_refresh_token( $body['refresh_token'] );
+			}
+			if ( ! empty( $body['webhook_secret'] ) && is_string( $body['webhook_secret'] ) ) {
+				$this->token_storage->set_webhook_secret( $body['webhook_secret'] );
 			}
 			return true;
 		}

@@ -34,6 +34,144 @@ if ( ! class_exists( 'WP_Block', false ) ) {
 	}
 }
 
+/*
+ * Minimal REST doubles for unit tests (WordPress core is not bootstrapped).
+ */
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound,Generic.Files.OneObjectStructurePerFile.MultipleFound
+if ( ! class_exists( 'WP_REST_Controller', false ) ) {
+	/**
+	 * Test double for WordPress WP_REST_Controller.
+	 */
+	class WP_REST_Controller {
+		/**
+		 * The namespace.
+		 *
+		 * @var string
+		 */
+		protected $namespace;
+
+		/**
+		 * The rest base.
+		 *
+		 * @var string
+		 */
+		protected $rest_base;
+
+		/**
+		 * Registers the routes for the objects of the controller.
+		 */
+		public function register_routes() {}
+	}
+}
+
+if ( ! class_exists( 'WP_REST_Server', false ) ) {
+	/**
+	 * Test double for WordPress WP_REST_Server.
+	 */
+	class WP_REST_Server {
+		const READABLE   = 'GET';
+		const CREATABLE  = 'POST';
+		const EDITABLE   = 'POST, PUT, PATCH';
+		const DELETABLE  = 'DELETE';
+		const ALLMETHODS = 'GET, POST, PUT, PATCH, DELETE';
+	}
+}
+
+if ( ! class_exists( 'WP_REST_Request', false ) ) {
+	/**
+	 * Test double for WordPress WP_REST_Request.
+	 */
+	class WP_REST_Request {
+		/**
+		 * Get the request body.
+		 *
+		 * @return string
+		 */
+		public function get_body() {
+			return '';
+		}
+
+		/**
+		 * Get a header value.
+		 *
+		 * @param string $header Header name.
+		 * @return string|null
+		 */
+		public function get_header( $header ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
+			return null;
+		}
+	}
+}
+
+if ( ! class_exists( 'WP_Error', false ) ) {
+	/**
+	 * Test double for WordPress WP_Error.
+	 */
+	class WP_Error {
+		/**
+		 * Error code.
+		 *
+		 * @var string
+		 */
+		private $code;
+
+		/**
+		 * Error message.
+		 *
+		 * @var string
+		 */
+		private $message;
+
+		/**
+		 * Error data.
+		 *
+		 * @var mixed
+		 */
+		private $data;
+
+		/**
+		 * Constructor.
+		 *
+		 * @param string|int $code    Error code.
+		 * @param string     $message Error message.
+		 * @param mixed      $data    Error data.
+		 */
+		public function __construct( $code = '', $message = '', $data = '' ) {
+			$this->code    = $code;
+			$this->message = $message;
+			$this->data    = $data;
+		}
+
+		/**
+		 * Get the error code.
+		 *
+		 * @return string|int
+		 */
+		public function get_error_code() {
+			return $this->code;
+		}
+
+		/**
+		 * Get the error data.
+		 *
+		 * @return mixed
+		 */
+		public function get_error_data() {
+			return $this->data;
+		}
+
+		/**
+		 * Get the error message.
+		 *
+		 * @return string
+		 */
+		public function get_error_message() {
+			return $this->message;
+		}
+	}
+}
+// phpcs:enable
+
 // Initialize WP_Mock.
 WP_Mock::bootstrap();
 
