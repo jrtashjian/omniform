@@ -7,6 +7,8 @@
 
 namespace OmniForm\Plugin;
 
+use OmniForm\Form\Field;
+use OmniForm\Form\FormSchema;
 use OmniForm\Form\Submission;
 
 /**
@@ -37,9 +39,11 @@ class SubmissionFactory {
 	 *
 	 * @param array<string, mixed> $params Request parameters (e.g. POST body).
 	 * @param array<string, mixed> $files  Uploaded files in $_FILES shape.
+	 * @param FormSchema|null      $schema Parsed form schema for type-aware
+	 *                                    sanitization. Null keeps legacy behavior.
 	 */
-	public function from_request( array $params, array $files = array() ): Submission {
-		$values = $this->sanitize_array( $this->filter_params( $params ) );
+	public function from_request( array $params, array $files = array(), ?FormSchema $schema = null ): Submission {
+		$values = $this->sanitize_array( $this->filter_params( $params ), $schema, '' );
 		$values = $this->merge_files( $values, $files );
 
 		return new Submission( $values );
@@ -73,16 +77,19 @@ class SubmissionFactory {
 	/**
 	 * Recursively sanitize scalar values for storage/validation.
 	 *
-	 * @param mixed $data Raw data.
+	 * @param mixed           $data   Raw data.
+	 * @param FormSchema|null $schema Parsed form schema (null keeps legacy behavior).
+	 * @param string          $prefix Dotted field path matching FormSchema keys.
 	 * @return mixed
 	 */
-	private function sanitize_array( mixed $data ): mixed {
+	private function sanitize_array( mixed $data, ?FormSchema $schema, string $prefix ): mixed {
 		if ( is_array( $data ) ) {
 			$clean = array();
 
 			foreach ( $data as $key => $value ) {
 				$clean_key           = is_string( $key ) ? sanitize_text_field( $key ) : $key;
-				$clean[ $clean_key ] = $this->sanitize_array( $value );
+				$child_prefix        = '' === $prefix ? (string) $key : $prefix . '.' . (string) $key;
+				$clean[ $clean_key ] = $this->sanitize_array( $value, $schema, $child_prefix );
 			}
 
 			return $clean;
@@ -92,7 +99,63 @@ class SubmissionFactory {
 			return $data;
 		}
 
-		return sanitize_textarea_field( (string) $data );
+		return $this->sanitize_value( (string) $data, $schema, $prefix );
+	}
+
+	/**
+	 * Sanitize a single string value by its declared field type.
+	 *
+	 * @param string          $value  Raw string value.
+	 * @param FormSchema|null $schema Parsed form schema (null keeps legacy behavior).
+	 * @param string          $prefix Dotted field path matching a FormSchema key.
+	 * @return mixed
+	 */
+	private function sanitize_value( string $value, ?FormSchema $schema, string $prefix ): mixed {
+		$field = '' !== $prefix && null !== $schema ? $schema->field( $prefix ) : null;
+
+		if ( null === $schema ) {
+			return sanitize_textarea_field( $value );
+		}
+
+		if ( null === $field ) {
+			return sanitize_text_field( $value );
+		}
+
+		return $this->sanitize_field_value( $value, $field->type() );
+	}
+
+	/**
+	 * Dispatch a value to the sanitizer matching its field type.
+	 *
+	 * @param string $value Raw string value.
+	 * @param string $type  Field control type.
+	 * @return mixed
+	 */
+	private function sanitize_field_value( string $value, string $type ): mixed {
+		switch ( $type ) {
+			case 'email':
+				return sanitize_email( $value );
+
+			case 'url':
+				return sanitize_url( $value );
+
+			case 'number':
+			case 'range':
+				if ( ! is_numeric( $value ) ) {
+					// Let the validator reject non-numeric text with a useful message.
+					return sanitize_text_field( $value );
+				}
+
+				return false !== strpos( $value, '.' ) || false !== stripos( $value, 'e' )
+					? (float) $value
+					: (int) $value;
+
+			case 'textarea':
+				return sanitize_textarea_field( $value );
+
+			default:
+				return sanitize_text_field( $value );
+		}
 	}
 
 	/**

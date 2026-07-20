@@ -113,7 +113,7 @@ class FormSubmitterTest extends BaseTestCase {
 		$this->parser->shouldReceive( 'parse' )->once()->with( '<!-- form -->' )->andReturn( $schema );
 		$this->submissions->shouldReceive( 'from_request' )
 			->once()
-			->with( array( 'email' => 'a@b.c' ), array() )
+			->with( array( 'email' => 'a@b.c' ), array(), $schema )
 			->andReturn( $submission );
 		$this->responses->shouldReceive( 'save' )
 			->once()
