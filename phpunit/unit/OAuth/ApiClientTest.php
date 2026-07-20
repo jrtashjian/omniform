@@ -81,33 +81,61 @@ class ApiClientTest extends BaseTestCase {
 	}
 
 	/**
-	 * Test get with valid token.
+	 * Test get with valid token returns the decoded response body.
 	 */
 	public function testGetWithValidToken() {
 		$this->token_storage->shouldReceive( 'is_expired' )->andReturn( false );
 		$this->token_storage->shouldReceive( 'get_access_token' )->andReturn( 'valid_token' );
 
+		$response = array( 'body' => '{"data": "test"}' );
+
 		WP_Mock::userFunction( 'wp_remote_get' )
-			->andReturn( array( 'body' => '{"data": "test"}' ) );
+			->andReturn( $response );
+		WP_Mock::userFunction( 'is_wp_error' )
+			->with( $response )
+			->once()
+			->andReturn( false );
+		WP_Mock::userFunction( 'wp_remote_retrieve_response_code' )
+			->with( $response )
+			->once()
+			->andReturn( 200 );
+		WP_Mock::userFunction( 'wp_remote_retrieve_body' )
+			->with( $response )
+			->once()
+			->andReturn( '{"data": "test"}' );
 
 		$result = $this->api_client->get( '/test' );
 
-		$this->assertEquals( array( 'body' => '{"data": "test"}' ), $result );
+		$this->assertEquals( array( 'data' => 'test' ), $result );
 	}
 
 	/**
-	 * Test post with valid token.
+	 * Test post with valid token returns the decoded response body.
 	 */
 	public function testPostWithValidToken() {
 		$this->token_storage->shouldReceive( 'is_expired' )->andReturn( false );
 		$this->token_storage->shouldReceive( 'get_access_token' )->andReturn( 'valid_token' );
 
+		$response = array( 'body' => '{"success": true}' );
+
 		WP_Mock::userFunction( 'wp_remote_post' )
-			->andReturn( array( 'body' => '{"success": true}' ) );
+			->andReturn( $response );
+		WP_Mock::userFunction( 'is_wp_error' )
+			->with( $response )
+			->once()
+			->andReturn( false );
+		WP_Mock::userFunction( 'wp_remote_retrieve_response_code' )
+			->with( $response )
+			->once()
+			->andReturn( 200 );
+		WP_Mock::userFunction( 'wp_remote_retrieve_body' )
+			->with( $response )
+			->once()
+			->andReturn( '{"success": true}' );
 
 		$result = $this->api_client->post( '/test' );
 
-		$this->assertEquals( array( 'body' => '{"success": true}' ), $result );
+		$this->assertEquals( array( 'success' => true ), $result );
 	}
 
 	/**
@@ -118,38 +146,50 @@ class ApiClientTest extends BaseTestCase {
 		$this->oauth_manager->shouldReceive( 'refresh_access_token' )->andReturn( true );
 		$this->token_storage->shouldReceive( 'get_access_token' )->andReturn( 'new_token' );
 
+		$response = array( 'body' => '{"data": "refreshed"}' );
+
 		WP_Mock::userFunction( 'wp_remote_get' )
-			->andReturn( array( 'body' => '{"data": "refreshed"}' ) );
+			->andReturn( $response );
+		WP_Mock::userFunction( 'is_wp_error' )
+			->with( $response )
+			->once()
+			->andReturn( false );
+		WP_Mock::userFunction( 'wp_remote_retrieve_response_code' )
+			->with( $response )
+			->once()
+			->andReturn( 200 );
+		WP_Mock::userFunction( 'wp_remote_retrieve_body' )
+			->with( $response )
+			->once()
+			->andReturn( '{"data": "refreshed"}' );
 
 		$result = $this->api_client->get( '/test' );
 
-		$this->assertEquals( array( 'body' => '{"data": "refreshed"}' ), $result );
+		$this->assertEquals( array( 'data' => 'refreshed' ), $result );
 	}
 
 	/**
-	 * Test post with expired token and failed refresh.
+	 * Test post with expired token and failed refresh returns a WP_Error.
 	 */
 	public function testPostWithExpiredTokenAndFailedRefresh() {
 		$this->token_storage->shouldReceive( 'is_expired' )->andReturn( true );
 		$this->oauth_manager->shouldReceive( 'refresh_access_token' )->andReturn( false );
 		$this->token_storage->shouldReceive( 'clear_tokens' )->once();
 
-		Mockery::mock( 'overload:WP_Error' )
-			->shouldReceive( 'get_error_code' )
-			->andReturn( 'oauth_no_token' );
-
 		$result = $this->api_client->post( '/test' );
 
-		$this->assertInstanceOf( 'WP_Error', $result );
+		$this->assertInstanceOf( \WP_Error::class, $result );
 		$this->assertEquals( 'oauth_no_token', $result->get_error_code() );
 	}
 
 	/**
-	 * Test get with additional args.
+	 * Test get with additional args passes them through to the request.
 	 */
 	public function testGetWithAdditionalArgs() {
 		$this->token_storage->shouldReceive( 'is_expired' )->andReturn( false );
 		$this->token_storage->shouldReceive( 'get_access_token' )->andReturn( 'valid_token' );
+
+		$response = array( 'body' => '{"data": "with_args"}' );
 
 		WP_Mock::userFunction( 'wp_remote_get' )
 			->with(
@@ -162,10 +202,100 @@ class ApiClientTest extends BaseTestCase {
 					'timeout' => 30,
 				)
 			)
-			->andReturn( array( 'body' => '{"data": "with_args"}' ) );
+			->andReturn( $response );
+		WP_Mock::userFunction( 'is_wp_error' )
+			->with( $response )
+			->once()
+			->andReturn( false );
+		WP_Mock::userFunction( 'wp_remote_retrieve_response_code' )
+			->with( $response )
+			->once()
+			->andReturn( 200 );
+		WP_Mock::userFunction( 'wp_remote_retrieve_body' )
+			->with( $response )
+			->once()
+			->andReturn( '{"data": "with_args"}' );
 
 		$result = $this->api_client->get( '/test', array( 'timeout' => 30 ) );
 
-		$this->assertEquals( array( 'body' => '{"data": "with_args"}' ), $result );
+		$this->assertEquals( array( 'data' => 'with_args' ), $result );
+	}
+
+	/**
+	 * Test get returns the WP_Error untouched when the transport fails.
+	 */
+	public function testGetReturnsWpErrorOnTransportFailure() {
+		$this->token_storage->shouldReceive( 'is_expired' )->andReturn( false );
+		$this->token_storage->shouldReceive( 'get_access_token' )->andReturn( 'valid_token' );
+
+		$error = new \WP_Error( 'http_failure', 'Request failed.' );
+
+		WP_Mock::userFunction( 'wp_remote_get' )
+			->andReturn( $error );
+		WP_Mock::userFunction( 'is_wp_error' )
+			->with( $error )
+			->once()
+			->andReturn( true );
+
+		$result = $this->api_client->get( '/test' );
+
+		$this->assertSame( $error, $result );
+	}
+
+	/**
+	 * Test get returns a WP_Error with the status code for a non-2xx response.
+	 */
+	public function testGetWithNon2xxStatusCode() {
+		$this->token_storage->shouldReceive( 'is_expired' )->andReturn( false );
+		$this->token_storage->shouldReceive( 'get_access_token' )->andReturn( 'valid_token' );
+
+		$response = array( 'response' => array( 'code' => 500 ) );
+
+		WP_Mock::userFunction( 'wp_remote_get' )
+			->andReturn( $response );
+		WP_Mock::userFunction( 'is_wp_error' )
+			->with( $response )
+			->once()
+			->andReturn( false );
+		WP_Mock::userFunction( 'wp_remote_retrieve_response_code' )
+			->with( $response )
+			->once()
+			->andReturn( 500 );
+
+		$result = $this->api_client->get( '/test' );
+
+		$this->assertInstanceOf( \WP_Error::class, $result );
+		$this->assertEquals( 'api_error', $result->get_error_code() );
+		$this->assertEquals( array( 'status' => 500 ), $result->get_error_data() );
+	}
+
+	/**
+	 * Test get returns a WP_Error when the response body is not valid JSON.
+	 */
+	public function testGetWithInvalidJson() {
+		$this->token_storage->shouldReceive( 'is_expired' )->andReturn( false );
+		$this->token_storage->shouldReceive( 'get_access_token' )->andReturn( 'valid_token' );
+
+		$response = array( 'body' => 'not json' );
+
+		WP_Mock::userFunction( 'wp_remote_get' )
+			->andReturn( $response );
+		WP_Mock::userFunction( 'is_wp_error' )
+			->with( $response )
+			->once()
+			->andReturn( false );
+		WP_Mock::userFunction( 'wp_remote_retrieve_response_code' )
+			->with( $response )
+			->once()
+			->andReturn( 200 );
+		WP_Mock::userFunction( 'wp_remote_retrieve_body' )
+			->with( $response )
+			->once()
+			->andReturn( 'not json' );
+
+		$result = $this->api_client->get( '/test' );
+
+		$this->assertInstanceOf( \WP_Error::class, $result );
+		$this->assertEquals( 'invalid_json', $result->get_error_code() );
 	}
 }
