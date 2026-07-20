@@ -172,7 +172,7 @@ class Form extends BaseBlock {
 		if ( $submitted_hash === $form_hash && wp_verify_nonce( $_REQUEST['_wpnonce'], 'omniform' . $form_hash ) ) {
 			$schema     = ( new BlockFormSchemaParser() )->parse( $form->content() );
 			// phpcs:ignore WordPress.Security.NonceVerification.Missing -- verified above.
-			$submission = ( new SubmissionFactory() )->from_request( $_POST, $_FILES );
+			$submission = ( new SubmissionFactory() )->from_request( $_POST, $_FILES, $schema );
 			$validation = ( new RespectSubmissionValidator() )->validate( $schema, $submission );
 			$state      = omniform()->container()->get( SubmissionRenderState::class );
 

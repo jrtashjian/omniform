@@ -69,7 +69,7 @@ class FormSubmitter {
 		array $meta,
 	): FormSubmitResult {
 		$schema     = $this->parser->parse( $form->content() );
-		$submission = $this->submissions->from_request( $params, $files );
+		$submission = $this->submissions->from_request( $params, $files, $schema );
 		$validation = $this->validator->validate( $schema, $submission );
 
 		if ( $validation->is_invalid() ) {
