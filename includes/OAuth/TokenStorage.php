@@ -32,6 +32,11 @@ class TokenStorage {
 	const CLIENT_ID_KEY = 'omniform_client_id';
 
 	/**
+	 * Option key for the webhook signing secret.
+	 */
+	const WEBHOOK_SECRET_KEY = 'omniform_webhook_secret';
+
+	/**
 	 * Get the access token.
 	 *
 	 * @return string|null
@@ -104,7 +109,30 @@ class TokenStorage {
 	}
 
 	/**
-	 * Clear all tokens and client ID.
+	 * Get the webhook signing secret.
+	 *
+	 * @return string|null
+	 */
+	public function get_webhook_secret(): ?string {
+		return get_option( self::WEBHOOK_SECRET_KEY, null );
+	}
+
+	/**
+	 * Set the webhook signing secret.
+	 *
+	 * Stored with autoload disabled so the secret is not loaded into the
+	 * all-options cache on every request.
+	 *
+	 * @param string $secret The webhook secret.
+	 *
+	 * @return void
+	 */
+	public function set_webhook_secret( string $secret ): void {
+		update_option( self::WEBHOOK_SECRET_KEY, $secret, false );
+	}
+
+	/**
+	 * Clear all tokens, client ID, and webhook secret.
 	 *
 	 * @return void
 	 */
@@ -113,5 +141,6 @@ class TokenStorage {
 		delete_option( self::REFRESH_TOKEN_KEY );
 		delete_option( self::TOKEN_EXPIRES_KEY );
 		delete_option( self::CLIENT_ID_KEY );
+		delete_option( self::WEBHOOK_SECRET_KEY );
 	}
 }

@@ -138,9 +138,10 @@ class OAuthManagerTest extends BaseTestCase {
 				array(
 					'body' => json_encode( // phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode
 						array(
-							'access_token'  => 'new_access_token',
-							'refresh_token' => 'new_refresh_token',
-							'expires_in'    => 3600,
+							'access_token'   => 'new_access_token',
+							'refresh_token'  => 'new_refresh_token',
+							'expires_in'     => 3600,
+							'webhook_secret' => 'wh_secret',
 						)
 					),
 				)
@@ -149,9 +150,10 @@ class OAuthManagerTest extends BaseTestCase {
 			->andReturn(
 				json_encode( // phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode
 					array(
-						'access_token'  => 'new_access_token',
-						'refresh_token' => 'new_refresh_token',
-						'expires_in'    => 3600,
+						'access_token'   => 'new_access_token',
+						'refresh_token'  => 'new_refresh_token',
+						'expires_in'     => 3600,
+						'webhook_secret' => 'wh_secret',
 					)
 				)
 			);
@@ -163,6 +165,9 @@ class OAuthManagerTest extends BaseTestCase {
 			->once();
 		$this->token_storage->shouldReceive( 'set_refresh_token' )
 			->with( 'new_refresh_token' )
+			->once();
+		$this->token_storage->shouldReceive( 'set_webhook_secret' )
+			->with( 'wh_secret' )
 			->once();
 
 		WP_Mock::userFunction( 'admin_url' )
@@ -259,9 +264,10 @@ class OAuthManagerTest extends BaseTestCase {
 				array(
 					'body' => json_encode( // phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode
 						array(
-							'access_token'  => 'new_access_token',
-							'expires_in'    => 3600,
-							'refresh_token' => 'new_refresh_token',
+							'access_token'   => 'new_access_token',
+							'expires_in'     => 3600,
+							'refresh_token'  => 'new_refresh_token',
+							'webhook_secret' => 'wh_secret',
 						)
 					),
 				)
@@ -270,9 +276,10 @@ class OAuthManagerTest extends BaseTestCase {
 			->andReturn(
 				json_encode( // phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode
 					array(
-						'access_token'  => 'new_access_token',
-						'expires_in'    => 3600,
-						'refresh_token' => 'new_refresh_token',
+						'access_token'   => 'new_access_token',
+						'expires_in'     => 3600,
+						'refresh_token'  => 'new_refresh_token',
+						'webhook_secret' => 'wh_secret',
 					)
 				)
 			);
@@ -284,6 +291,9 @@ class OAuthManagerTest extends BaseTestCase {
 			->once();
 		$this->token_storage->shouldReceive( 'set_refresh_token' )
 			->with( 'new_refresh_token' )
+			->once();
+		$this->token_storage->shouldReceive( 'set_webhook_secret' )
+			->with( 'wh_secret' )
 			->once();
 
 		$result = $this->oauth_manager->refresh_access_token();
@@ -318,5 +328,48 @@ class OAuthManagerTest extends BaseTestCase {
 		$result = $this->oauth_manager->refresh_access_token();
 
 		$this->assertFalse( $result );
+	}
+
+	/**
+	 * Test refresh_access_token ignores an empty webhook secret.
+	 */
+	public function testRefreshAccessTokenIgnoresEmptyWebhookSecret() {
+		$this->token_storage->shouldReceive( 'get_refresh_token' )->andReturn( 'refresh_token' );
+		$this->token_storage->shouldReceive( 'get_client_id' )->andReturn( 'client_id' );
+
+		WP_Mock::userFunction( 'wp_remote_post' )
+			->andReturn(
+				array(
+					'body' => json_encode( // phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode
+						array(
+							'access_token'   => 'new_access_token',
+							'expires_in'     => 3600,
+							'refresh_token'  => 'new_refresh_token',
+							'webhook_secret' => '',
+						)
+					),
+				)
+			);
+		WP_Mock::userFunction( 'wp_remote_retrieve_body' )
+			->andReturn(
+				json_encode( // phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode
+					array(
+						'access_token'   => 'new_access_token',
+						'expires_in'     => 3600,
+						'refresh_token'  => 'new_refresh_token',
+						'webhook_secret' => '',
+					)
+				)
+			);
+		WP_Mock::userFunction( 'is_wp_error' )
+			->andReturn( false );
+
+		$this->token_storage->shouldReceive( 'set_access_token' )->once();
+		$this->token_storage->shouldReceive( 'set_refresh_token' )->once();
+		$this->token_storage->shouldNotReceive( 'set_webhook_secret' );
+
+		$result = $this->oauth_manager->refresh_access_token();
+
+		$this->assertTrue( $result );
 	}
 }
