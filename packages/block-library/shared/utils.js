@@ -40,3 +40,60 @@ export function cleanFieldName( string ) {
 			.replace( /(^-+)|(-+$)/g, '' )
 	);
 }
+
+/**
+ * Collects every omniform/input fieldType nested under the given blocks.
+ *
+ * Fields can nest inside core/columns, so the walk recurses into inner blocks.
+ *
+ * @param {Array} blocks Block list to inspect.
+ * @return {Array} fieldType strings; '' for fields without an input control.
+ */
+function collectFieldTypes( blocks ) {
+	const types = [];
+
+	if ( ! Array.isArray( blocks ) ) {
+		return types;
+	}
+
+	for ( const block of blocks ) {
+		if ( 'omniform/field' === block.name ) {
+			const input = ( block.innerBlocks || [] ).find(
+				( inner ) => 'omniform/input' === inner.name,
+			);
+			types.push( input ? input.attributes?.fieldType : '' );
+			continue;
+		}
+
+		if ( Array.isArray( block.innerBlocks ) && block.innerBlocks.length ) {
+			types.push( ...collectFieldTypes( block.innerBlocks ) );
+		}
+	}
+
+	return types;
+}
+
+/**
+ * Whether the blocks form a choice-only fieldset, and which kind.
+ *
+ * Returns 'radio' or 'checkbox' when every field is the same choice type;
+ * otherwise null (mixed, non-choice, or no fields).
+ *
+ * @param {Array} blocks Fieldset inner blocks.
+ * @return {string|null} The shared choice type, or null.
+ */
+export function choiceGroupType( blocks ) {
+	const types = collectFieldTypes( blocks );
+
+	if ( ! types.length ) {
+		return null;
+	}
+
+	const first = types[ 0 ];
+
+	if ( ! [ 'radio', 'checkbox' ].includes( first ) ) {
+		return null;
+	}
+
+	return types.every( ( type ) => type === first ) ? first : null;
+}

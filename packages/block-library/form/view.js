@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import apiFetch from '@wordpress/api-fetch';
+import { __ } from '@wordpress/i18n';
 import { applyFilters } from '@wordpress/hooks';
 
 ( function() {
@@ -19,6 +20,36 @@ import { applyFilters } from '@wordpress/hooks';
 			} );
 
 			return listElement;
+		};
+
+		// Whether every required checkbox choice group has at least one box
+		// checked. Triggers a validation message on the first empty group.
+		const hasRequiredCheckboxChoiceFilled = ( formEl ) => {
+			const groups = new Map();
+
+			formEl
+				.querySelectorAll( 'input[data-omniform-required-choice]' )
+				.forEach( ( input ) => {
+					const name = input.name || '';
+					if ( ! groups.has( name ) ) {
+						groups.set( name, [] );
+					}
+					groups.get( name ).push( input );
+				} );
+
+			for ( const inputs of groups.values() ) {
+				if ( ! inputs.some( ( input ) => input.checked ) ) {
+					const first = inputs[ 0 ];
+					first.setCustomValidity(
+						__( 'Please select at least one option.', 'omniform' ),
+					);
+					first.reportValidity();
+					first.setCustomValidity( '' );
+					return false;
+				}
+			}
+
+			return true;
 		};
 
 		// Add event listeners to all omniforms.
@@ -94,6 +125,12 @@ import { applyFilters } from '@wordpress/hooks';
 
 				const formResponseHandler = async ( event ) => {
 					event.preventDefault();
+
+					// Checkbox choice groups can't express "at least one"
+					// natively, so enforce it before submitting.
+					if ( ! hasRequiredCheckboxChoiceFilled( form ) ) {
+						return;
+					}
 
 					// Allow plugins to hook into the form submission.
 					const formElement = await applyFilters(

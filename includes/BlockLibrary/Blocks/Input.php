@@ -62,6 +62,11 @@ class Input extends BaseControlBlock {
 			parent::get_extra_wrapper_attributes()
 		);
 
+		// Checkbox choice groups validate "at least one" in JS, not natively.
+		if ( $this->is_required_choice_checkbox() ) {
+			$extra_attributes['data-omniform-required-choice'] = true;
+		}
+
 		$attribute_input_type_mapping = array(
 			'placeholder' => array( 'text', 'email', 'url', 'number', 'month', 'password', 'search', 'tel', 'week', 'hidden', 'username-email' ),
 			'min'         => array( 'range' ),
@@ -107,8 +112,10 @@ class Input extends BaseControlBlock {
 	/**
 	 * Is the field required?
 	 *
-	 * Choice-group radios/checkboxes are never individually required; the
-	 * fieldset carries that rule. Lone checkboxes (e.g. consent) may be.
+	 * Choice-group radios carry the fieldset's required rule natively, so the
+	 * browser enforces "at least one". Checkbox choice groups validate via JS
+	 * instead, so they stay individually optional here. Lone checkboxes (e.g.
+	 * consent) may still be required on their own.
 	 */
 	public function is_required(): bool {
 		$is_choice_control = in_array(
@@ -118,10 +125,27 @@ class Input extends BaseControlBlock {
 		);
 
 		if ( $is_choice_control && $this->get_block_context( 'omniform/isChoiceGroup' ) ) {
-			return false;
+			return 'radio' === $this->get_block_attribute( 'fieldType' ) && parent::is_required();
 		}
 
 		return parent::is_required();
+	}
+
+	/**
+	 * Whether this is a checkbox inside a required choice group.
+	 *
+	 * Flags the input for the frontend "at least one" check.
+	 */
+	private function is_required_choice_checkbox(): bool {
+		if ( 'checkbox' !== $this->get_block_attribute( 'fieldType' ) ) {
+			return false;
+		}
+
+		if ( ! $this->get_block_context( 'omniform/isChoiceGroup' ) ) {
+			return false;
+		}
+
+		return (bool) ( $this->get_block_context( 'omniform/fieldGroupIsRequired' ) ?? false );
 	}
 
 	/**
